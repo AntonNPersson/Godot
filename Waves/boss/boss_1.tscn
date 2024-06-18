@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://wy80x5ucrat7"]
+
+[ext_resource type="PackedScene" uid="uid://dk40ep18m4j0k" path="res://Units/Instance/Enemies/Bosses/goblinchief.tscn" id="1_62jc7"]
+
+[node name="Boss1" type="Node2D"]
+
+[node name="Goblin Chief" parent="." instance=ExtResource("1_62jc7")]

@@ -1,0 +1,347 @@
+[gd_scene load_steps=38 format=3 uid="uid://tte1vievd453"]
+
+[ext_resource type="PackedScene" uid="uid://da2dubhc12iyy" path="res://Maps/Tiles/Arena_1/tiles/boss_encounter1.tscn" id="1_i01gl"]
+[ext_resource type="PackedScene" uid="uid://c4kr1k7bekfs" path="res://Maps/Tiles/Arena_1/tiles/floor.tscn" id="3_41kjs"]
+[ext_resource type="PackedScene" uid="uid://dsmdo3b4gskp0" path="res://Maps/Tiles/Arena_1/tiles/invisible_tile.tscn" id="4_tp6e0"]
+[ext_resource type="PackedScene" uid="uid://dxe2am3puddoa" path="res://Maps/Tiles/Arena_1/tiles/player_spawn1.tscn" id="5_uao02"]
+[ext_resource type="PackedScene" uid="uid://cw4km6omp1woc" path="res://Maps/Tiles/Arena_1/tiles/spawn_arena_1.tscn" id="6_s543w"]
+[ext_resource type="PackedScene" uid="uid://3bufdu886nec" path="res://Maps/Tiles/Arena_1/tiles/torch.tscn" id="8_3sbft"]
+[ext_resource type="PackedScene" uid="uid://cosqbwpgdlcb6" path="res://Maps/Tiles/Arena_1/tiles/wall.tscn" id="10_dc6ri"]
+[ext_resource type="Texture2D" uid="uid://dv1wp5w4pb4ua" path="res://Tool/obstacles/bot_right_corner.png" id="11_5qcb2"]
+[ext_resource type="Texture2D" uid="uid://b1u7yo60q4i48" path="res://Tool/obstacles/bot_left_corner.png" id="12_vw6x1"]
+[ext_resource type="Texture2D" uid="uid://b8m4swqm84fni" path="res://Tool/obstacles/top_left_corner.png" id="13_66g71"]
+[ext_resource type="Texture2D" uid="uid://5ihgu5tcualw" path="res://Tool/obstacles/top_right_corner.png" id="14_0mlof"]
+[ext_resource type="Texture2D" uid="uid://h7eh4eplw3eb" path="res://Tool/obstacles/right_wall.png" id="15_4a2qn"]
+[ext_resource type="Texture2D" uid="uid://shvvopiw8hte" path="res://Tool/obstacles/top_wall.png" id="16_hvc21"]
+[ext_resource type="Texture2D" uid="uid://d21wkxb5f1sa0" path="res://Tool/obstacles/left_wall.png" id="17_ayl0s"]
+[ext_resource type="Texture2D" uid="uid://c46831pslsoie" path="res://Tool/obstacles/bot_wall.png" id="18_lbmev"]
+[ext_resource type="Texture2D" uid="uid://tmmq0vqhm7xx" path="res://Sprites/Goblin King/tiles/cactus_4.png" id="19_78eth"]
+[ext_resource type="PackedScene" uid="uid://ecpbj03w3kp2" path="res://Maps/Tiles/Arena_1/tiles/wall corner/wall corner.tscn" id="20_2acxd"]
+[ext_resource type="Texture2D" uid="uid://bsenylcbstsq8" path="res://Tool/obstacles/boiling_pot.png" id="20_apga4"]
+[ext_resource type="Texture2D" uid="uid://qe7xg5l44l3u" path="res://Tool/obstacles/wall.png" id="21_xsy1w"]
+[ext_resource type="Texture2D" uid="uid://cur081plnhox1" path="res://Tool/obstacles/left_corner.png" id="22_af046"]
+[ext_resource type="PackedScene" uid="uid://dlxxpu7pwxb0m" path="res://Maps/Tiles/Required Tiles/boss_spawn.tscn" id="22_d1rhe"]
+[ext_resource type="Texture2D" uid="uid://db4bqwlocypw5" path="res://Tool/obstacles/stairs_left.png" id="23_nqti4"]
+[ext_resource type="Texture2D" uid="uid://cc8w5a64ic1ji" path="res://Tool/obstacles/stairs.png" id="24_rurrl"]
+[ext_resource type="Texture2D" uid="uid://psp3xr6coayk" path="res://Tool/obstacles/stairs_right.png" id="24_uuq7l"]
+[ext_resource type="Texture2D" uid="uid://b5gcbw50s5s0b" path="res://Tool/obstacles/stairs_center.png" id="25_nrrdr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7idap"]
+size = Vector2(122, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fm4mn"]
+size = Vector2(126, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gg3lj"]
+size = Vector2(24, 109)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olui0"]
+size = Vector2(22.5, 129)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2h5qt"]
+size = Vector2(125, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e7t5y"]
+size = Vector2(31, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ua1te"]
+size = Vector2(128, 17)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f1lnr"]
+radius = 8.56296
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mb3bi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dfrhw"]
+size = Vector2(127, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ogq66"]
+size = Vector2(128, 129)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iesqf"]
+size = Vector2(27, 129)
+
+[node name="Arena_" type="Node2D"]
+z_index = -1
+
+[node name="boss_encounter" parent="." instance=ExtResource("1_i01gl")]
+z_index = -1
+
+[node name="Floor" parent="." instance=ExtResource("3_41kjs")]
+z_index = -1
+
+[node name="_Area2D_104" parent="." instance=ExtResource("4_tp6e0")]
+z_index = -1
+
+[node name="player_spawn" parent="." instance=ExtResource("5_uao02")]
+z_index = -1
+
+[node name="creature_spawn" parent="." instance=ExtResource("6_s543w")]
+z_index = -1
+
+[node name="torch" parent="." instance=ExtResource("8_3sbft")]
+z_index = -1
+position = Vector2(404, -64)
+
+[node name="Wall" parent="." instance=ExtResource("10_dc6ri")]
+
+[node name="Floor_obstacle" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-292, -183)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="Floor_obstacle"]
+texture = ExtResource("11_5qcb2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor_obstacle"]
+position = Vector2(-2, 50.5)
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Floor_obstacle"]
+position = Vector2(50, -2)
+rotation = 1.57865
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="_Area2D_143" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(619, -71)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_143"]
+texture = ExtResource("12_vw6x1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_143"]
+position = Vector2(-2, 50.5)
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_143"]
+position = Vector2(-51, -8)
+rotation = 1.56785
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="_Area2D_144" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(101, 223)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_144"]
+texture = ExtResource("13_66g71")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_144"]
+position = Vector2(1, -52)
+shape = SubResource("RectangleShape2D_fm4mn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_144"]
+position = Vector2(-51, 13)
+shape = SubResource("RectangleShape2D_gg3lj")
+
+[node name="_Area2D_145" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-219, 287)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_145"]
+texture = ExtResource("14_0mlof")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_145"]
+position = Vector2(-1, -51)
+shape = SubResource("RectangleShape2D_fm4mn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_145"]
+position = Vector2(50, 9.5)
+shape = SubResource("RectangleShape2D_gg3lj")
+
+[node name="_Area2D_146" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-73, 367)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_146"]
+texture = ExtResource("15_4a2qn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_146"]
+position = Vector2(49.5, 0.5)
+shape = SubResource("RectangleShape2D_olui0")
+
+[node name="_Area2D_147" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-348, 126)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_147"]
+texture = ExtResource("16_hvc21")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_147"]
+position = Vector2(-0.5, -50.5)
+shape = SubResource("RectangleShape2D_2h5qt")
+
+[node name="_Area2D_148" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-397, 335)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_148"]
+texture = ExtResource("17_ayl0s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_148" groups=["obstacles"]]
+position = Vector2(-53, 0)
+shape = SubResource("RectangleShape2D_e7t5y")
+
+[node name="_Area2D_149" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(117, -160)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_149"]
+texture = ExtResource("18_lbmev")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_149"]
+position = Vector2(0, 55.5)
+shape = SubResource("RectangleShape2D_ua1te")
+
+[node name="_Area2D_150" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(319, 135)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_150"]
+z_index = 3
+texture = ExtResource("19_78eth")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_150"]
+position = Vector2(0, 15)
+scale = Vector2(2.12, 1.8)
+shape = SubResource("CircleShape2D_f1lnr")
+
+[node name="_Area2D_151" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-114, -172)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_151"]
+z_index = 2
+texture = ExtResource("20_apga4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_151"]
+position = Vector2(0, 17)
+scale = Vector2(4.24, 2.88)
+shape = SubResource("CircleShape2D_mb3bi")
+
+[node name="@Area2D@150" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = 1
+position = Vector2(-552, 184)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="@Area2D@150"]
+texture = ExtResource("21_xsy1w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="@Area2D@150"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_dfrhw")
+
+[node name="@Area2D@151" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = 1
+position = Vector2(-484, -8)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="@Area2D@151"]
+texture = ExtResource("22_af046")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="@Area2D@151"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_ogq66")
+
+[node name="WallCorner" parent="." instance=ExtResource("20_2acxd")]
+position = Vector2(610, 181)
+
+[node name="@Area2D@153" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+position = Vector2(209, -6)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="@Area2D@153"]
+texture = ExtResource("24_rurrl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="@Area2D@153"]
+position = Vector2(-49, 0.5)
+shape = SubResource("RectangleShape2D_iesqf")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="@Area2D@153"]
+position = Vector2(50.5, 2)
+shape = SubResource("RectangleShape2D_iesqf")
+
+[node name="boss_spawn" parent="." instance=ExtResource("22_d1rhe")]
+z_index = -1
+
+[node name="_Area2D_152" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(101, 223)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_152"]
+texture = ExtResource("13_66g71")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_152"]
+position = Vector2(1, -52)
+shape = SubResource("RectangleShape2D_fm4mn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_152"]
+position = Vector2(-51, 13)
+shape = SubResource("RectangleShape2D_gg3lj")
+
+[node name="_Area2D_153" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-219, 287)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_153"]
+texture = ExtResource("14_0mlof")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_153"]
+position = Vector2(-1, -51)
+shape = SubResource("RectangleShape2D_fm4mn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_153"]
+position = Vector2(50, 9.5)
+shape = SubResource("RectangleShape2D_gg3lj")
+
+[node name="_Area2D_154" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-108, 135)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_154"]
+texture = ExtResource("15_4a2qn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_154"]
+position = Vector2(50.25, -1)
+shape = SubResource("RectangleShape2D_olui0")
+
+[node name="_Area2D_155" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-208, 1)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_155"]
+texture = ExtResource("17_ayl0s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_155" groups=["obstacles"]]
+position = Vector2(-51.5, -0.5)
+shape = SubResource("RectangleShape2D_e7t5y")
+
+[node name="stairs_left" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(393, 329)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="stairs_left"]
+texture = ExtResource("23_nqti4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="stairs_left" groups=["obstacles"]]
+position = Vector2(-46.5, 0)
+shape = SubResource("RectangleShape2D_e7t5y")
+
+[node name="stairs_right" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(393, 329)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="stairs_right"]
+texture = ExtResource("24_uuq7l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="stairs_right" groups=["obstacles"]]
+position = Vector2(48.5, 0)
+shape = SubResource("RectangleShape2D_e7t5y")
+
+[node name="stairs_center" parent="." instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(244, 358)
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="stairs_center"]
+texture = ExtResource("25_nrrdr")

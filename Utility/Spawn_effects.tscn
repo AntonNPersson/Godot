@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://babgdhhfthpqt"]
+
+[ext_resource type="Texture2D" uid="uid://cyqhjmrfnpk7i" path="res://Sprites/Sprite2.png" id="1_7aox0"]
+
+[sub_resource type="Gradient" id="Gradient_4kaem"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[node name="SpawnEffects" type="Node2D"]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+z_index = 1
+scale = Vector2(0.47, 0.47)
+emitting = false
+amount = 1000
+lifetime = 0.7
+one_shot = true
+randomness = 0.49
+lifetime_randomness = 0.33
+texture = ExtResource("1_7aox0")
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, -90)
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+angular_velocity_min = 448.83
+angular_velocity_max = 448.83
+damping_max = 24.675
+scale_amount_min = 0.05
+scale_amount_max = 0.05
+color = Color(1, 0, 1, 1)
+color_ramp = SubResource("Gradient_4kaem")
+hue_variation_min = -0.67
+hue_variation_max = 1.0

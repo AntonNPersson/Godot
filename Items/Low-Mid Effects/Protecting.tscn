@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3s31bct0uwyq"]
+
+[ext_resource type="Script" path="res://Items/Low-Mid Effects/Protecting.gd" id="1_d2okq"]
+
+[node name="Protecting" type="Node2D"]
+script = ExtResource("1_d2okq")

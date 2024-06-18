@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://btqt7w4xr4x5f"]
+
+[ext_resource type="PackedScene" uid="uid://sy0rkfmx5vii" path="res://Items/Potions/weak health poition.tscn" id="1_dt2mm"]
+
+[node name="PotionList" type="Node2D"]
+visible = false
+
+[node name="Weak Health Potion" parent="." instance=ExtResource("1_dt2mm")]

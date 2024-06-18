@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf87scvb45yp0"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/throw_potion.gd" id="1_ic1vr"]
+[ext_resource type="PackedScene" uid="uid://d0v5g4jjju7sc" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/after_effect.tscn" id="2_k0jxf"]
+
+[node name="Throw Potion" type="Area2D"]
+z_index = -1
+scale = Vector2(1.75, 1.802)
+script = ExtResource("1_ic1vr")
+cast_duration = 2.0
+cooldown = 3.0
+range = 10000.0
+size = 2.0
+values = [40.0]
+after_effect = ExtResource("2_k0jxf")

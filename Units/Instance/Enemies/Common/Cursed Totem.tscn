@@ -1,0 +1,198 @@
+[gd_scene load_steps=20 format=3 uid="uid://d21vyae5jdwmk"]
+
+[ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_2fkq6"]
+[ext_resource type="PackedScene" uid="uid://ct8jnx0m235rb" path="res://Abilities/Creature Spells/Cursed Light/Cursed Light.tscn" id="2_cadrr"]
+[ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_1k63y"]
+[ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_lsxof"]
+[ext_resource type="Texture2D" uid="uid://d1sey7dhtyti0" path="res://Sprites/Goblin King/goblin fighter.png" id="5_4db0g"]
+[ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_lbrcl"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_frtdj"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="10_v80k7"]
+[ext_resource type="Texture2D" uid="uid://brxoa3osyto11" path="res://Sprites/Infected Cemetery/cursed_totem.png" id="10_yu78r"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_am67u"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="11_c7te2"]
+[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="11_uk06t"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="12_3spha"]
+[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="12_kqply"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
+radius = 2.85228
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_byabs"]
+shader = ExtResource("4_lsxof")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2l1cy"]
+shader = ExtResource("4_lsxof")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6hfu"]
+atlas = ExtResource("10_yu78r")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yljm5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Attack East",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Attack North",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Attack South",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Attack West",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Walk East",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Walk North",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Walk South",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6hfu")
+}],
+"loop": true,
+"name": &"Walk West",
+"speed": 12.0
+}]
+
+[node name="Cursed Totem" type="Area2D"]
+top_level = true
+collision_layer = 2
+script = ExtResource("1_2fkq6")
+u_name = "Cursed Totem"
+experience = 70
+base_speed = 0
+base_health = 200
+base_range = 0
+base_attack_speed = 0.0
+base_attack_damage = 0
+base_windup_time = 100.0
+abilities = Array[PackedScene]([ExtResource("2_cadrr")])
+basic_attack_scene = ExtResource("3_1k63y")
+aggro_range = 10000.0
+paused = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+scale = Vector2(7.12, 8.08)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_byabs")
+scale = Vector2(2.665, 2.665)
+texture = ExtResource("5_4db0g")
+
+[node name="Control" type="Node" parent="."]
+script = ExtResource("6_lbrcl")
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="UI"]
+visible = false
+offset_left = -28.0
+offset_top = -32.0
+offset_right = 29.0
+offset_bottom = -24.0
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="cast_bar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+offset_left = -17.0
+offset_top = 13.0
+offset_right = 17.0
+offset_bottom = 21.0
+theme = ExtResource("10_v80k7")
+value = 100.0
+texture_under = ExtResource("11_uk06t")
+texture_progress = ExtResource("12_kqply")
+texture_progress_offset = Vector2(2, 2)
+script = ExtResource("11_am67u")
+
+[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+offset_left = -16.0
+offset_top = -31.0
+offset_right = 18.0
+offset_bottom = -23.0
+theme = ExtResource("10_v80k7")
+texture_under = ExtResource("11_uk06t")
+texture_progress = ExtResource("12_kqply")
+texture_progress_offset = Vector2(2, 2)
+script = ExtResource("9_frtdj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_2l1cy")
+sprite_frames = SubResource("SpriteFrames_yljm5")
+animation = &"Attack East"
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+z_index = -1
+scale = Vector2(1, 0.900391)
+color = Color(1, 0, 0, 1)
+energy = 1.1
+shadow_enabled = true
+texture = ExtResource("11_c7te2")
+offset = Vector2(0, -8)
+texture_scale = 0.4
+script = ExtResource("12_3spha")

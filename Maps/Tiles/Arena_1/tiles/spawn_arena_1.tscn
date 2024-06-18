@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw4km6omp1woc"]
+
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/interactable_tile.gd" id="1_qpjat"]
+[ext_resource type="Texture2D" uid="uid://dluv21jtvuw0a" path="res://Sprites/Goblin King/tiles/sand_floor.png" id="2_5sy25"]
+
+[node name="creature_spawn" type="Area2D"]
+light_mask = 3
+visibility_layer = 3
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_qpjat")
+metadata/Walkable = true
+metadata/Interactable = false
+metadata/Mob_Spawn = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("2_5sy25")

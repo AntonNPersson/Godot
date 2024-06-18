@@ -1,0 +1,22 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccpnem2fyorbn"]
+
+[ext_resource type="PackedScene" uid="uid://d3s31bct0uwyq" path="res://Items/Low-Mid Effects/Protecting.tscn" id="1_56vrs"]
+[ext_resource type="PackedScene" uid="uid://cg62fasjp578u" path="res://Items/Low-Mid Effects/Strong.tscn" id="2_ft5ce"]
+[ext_resource type="PackedScene" uid="uid://cybw6j3ulp1xb" path="res://Items/Low-Mid Effects/Invoking.tscn" id="3_3qtmr"]
+[ext_resource type="PackedScene" uid="uid://c17mduk4t8t6w" path="res://Items/Low-Mid Effects/Dexterious.tscn" id="4_sl3ui"]
+[ext_resource type="PackedScene" uid="uid://dy71mgvjyxn0k" path="res://Items/Low-Mid Effects/Everlasting.tscn" id="5_b3fqu"]
+[ext_resource type="PackedScene" uid="uid://dunpu687qf50k" path="res://Items/Low-Mid Effects/Magical.tscn" id="6_ro37a"]
+
+[node name="Lowmidlist2" type="Node2D"]
+
+[node name="Protecting" parent="." instance=ExtResource("1_56vrs")]
+
+[node name="Strong" parent="." instance=ExtResource("2_ft5ce")]
+
+[node name="Invoking" parent="." instance=ExtResource("3_3qtmr")]
+
+[node name="Dexterious" parent="." instance=ExtResource("4_sl3ui")]
+
+[node name="Everlasting" parent="." instance=ExtResource("5_b3fqu")]
+
+[node name="Magical" parent="." instance=ExtResource("6_ro37a")]

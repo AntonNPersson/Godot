@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://drcob5nyeodji"]
+
+[ext_resource type="Script" path="res://Abilities/DEX/Wind Enchantment/wind_enchantment.gd" id="1_egn3g"]
+[ext_resource type="Texture2D" uid="uid://dm57l8fotc0tg" path="res://Abilities/DEX/Wind Enchantment/Hunter_8.png" id="2_lvjur"]
+
+[node name="Wind Enchantment" type="Node2D"]
+script = ExtResource("1_egn3g")
+percentage_of_speed = 5.0
+icon = ExtResource("2_lvjur")
+a_name = "Wind Enchantment"
+tooltip_text = "Enchant your body with wind to increase your basic attack damage by a percentage of your movement speed."
+projectile_type = 4
+ability_type = "DEX"
+tags = Array[String](["AttackDamagePassive"])
+values = Array[float]([10.0])
+increased_values = Array[float]([8.0])

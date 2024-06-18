@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://da871oh6rfrvj"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_hdq3s"]
+[ext_resource type="Texture2D" uid="uid://dfe0iga6eh408" path="res://Abilities/INT/Fireball/FireMage_5.png" id="2_4r2fx"]
+[ext_resource type="SpriteFrames" uid="uid://gqb5jgr7huk4" path="res://Abilities/INT/Fireball/fireball_projectile.tres" id="2_teeyx"]
+
+[node name="Fireball" type="Node2D"]
+script = ExtResource("1_hdq3s")
+icon = ExtResource("2_4r2fx")
+a_name = "Fireball"
+tooltip_text = "Shoot a ball of fire in a straight line, dealing damage and burning anything it touches."
+mana_cost = 25.0
+cooldown = 4.0
+_range = 384.0
+ability_type = "INT"
+sprite_frames = ExtResource("2_teeyx")
+collision_radius = 24.0
+speed = 250.0
+tags = Array[String](["Damage", "Burn", "Explosion"])
+values = Array[float]([15.0, 7.5, 0.5])
+increased_values = Array[float]([10.0, 5.0, 0.0])
+light_color = Color(1, 0.231373, 0.172549, 1)
+light_scale = 1.45
+weight = 100.0

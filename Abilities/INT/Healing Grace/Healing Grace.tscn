@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6nvjhyersa53"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_1ip2i"]
+[ext_resource type="Texture2D" uid="uid://dp8xumx5r68bw" path="res://Abilities/INT/Healing Grace/FrostMage_4.png" id="2_tx2w4"]
+
+[node name="Healing Grace" type="Node2D"]
+script = ExtResource("1_1ip2i")
+icon = ExtResource("2_tx2w4")
+a_name = "Healing Grace"
+tooltip_text = "Heal the closest targeted ally and speed them up."
+mana_cost = 35.0
+cooldown = 4.0
+_range = 512.0
+projectile_type = 2
+ability_type = "INT"
+tags = Array[String](["Heal", "SpeedBuff"])
+values = Array[float]([15.0, 10.0])
+increased_values = Array[float]([10.0, 3.0])
+light_color = Color(0, 1, 0, 1)
+light_scale = 0.4
+is_buff = true
+buff_type = "Speed"
+buff_duration = 1.0
+weight = 100.0

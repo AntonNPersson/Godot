@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://db3lvcryx11i6"]
+
+[ext_resource type="Script" path="res://Items/Bot Effects/Boots.gd" id="1_58xvb"]
+
+[node name="Boots" type="Node2D"]
+script = ExtResource("1_58xvb")

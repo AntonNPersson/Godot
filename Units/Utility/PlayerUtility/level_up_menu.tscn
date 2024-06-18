@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://bq7ge7ih4sx00"]
+
+[ext_resource type="FontFile" uid="uid://dbn5ru6k8442x" path="res://GUI/kenvector_future_thin.ttf" id="1_pmuyh"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="ItemList" type="ItemList" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -56.0
+offset_top = -192.0
+offset_right = 56.0
+offset_bottom = -136.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_pmuyh")
+theme_override_font_sizes/font_size = 11
+auto_height = true
+item_count = 3
+item_0/text = "Dexterity"
+item_1/text = "Strength"
+item_2/text = "Intelligence"

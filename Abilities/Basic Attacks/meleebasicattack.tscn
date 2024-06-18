@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://fchpkn11m8fx"]
+
+[ext_resource type="Texture2D" uid="uid://btynbglwjvm21" path="res://Abilities/Basic Attacks/spritesheet(1).png" id="1_ldxaf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jtubu"]
+atlas = ExtResource("1_ldxaf")
+region = Rect2(0, 0, 514, 434)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wovj"]
+atlas = ExtResource("1_ldxaf")
+region = Rect2(0, 434, 514, 434)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xe5cw"]
+atlas = ExtResource("1_ldxaf")
+region = Rect2(514, 0, 514, 434)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfcp1"]
+atlas = ExtResource("1_ldxaf")
+region = Rect2(514, 434, 514, 434)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5baq"]
+atlas = ExtResource("1_ldxaf")
+region = Rect2(771, 0, 257, 217)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vpy6a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jtubu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wovj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xe5cw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfcp1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5baq")
+}],
+"loop": false,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="Meleebasicattack" type="Node2D"]
+scale = Vector2(0.08, 0.08)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = -1.5708
+sprite_frames = SubResource("SpriteFrames_vpy6a")
+frame = 4
+frame_progress = 1.0

@@ -1,0 +1,71 @@
+[gd_scene load_steps=16 format=3 uid="uid://dk40ep18m4j0k"]
+
+[ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_50g2c"]
+[ext_resource type="PackedScene" uid="uid://n6f065x12uuq" path="res://Abilities/STR/Creature Spells/summon_troops.tscn" id="2_dqtkt"]
+[ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_2dbpt"]
+[ext_resource type="Texture2D" uid="uid://ddmx0gk7hm416" path="res://Sprites/goblinChiefnew.png" id="4_fubf6"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="6_wxe71"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/RepeaterDecorator.gd" id="7_uja7b"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/selector.gd" id="8_uyqkq"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/issummoned.gd" id="9_0i6xo"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/abovehalfhp.gd" id="9_4tycf"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/belowhalfhp.gd" id="10_3wq8t"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/summon_troops.gd" id="10_dpgbf"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/isOutOfRange.gd" id="11_wpv1w"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/throw_potion.gd" id="12_8uxiw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
+radius = 8.9934
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pjxyl"]
+
+[node name="Goblin Chief" type="Area2D" groups=["enemies"]]
+top_level = true
+scale = Vector2(0.26, 0.26)
+collision_layer = 2
+script = ExtResource("1_50g2c")
+uName = "Goblin Ranger"
+baseSpeed = 80
+baseRange = 650
+abilities = Array[PackedScene]([ExtResource("2_dqtkt")])
+basicAttackScene = ExtResource("3_2dbpt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(7.12, 8.08)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_pjxyl")
+texture = ExtResource("4_fubf6")
+
+[node name="Goblin Chief Tree" type="Node" parent="."]
+script = ExtResource("6_wxe71")
+
+[node name="Repeater" type="Node" parent="Goblin Chief Tree"]
+script = ExtResource("7_uja7b")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Repeater"]
+script = ExtResource("8_uyqkq")
+
+[node name="Phase 1?" type="Node" parent="Goblin Chief Tree/Repeater/Selector"]
+script = ExtResource("9_4tycf")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Repeater/Selector/Phase 1?"]
+script = ExtResource("8_uyqkq")
+
+[node name="isSummoned?" type="Node" parent="Goblin Chief Tree/Repeater/Selector/Phase 1?/Selector"]
+script = ExtResource("9_0i6xo")
+
+[node name="Summon Troops" type="Node" parent="Goblin Chief Tree/Repeater/Selector/Phase 1?/Selector/isSummoned?"]
+script = ExtResource("10_dpgbf")
+
+[node name="isOutOfRange?" type="Node" parent="Goblin Chief Tree/Repeater/Selector/Phase 1?/Selector"]
+script = ExtResource("11_wpv1w")
+
+[node name="Throw Potion" type="Node" parent="Goblin Chief Tree/Repeater/Selector/Phase 1?/Selector/isOutOfRange?"]
+script = ExtResource("12_8uxiw")
+
+[node name="Phase 2?" type="Node" parent="Goblin Chief Tree/Repeater/Selector"]
+script = ExtResource("10_3wq8t")
+
+[node name="Summons" type="Node2D" parent="."]

@@ -1,0 +1,67 @@
+[gd_scene load_steps=22 format=3 uid="uid://b6xve3wi8me70"]
+
+[ext_resource type="PackedScene" uid="uid://db3lvcryx11i6" path="res://Items/Bot Effects/Boots.tscn" id="1_sqeyo"]
+[ext_resource type="PackedScene" uid="uid://pe20r26ed8in" path="res://Items/Bot Effects/Bow.tscn" id="2_tuqn4"]
+[ext_resource type="PackedScene" uid="uid://bmhi7x1t68se8" path="res://Items/Bot Effects/Chest.tscn" id="3_cfube"]
+[ext_resource type="PackedScene" uid="uid://dvndghussskp7" path="res://Items/Bot Effects/Gloves.tscn" id="4_1o1sq"]
+[ext_resource type="PackedScene" uid="uid://fmpsce0yeq15" path="res://Items/Bot Effects/Head.tscn" id="5_yva68"]
+[ext_resource type="PackedScene" uid="uid://cgxshlijlaocc" path="res://Items/Bot Effects/Legs.tscn" id="6_qifww"]
+[ext_resource type="PackedScene" uid="uid://duoidth4ltcah" path="res://Items/Bot Effects/Staff.tscn" id="7_eur0i"]
+[ext_resource type="PackedScene" uid="uid://crrp6yqolwgj" path="res://Items/Bot Effects/Sword.tscn" id="8_ife03"]
+[ext_resource type="PackedScene" uid="uid://73vaan3hycat" path="res://Items/Bot Effects/Sandals.tscn" id="9_lmt4h"]
+[ext_resource type="PackedScene" uid="uid://dh28k75qy88gb" path="res://Items/Bot Effects/Breastplate.tscn" id="10_7fep5"]
+[ext_resource type="PackedScene" uid="uid://bo4gbvbqcgul" path="res://Items/Bot Effects/Robe.tscn" id="11_2hy8v"]
+[ext_resource type="PackedScene" uid="uid://cjoy57m754ion" path="res://Items/Bot Effects/Handwraps.tscn" id="12_jhkyq"]
+[ext_resource type="PackedScene" uid="uid://btq7spmxgvk43" path="res://Items/Bot Effects/Greaves.tscn" id="13_wgky7"]
+[ext_resource type="PackedScene" uid="uid://cttdjjq8atxki" path="res://Items/Bot Effects/Helmet.tscn" id="14_jxjk0"]
+[ext_resource type="PackedScene" uid="uid://c1gk7smnuoyq" path="res://Items/Bot Effects/Hood.tscn" id="15_mb4i1"]
+[ext_resource type="PackedScene" uid="uid://b2ay4w36op686" path="res://Items/Bot Effects/Shinguards.tscn" id="16_xauk6"]
+[ext_resource type="PackedScene" uid="uid://bwu1saq3w5ar8" path="res://Items/Bot Effects/Legplates.tscn" id="17_tmdl7"]
+[ext_resource type="PackedScene" uid="uid://c2x64pumjuaea" path="res://Items/Bot Effects/Dagger.tscn" id="18_tx3nf"]
+[ext_resource type="PackedScene" uid="uid://6i0wll7xcu7b" path="res://Items/Bot Effects/Greataxe.tscn" id="19_rufw0"]
+[ext_resource type="PackedScene" uid="uid://ckn6t11tb62nl" path="res://Items/Bot Effects/Crossbow.tscn" id="20_nqfb0"]
+[ext_resource type="PackedScene" uid="uid://dusoa1mi8mon2" path="res://Items/Bot Effects/Scepter.tscn" id="21_ldt3p"]
+
+[node name="BotItemPieces" type="Node2D"]
+
+[node name="Boots" parent="." instance=ExtResource("1_sqeyo")]
+
+[node name="Chest" parent="." instance=ExtResource("3_cfube")]
+
+[node name="Gloves" parent="." instance=ExtResource("4_1o1sq")]
+
+[node name="Head" parent="." instance=ExtResource("5_yva68")]
+
+[node name="Legs" parent="." instance=ExtResource("6_qifww")]
+
+[node name="Sandals" parent="." instance=ExtResource("9_lmt4h")]
+
+[node name="Breastplate" parent="." instance=ExtResource("10_7fep5")]
+
+[node name="Robe" parent="." instance=ExtResource("11_2hy8v")]
+
+[node name="Handwraps" parent="." instance=ExtResource("12_jhkyq")]
+
+[node name="Greaves" parent="." instance=ExtResource("13_wgky7")]
+
+[node name="Helmet" parent="." instance=ExtResource("14_jxjk0")]
+
+[node name="Hood" parent="." instance=ExtResource("15_mb4i1")]
+
+[node name="Shinguards" parent="." instance=ExtResource("16_xauk6")]
+
+[node name="Legplates" parent="." instance=ExtResource("17_tmdl7")]
+
+[node name="Greataxe" parent="." instance=ExtResource("19_rufw0")]
+
+[node name="Bow" parent="." instance=ExtResource("2_tuqn4")]
+
+[node name="Crossbow" parent="." instance=ExtResource("20_nqfb0")]
+
+[node name="Scepter" parent="." instance=ExtResource("21_ldt3p")]
+
+[node name="Staff" parent="." instance=ExtResource("7_eur0i")]
+
+[node name="Sword" parent="." instance=ExtResource("8_ife03")]
+
+[node name="Dagger" parent="." instance=ExtResource("18_tx3nf")]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2ay4w36op686"]
+
+[ext_resource type="Script" path="res://Items/Bot Effects/Shinguards.gd" id="1_b146e"]
+
+[node name="Shinguards" type="Node2D"]
+script = ExtResource("1_b146e")

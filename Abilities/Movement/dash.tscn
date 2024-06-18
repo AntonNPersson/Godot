@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://l8llk23jqkt6"]
+
+[ext_resource type="Script" path="res://Abilities/Movement/dash.gd" id="1_3ikdr"]
+[ext_resource type="Texture2D" uid="uid://cyqhjmrfnpk7i" path="res://Sprites/Sprite2.png" id="2_18ncc"]
+
+[sub_resource type="Gradient" id="Gradient_5bbf6"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.0784314)
+
+[node name="Dash" type="Node2D" node_paths=PackedStringArray("particle_effects")]
+script = ExtResource("1_3ikdr")
+particle_effects = NodePath("CPUParticles2D")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+randomness = 0.59
+texture = ExtResource("2_18ncc")
+emission_shape = 1
+emission_sphere_radius = 29.67
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, -100)
+initial_velocity_min = 64.94
+initial_velocity_max = 64.94
+scale_amount_min = 0.02
+scale_amount_max = 0.06
+color = Color(0.2, 0.619608, 0, 1)
+color_ramp = SubResource("Gradient_5bbf6")
+hue_variation_min = 1.0
+hue_variation_max = 1.0

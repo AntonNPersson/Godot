@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://scntmqhqk0rm"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/buff_summons.gd" id="1_4s41m"]
+
+[node name="buff summons" type="Node2D"]
+script = ExtResource("1_4s41m")
+cast_duration = 1
+health_increase = 50
+attack_damage_increase = 10
+speed_increase = 50

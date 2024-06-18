@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://diqae7qfk1r2d"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_f1grw"]
+[ext_resource type="Texture2D" uid="uid://bgx15lbj4hkly" path="res://Abilities/INT/Fire Nova/FireMage_7.png" id="2_8naqd"]
+
+[node name="FireNova" type="Node2D"]
+script = ExtResource("1_f1grw")
+icon = ExtResource("2_8naqd")
+a_name = "Fire Nova"
+tooltip_text = "Burst flames out of the ground at the targeted area, dealing damage after a delay."
+mana_cost = 40.0
+cooldown = 6.0
+_range = 384.0
+projectile_type = 3
+ability_type = "INT"
+collision_radius = 64.0
+area_type = 1
+duration = 0.8
+radius = 64.0
+tags = Array[String](["Damage", "Burn"])
+values = Array[float]([20.0, 10.0])
+increased_values = Array[float]([15.0, 7.5])
+light_color = Color(1, 0.388235, 0, 1)
+light_scale = 0.4
+weight = 120.0

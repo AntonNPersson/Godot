@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dt0bsvtga0rnc"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/rampage_movement.gd" id="1_p14d4"]
+
+[node name="Rampage Movement" type="Node"]
+script = ExtResource("1_p14d4")
+cast_duration = 0.1
+duration = 2.0
+bonus_speed = 100.0
+cooldown = 15.0

@@ -1,0 +1,25 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0f5f4y5a5wgm"]
+
+[ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="1_7im54"]
+[ext_resource type="Script" path="res://Utility/transition_screen.gd" id="2_j7k88"]
+[ext_resource type="Script" path="res://Utility/Dialouge control.gd" id="3_xjpj3"]
+[ext_resource type="PackedScene" uid="uid://cqddy43amxo8h" path="res://Utility/dialouge.tscn" id="4_vdxtn"]
+[ext_resource type="Script" path="res://Utility/interactable_objects.gd" id="5_c67mg"]
+[ext_resource type="PackedScene" uid="uid://c17wnlu5a8mdx" path="res://Utility/Ability_target_system.tscn" id="6_g5tkk"]
+
+[node name="Utility" type="CanvasLayer"]
+
+[node name="Transition" type="Sprite2D" parent="."]
+z_index = 5
+scale = Vector2(103.63, 61.746)
+texture = ExtResource("1_7im54")
+script = ExtResource("2_j7k88")
+
+[node name="Dialogue" type="Node" parent="."]
+script = ExtResource("3_xjpj3")
+dialogue_scene = ExtResource("4_vdxtn")
+
+[node name="Interactable" type="Node" parent="."]
+script = ExtResource("5_c67mg")
+
+[node name="AbilityTargetSystem" parent="." instance=ExtResource("6_g5tkk")]

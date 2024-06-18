@@ -1,0 +1,34 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://cu2yn0svlguvn"]
+
+[ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="1_3fdj3"]
+[ext_resource type="StyleBox" uid="uid://dnd8euuaxd40t" path="res://GUI/Button_style_hover.tres" id="2_f5gnp"]
+[ext_resource type="StyleBox" uid="uid://n85lmttv0lin" path="res://GUI/Button_style_normal.tres" id="3_fjvrg"]
+[ext_resource type="StyleBox" uid="uid://bnpwxrl1x3kd1" path="res://GUI/Button_style_pressed.tres" id="4_e5jqk"]
+[ext_resource type="StyleBox" uid="uid://cnaeod311u8vw" path="res://GUI/new_style_box_texture.tres" id="5_wiqrl"]
+[ext_resource type="StyleBox" uid="uid://dxny15tohlxvs" path="res://GUI/itemlist_panel.tres" id="6_u8ran"]
+[ext_resource type="StyleBox" uid="uid://5qiycd4ieibn" path="res://GUI/tooltip_panel.tres" id="7_06agb"]
+
+[resource]
+Button/font_sizes/font_size = 14
+Button/fonts/font = ExtResource("1_3fdj3")
+Button/styles/hover = ExtResource("2_f5gnp")
+Button/styles/normal = ExtResource("3_fjvrg")
+Button/styles/pressed = ExtResource("4_e5jqk")
+ItemList/colors/guide_color = Color(0.701961, 0.701961, 0.701961, 0)
+ItemList/constants/h_separation = 10
+ItemList/constants/line_separation = 10
+ItemList/constants/v_separation = 4
+ItemList/font_sizes/font_size = 14
+ItemList/fonts/font = ExtResource("1_3fdj3")
+ItemList/styles/hovered = ExtResource("2_f5gnp")
+ItemList/styles/panel = ExtResource("5_wiqrl")
+ItemList/styles/selected = ExtResource("4_e5jqk")
+Panel/styles/panel = ExtResource("5_wiqrl")
+PanelContainer/styles/panel = ExtResource("5_wiqrl")
+ProgressBar/styles/background = ExtResource("6_u8ran")
+RichTextLabel/fonts/bold_font = ExtResource("1_3fdj3")
+RichTextLabel/fonts/normal_font = ExtResource("1_3fdj3")
+TooltipLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+TooltipLabel/constants/outline_size = 2
+TooltipLabel/font_sizes/font_size = 14
+TooltipPanel/styles/panel = ExtResource("7_06agb")

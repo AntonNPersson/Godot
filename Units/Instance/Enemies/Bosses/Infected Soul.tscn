@@ -1,0 +1,235 @@
+[gd_scene load_steps=37 format=3 uid="uid://bj6xebem8yoad"]
+
+[ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_hri6t"]
+[ext_resource type="PackedScene" uid="uid://c3q7cheu3xa3a" path="res://Abilities/Creature Spells/Cursed Light Beam/Cursed Light Beam.tscn" id="2_j8ppe"]
+[ext_resource type="PackedScene" uid="uid://dggvooau7aocl" path="res://Abilities/Creature Spells/Summon Zombies/Summon Zombies.tscn" id="3_7qh6y"]
+[ext_resource type="PackedScene" uid="uid://h2siw6omqbjr" path="res://Abilities/Creature Spells/Summon Skeleton King/Summon Skeleton King.tscn" id="4_aa4iv"]
+[ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="7_14784"]
+[ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="8_kft03"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Bosses/Cursed Light Beams.gd" id="9_mbt4v"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="10_6i7xk"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Bosses/Summon_Zombies.gd" id="11_phvvc"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Is_Enountered.gd" id="11_qvfiy"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/selector.gd" id="12_b6gvi"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/abovehalfhp.gd" id="13_5cega"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Bosses/Summon Skeleton King.gd" id="16_dwqvl"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/is_on_cd.gd" id="17_ofwva"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/belowhalfhp.gd" id="21_g3q6d"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/has_printed_dialogue.gd" id="24_hpmau"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/print_dialogue.gd" id="25_keqcg"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="31_itgyp"]
+[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="32_w7dvs"]
+[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="33_vp8ln"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="34_afvav"]
+[ext_resource type="Texture2D" uid="uid://cnty04i31asxy" path="res://Units/Instance/Enemies/Sprite Sheets/Download85704.png" id="35_1ma42"]
+[ext_resource type="Texture2D" uid="uid://nm2ugr3vwe1a" path="res://Sprites/Infected Cemetery/boss2.png" id="36_rn1r6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
+radius = 12.0037
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv25l"]
+shader = ExtResource("8_kft03")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuiqf"]
+atlas = ExtResource("35_1ma42")
+region = Rect2(64, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2748"]
+atlas = ExtResource("35_1ma42")
+region = Rect2(128, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0f536"]
+atlas = ExtResource("35_1ma42")
+region = Rect2(192, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5l8ix"]
+atlas = ExtResource("35_1ma42")
+region = Rect2(256, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx5yl"]
+atlas = ExtResource("35_1ma42")
+region = Rect2(320, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gsd34"]
+atlas = ExtResource("36_rn1r6")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uttcx"]
+atlas = ExtResource("36_rn1r6")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxad6"]
+atlas = ExtResource("36_rn1r6")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlwdj"]
+atlas = ExtResource("36_rn1r6")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3csfa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kuiqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s2748")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0f536")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5l8ix")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sx5yl")
+}],
+"loop": true,
+"name": &"Death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gsd34")
+}],
+"loop": true,
+"name": &"Walk East",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uttcx")
+}],
+"loop": true,
+"name": &"Walk North",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxad6")
+}],
+"loop": true,
+"name": &"Walk South",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hlwdj")
+}],
+"loop": true,
+"name": &"Walk West",
+"speed": 12.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d5oqj"]
+size = Vector2(117.333, 87.3333)
+
+[node name="Infected Soul" type="Area2D" groups=["boss", "enemies", "obstacles"]]
+top_level = true
+z_index = -1
+scale = Vector2(1.5, 1.5)
+collision_layer = 2
+script = ExtResource("1_hri6t")
+u_name = "Infected Soul"
+experience = 500
+base_armor = 30
+base_speed = 0
+base_health = 2500
+base_range = 1500
+base_attack_speed = 100000.0
+base_attack_damage = 0
+base_windup_time = 100000.0
+abilities = Array[PackedScene]([ExtResource("2_j8ppe"), ExtResource("3_7qh6y"), ExtResource("4_aa4iv")])
+basic_attack_scene = ExtResource("7_14784")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 2.88)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Infected Soul Tree" type="Node" parent="."]
+script = ExtResource("10_6i7xk")
+
+[node name="Is Enountered?" type="Node" parent="Infected Soul Tree"]
+script = ExtResource("11_qvfiy")
+
+[node name="Selector" type="Node" parent="Infected Soul Tree/Is Enountered?"]
+script = ExtResource("12_b6gvi")
+
+[node name="Phase 1?" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector"]
+script = ExtResource("13_5cega")
+
+[node name="Selector" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 1?"]
+script = ExtResource("12_b6gvi")
+
+[node name="isOnCd?2" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("17_ofwva")
+ability_index = 0
+
+[node name="Cursed Light Beams" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 1?/Selector/isOnCd?2"]
+script = ExtResource("9_mbt4v")
+
+[node name="isOnCd?3" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("17_ofwva")
+
+[node name="Summon Zombies" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 1?/Selector/isOnCd?3"]
+script = ExtResource("11_phvvc")
+
+[node name="Phase 2?" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector"]
+script = ExtResource("21_g3q6d")
+
+[node name="Selector" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?"]
+script = ExtResource("12_b6gvi")
+
+[node name="has_printed_dialogue?" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("24_hpmau")
+
+[node name="print_dialogue" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector/has_printed_dialogue?"]
+script = ExtResource("25_keqcg")
+test = ["This is getting exciting.."]
+
+[node name="isOnCd?" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("17_ofwva")
+ability_index = 2
+
+[node name="Summon Skeleton King" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?"]
+script = ExtResource("16_dwqvl")
+
+[node name="isOnCd?2" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("17_ofwva")
+ability_index = 0
+
+[node name="Cursed Light Beams" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?2"]
+script = ExtResource("9_mbt4v")
+
+[node name="Summons" type="Node2D" parent="."]
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="cast_bar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+offset_left = -17.3333
+offset_top = 60.0
+offset_right = 16.6667
+offset_bottom = 68.0
+theme = ExtResource("31_itgyp")
+value = 100.0
+texture_under = ExtResource("32_w7dvs")
+texture_progress = ExtResource("33_vp8ln")
+texture_progress_offset = Vector2(2, 2)
+script = ExtResource("34_afvav")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_xv25l")
+sprite_frames = SubResource("SpriteFrames_3csfa")
+animation = &"Walk West"
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0.666664, -14.3333)
+shape = SubResource("RectangleShape2D_d5oqj")
+
+[connection signal="is_dead" from="." to="Infected Soul Tree" method="_on_goblin_chief_is_dead"]

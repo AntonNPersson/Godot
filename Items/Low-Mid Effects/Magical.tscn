@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dunpu687qf50k"]
+
+[ext_resource type="Script" path="res://Items/Low-Mid Effects/Magical.gd" id="1_3tda0"]
+
+[node name="Magical" type="Node2D"]
+script = ExtResource("1_3tda0")

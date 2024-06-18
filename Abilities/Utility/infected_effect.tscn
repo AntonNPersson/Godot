@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dld07ncmxpsyx"]
+
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="1_abvlc"]
+
+[sub_resource type="Gradient" id="Gradient_58aun"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_owlsi"]
+colors = PackedColorArray(0.560955, 0.560955, 0.560955, 1, 1, 1, 1, 1)
+
+[sub_resource type="Curve" id="Curve_fu1r4"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="infected_effect" type="CPUParticles2D"]
+texture_filter = 1
+amount = 3
+texture = ExtResource("1_abvlc")
+emission_shape = 3
+emission_rect_extents = Vector2(40, 40)
+direction = Vector2(0, -1)
+gravity = Vector2(0, -90)
+initial_velocity_max = 8.25
+scale_amount_min = 0.08
+scale_amount_max = 0.15
+color = Color(1, 0.752941, 0.141176, 1)
+color_ramp = SubResource("Gradient_58aun")
+color_initial_ramp = SubResource("Gradient_owlsi")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+hue_variation_curve = SubResource("Curve_fu1r4")

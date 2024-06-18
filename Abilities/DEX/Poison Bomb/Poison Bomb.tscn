@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4rlpgmietfsb"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_n4qs1"]
+[ext_resource type="Texture2D" uid="uid://do0vop3d18j5f" path="res://Abilities/DEX/Poison Bomb/Engineer_8.png" id="2_lcjsw"]
+
+[node name="Poison Bomb" type="Node2D"]
+script = ExtResource("1_n4qs1")
+icon = ExtResource("2_lcjsw")
+a_name = "Poison Bomb"
+tooltip_text = "Throw a bomb, poisoning enemies hit, and dealing damage over time."
+mana_cost = 35.0
+cooldown = 6.0
+_range = 300.0
+projectile_type = 3
+ability_type = "DEX"
+area_type = 1
+duration = 0.4
+radius = 100.0
+tags = Array[String](["Poison"])
+values = Array[float]([60.0])
+increased_values = Array[float]([40.0])
+light_color = Color(0, 0.470588, 0, 1)
+light_scale = 0.4
+weight = 100.0

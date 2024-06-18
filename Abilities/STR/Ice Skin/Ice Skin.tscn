@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d140ply3usbjm"]
+
+[ext_resource type="Script" path="res://Abilities/STR/Ice Skin/Ice_skin.gd" id="1_ty7ql"]
+[ext_resource type="Texture2D" uid="uid://b5gfryamy0k4p" path="res://Abilities/STR/Ice Skin/FrostMage_24.png" id="2_x67ki"]
+
+[node name="Ice Skin" type="Node2D"]
+script = ExtResource("1_ty7ql")
+icon = ExtResource("2_x67ki")
+a_name = "Ice Skin"
+tooltip_text = "Your skin is hard as ice - frozen targets deal less damage to you."
+projectile_type = 4
+ability_type = "STR"
+tags = Array[String](["ProtectionFreezePassive"])
+values = Array[float]([15.0])
+increased_values = Array[float]([1.5])

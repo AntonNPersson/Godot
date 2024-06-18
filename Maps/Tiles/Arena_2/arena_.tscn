@@ -1,0 +1,81 @@
+[gd_scene load_steps=17 format=3 uid="uid://dddrbp70lpbp4"]
+
+[ext_resource type="PackedScene" uid="uid://ca8q5vyujjc6p" path="res://Maps/Tiles/Arena_2/floor.tscn" id="1_ehgyv"]
+[ext_resource type="PackedScene" uid="uid://gj6rcrc1s6qd" path="res://Maps/Tiles/Arena_2/wall.tscn" id="2_cl4qu"]
+[ext_resource type="PackedScene" uid="uid://538vk1615uvi" path="res://Maps/Tiles/Arena_2/player_spawn.tscn" id="4_3cfhw"]
+[ext_resource type="PackedScene" uid="uid://t3v5jil3evvb" path="res://Maps/Tiles/Arena_2/spawn.tscn" id="5_2n1nf"]
+[ext_resource type="PackedScene" uid="uid://cv44ls5npetce" path="res://Maps/Tiles/Required Tiles/boss_spawn_2.tscn" id="5_p17vr"]
+[ext_resource type="PackedScene" uid="uid://jmhaufyqgrdr" path="res://Maps/Tiles/Arena_2/lantern.tscn" id="7_y5rb0"]
+[ext_resource type="PackedScene" uid="uid://dsmdo3b4gskp0" path="res://Maps/Tiles/Arena_1/tiles/invisible_tile.tscn" id="9_64x0h"]
+[ext_resource type="Texture2D" uid="uid://b8m4swqm84fni" path="res://Tool/obstacles/top_left_corner.png" id="10_xonvg"]
+[ext_resource type="Texture2D" uid="uid://shvvopiw8hte" path="res://Tool/obstacles/top_wall.png" id="11_iqadk"]
+[ext_resource type="Texture2D" uid="uid://5ihgu5tcualw" path="res://Tool/obstacles/top_right_corner.png" id="12_mqvns"]
+[ext_resource type="Texture2D" uid="uid://h7eh4eplw3eb" path="res://Tool/obstacles/right_wall.png" id="13_gjwr3"]
+[ext_resource type="Texture2D" uid="uid://dv1wp5w4pb4ua" path="res://Tool/obstacles/bot_right_corner.png" id="14_otapi"]
+[ext_resource type="Texture2D" uid="uid://c46831pslsoie" path="res://Tool/obstacles/bot_wall.png" id="15_poxwh"]
+[ext_resource type="Texture2D" uid="uid://b1u7yo60q4i48" path="res://Tool/obstacles/bot_left_corner.png" id="16_x8km5"]
+[ext_resource type="Texture2D" uid="uid://d21wkxb5f1sa0" path="res://Tool/obstacles/left_wall.png" id="17_57smp"]
+[ext_resource type="Texture2D" uid="uid://0sm1wa4fuy7b" path="res://Tool/obstacles/pile_of_bones.png" id="18_s37pp"]
+
+[node name="Arena_" type="Node2D"]
+
+[node name="Floor" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Wall" parent="." instance=ExtResource("2_cl4qu")]
+
+[node name="player_spawn" parent="." instance=ExtResource("4_3cfhw")]
+metadata/Player_Spawn = true
+
+[node name="spawn" parent="." instance=ExtResource("5_2n1nf")]
+
+[node name="Spawn" parent="." instance=ExtResource("5_p17vr")]
+
+[node name="lantern" parent="." instance=ExtResource("7_y5rb0")]
+
+[node name="_Area2D_104" parent="." instance=ExtResource("9_64x0h")]
+z_index = -1
+
+[node name="Floor_obstacle" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="Floor_obstacle"]
+texture = ExtResource("10_xonvg")
+
+[node name="@Area2D@166" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@166"]
+texture = ExtResource("11_iqadk")
+
+[node name="@Area2D@167" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@167"]
+texture = ExtResource("12_mqvns")
+
+[node name="@Area2D@168" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@168"]
+texture = ExtResource("13_gjwr3")
+
+[node name="@Area2D@169" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@169"]
+texture = ExtResource("14_otapi")
+
+[node name="@Area2D@170" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@170"]
+texture = ExtResource("15_poxwh")
+
+[node name="@Area2D@171" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@171"]
+texture = ExtResource("16_x8km5")
+
+[node name="@Area2D@172" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@172"]
+texture = ExtResource("17_57smp")
+
+[node name="@Area2D@173" parent="." instance=ExtResource("1_ehgyv")]
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@173"]
+texture = ExtResource("18_s37pp")

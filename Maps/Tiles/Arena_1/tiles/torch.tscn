@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3 uid="uid://3bufdu886nec"]
+
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch_special.gd" id="1_tmavq"]
+[ext_resource type="Texture2D" uid="uid://dluv21jtvuw0a" path="res://Sprites/Goblin King/tiles/sand_floor.png" id="2_86tod"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_61wt4"]
+[ext_resource type="Texture2D" uid="uid://cadcwtsg2ga5t" path="res://Sprites/Goblin King/tiles/torch.png" id="3_mj5tv"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_qjvil"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4emg5"]
+size = Vector2(13, 15)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4pv46"]
+
+[node name="torch" type="Area2D" groups=["obstacles"]]
+script = ExtResource("1_tmavq")
+metadata/Walkable = true
+metadata/Interactable = false
+metadata/Special = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6.5, 20.5)
+shape = SubResource("RectangleShape2D_4emg5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_86tod")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+z_index = 1
+material = SubResource("ShaderMaterial_4pv46")
+texture = ExtResource("3_mj5tv")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(9, -3)
+scale = Vector2(1, 0.8125)
+color = Color(1, 0.980392, 0.443137, 1)
+shadow_enabled = true
+texture = ExtResource("3_61wt4")
+height = 10.0
+script = ExtResource("4_qjvil")

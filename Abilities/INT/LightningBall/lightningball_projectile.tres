@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://b8iimwu7lehlt"]
+
+[ext_resource type="Texture2D" uid="uid://db7vnq4bixxf7" path="res://Abilities/INT/LightningBall/spritesheet.png" id="1_iag0i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whq3a"]
+atlas = ExtResource("1_iag0i")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_su8bj"]
+atlas = ExtResource("1_iag0i")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_js7m2"]
+atlas = ExtResource("1_iag0i")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dv4ma"]
+atlas = ExtResource("1_iag0i")
+region = Rect2(128, 128, 128, 128)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whq3a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_su8bj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_js7m2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dv4ma")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}]

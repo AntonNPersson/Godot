@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0dghct3uf7ft"]
+
+[ext_resource type="Script" path="res://Abilities/DEX/Hawkeye/Hawkeye.gd" id="1_s78vc"]
+[ext_resource type="Texture2D" uid="uid://lgfnnjh1wp3x" path="res://Abilities/DEX/Hawkeye/Hunter_3.png" id="2_io8l5"]
+
+[node name="Hawkeye" type="Node2D"]
+script = ExtResource("1_s78vc")
+icon = ExtResource("2_io8l5")
+a_name = "Hawkeye"
+tooltip_text = "Equip a scope to your weapon, increasing basic attack range."
+projectile_type = 4
+ability_type = "DEX"
+tags = Array[String](["AttackRangePassive"])
+values = Array[float]([40.0])
+increased_values = Array[float]([10.0])

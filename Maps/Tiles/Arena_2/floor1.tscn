@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2uk5i804yteg"]
+
+[ext_resource type="Texture2D" uid="uid://b58566qk7sux0" path="res://Sprites/Grass_ground.png" id="1_jlvus"]
+
+[node name="Floor" type="Area2D"]
+light_mask = 3
+visibility_layer = 3
+collision_layer = 3
+collision_mask = 3
+metadata/Walkable = true
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("1_jlvus")

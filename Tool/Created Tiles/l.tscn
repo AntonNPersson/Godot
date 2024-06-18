@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwhvw7utocqwj"]
+
+[ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="1_xyhwq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y0vjd"]
+size = Vector2(128, 128)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fium3"]
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[node name="l" type="Area2D"]
+metadata/Walkable = false
+metadata/Interactable = false
+metadata/Special = false
+
+[node name="@Sprite2D@4" type="Sprite2D" parent="."]
+texture = ExtResource("1_xyhwq")
+
+[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_y0vjd")
+
+[node name="@LightOccluder2D@6" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_fium3")

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://csft2sbcoshrm"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_tsjnk"]
+[ext_resource type="Texture2D" uid="uid://88yo063hn14p" path="res://Abilities/STR/Frenzy/frenzy_icon.png" id="2_fkyh7"]
+
+[node name="Frenzy" type="Node2D"]
+position = Vector2(0, 1)
+script = ExtResource("1_tsjnk")
+icon = ExtResource("2_fkyh7")
+a_name = "Frenzy"
+tooltip_text = "Increase attack speed of target, but lose 5% health each second for the duration"
+mana_cost = 35.0
+cooldown = 8.0
+_range = 628.0
+projectile_type = 2
+ability_type = "STR"
+tags = Array[String](["FrenzyBuff"])
+values = Array[float]([50.0])
+increased_values = Array[float]([10.0])
+light_color = Color(1, 0.176471, 0.129412, 1)
+light_scale = 0.4
+is_buff = true
+buff_type = "Percentage"
+buff_duration = 3.0
+weight = 100.0

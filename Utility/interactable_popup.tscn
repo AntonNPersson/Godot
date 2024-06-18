@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtbp7mjj6sxej"]
+
+[ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="1_ner1q"]
+
+[node name="PanelContainer" type="PanelContainer"]
+offset_right = 200.0
+offset_bottom = 30.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_ner1q")
+text = "Press 'E' to interact"

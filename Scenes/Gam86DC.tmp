@@ -1,0 +1,276 @@
+[gd_scene load_steps=19 format=3 uid="uid://dtr2poygeam3r"]
+
+[ext_resource type="Script" path="res://playerVariables.gd" id="1_5xf1d"]
+[ext_resource type="Texture2D" uid="uid://b12ngn8wwrfvn" path="res://Sprites/template-retro-edge-dirty-ancient_1194-9553.jpg" id="1_yxvmk"]
+[ext_resource type="Texture2D" uid="uid://dvgbsl0851v27" path="res://Sprites/survivor-idle_knife_0.png" id="2_h6e7t"]
+[ext_resource type="Script" path="res://playerMovement.gd" id="2_xrtrh"]
+[ext_resource type="Script" path="res://CharacterManager.gd" id="3_pvary"]
+[ext_resource type="Script" path="res://RoundManager.gd" id="4_4y6h6"]
+[ext_resource type="Script" path="res://Camera2D.gd" id="5_7tlbr"]
+[ext_resource type="Texture2D" uid="uid://doo2l6o3f7hgx" path="res://icon.svg" id="6_4t2bv"]
+[ext_resource type="Script" path="res://InventoyManager.gd" id="6_v2r8n"]
+[ext_resource type="Script" path="res://WaveManager.gd" id="8_g373l"]
+[ext_resource type="Script" path="res://AbilityManager.gd" id="10_6msql"]
+[ext_resource type="Script" path="res://Scenes/WavesStartup.gd" id="11_42uxo"]
+[ext_resource type="Script" path="res://Items/Wand of Test.gd" id="12_cjk2n"]
+[ext_resource type="Script" path="res://ShopManager.gd" id="12_p5s37"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48hy1"]
+size = Vector2(169, 112)
+
+[sub_resource type="GDScript" id="GDScript_a34ar"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
+radius = 8.9934
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pjxyl"]
+
+[node name="Main" type="Node"]
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Ground" type="Sprite2D" parent="Environment"]
+position = Vector2(423, 273)
+texture = ExtResource("1_yxvmk")
+region_enabled = true
+region_rect = Rect2(1000, 1000, 1000, 1000)
+
+[node name="Units" type="Node" parent="."]
+
+[node name="Characters" type="Node" parent="Units"]
+
+[node name="Player" type="Area2D" parent="Units/Characters"]
+visible = false
+position = Vector2(407, 213)
+collision_mask = 3
+script = ExtResource("1_5xf1d")
+Speed = 1000
+
+[node name="Sprite" type="Sprite2D" parent="Units/Characters/Player"]
+position = Vector2(-100, -100)
+texture = ExtResource("2_h6e7t")
+offset = Vector2(80, 80)
+script = ExtResource("2_xrtrh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Units/Characters/Player"]
+shape = SubResource("RectangleShape2D_48hy1")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="Camera" type="Node" parent="Units/Characters/Player"]
+script = ExtResource("5_7tlbr")
+
+[node name="Camera2D" type="Camera2D" parent="Units/Characters/Player/Camera"]
+position = Vector2(407, 213)
+zoom = Vector2(0.4, 0.4)
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 2.0
+
+[node name="Creatures" type="Node" parent="Units"]
+script = SubResource("GDScript_a34ar")
+
+[node name="Basic" type="Area2D" parent="Units/Creatures"]
+visible = false
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Units/Creatures/Basic"]
+scale = Vector2(7.12, 8.08)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Units/Creatures/Basic"]
+material = SubResource("CanvasItemMaterial_pjxyl")
+texture = ExtResource("6_4t2bv")
+
+[node name="CharacterManager" type="Node" parent="."]
+script = ExtResource("3_pvary")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CharacterManager"]
+
+[node name="characterList" type="ItemList" parent="CharacterManager/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -92.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+auto_height = true
+same_column_width = true
+
+[node name="RoundManager" type="Node" parent="."]
+script = ExtResource("4_4y6h6")
+
+[node name="InventoyManager" type="Node" parent="." node_paths=PackedStringArray("test")]
+script = ExtResource("6_v2r8n")
+test = NodePath("../ShopManager/Items/Wand of Test")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="InventoyManager"]
+
+[node name="PanelContainer" type="PanelContainer" parent="InventoyManager/CanvasLayer"]
+clip_contents = true
+custom_minimum_size = Vector2(200, 200)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_right = 200.0
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="abilityList" type="ItemList" parent="InventoyManager/CanvasLayer/PanelContainer"]
+layout_mode = 2
+allow_search = false
+auto_height = true
+same_column_width = true
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("8_g373l")
+
+[node name="Waves" type="Node" parent="WaveManager"]
+script = ExtResource("11_42uxo")
+
+[node name="Wave1" type="Node2D" parent="WaveManager/Waves"]
+visible = false
+
+[node name="Basic" type="Area2D" parent="WaveManager/Waves/Wave1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaveManager/Waves/Wave1/Basic"]
+scale = Vector2(7.12, 8.08)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="WaveManager/Waves/Wave1/Basic"]
+material = SubResource("CanvasItemMaterial_pjxyl")
+texture = ExtResource("6_4t2bv")
+
+[node name="Basic2" type="Area2D" parent="WaveManager/Waves/Wave1"]
+position = Vector2(207, -139)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaveManager/Waves/Wave1/Basic2"]
+scale = Vector2(7.12, 8.08)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="WaveManager/Waves/Wave1/Basic2"]
+material = SubResource("CanvasItemMaterial_pjxyl")
+texture = ExtResource("6_4t2bv")
+
+[node name="AbilityManager" type="Node" parent="."]
+script = ExtResource("10_6msql")
+
+[node name="Abilities" type="Node" parent="AbilityManager"]
+
+[node name="INT" type="Node" parent="AbilityManager/Abilities"]
+
+[node name="test" type="Node2D" parent="AbilityManager/Abilities/INT"]
+
+[node name="test2" type="Node2D" parent="AbilityManager/Abilities/INT"]
+
+[node name="test3" type="Node2D" parent="AbilityManager/Abilities/INT"]
+
+[node name="DEX" type="Node" parent="AbilityManager/Abilities"]
+
+[node name="STR" type="Node" parent="AbilityManager/Abilities"]
+
+[node name="Augments" type="Node" parent="AbilityManager"]
+
+[node name="UI" type="Node" parent="AbilityManager"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="AbilityManager/UI"]
+
+[node name="choiceList" type="ItemList" parent="AbilityManager/UI/CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+auto_height = true
+same_column_width = true
+
+[node name="showButton" type="Button" parent="AbilityManager/UI/CanvasLayer"]
+visible = false
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Show Choices"
+
+[node name="ShopManager" type="Node" parent="."]
+script = ExtResource("12_p5s37")
+
+[node name="Items" type="Node" parent="ShopManager"]
+
+[node name="Wand of Test" type="Node" parent="ShopManager/Items"]
+script = ExtResource("12_cjk2n")
+
+[node name="UI" type="CanvasLayer" parent="ShopManager"]
+
+[node name="Panel" type="PanelContainer" parent="ShopManager/UI"]
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(400, 400)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="ShopManager/UI/Panel"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="shopList" type="ItemList" parent="ShopManager/UI/Panel"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 1
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 15
+allow_reselect = true
+auto_height = true
+
+[node name="BuyButton" type="Button" parent="ShopManager/UI/Panel"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 15
+text = "Buy"
+
+[connection signal="characterSelected" from="CharacterManager" to="ShopManager" method="_on_character_selected"]
+[connection signal="startRoundManager" from="CharacterManager" to="RoundManager" method="_on_start_round_manager"]
+[connection signal="item_clicked" from="CharacterManager/CanvasLayer/characterList" to="CharacterManager" method="_on_item_list_item_clicked"]
+[connection signal="nextChoice" from="RoundManager" to="AbilityManager" method="_on_next_choice"]
+[connection signal="nextShop" from="RoundManager" to="ShopManager" method="_on_next_shop"]
+[connection signal="nextWave" from="RoundManager" to="WaveManager" method="_on_next_wave"]
+[connection signal="addStats" from="InventoyManager" to="Units/Characters/Player" method="_on_add_stats"]
+[connection signal="removeStats" from="InventoyManager" to="Units/Characters/Player" method="_on_remove_stats"]
+[connection signal="stopWave" from="WaveManager" to="RoundManager" method="_on_stop_wave"]
+[connection signal="waveReady" from="WaveManager/Waves" to="Units/Characters/Player" method="_on_wave_ready"]
+[connection signal="picked" from="AbilityManager" to="RoundManager" method="_on_ability_manager_picked"]
+[connection signal="picked" from="AbilityManager" to="InventoyManager" method="_on_ability_manager_picked"]
+[connection signal="item_clicked" from="AbilityManager/UI/CanvasLayer/choiceList" to="AbilityManager" method="_on_choice_list_item_clicked"]
+[connection signal="pressed" from="AbilityManager/UI/CanvasLayer/showButton" to="AbilityManager" method="_on_button_pressed"]
+[connection signal="itemBought" from="ShopManager" to="InventoyManager" method="_on_item_bought"]
+[connection signal="shopClosed" from="ShopManager" to="RoundManager" method="_on_shop_closed"]
+[connection signal="item_selected" from="ShopManager/UI/Panel/shopList" to="ShopManager" method="_on_item_selected"]
+[connection signal="pressed" from="ShopManager/UI/Panel/BuyButton" to="ShopManager" method="_on_buy_button_pressed"]

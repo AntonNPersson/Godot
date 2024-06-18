@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://6m71on5e1u7"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_yvf2f"]
+[ext_resource type="Texture2D" uid="uid://ddhro3hr3vg64" path="res://Sprites/Lightningball.png" id="2_c0l7t"]
+
+[node name="Shocked Darnation" type="Node2D"]
+script = ExtResource("1_yvf2f")
+icon = ExtResource("2_c0l7t")
+a_name = "Shocked Darnation"
+tooltip_text = "Detonate all current shock three times in quick succession."
+mana_cost = 50.0
+cooldown = 12.0
+projectile_type = 3
+ability_type = "INT"
+amount = 3.0
+area_type = 2
+duration = 0.3
+radius = 10000.0
+tags = Array[String](["Damage"])
+values = Array[float]([1.0])
+light_color = Color(0.823529, 0.823529, 0, 0.827451)
+weight = 100.0

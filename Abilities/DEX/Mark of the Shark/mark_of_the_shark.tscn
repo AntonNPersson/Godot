@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://kjyeod4t0cu0"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_go23f"]
+[ext_resource type="Texture2D" uid="uid://baqt46s4ab7rb" path="res://Abilities/DEX/Mark of the Shark/Hunter_4.png" id="2_xpw0h"]
+
+[node name="Mark Of The Shark" type="Node2D"]
+script = ExtResource("1_go23f")
+icon = ExtResource("2_xpw0h")
+a_name = "Mark of the Shark"
+tooltip_text = "Mark a target, reducing their armor by a percentage. Killing a marked target grants one bounty."
+mana_cost = 10.0
+cooldown = 2.0
+_range = 512.0
+projectile_type = 1
+ability_type = "DEX"
+tags = Array[String](["PercentArmorBuff"])
+values = Array[float]([-20.0])
+increased_values = Array[float]([-5.0])
+light_color = Color(0.741176, 0.741176, 0, 1)
+light_scale = 0.2
+is_buff = true
+buff_duration = 4.0
+weight = 80.0

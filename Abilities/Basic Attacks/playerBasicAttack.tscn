@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbnxhpc7q87jv"]
+
+[ext_resource type="Script" path="res://Abilities/Basic Attacks/PlayerBasicAttack.gd" id="1_j1jwl"]
+[ext_resource type="Texture2D" uid="uid://c3w5fvw3fok50" path="res://Sprites/manaball.png" id="2_8sctn"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="3_46uhf"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_bwb1r"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ptwv7"]
+
+[node name="playerBasicAttack" type="Area2D"]
+scale = Vector2(0.15, 0.15)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_j1jwl")
+speed = 300
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ptwv7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8sctn")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.231373, 0.619608, 0.309804, 1)
+energy = 2.0
+texture = ExtResource("3_bwb1r")
+texture_scale = 0.6
+script = ExtResource("3_46uhf")

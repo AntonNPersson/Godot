@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://b4g4tkel6m12c"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_df5yk"]
+[ext_resource type="Texture2D" uid="uid://dl03enljsp60q" path="res://Abilities/DEX/Shuriken Throw/download.jpg" id="2_t0hbq"]
+[ext_resource type="Texture2D" uid="uid://dxae17ojuq5m" path="res://Sprites/shuriken Throw 1.png" id="3_b3otb"]
+[ext_resource type="Texture2D" uid="uid://bybtuaaele807" path="res://Sprites/shuriken Throw 2.png" id="4_fmwxn"]
+[ext_resource type="Texture2D" uid="uid://ccy6v5e8wbp7q" path="res://Sprites/shuriken Throw 3.png" id="5_41k50"]
+[ext_resource type="Texture2D" uid="uid://i144e2roknpg" path="res://Sprites/shuriken Throw 4.png" id="6_mj37b"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lmao5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_b3otb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fmwxn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_41k50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mj37b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="Shuriken Throw" type="Node2D"]
+script = ExtResource("1_df5yk")
+icon = ExtResource("2_t0hbq")
+a_name = "Shuriken Throw"
+tooltip_text = "Throw a shuriken that deals low amount of damage but procs attack modifiers."
+mana_cost = 10.0
+cooldown = 1.0
+ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_lmao5")
+sprite_scale = 0.1
+collision_radius = 20.0
+speed = 600.0
+tags = Array[String](["Damage", "AttackModifiers"])
+values = Array[float]([10.0, 0.0])
+increased_values = Array[float]([7.5, 0.0])
+light_color = Color(0, 1, 0, 0.615686)
+light_scale = 0.4
+weight = 50.0

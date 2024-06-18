@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://mjpe62s36css"]
+
+[ext_resource type="Script" path="res://Utility/PowerManager.gd" id="1_sskkw"]
+
+[node name="PowerManager" type="Node2D"]
+script = ExtResource("1_sskkw")

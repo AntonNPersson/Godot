@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn723wnvqorvx"]
+
+[ext_resource type="Script" path="res://Units/Instance/character_tooltips.gd" id="1_m6kbf"]
+
+[node name="Characters" type="Node"]
+
+[node name="Explorer" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+tooltip = "Loving the thrill of exploration, the explorer gains stats of the players chosing after each wave. Explorer ability pool contains: DEX, INT, STR."

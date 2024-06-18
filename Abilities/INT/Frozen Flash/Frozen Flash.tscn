@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://0k44xt34bdmb"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_rvmfh"]
+[ext_resource type="Texture2D" uid="uid://bjcy02maor2j3" path="res://Abilities/INT/Frozen Flash/FrostMage_1.png" id="2_ic5sg"]
+
+[node name="Frozen Flash" type="Node2D"]
+script = ExtResource("1_rvmfh")
+icon = ExtResource("2_ic5sg")
+a_name = "Frozen Flash"
+tooltip_text = "Blink to chosen targeted enemy, upon arriving deal a small amount of damage and slow in an area."
+mana_cost = 30.0
+cooldown = 8.0
+_range = 400.0
+projectile_type = 6
+ability_type = "INT"
+type = "Blink"
+tags = Array[String](["Damage", "Freeze", "Explosion"])
+values = Array[float]([5.0, 40.0, 1.0])
+increased_values = Array[float]([4.0, 5.0, 0.1])
+light_color = Color(0, 0.858824, 0.905882, 1)
+light_scale = 0.4
+weight = 50.0

@@ -1,0 +1,174 @@
+[gd_scene load_steps=10 format=3 uid="uid://dtr2poygeam3r"]
+
+[ext_resource type="Texture2D" uid="uid://b12ngn8wwrfvn" path="res://Sprites/template-retro-edge-dirty-ancient_1194-9553.jpg" id="1_yxvmk"]
+[ext_resource type="Script" path="res://Managers/CharacterManager.gd" id="3_pvary"]
+[ext_resource type="Script" path="res://Managers/RoundManager.gd" id="4_4y6h6"]
+[ext_resource type="Script" path="res://Managers/WaveManager.gd" id="8_g373l"]
+[ext_resource type="Script" path="res://Managers/AbilityManager.gd" id="10_6msql"]
+[ext_resource type="Script" path="res://Items/Wand of Test.gd" id="12_cjk2n"]
+[ext_resource type="Script" path="res://Managers/ShopManager.gd" id="12_p5s37"]
+[ext_resource type="Script" path="res://Managers/CombatManager.gd" id="16_6xq26"]
+
+[sub_resource type="GDScript" id="GDScript_072ya"]
+script/source = "extends Node
+"
+
+[node name="Main" type="Node"]
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Ground" type="Sprite2D" parent="Environment"]
+position = Vector2(423, 273)
+texture = ExtResource("1_yxvmk")
+region_enabled = true
+region_rect = Rect2(1000, 1000, 1000, 1000)
+
+[node name="Units" type="Node" parent="."]
+
+[node name="CharacterManager" type="Node" parent="." node_paths=PackedStringArray("units")]
+script = ExtResource("3_pvary")
+units = NodePath("../Units")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CharacterManager"]
+
+[node name="characterList" type="ItemList" parent="CharacterManager/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -92.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+auto_height = true
+same_column_width = true
+
+[node name="RoundManager" type="Node" parent="."]
+script = ExtResource("4_4y6h6")
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("8_g373l")
+
+[node name="Waves" type="Node" parent="WaveManager"]
+script = SubResource("GDScript_072ya")
+
+[node name="AbilityManager" type="Node" parent="."]
+script = ExtResource("10_6msql")
+
+[node name="Abilities" type="Node" parent="AbilityManager"]
+
+[node name="INT" type="Node" parent="AbilityManager/Abilities"]
+
+[node name="test" type="Node2D" parent="AbilityManager/Abilities/INT"]
+
+[node name="test2" type="Node2D" parent="AbilityManager/Abilities/INT"]
+
+[node name="test3" type="Node2D" parent="AbilityManager/Abilities/INT"]
+
+[node name="DEX" type="Node" parent="AbilityManager/Abilities"]
+
+[node name="STR" type="Node" parent="AbilityManager/Abilities"]
+
+[node name="Augments" type="Node" parent="AbilityManager"]
+
+[node name="UI" type="Node" parent="AbilityManager"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="AbilityManager/UI"]
+
+[node name="choiceList" type="ItemList" parent="AbilityManager/UI/CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+auto_height = true
+same_column_width = true
+
+[node name="showButton" type="Button" parent="AbilityManager/UI/CanvasLayer"]
+visible = false
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Show Choices"
+
+[node name="ShopManager" type="Node" parent="."]
+script = ExtResource("12_p5s37")
+
+[node name="Items" type="Node" parent="ShopManager"]
+
+[node name="Wand of Test" type="Node" parent="ShopManager/Items"]
+script = ExtResource("12_cjk2n")
+
+[node name="UI" type="CanvasLayer" parent="ShopManager"]
+
+[node name="Panel" type="PanelContainer" parent="ShopManager/UI"]
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(400, 400)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="ShopManager/UI/Panel"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="shopList" type="ItemList" parent="ShopManager/UI/Panel"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 1
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 15
+allow_reselect = true
+auto_height = true
+
+[node name="BuyButton" type="Button" parent="ShopManager/UI/Panel"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 15
+text = "Buy"
+
+[node name="CombatManager" type="Node" parent="."]
+script = ExtResource("16_6xq26")
+
+[connection signal="characterSelected" from="CharacterManager" to="WaveManager" method="_on_character_selected"]
+[connection signal="characterSelected" from="CharacterManager" to="AbilityManager" method="_on_character_selected"]
+[connection signal="characterSelected" from="CharacterManager" to="ShopManager" method="_on_character_selected"]
+[connection signal="characterSelected" from="CharacterManager" to="CombatManager" method="_on_character_selected"]
+[connection signal="startRoundManager" from="CharacterManager" to="RoundManager" method="_on_start_round_manager"]
+[connection signal="item_clicked" from="CharacterManager/CanvasLayer/characterList" to="CharacterManager" method="_on_item_list_item_clicked"]
+[connection signal="nextChoice" from="RoundManager" to="AbilityManager" method="_on_next_choice"]
+[connection signal="nextShop" from="RoundManager" to="ShopManager" method="_on_next_shop"]
+[connection signal="nextWave" from="RoundManager" to="WaveManager" method="_on_next_wave"]
+[connection signal="stopWave" from="WaveManager" to="RoundManager" method="_on_stop_wave"]
+[connection signal="picked" from="AbilityManager" to="RoundManager" method="_on_ability_manager_picked"]
+[connection signal="item_clicked" from="AbilityManager/UI/CanvasLayer/choiceList" to="AbilityManager" method="_on_choice_list_item_clicked"]
+[connection signal="pressed" from="AbilityManager/UI/CanvasLayer/showButton" to="AbilityManager" method="_on_button_pressed"]
+[connection signal="shopClosed" from="ShopManager" to="RoundManager" method="_on_shop_closed"]
+[connection signal="item_selected" from="ShopManager/UI/Panel/shopList" to="ShopManager" method="_on_item_selected"]
+[connection signal="pressed" from="ShopManager/UI/Panel/BuyButton" to="ShopManager" method="_on_buy_button_pressed"]

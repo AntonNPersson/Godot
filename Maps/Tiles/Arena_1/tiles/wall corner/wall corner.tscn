@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://ecpbj03w3kp2"]
+
+[ext_resource type="Texture2D" uid="uid://dluv21jtvuw0a" path="res://Sprites/Goblin King/tiles/sand_floor.png" id="1_yf52r"]
+[ext_resource type="Texture2D" uid="uid://p24m0e4jer6u" path="res://Tool/obstacles/right_corner.png" id="2_8slt2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7gw4"]
+size = Vector2(124, 129)
+
+[node name="WallCorner" type="Area2D" groups=["obstacles"]]
+metadata/Walkable = false
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("1_yf52r")
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="."]
+texture = ExtResource("2_8slt2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 0.5)
+shape = SubResource("RectangleShape2D_p7gw4")

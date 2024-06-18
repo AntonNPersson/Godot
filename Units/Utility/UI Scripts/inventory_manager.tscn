@@ -1,0 +1,454 @@
+[gd_scene load_steps=10 format=3 uid="uid://dlpkjnesre3k2"]
+
+[ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="1_rdvac"]
+[ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_qob8h"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="2_y27wo"]
+[ext_resource type="Texture2D" uid="uid://c5jml2c4kbhm6" path="res://Sprites/test.png" id="5_k7ayx"]
+[ext_resource type="Texture2D" uid="uid://d3r3h43kxsb02" path="res://Sprites/Untitled2.png" id="5_pfkdg"]
+[ext_resource type="Texture2D" uid="uid://cy6m1givnghco" path="res://Sprites/Untitled1.png" id="6_5vbjy"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="7_0f38t"]
+[ext_resource type="Texture2D" uid="uid://cu2ro7gfyyvc2" path="res://Sprites/Untitled.png" id="8_3fp80"]
+
+[sub_resource type="FontVariation" id="FontVariation_q5uqw"]
+base_font = ExtResource("2_qob8h")
+
+[node name="InventoryManager" type="Node"]
+script = ExtResource("1_rdvac")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." groups=["UI"]]
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -441.0
+offset_top = -338.0
+offset_bottom = 338.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("2_y27wo")
+
+[node name="Label3" type="Label" parent="CanvasLayer/PanelContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = SubResource("FontVariation_q5uqw")
+text = "Inventory"
+vertical_alignment = 1
+
+[node name="PanelContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer2"]
+custom_minimum_size = Vector2(350, 575)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_y27wo")
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Equipment"
+vertical_alignment = 1
+
+[node name="ItemList" type="ItemList" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("2_y27wo")
+theme_override_font_sizes/font_size = 10
+allow_reselect = true
+allow_search = false
+
+[node name="Label3" type="Label" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Potions"
+vertical_alignment = 1
+
+[node name="potionList" type="ItemList" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("2_y27wo")
+theme_override_font_sizes/font_size = 10
+allow_reselect = true
+allow_search = false
+
+[node name="Label2" type="Label" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Statistics"
+vertical_alignment = 1
+
+[node name="statList" type="ItemList" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "This section shows your current stats. Base stats are the stats you start with and bonus stats are the stats you gain from items and abilities.
+
+It also shows specifics to the chosen character."
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_qob8h")
+theme_override_font_sizes/font_size = 10
+allow_search = false
+
+[node name="Line2D" type="Line2D" parent="CanvasLayer/PanelContainer2"]
+position = Vector2(181, 22)
+scale = Vector2(1.56, 1)
+points = PackedVector2Array(0, 0, 50, 0)
+width = 2.0
+
+[node name="abilityList" type="ItemList" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -181.0
+offset_top = -63.0
+offset_right = 181.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_qob8h")
+theme_override_font_sizes/font_size = 10
+allow_search = false
+max_text_lines = 5
+auto_height = true
+fixed_icon_size = Vector2i(15, 15)
+
+[node name="Label" type="Label" parent="CanvasLayer/abilityList"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -28.0
+offset_top = 109.0
+offset_right = 28.0
+offset_bottom = 125.0
+grow_horizontal = 2
+text = "Abilities"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/abilityList"]
+layout_mode = 0
+offset_left = 253.0
+offset_top = 109.0
+offset_right = 294.0
+offset_bottom = 123.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "Exp: "
+fit_content = true
+autowrap_mode = 0
+
+[node name="Level0" type="Button" parent="CanvasLayer/abilityList"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 0
+offset_left = 226.0
+offset_top = 109.0
+offset_right = 244.0
+offset_bottom = 126.0
+text = "+"
+
+[node name="Hotbar" type="Panel" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -173.0
+offset_top = -202.0
+offset_right = 133.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_y27wo")
+
+[node name="TextureRect1" type="TextureRect" parent="CanvasLayer/Hotbar"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 30.0
+offset_right = 103.0
+offset_bottom = 87.0
+expand_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Hotbar/TextureRect1"]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = -21.0
+offset_right = 37.0
+offset_bottom = 5.0
+theme_override_font_sizes/normal_font_size = 25
+fit_content = true
+autowrap_mode = 0
+tab_size = 10
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Hotbar"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 30.0
+offset_right = 183.0
+offset_bottom = 87.0
+theme = ExtResource("2_y27wo")
+expand_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Hotbar/TextureRect2"]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = -21.0
+offset_right = 37.0
+offset_bottom = 5.0
+theme_override_font_sizes/normal_font_size = 25
+fit_content = true
+autowrap_mode = 0
+tab_size = 10
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Hotbar"]
+layout_mode = 0
+offset_left = 201.0
+offset_top = 30.0
+offset_right = 259.0
+offset_bottom = 87.0
+expand_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Hotbar/TextureRect3"]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = -21.0
+offset_right = 37.0
+offset_bottom = 5.0
+theme_override_font_sizes/normal_font_size = 25
+fit_content = true
+autowrap_mode = 0
+tab_size = 10
+
+[node name="TextureRect5" type="TextureRect" parent="CanvasLayer/Hotbar"]
+modulate = Color(1, 1, 1, 0.270588)
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_top = 30.0
+offset_right = -203.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_k7ayx")
+expand_mode = 1
+
+[node name="TextureRect6" type="TextureRect" parent="CanvasLayer/Hotbar"]
+modulate = Color(1, 1, 1, 0.270588)
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 125.0
+offset_top = 30.0
+offset_right = -123.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_k7ayx")
+expand_mode = 1
+
+[node name="TextureRect7" type="TextureRect" parent="CanvasLayer/Hotbar"]
+modulate = Color(1, 1, 1, 0.270588)
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 201.0
+offset_top = 30.0
+offset_right = -47.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_k7ayx")
+expand_mode = 1
+
+[node name="ProgressBar4" type="TextureProgressBar" parent="CanvasLayer"]
+custom_minimum_size = Vector2(10, 10)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 800.0
+offset_top = 854.0
+offset_right = -1063.0
+offset_bottom = -116.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(5, 0.2)
+theme = ExtResource("2_y27wo")
+texture_under = ExtResource("5_pfkdg")
+texture_progress = ExtResource("6_5vbjy")
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("7_0f38t")
+
+[node name="ProgressBar2" type="TextureProgressBar" parent="CanvasLayer"]
+custom_minimum_size = Vector2(10, 10)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 728.0
+offset_top = 870.0
+offset_right = -1135.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_y27wo")
+fill_mode = 3
+texture_under = ExtResource("5_pfkdg")
+texture_progress = ExtResource("6_5vbjy")
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("7_0f38t")
+
+[node name="ProgressBar3" type="TextureProgressBar" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1093.0
+offset_top = 870.0
+offset_right = -770.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_y27wo")
+fill_mode = 3
+texture_under = ExtResource("5_pfkdg")
+texture_progress = ExtResource("6_5vbjy")
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("7_0f38t")
+
+[node name="currenthp" type="Label" parent="CanvasLayer"]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.249
+offset_top = 367.418
+offset_right = -182.249
+offset_bottom = 383.418
+grow_horizontal = 2
+grow_vertical = 2
+text = "120"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="maxhp" type="Label" parent="CanvasLayer"]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.249
+offset_top = 383.425
+offset_right = -182.249
+offset_bottom = 399.425
+grow_horizontal = 2
+grow_vertical = 2
+text = "120"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Line2D" type="Line2D" parent="CanvasLayer"]
+z_index = 2
+position = Vector2(747, 921)
+scale = Vector2(1.09659, 1)
+points = PackedVector2Array(0, 0, 6.9438, 0, 20, 0)
+width = 1.0
+
+[node name="current" type="Label" parent="CanvasLayer"]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 142.751
+offset_top = 367.418
+offset_right = 182.751
+offset_bottom = 383.418
+grow_horizontal = 2
+grow_vertical = 2
+text = "120"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="max" type="Label" parent="CanvasLayer"]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 142.751
+offset_top = 383.425
+offset_right = 182.751
+offset_bottom = 399.425
+grow_horizontal = 2
+grow_vertical = 2
+text = "120"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Line2D2" type="Line2D" parent="CanvasLayer"]
+z_index = 2
+position = Vector2(1112, 920)
+points = PackedVector2Array(0, 0, 20, 0)
+width = 1.0
+
+[node name="Potion_bag" type="Panel" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -475.0
+offset_top = -218.0
+offset_right = -360.0
+offset_bottom = -101.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Potion1" type="TextureProgressBar" parent="CanvasLayer/Potion_bag"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 0
+offset_left = 30.0
+offset_right = 202.0
+offset_bottom = 168.0
+scale = Vector2(0.15, 0.655)
+fill_mode = 3
+texture_progress = ExtResource("8_3fp80")
+script = ExtResource("7_0f38t")
+
+[node name="Potion2" type="TextureProgressBar" parent="CanvasLayer/Potion_bag"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 0
+offset_left = 68.0
+offset_right = 240.0
+offset_bottom = 168.0
+scale = Vector2(0.15, 0.655)
+fill_mode = 3
+texture_progress = ExtResource("8_3fp80")
+script = ExtResource("7_0f38t")
+
+[node name="Items" type="Node" parent="."]
+
+[connection signal="item_activated" from="CanvasLayer/PanelContainer2/PanelContainer/ItemList" to="." method="_on_item_list_item_activated"]
+[connection signal="item_selected" from="CanvasLayer/PanelContainer2/PanelContainer/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="item_selected" from="CanvasLayer/PanelContainer2/PanelContainer/statList" to="." method="_on_stat_list_item_selected"]
+[connection signal="item_selected" from="CanvasLayer/abilityList" to="." method="_on_ability_list_item_selected"]
+[connection signal="pressed" from="CanvasLayer/abilityList/Level0" to="." method="_on_level_pressed"]

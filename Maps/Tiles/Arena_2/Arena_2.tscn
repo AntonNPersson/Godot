@@ -1,0 +1,37 @@
+[gd_scene load_steps=13 format=3 uid="uid://qnxt8v4bp6bp"]
+
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_2/Arena_2.gd" id="1_i0que"]
+[ext_resource type="PackedScene" uid="uid://dwu8v4njgbwcq" path="res://Maps/Tiles/Arena_2/wall1.tscn" id="2_vj0bh"]
+[ext_resource type="PackedScene" uid="uid://b2uk5i804yteg" path="res://Maps/Tiles/Arena_2/floor1.tscn" id="3_mf67u"]
+[ext_resource type="PackedScene" uid="uid://cltcftbjwveb3" path="res://Maps/Tiles/Arena_2/spawn1.tscn" id="4_4raip"]
+[ext_resource type="PackedScene" uid="uid://cwheubo06b308" path="res://Maps/Tiles/Arena_2/player_spawn1.tscn" id="5_8ko0a"]
+[ext_resource type="PackedScene" uid="uid://jmhaufyqgrdr" path="res://Maps/Tiles/Arena_2/lantern.tscn" id="6_aw5po"]
+[ext_resource type="PackedScene" uid="uid://ca8q5vyujjc6p" path="res://Maps/Tiles/Arena_2/floor.tscn" id="7_ygcdc"]
+[ext_resource type="PackedScene" uid="uid://gj6rcrc1s6qd" path="res://Maps/Tiles/Arena_2/wall.tscn" id="8_sm2du"]
+[ext_resource type="PackedScene" uid="uid://538vk1615uvi" path="res://Maps/Tiles/Arena_2/player_spawn.tscn" id="9_f6rad"]
+[ext_resource type="PackedScene" uid="uid://t3v5jil3evvb" path="res://Maps/Tiles/Arena_2/spawn.tscn" id="10_wojpm"]
+[ext_resource type="PackedScene" uid="uid://dlxxpu7pwxb0m" path="res://Maps/Tiles/Required Tiles/boss_spawn.tscn" id="11_8x7t2"]
+[ext_resource type="PackedScene" uid="uid://dsmdo3b4gskp0" path="res://Maps/Tiles/Arena_1/tiles/invisible_tile.tscn" id="12_0547h"]
+
+[node name="Arena2" type="Node2D"]
+script = ExtResource("1_i0que")
+wall = ExtResource("2_vj0bh")
+_floor = ExtResource("3_mf67u")
+spawn = ExtResource("4_4raip")
+player_spawn = ExtResource("5_8ko0a")
+torch = ExtResource("6_aw5po")
+
+[node name="Floor" parent="." instance=ExtResource("7_ygcdc")]
+
+[node name="Wall" parent="." instance=ExtResource("8_sm2du")]
+
+[node name="player_spawn" parent="." instance=ExtResource("9_f6rad")]
+
+[node name="spawn" parent="." instance=ExtResource("10_wojpm")]
+
+[node name="boss_spawn" parent="." instance=ExtResource("11_8x7t2")]
+
+[node name="lantern" parent="." instance=ExtResource("6_aw5po")]
+
+[node name="_Area2D_104" parent="." instance=ExtResource("12_0547h")]
+z_index = -1

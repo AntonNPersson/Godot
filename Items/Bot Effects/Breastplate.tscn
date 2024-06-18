@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dh28k75qy88gb"]
+
+[ext_resource type="Script" path="res://Items/Bot Effects/Breastplate.gd" id="1_jk7ny"]
+
+[node name="Breastplate" type="Node2D"]
+script = ExtResource("1_jk7ny")

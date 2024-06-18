@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://t1w8t1y5y2xi"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_s407q"]
+[ext_resource type="Texture2D" uid="uid://db4o3e5ymlxq8" path="res://Abilities/DEX/Flurry of Arrows/Hunter_18.png" id="2_ogauk"]
+[ext_resource type="Texture2D" uid="uid://c4rmr3ccyo46i" path="res://Sprites/arrow_wooden.png" id="2_vq468"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwtkt"]
+atlas = ExtResource("2_vq468")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xfafu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwtkt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Flurry Of Arrows" type="Node2D"]
+script = ExtResource("1_s407q")
+icon = ExtResource("2_ogauk")
+a_name = "Flurry of Arrows"
+tooltip_text = "Rapidly shoot ten arrows towards a direction."
+mana_cost = 40.0
+cooldown = 8.0
+_range = 384.0
+ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_xfafu")
+collision_radius = 32.0
+speed = 1000.0
+amount = 10.0
+tags = Array[String](["Damage"])
+values = Array[float]([2.0])
+increased_values = Array[float]([2.0])
+light_color = Color(0.764706, 1, 0.741176, 1)
+light_scale = 0.4
+weight = 120.0
+weight_duration = 1.0

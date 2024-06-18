@@ -1,0 +1,49 @@
+[gd_scene load_steps=13 format=3 uid="uid://b1jel7idmqb86"]
+
+[ext_resource type="PackedScene" uid="uid://bg0m4lqesjegg" path="res://Abilities/DEX/Throwing Daggers/throwing_daggers.tscn" id="1_g5psk"]
+[ext_resource type="PackedScene" uid="uid://cfh0ujjha1hn6" path="res://Abilities/DEX/Freezing Arrows/freezing_arrows.tscn" id="2_rt4oq"]
+[ext_resource type="PackedScene" uid="uid://ugpgkpshufsy" path="res://Abilities/DEX/Burning Arrows/burning_arrows.tscn" id="3_kjmsk"]
+[ext_resource type="PackedScene" uid="uid://t1w8t1y5y2xi" path="res://Abilities/DEX/Flurry of Arrows/flurry_of_arrows.tscn" id="4_awjux"]
+[ext_resource type="PackedScene" uid="uid://kjyeod4t0cu0" path="res://Abilities/DEX/Mark of the Shark/mark_of_the_shark.tscn" id="5_1k2j5"]
+[ext_resource type="PackedScene" uid="uid://drcob5nyeodji" path="res://Abilities/DEX/Wind Enchantment/wind_enchantment.tscn" id="6_m3de7"]
+[ext_resource type="PackedScene" uid="uid://ce0fb536yw8k" path="res://Abilities/DEX/Quick Roll/Quick Roll.tscn" id="7_i0e5q"]
+[ext_resource type="PackedScene" uid="uid://c0dghct3uf7ft" path="res://Abilities/DEX/Hawkeye/Hawkeye.tscn" id="8_00vvo"]
+[ext_resource type="PackedScene" uid="uid://b4g4tkel6m12c" path="res://Abilities/DEX/Shuriken Throw/Shuriken Throw.tscn" id="9_mxhi2"]
+[ext_resource type="PackedScene" uid="uid://c4rlpgmietfsb" path="res://Abilities/DEX/Poison Bomb/Poison Bomb.tscn" id="10_3ad47"]
+[ext_resource type="PackedScene" uid="uid://rbglue324e7x" path="res://Abilities/DEX/Stealth/Stealth.tscn" id="11_ha077"]
+[ext_resource type="PackedScene" uid="uid://cv63eiqc43ybs" path="res://Abilities/DEX/Aura of wind/Aura of Wind.tscn" id="12_k88gb"]
+
+[node name="DEX" type="Node"]
+
+[node name="Throwing Daggers" parent="." instance=ExtResource("1_g5psk")]
+
+[node name="Freezing Arrows" parent="." instance=ExtResource("2_rt4oq")]
+position = Vector2(379, 295)
+
+[node name="Burning Arrows" parent="." instance=ExtResource("3_kjmsk")]
+
+[node name="Flurry Of Arrows" parent="." instance=ExtResource("4_awjux")]
+
+[node name="Mark Of The Shark" parent="." instance=ExtResource("5_1k2j5")]
+position = Vector2(242, 159)
+
+[node name="Wind Enchantment" parent="." instance=ExtResource("6_m3de7")]
+
+[node name="Quick Roll" parent="." instance=ExtResource("7_i0e5q")]
+_range = 50.0
+
+[node name="Hawkeye" parent="." instance=ExtResource("8_00vvo")]
+position = Vector2(840.415, 1084.48)
+
+[node name="Shuriken Throw" parent="." instance=ExtResource("9_mxhi2")]
+_range = 200.0
+sprite_scale = 0.2
+light_scale = 1.0
+
+[node name="Poison Bomb" parent="." instance=ExtResource("10_3ad47")]
+
+[node name="Stealth" parent="." instance=ExtResource("11_ha077")]
+is_buff = true
+buff_duration = 5.0
+
+[node name="Aura Of Wind" parent="." instance=ExtResource("12_k88gb")]

@@ -1,0 +1,40 @@
+[gd_scene load_steps=13 format=3 uid="uid://dnlid1muyhj5p"]
+
+[ext_resource type="PackedScene" uid="uid://da2dubhc12iyy" path="res://Maps/Tiles/Arena_1/tiles/boss_encounter1.tscn" id="1_smq7w"]
+[ext_resource type="PackedScene" uid="uid://bn8e7y6xtlarm" path="res://Maps/Tiles/Arena_1/tiles/boulder.tscn" id="3_ju264"]
+[ext_resource type="PackedScene" uid="uid://c4kr1k7bekfs" path="res://Maps/Tiles/Arena_1/tiles/floor.tscn" id="4_uj7ry"]
+[ext_resource type="PackedScene" uid="uid://ca0ngo6hy4iia" path="res://Maps/Tiles/Arena_1/tiles/left_wall_sand.tscn" id="5_5tvaf"]
+[ext_resource type="PackedScene" uid="uid://886l6dwp6nm2" path="res://Maps/Tiles/Arena_1/tiles/north_wall_sand.tscn" id="7_jwf6k"]
+[ext_resource type="PackedScene" uid="uid://dxe2am3puddoa" path="res://Maps/Tiles/Arena_1/tiles/player_spawn1.tscn" id="8_7yujj"]
+[ext_resource type="PackedScene" uid="uid://cc5s5mr5bpj1a" path="res://Maps/Tiles/Arena_1/tiles/right_wall_sand.tscn" id="9_prldh"]
+[ext_resource type="PackedScene" uid="uid://c8tto6gcvum5x" path="res://Maps/Tiles/Arena_1/tiles/south_wall_sand.tscn" id="10_p87aq"]
+[ext_resource type="PackedScene" uid="uid://cw4km6omp1woc" path="res://Maps/Tiles/Arena_1/tiles/spawn_arena_1.tscn" id="11_wbtck"]
+[ext_resource type="PackedScene" uid="uid://3bufdu886nec" path="res://Maps/Tiles/Arena_1/tiles/torch.tscn" id="12_26eo2"]
+[ext_resource type="PackedScene" uid="uid://dlxxpu7pwxb0m" path="res://Maps/Tiles/Required Tiles/boss_spawn.tscn" id="12_k4aey"]
+[ext_resource type="PackedScene" uid="uid://cosqbwpgdlcb6" path="res://Maps/Tiles/Arena_1/tiles/wall.tscn" id="14_koots"]
+
+[node name="Arena1" type="Node2D"]
+
+[node name="boss_encounter" parent="." instance=ExtResource("1_smq7w")]
+
+[node name="north_wall" parent="." instance=ExtResource("3_ju264")]
+
+[node name="Floor" parent="." instance=ExtResource("4_uj7ry")]
+
+[node name="left_wall" parent="." instance=ExtResource("5_5tvaf")]
+
+[node name="north_wall_sand" parent="." instance=ExtResource("7_jwf6k")]
+
+[node name="player_spawn" parent="." instance=ExtResource("8_7yujj")]
+
+[node name="right_wall" parent="." instance=ExtResource("9_prldh")]
+
+[node name="south_ wall" parent="." instance=ExtResource("10_p87aq")]
+
+[node name="creature_spawn" parent="." instance=ExtResource("11_wbtck")]
+
+[node name="torch" parent="." instance=ExtResource("12_26eo2")]
+
+[node name="Wall" parent="." instance=ExtResource("14_koots")]
+
+[node name="Spawn" parent="." instance=ExtResource("12_k4aey")]

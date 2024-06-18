@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbafe401smj6k"]
+
+[ext_resource type="Texture2D" uid="uid://sdvtbdmxee6p" path="res://Sprites/TargetMarker.png" id="1_8xht8"]
+[ext_resource type="Script" path="res://Utility/target_marker.gd" id="2_c23y3"]
+
+[node name="TargetMarker" type="Sprite2D"]
+modulate = Color(0.627451, 0, 0.219608, 1)
+z_index = 1
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("1_8xht8")
+script = ExtResource("2_c23y3")

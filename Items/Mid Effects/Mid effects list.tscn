@@ -1,0 +1,23 @@
+[gd_scene load_steps=7 format=3 uid="uid://tgn63im6llu7"]
+
+[ext_resource type="PackedScene" uid="uid://cufnna1b1fw5b" path="res://Items/Mid Effects/Haste.tscn" id="1_ps35n"]
+[ext_resource type="PackedScene" uid="uid://cyy7jhll7d08d" path="res://Items/Mid Effects/Mind.tscn" id="2_fbxbf"]
+[ext_resource type="PackedScene" uid="uid://d13ew3v536lv8" path="res://Items/Mid Effects/War.tscn" id="3_dqtds"]
+[ext_resource type="PackedScene" uid="uid://7jffqxi0fal7" path="res://Items/Mid Effects/Ice.tscn" id="4_w1q4v"]
+[ext_resource type="PackedScene" uid="uid://c7efjsuurscby" path="res://Items/Mid Effects/Flames.tscn" id="5_wxy7u"]
+[ext_resource type="PackedScene" uid="uid://21i0ygmo5qa0" path="res://Items/Mid Effects/Endurance.tscn" id="6_64ekw"]
+
+[node name="MidEffectsList" type="Node2D"]
+
+[node name="Haste" parent="." instance=ExtResource("1_ps35n")]
+position = Vector2(826, 451)
+
+[node name="Mind" parent="." instance=ExtResource("2_fbxbf")]
+
+[node name="War" parent="." instance=ExtResource("3_dqtds")]
+
+[node name="Ice" parent="." instance=ExtResource("4_w1q4v")]
+
+[node name="Flames" parent="." instance=ExtResource("5_wxy7u")]
+
+[node name="Endurance" parent="." instance=ExtResource("6_64ekw")]

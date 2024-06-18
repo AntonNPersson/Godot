@@ -1,0 +1,42 @@
+[gd_scene load_steps=13 format=3 uid="uid://cgmc1c2i7fn3x"]
+
+[ext_resource type="PackedScene" uid="uid://bvt6aukjm1y26" path="res://Maps/Tiles/Town/original_floor.tscn" id="1_vgnlq"]
+[ext_resource type="PackedScene" uid="uid://crc3pam1r3d1g" path="res://Maps/Tiles/Town/roof.tscn" id="2_f38v6"]
+[ext_resource type="PackedScene" uid="uid://dd7yxbtrbh8hd" path="res://Maps/Tiles/Town/north_wall.tscn" id="2_v143x"]
+[ext_resource type="PackedScene" uid="uid://bdhvs6wck5xrs" path="res://Maps/Tiles/Town/south_wall.tscn" id="3_uj6cs"]
+[ext_resource type="PackedScene" uid="uid://duwfytf82n2hg" path="res://Maps/Tiles/Town/right_wall.tscn" id="4_f4qba"]
+[ext_resource type="PackedScene" uid="uid://dm46fjigsf4jx" path="res://Maps/Tiles/Town/left_wall.tscn" id="5_0wgme"]
+[ext_resource type="PackedScene" uid="uid://bq4b2nhqtdtx" path="res://Maps/Tiles/Town/top_left_corner.tscn" id="6_sgjkr"]
+[ext_resource type="PackedScene" uid="uid://bhox7q5ufgjbc" path="res://Maps/Tiles/Town/top_right_corner.tscn" id="7_w0r6v"]
+[ext_resource type="PackedScene" uid="uid://togr6yqbjje8" path="res://Maps/Tiles/Town/bottom_right_corner.tscn" id="8_sjuql"]
+[ext_resource type="PackedScene" uid="uid://d2yufdel08dmv" path="res://Maps/Tiles/Town/bottom_left_corner.tscn" id="9_ppwfn"]
+[ext_resource type="PackedScene" uid="uid://05rtqgkgc1h1" path="res://Maps/Tiles/Town/town_spawn.tscn" id="10_g57r4"]
+[ext_resource type="PackedScene" uid="uid://ydircnhw4ui0" path="res://Maps/Tiles/Town/teleporter_town.tscn" id="12_m3sdv"]
+
+[node name="Town1" type="Node2D"]
+
+[node name="original_floor" parent="." instance=ExtResource("1_vgnlq")]
+texture_filter = 1
+
+[node name="roof" parent="." instance=ExtResource("2_f38v6")]
+texture_filter = 1
+
+[node name="north_wall" parent="." instance=ExtResource("2_v143x")]
+
+[node name="south_ wall" parent="." instance=ExtResource("3_uj6cs")]
+
+[node name="right_wall" parent="." instance=ExtResource("4_f4qba")]
+
+[node name="left_wall" parent="." instance=ExtResource("5_0wgme")]
+
+[node name="top_left" parent="." instance=ExtResource("6_sgjkr")]
+
+[node name="top_right" parent="." instance=ExtResource("7_w0r6v")]
+
+[node name="bottom_left" parent="." instance=ExtResource("8_sjuql")]
+
+[node name="bottom_right" parent="." instance=ExtResource("9_ppwfn")]
+
+[node name="Spawn" parent="." instance=ExtResource("10_g57r4")]
+
+[node name="Teleporter" parent="." instance=ExtResource("12_m3sdv")]

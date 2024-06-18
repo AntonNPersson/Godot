@@ -1,0 +1,192 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgayyouwiocl6"]
+
+[ext_resource type="Script" path="res://Tool/scripts/tile_editor.gd" id="1_haoke"]
+[ext_resource type="Script" path="res://Tool/scripts/create_tile.gd" id="2_xafwj"]
+
+[node name="Tile_editor" type="Node2D" node_paths=PackedStringArray("tile", "set", "title", "back")]
+script = ExtResource("1_haoke")
+tile = NodePath("Button")
+set = NodePath("Button2")
+title = NodePath("Label")
+back = NodePath("back")
+
+[node name="Node" type="Node2D" parent="."]
+visible = false
+
+[node name="Create_tile" type="Button" parent="Node"]
+offset_left = 497.0
+offset_top = 592.0
+offset_right = 622.0
+offset_bottom = 648.0
+text = "Create Tile"
+script = ExtResource("2_xafwj")
+
+[node name="Walkable" type="CheckBox" parent="Node"]
+offset_top = 161.0
+offset_right = 276.0
+offset_bottom = 179.0
+scale = Vector2(0.977877, 0.962077)
+text = "Walkable"
+
+[node name="Interactable" type="CheckBox" parent="Node"]
+offset_top = 179.0
+offset_right = 270.0
+offset_bottom = 197.0
+text = "Interactable"
+
+[node name="Special" type="CheckBox" parent="Node"]
+offset_top = 197.0
+offset_right = 270.0
+offset_bottom = 215.0
+text = "Special
+"
+
+[node name="Name" type="LineEdit" parent="Node"]
+custom_minimum_size = Vector2(110, 4)
+offset_top = 215.0
+offset_right = 270.0
+offset_bottom = 239.0
+placeholder_text = "Name"
+
+[node name="z_index" type="SpinBox" parent="Node"]
+offset_top = 240.0
+offset_right = 270.0
+offset_bottom = 264.0
+min_value = -100.0
+rounded = true
+prefix = "Z_index:"
+
+[node name="FileDialog" type="FileDialog" parent="Node"]
+title = "Upload Tile Sprite"
+position = Vector2i(0, 270)
+size = Vector2i(299, 263)
+transient = false
+exclusive = false
+unresizable = true
+borderless = true
+content_scale_size = Vector2i(15, 0)
+content_scale_mode = 2
+ok_button_text = "Open"
+dialog_close_on_escape = false
+mode_overrides_title = false
+file_mode = 0
+filters = PackedStringArray("*.png")
+
+[node name="boss_spawn" type="CheckBox" parent="Node"]
+offset_left = 2.0
+offset_top = 100.0
+offset_right = 272.0
+offset_bottom = 118.0
+text = "Boss Spawn"
+
+[node name="mob_spawn" type="CheckBox" parent="Node"]
+offset_left = 1.0
+offset_top = 121.0
+offset_right = 271.0
+offset_bottom = 139.0
+text = "Mob Spawn"
+
+[node name="Tile_texture" type="TextureRect" parent="Node"]
+custom_minimum_size = Vector2(128, 128)
+offset_left = 518.0
+offset_top = 264.0
+offset_right = 646.0
+offset_bottom = 392.0
+stretch_mode = 5
+
+[node name="player_spawn" type="CheckBox" parent="Node"]
+offset_top = 142.0
+offset_right = 270.0
+offset_bottom = 160.0
+text = "Player Spawn"
+
+[node name="Node2D" type="Node2D" parent="."]
+visible = false
+
+[node name="Node2D2" type="Node2D" parent="Node2D"]
+
+[node name="TextEdit" type="TextEdit" parent="Node2D/Node2D2"]
+z_index = 6
+z_as_relative = false
+offset_left = 533.0
+offset_top = 281.0
+offset_right = 600.0
+offset_bottom = 299.0
+theme_override_font_sizes/font_size = 10
+placeholder_text = "Name"
+
+[node name="CheckBox" type="CheckBox" parent="Node2D/Node2D2"]
+offset_left = 533.0
+offset_top = 300.0
+offset_right = 600.0
+offset_bottom = 318.0
+theme_override_font_sizes/font_size = 10
+text = "Special"
+
+[node name="Button" type="Button" parent="Node2D/Node2D2"]
+offset_left = 533.0
+offset_top = 318.0
+offset_right = 600.0
+offset_bottom = 358.0
+text = "Create"
+
+[node name="Label" type="Label" parent="Node2D/Node2D2"]
+offset_left = 533.0
+offset_top = 264.0
+offset_right = 582.0
+offset_bottom = 280.0
+text = "Tileset"
+
+[node name="FileDialog" type="FileDialog" parent="Node2D"]
+title = "Upload Tile Sprite"
+position = Vector2i(5, 200)
+size = Vector2i(299, 263)
+transient = false
+exclusive = false
+unresizable = true
+borderless = true
+content_scale_size = Vector2i(15, 0)
+content_scale_mode = 2
+ok_button_text = "Open"
+dialog_close_on_escape = false
+mode_overrides_title = false
+file_mode = 1
+access = 2
+filters = PackedStringArray("*.tscn")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 533.0
+offset_top = 299.0
+offset_right = 624.0
+offset_bottom = 339.0
+text = "Create Tile"
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 533.0
+offset_top = 339.0
+offset_right = 624.0
+offset_bottom = 379.0
+text = "Create Set"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 280.0
+offset_right = 617.0
+offset_bottom = 296.0
+text = "Tile Editor"
+
+[node name="back" type="Button" parent="."]
+visible = false
+offset_left = 1066.0
+offset_top = 605.0
+offset_right = 1152.0
+offset_bottom = 645.0
+text = "Back"
+
+[connection signal="pressed" from="Node/Create_tile" to="Node/Create_tile" method="_create_tile"]
+[connection signal="file_selected" from="Node/FileDialog" to="Node/Create_tile" method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="Node2D/Node2D2/Button" to="." method="_create_tileset"]
+[connection signal="files_selected" from="Node2D/FileDialog" to="." method="_on_FileDialog_file_selected"]
+[connection signal="pressed" from="Button" to="." method="_create_tile"]
+[connection signal="pressed" from="Button2" to="." method="_create_tileset"]
+[connection signal="pressed" from="back" to="." method="_back_to_menu"]

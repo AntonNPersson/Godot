@@ -1,0 +1,473 @@
+[gd_scene load_steps=77 format=3 uid="uid://dk40ep18m4j0k"]
+
+[ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_dmg4a"]
+[ext_resource type="PackedScene" uid="uid://n6f065x12uuq" path="res://Abilities/Creature Spells/summon_troops.tscn" id="2_l28r0"]
+[ext_resource type="PackedScene" uid="uid://cf87scvb45yp0" path="res://Abilities/Creature Spells/throw_potion.tscn" id="3_3lt1x"]
+[ext_resource type="PackedScene" uid="uid://scntmqhqk0rm" path="res://Abilities/Creature Spells/buff_summons.tscn" id="4_8wo2p"]
+[ext_resource type="PackedScene" uid="uid://3vl3fmasalk5" path="res://Abilities/Creature Spells/Melee_aoe/Massive Attack/Massive_attack.tscn" id="5_5jpcq"]
+[ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="5_th56h"]
+[ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="6_dbidj"]
+[ext_resource type="PackedScene" uid="uid://ddeenr4waq1as" path="res://Abilities/Creature Spells/Smoke bomb/smoke bomb.tscn" id="6_yq5n0"]
+[ext_resource type="Texture2D" uid="uid://bg52y0g2ot3ll" path="res://Sprites/Goblin King/goblin king1.png" id="7_hqojp"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="8_pldn5"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Is_Enountered.gd" id="9_5dc6y"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/check_range.gd" id="9_24bj5"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/selector.gd" id="9_adr2h"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/abovehalfhp.gd" id="10_gvnrj"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/issummoned.gd" id="11_4xn2a"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/summon_troops.gd" id="12_qf8s7"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/is_on_cd.gd" id="14_rfam7"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/throw_potion.gd" id="15_ogler"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/run_away.gd" id="16_7r35v"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/belowhalfhp.gd" id="17_dfj1f"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/Heavy_attack.gd" id="17_egrag"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/has_printed_dialogue.gd" id="18_leyb3"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/print_dialogue.gd" id="19_x64hd"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/has_buffed_summons.gd" id="20_jonpb"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/is_summons_dead.gd" id="21_er2vo"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/buff_troops.gd" id="21_kqyu6"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/remove_smoke_bomb.gd" id="22_gh88b"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/throw_potion_improved.gd" id="22_tnc18"]
+[ext_resource type="Texture2D" uid="uid://cnty04i31asxy" path="res://Units/Instance/Enemies/Sprite Sheets/Download85704.png" id="23_m4b0q"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/has_smoke_bombed.gd" id="25_r4nks"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/smoke_bomb.gd" id="26_wqq7q"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="31_d2wt8"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="32_2eifi"]
+[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="32_wol78"]
+[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="33_8r25q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
+radius = 12.0037
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4lhb8"]
+shader = ExtResource("6_dbidj")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv25l"]
+shader = ExtResource("6_dbidj")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuiqf"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(64, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2748"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(128, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0f536"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(192, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5l8ix"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(256, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx5yl"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(320, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ik5y6"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(64, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vuu5o"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(128, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hidfr"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(192, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yphx"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(256, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwo3y"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(320, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8604w"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(384, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kewdy"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(448, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dabvg"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(512, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqob1"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(64, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bx021"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(128, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfnlo"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(192, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dtcnc"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(256, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y68tm"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(320, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruh0l"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(384, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ldsp"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(448, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gc0dr"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(512, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nhcve"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(64, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4lofb"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(128, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hw1g3"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(192, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyho6"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(256, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l4cyq"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(320, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rf8op"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(384, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqeff"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(448, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epyke"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(512, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gk3g5"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(64, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5kj2b"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(128, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4y7a"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(192, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jn03"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(256, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v136p"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(320, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cgok"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(384, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vpajl"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(448, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mycbq"]
+atlas = ExtResource("23_m4b0q")
+region = Rect2(512, 576, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3csfa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kuiqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s2748")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0f536")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5l8ix")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sx5yl")
+}],
+"loop": true,
+"name": &"Death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ik5y6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vuu5o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hidfr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3yphx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwo3y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8604w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kewdy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dabvg")
+}],
+"loop": true,
+"name": &"Walk East",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jqob1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bx021")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yfnlo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dtcnc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y68tm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ruh0l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ldsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gc0dr")
+}],
+"loop": true,
+"name": &"Walk North",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nhcve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4lofb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hw1g3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lyho6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l4cyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rf8op")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fqeff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_epyke")
+}],
+"loop": true,
+"name": &"Walk South",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gk3g5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5kj2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4y7a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0jn03")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v136p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cgok")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vpajl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mycbq")
+}],
+"loop": true,
+"name": &"Walk West",
+"speed": 12.0
+}]
+
+[node name="Goblin Chief" type="Area2D" groups=["boss", "enemies"]]
+top_level = true
+scale = Vector2(1.2, 1.2)
+collision_layer = 2
+script = ExtResource("1_dmg4a")
+u_name = "Goblin Chief"
+experience = 100
+base_armor = 35
+base_speed = 150
+base_health = 1200
+abilities = Array[PackedScene]([ExtResource("2_l28r0"), ExtResource("3_3lt1x"), ExtResource("4_8wo2p"), ExtResource("5_5jpcq"), ExtResource("6_yq5n0")])
+basic_attack_scene = ExtResource("5_th56h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 2.88)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_4lhb8")
+scale = Vector2(2.88, 2.88)
+texture = ExtResource("7_hqojp")
+
+[node name="Goblin Chief Tree" type="Node" parent="."]
+script = ExtResource("8_pldn5")
+
+[node name="Is Enountered?" type="Node" parent="Goblin Chief Tree"]
+script = ExtResource("9_5dc6y")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Is Enountered?"]
+script = ExtResource("9_adr2h")
+
+[node name="Phase 1?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector"]
+script = ExtResource("10_gvnrj")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?"]
+script = ExtResource("9_adr2h")
+
+[node name="isSummoned?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("11_4xn2a")
+
+[node name="Summon Troops" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isSummoned?"]
+script = ExtResource("12_qf8s7")
+
+[node name="isoutofrange" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("9_24bj5")
+tile_range = 2.0
+
+[node name="isOnCd?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isoutofrange"]
+script = ExtResource("14_rfam7")
+
+[node name="Throw Potion" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isoutofrange/isOnCd?"]
+script = ExtResource("15_ogler")
+
+[node name="isinrange" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("9_24bj5")
+tile_range = 1.0
+reverse = true
+
+[node name="isOnCd?2" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isinrange"]
+script = ExtResource("14_rfam7")
+ability_index = 3
+
+[node name="Heavy Attack" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isinrange/isOnCd?2"]
+script = ExtResource("17_egrag")
+
+[node name="chase" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("16_7r35v")
+tile_range = 8.0
+
+[node name="Phase 2?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector"]
+script = ExtResource("17_dfj1f")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?"]
+script = ExtResource("9_adr2h")
+
+[node name="has_smoke_bombed" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("25_r4nks")
+
+[node name="smoke_bomb" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/has_smoke_bombed"]
+script = ExtResource("26_wqq7q")
+
+[node name="has_printed_dialogue?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("18_leyb3")
+
+[node name="print_dialogue" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/has_printed_dialogue?"]
+script = ExtResource("19_x64hd")
+
+[node name="has_buffed_summons?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("20_jonpb")
+
+[node name="buff_summons" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/has_buffed_summons?"]
+script = ExtResource("21_kqyu6")
+
+[node name="is_summons_dead" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("21_er2vo")
+
+[node name="remove_smoke_bomb" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/is_summons_dead"]
+script = ExtResource("22_gh88b")
+
+[node name="isOnCd?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("14_rfam7")
+
+[node name="Throw Potion" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?"]
+script = ExtResource("22_tnc18")
+
+[node name="Summons" type="Node2D" parent="."]
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="cast_bar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+offset_left = -15.0
+offset_top = 35.0
+offset_right = 19.0
+offset_bottom = 43.0
+theme = ExtResource("31_d2wt8")
+value = 100.0
+texture_under = ExtResource("32_wol78")
+texture_progress = ExtResource("33_8r25q")
+texture_progress_offset = Vector2(2, 2)
+script = ExtResource("32_2eifi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_xv25l")
+sprite_frames = SubResource("SpriteFrames_3csfa")
+animation = &"Death"
+
+[connection signal="is_dead" from="." to="Goblin Chief Tree" method="_on_goblin_chief_is_dead"]

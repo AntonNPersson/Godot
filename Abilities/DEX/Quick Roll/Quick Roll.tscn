@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce0fb536yw8k"]
+
+[ext_resource type="Script" path="res://Abilities/DEX/Quick Roll/quick_roll.gd" id="1_74f57"]
+[ext_resource type="Texture2D" uid="uid://b0k05biiapejf" path="res://Abilities/DEX/Quick Roll/Hunter_17.png" id="2_vopm2"]
+
+[node name="Quick Roll" type="Node2D"]
+script = ExtResource("1_74f57")
+icon = ExtResource("2_vopm2")
+a_name = "Quick Roll"
+tooltip_text = "Roll a short distance and quick attack targeted enemy, cooldown reduces by 1 each basic attack."
+cooldown = 12.0
+_range = 150.0
+projectile_type = 6
+ability_type = "DEX"
+type = "Sprint"
+movement_speed = 400.0
+tags = Array[String](["QuickAttack"])
+values = Array[float]([1.0])
+increased_values = Array[float]([0.0])
+light_color = Color(0.329412, 0.741176, 0, 1)
+light_scale = 0.4
+weight_duration = 0.0

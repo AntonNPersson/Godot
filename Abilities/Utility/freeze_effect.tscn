@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dg2iyxhbtp8jk"]
+
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="1_kgv8b"]
+
+[sub_resource type="Curve" id="Curve_kiopi"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.723881, 100), -142.722, -142.722, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_58aun"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0.976471, 0.321569)
+
+[sub_resource type="Gradient" id="Gradient_6cshj"]
+colors = PackedColorArray(0.412152, 0.412152, 0.412152, 1, 1, 1, 1, 1)
+
+[node name="freeze_effect" type="CPUParticles2D"]
+texture_filter = 1
+amount = 6
+lifetime = 2.0
+texture = ExtResource("1_kgv8b")
+emission_shape = 3
+emission_rect_extents = Vector2(20, 20)
+direction = Vector2(0, -1)
+gravity = Vector2(0, 90)
+initial_velocity_max = 73.18
+damping_min = 1.0
+damping_max = 10.0
+damping_curve = SubResource("Curve_kiopi")
+scale_amount_min = 0.05
+scale_amount_max = 0.1
+color_ramp = SubResource("Gradient_58aun")
+color_initial_ramp = SubResource("Gradient_6cshj")

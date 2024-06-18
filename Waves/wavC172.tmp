@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dblfjwh4yt3fp"]
+
+[ext_resource type="PackedScene" uid="uid://dk40ep18m4j0k" path="res://Units/Instance/goblinchief.tscn" id="3_fmnkk"]
+
+[sub_resource type="GDScript" id="GDScript_nhxsk"]
+script/source = "extends Node2D
+@export var creatures : Array
+"
+
+[node name="Wave1" type="Node2D"]
+visible = false
+position = Vector2(407, 0)
+script = SubResource("GDScript_nhxsk")
+creatures = [null]
+
+[node name="Goblin Chief" parent="." instance=ExtResource("3_fmnkk")]

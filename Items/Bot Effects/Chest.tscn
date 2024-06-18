@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmhi7x1t68se8"]
+
+[ext_resource type="Script" path="res://Items/Bot Effects/Chest.gd" id="1_5axxu"]
+
+[node name="Chest" type="Node2D"]
+script = ExtResource("1_5axxu")

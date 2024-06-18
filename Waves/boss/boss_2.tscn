@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpsx4xbvmpv3d"]
+
+[ext_resource type="PackedScene" uid="uid://bj6xebem8yoad" path="res://Units/Instance/Enemies/Bosses/Infected Soul.tscn" id="1_0opwm"]
+
+[node name="Boss2" type="Node2D"]
+
+[node name="Infected Soul" parent="." instance=ExtResource("1_0opwm")]

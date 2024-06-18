@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg62fasjp578u"]
+
+[ext_resource type="Script" path="res://Items/Low-Mid Effects/Strong.gd" id="1_k8s46"]
+
+[node name="Strong" type="Node2D"]
+script = ExtResource("1_k8s46")

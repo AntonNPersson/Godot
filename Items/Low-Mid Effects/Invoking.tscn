@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cybw6j3ulp1xb"]
+
+[ext_resource type="Script" path="res://Items/Low-Mid Effects/Invoking.gd" id="1_vpn6r"]
+
+[node name="Invoking" type="Node2D"]
+script = ExtResource("1_vpn6r")

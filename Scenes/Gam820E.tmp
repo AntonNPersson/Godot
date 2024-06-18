@@ -1,0 +1,206 @@
+[gd_scene load_steps=20 format=3 uid="uid://dtr2poygeam3r"]
+
+[ext_resource type="PackedScene" uid="uid://cosqbwpgdlcb6" path="res://Maps/Tiles/Arena_1/wall.tscn" id="2_vcwvl"]
+[ext_resource type="Script" path="res://Managers/CharacterManager.gd" id="3_pvary"]
+[ext_resource type="Script" path="res://Managers/RoundManager.gd" id="4_4y6h6"]
+[ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="7_gu5uy"]
+[ext_resource type="Script" path="res://Managers/WaveManager.gd" id="8_g373l"]
+[ext_resource type="Texture2D" uid="uid://bcpcpicdwbcik" path="res://Sprites/wall.png" id="8_uvsjg"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_qlqvm"]
+[ext_resource type="Script" path="res://Managers/AbilityManager.gd" id="10_6msql"]
+[ext_resource type="PackedScene" uid="uid://3bufdu886nec" path="res://Maps/Tiles/Arena_1/torch.tscn" id="10_7vx61"]
+[ext_resource type="Script" path="res://Managers/MapManager.gd" id="10_o48hw"]
+[ext_resource type="PackedScene" uid="uid://wrpayg25hbhn" path="res://Maps/Tiles/Arena_1/teleporter.tscn" id="11_4m8ld"]
+[ext_resource type="PackedScene" uid="uid://dd7yxbtrbh8hd" path="res://Maps/Tiles/Arena_1/north_wall.tscn" id="12_6n56g"]
+[ext_resource type="PackedScene" uid="uid://cqx1pxiuq1p2f" path="res://Maps/Tiles/Arena_1/spawn.tscn" id="12_jnn4n"]
+[ext_resource type="PackedScene" uid="uid://c4kr1k7bekfs" path="res://Maps/Tiles/Arena_1/floor.tscn" id="12_mxh1o"]
+[ext_resource type="Script" path="res://Managers/ShopManager.gd" id="12_p5s37"]
+[ext_resource type="PackedScene" uid="uid://bn8e7y6xtlarm" path="res://Maps/Tiles/Arena_1/boulder.tscn" id="13_lnvo2"]
+[ext_resource type="PackedScene" uid="uid://cfapbs2yvcl5m" path="res://Maps/Tiles/Arena_1/left_corner_second.tscn" id="14_frxbw"]
+[ext_resource type="Script" path="res://Managers/CombatManager.gd" id="16_6xq26"]
+
+[sub_resource type="Theme" id="Theme_xtgj3"]
+Panel/styles/panel = null
+
+[node name="Main" type="Node"]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.294118, 0.294118, 0.294118, 1)
+
+[node name="Environment" type="Node" parent="CanvasModulate"]
+
+[node name="Units" type="Node" parent="CanvasModulate"]
+
+[node name="WaveManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("8_g373l")
+
+[node name="Waves" type="Node" parent="CanvasModulate/WaveManager"]
+
+[node name="CharacterManager" type="Node" parent="CanvasModulate" node_paths=PackedStringArray("units")]
+script = ExtResource("3_pvary")
+units = NodePath("../Units")
+
+[node name="RoundManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("4_4y6h6")
+
+[node name="AbilityManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("10_6msql")
+
+[node name="Abilities" type="Node" parent="CanvasModulate/AbilityManager"]
+
+[node name="Augments" type="Node" parent="CanvasModulate/AbilityManager"]
+
+[node name="UI" type="Node" parent="CanvasModulate/AbilityManager"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasModulate/AbilityManager/UI"]
+
+[node name="choiceList" type="ItemList" parent="CanvasModulate/AbilityManager/UI/CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+auto_height = true
+same_column_width = true
+
+[node name="showButton" type="Button" parent="CanvasModulate/AbilityManager/UI/CanvasLayer"]
+visible = false
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Show Choices"
+
+[node name="ShopManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("12_p5s37")
+
+[node name="UI" type="CanvasLayer" parent="CanvasModulate/ShopManager"]
+
+[node name="Panel" type="PanelContainer" parent="CanvasModulate/ShopManager/UI"]
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(400, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_xtgj3")
+
+[node name="Title" type="Label" parent="CanvasModulate/ShopManager/UI/Panel"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="shopList" type="ItemList" parent="CanvasModulate/ShopManager/UI/Panel"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 1
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 15
+allow_reselect = true
+auto_height = true
+
+[node name="BuyButton" type="Button" parent="CanvasModulate/ShopManager/UI/Panel"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 15
+text = "Buy"
+
+[node name="SellButton" type="Button" parent="CanvasModulate/ShopManager/UI/Panel"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 15
+text = "Sell"
+
+[node name="MapManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("10_o48hw")
+map_file = "res://Maps/arena_1.txt"
+town_file = "res://Maps/town.txt"
+wall = ExtResource("2_vcwvl")
+teleporter = ExtResource("11_4m8ld")
+_floor = ExtResource("12_mxh1o")
+torch = ExtResource("10_7vx61")
+spawn = ExtResource("12_jnn4n")
+north_wall = ExtResource("12_6n56g")
+boulder = ExtResource("13_lnvo2")
+west_corner_second = ExtResource("14_frxbw")
+
+[node name="CombatManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("16_6xq26")
+
+[node name="UI" type="CanvasLayer" parent="CanvasModulate/CombatManager" groups=["UI"]]
+
+[node name="ProgressBar" type="TextureProgressBar" parent="CanvasModulate/CombatManager/UI"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -176.0
+offset_right = -48.0
+offset_bottom = 128.0
+grow_horizontal = 2
+scale = Vector2(2.75367, 0.270626)
+texture_under = ExtResource("7_gu5uy")
+texture_progress = ExtResource("8_uvsjg")
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("9_qlqvm")
+
+[node name="TargetName" type="RichTextLabel" parent="CanvasModulate/CombatManager/UI"]
+visible = false
+offset_left = 110.0
+offset_top = -1.0
+offset_right = 150.0
+offset_bottom = 39.0
+scale = Vector2(3.84, 2.72)
+theme_override_font_sizes/normal_font_size = 12
+text = "dffdf"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="UI" type="CanvasLayer" parent="CanvasModulate"]
+
+[connection signal="get_units" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_get_units"]
+[connection signal="start_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_wave_manager_start_wave"]
+[connection signal="start_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_start_wave"]
+[connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/RoundManager" method="_on_stop_wave"]
+[connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_stop_wave"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/RoundManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/AbilityManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/ShopManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/MapManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/CombatManager" method="_on_character_selected"]
+[connection signal="start_round_manager" from="CanvasModulate/CharacterManager" to="CanvasModulate/RoundManager" method="_on_start_round_manager"]
+[connection signal="next_choice" from="CanvasModulate/RoundManager" to="CanvasModulate/AbilityManager" method="_on_next_choice"]
+[connection signal="next_shop" from="CanvasModulate/RoundManager" to="CanvasModulate/ShopManager" method="_on_next_shop"]
+[connection signal="next_shop" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_next_shop"]
+[connection signal="next_wave" from="CanvasModulate/RoundManager" to="CanvasModulate/WaveManager" method="_on_next_wave"]
+[connection signal="next_wave" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_round_manager_next_wave"]
+[connection signal="picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_picked"]
+[connection signal="item_clicked" from="CanvasModulate/AbilityManager/UI/CanvasLayer/choiceList" to="CanvasModulate/AbilityManager" method="_on_choice_list_item_clicked"]
+[connection signal="pressed" from="CanvasModulate/AbilityManager/UI/CanvasLayer/showButton" to="CanvasModulate/AbilityManager" method="_on_button_pressed"]
+[connection signal="shop_closed" from="CanvasModulate/ShopManager" to="CanvasModulate/RoundManager" method="_on_shop_closed"]
+[connection signal="item_selected" from="CanvasModulate/ShopManager/UI/Panel/shopList" to="CanvasModulate/ShopManager" method="_on_item_selected"]
+[connection signal="pressed" from="CanvasModulate/ShopManager/UI/Panel/BuyButton" to="CanvasModulate/ShopManager" method="_on_buy_button_pressed"]
+[connection signal="pressed" from="CanvasModulate/ShopManager/UI/Panel/SellButton" to="CanvasModulate/ShopManager" method="_on_sell_button_pressed"]

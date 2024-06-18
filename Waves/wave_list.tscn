@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bc20geqg6yw2q"]
+
+[ext_resource type="PackedScene" uid="uid://bo5p4mk3x60ix" path="res://Waves/wave_1.tscn" id="1_fa1sv"]
+[ext_resource type="Script" path="res://Waves/wave_specials.gd" id="2_l0s1y"]
+[ext_resource type="PackedScene" uid="uid://dga2d1af05bay" path="res://Waves/wave_2.tscn" id="2_o1rts"]
+
+[node name="WaveList" type="Node2D"]
+
+[node name="Goblin Camp" parent="." instance=ExtResource("1_fa1sv")]
+script = ExtResource("2_l0s1y")
+tooltip = "A dungeon in the form of a goblin camp, used as an introduction to dungeoneering."
+grade = "F"
+metadata/Color = Color(0.196078, 0.196078, 0.196078, 0.815686)
+
+[node name="Cemetery" parent="." instance=ExtResource("2_o1rts")]
+position = Vector2(443, 122)
+tooltip = "An infected cemetery, plagued with eternal darkness. This dungeon is said to be annoying even for veteran dungeoneers."
+grade = "F"

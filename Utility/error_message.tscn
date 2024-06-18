@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1cqhoae01102"]
+
+[ext_resource type="Script" path="res://Utility/error_message.gd" id="1_8506x"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="2_0ep7r"]
+[ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_6yqry"]
+
+[node name="ErrorMessage" type="Node"]
+script = ExtResource("1_8506x")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -362.0
+offset_right = 20.0
+offset_bottom = -322.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_0ep7r")
+theme_override_fonts/normal_font = ExtResource("2_6yqry")
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 0

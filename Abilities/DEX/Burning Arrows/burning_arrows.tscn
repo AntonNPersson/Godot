@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://ugpgkpshufsy"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_6vnmq"]
+[ext_resource type="Texture2D" uid="uid://45iiu6qn3no2" path="res://Abilities/DEX/Burning Arrows/FireMage_20.png" id="2_wqosg"]
+
+[node name="Burning Arrows" type="Node2D"]
+script = ExtResource("1_6vnmq")
+icon = ExtResource("2_wqosg")
+a_name = "Burning Arrows"
+tooltip_text = "Equip a set of fire coated arrows, making your basic attacks deal extra damage and burn targets."
+mana_cost = 30.0
+cooldown = 10.0
+projectile_type = 5
+ability_type = "DEX"
+tags = Array[String](["AttackDamageBuff", "AttackBurnBuff"])
+values = Array[float]([5.0, 15.0])
+increased_values = Array[float]([5.0, 10.0])
+light_color = Color(0.713726, 0.278431, 0.0666667, 1)
+light_scale = 0.2
+is_buff = true
+buff_duration = 5.0
+weight = 80.0

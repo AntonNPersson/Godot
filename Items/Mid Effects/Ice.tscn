@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://7jffqxi0fal7"]
+
+[ext_resource type="Script" path="res://Items/Mid Effects/Ice.gd" id="1_ggj81"]
+
+[node name="Ice" type="Node2D"]
+script = ExtResource("1_ggj81")

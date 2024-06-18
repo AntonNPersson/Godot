@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpbgygakllcil"]
+
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/interactable_tile.gd" id="1_5gw75"]
+[ext_resource type="PackedScene" uid="uid://dvbhbi2x5wrvp" path="res://Utility/teleporter_menu.tscn" id="2_kfaff"]
+[ext_resource type="PackedScene" uid="uid://bc20geqg6yw2q" path="res://Waves/wave_list.tscn" id="3_hemmn"]
+[ext_resource type="Texture2D" uid="uid://b58566qk7sux0" path="res://Sprites/Grass_ground.png" id="4_s80lw"]
+[ext_resource type="Texture2D" uid="uid://b4hy5b34t6c3v" path="res://Sprites/Pure_violet.webp" id="5_djcfk"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="6_utr2d"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mwpgw"]
+radius = 23.5372
+
+[node name="Teleporter" type="Area2D"]
+script = ExtResource("1_5gw75")
+teleporter_list = ExtResource("2_kfaff")
+wave_list = ExtResource("3_hemmn")
+metadata/Walkable = true
+metadata/Interactable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mwpgw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("4_s80lw")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+scale = Vector2(0.47, 0.47)
+amount = 200
+randomness = 0.49
+lifetime_randomness = 0.33
+texture = ExtResource("5_djcfk")
+emission_shape = 2
+emission_sphere_radius = 64.25
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.2
+initial_velocity_max = 50.51
+scale_amount_min = 0.0
+scale_amount_max = 0.01
+hue_variation_min = -0.67
+hue_variation_max = 1.0
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.698039, 0, 0.698039, 1)
+shadow_enabled = true
+texture = ExtResource("6_utr2d")
+texture_scale = 0.5

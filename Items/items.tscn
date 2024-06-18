@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ch457euqpauv1"]
+
+[ext_resource type="Script" path="res://Items/Scripts/Wand of Test.gd" id="1_waydm"]
+
+[node name="Items" type="Node"]
+
+[node name="Wand of Test" type="Node" parent="."]
+script = ExtResource("1_waydm")

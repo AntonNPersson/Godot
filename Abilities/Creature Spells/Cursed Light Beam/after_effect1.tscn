@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://ca48nx0fdtqjw"]
+
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="1_2065e"]
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/self_delete.gd" id="2_vgw30"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_yjdgk"]
+
+[sub_resource type="Curve" id="Curve_kiopi"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.723881, 100), -142.722, -142.722, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_f0rq4"]
+offsets = PackedFloat32Array(0, 0.896226, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.847059, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_mqdaa"]
+
+[node name="AfterEffect" type="CPUParticles2D"]
+scale = Vector2(1.7, 1.7)
+emitting = false
+amount = 50
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+texture = ExtResource("1_2065e")
+direction = Vector2(-1, 1)
+spread = 180.0
+gravity = Vector2(0, 10)
+initial_velocity_min = 50.0
+initial_velocity_max = 80.0
+angular_velocity_max = 51.1
+orbit_velocity_min = -10.0
+damping_curve = SubResource("Curve_kiopi")
+scale_amount_min = 0.0
+scale_amount_max = 0.04
+color = Color(0.858824, 0, 0.282353, 1)
+color_ramp = SubResource("Gradient_f0rq4")
+color_initial_ramp = SubResource("Gradient_mqdaa")
+hue_variation_min = -0.8
+hue_variation_max = 1.0
+script = ExtResource("2_vgw30")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0, 0, 1)
+texture = ExtResource("3_yjdgk")
+texture_scale = 0.6
+
+[connection signal="finished" from="." to="." method="_on_finished"]

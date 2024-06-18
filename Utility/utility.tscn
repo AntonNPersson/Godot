@@ -1,0 +1,88 @@
+[gd_scene load_steps=15 format=3 uid="uid://b0f5f4y5a5wgm"]
+
+[ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="1_7im54"]
+[ext_resource type="Script" path="res://Utility/transition_screen.gd" id="2_j7k88"]
+[ext_resource type="Script" path="res://Utility/Dialouge control.gd" id="3_xjpj3"]
+[ext_resource type="PackedScene" uid="uid://cqddy43amxo8h" path="res://Utility/dialouge.tscn" id="4_vdxtn"]
+[ext_resource type="Script" path="res://Utility/interactable_objects.gd" id="5_c67mg"]
+[ext_resource type="PackedScene" uid="uid://c17wnlu5a8mdx" path="res://Utility/Ability_target_system.tscn" id="6_g5tkk"]
+[ext_resource type="Script" path="res://Utility/Timer_Creator.gd" id="7_3c84n"]
+[ext_resource type="Script" path="res://Utility/Brightness.gd" id="8_i1jkr"]
+[ext_resource type="PackedScene" uid="uid://d1cqhoae01102" path="res://Utility/error_message.tscn" id="9_nrlui"]
+[ext_resource type="Script" path="res://Utility/error_message.gd" id="9_vggnd"]
+[ext_resource type="PackedScene" uid="uid://d0fx2kx4donnu" path="res://Utility/Enemy_target_system.tscn" id="11_nokq7"]
+
+[sub_resource type="Animation" id="Animation_wk6cn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_uikkc"]
+resource_name = "transition"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.5001, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r0yfc"]
+_data = {
+"RESET": SubResource("Animation_wk6cn"),
+"transition": SubResource("Animation_uikkc")
+}
+
+[node name="Utility" type="CanvasLayer"]
+
+[node name="Transition" type="Sprite2D" parent="."]
+z_index = 5
+scale = Vector2(103.63, 61.746)
+texture = ExtResource("1_7im54")
+script = ExtResource("2_j7k88")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Transition"]
+libraries = {
+"": SubResource("AnimationLibrary_r0yfc")
+}
+
+[node name="Dialogue" type="Node" parent="."]
+script = ExtResource("3_xjpj3")
+dialogue_scene = ExtResource("4_vdxtn")
+
+[node name="Interactable" type="Node" parent="."]
+script = ExtResource("5_c67mg")
+
+[node name="AbilityTargetSystem" parent="." instance=ExtResource("6_g5tkk")]
+
+[node name="ErrorSystem" type="Node" parent="."]
+
+[node name="TimerCreator" type="Node" parent="."]
+script = ExtResource("7_3c84n")
+
+[node name="Brightness" type="Node" parent="."]
+script = ExtResource("8_i1jkr")
+
+[node name="ErrorMessage" type="Node" parent="." node_paths=PackedStringArray("error_message")]
+script = ExtResource("9_vggnd")
+error_message = NodePath("ErrorMessage")
+
+[node name="ErrorMessage" parent="ErrorMessage" instance=ExtResource("9_nrlui")]
+script = null
+
+[node name="EnemyTargetSystem" parent="." instance=ExtResource("11_nokq7")]

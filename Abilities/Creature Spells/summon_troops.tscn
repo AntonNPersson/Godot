@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://n6f065x12uuq"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/summon_troops.gd" id="1_vlf78"]
+[ext_resource type="PackedScene" uid="uid://cevf2javmbcgc" path="res://Units/Instance/Enemies/Common/goblinFighter.tscn" id="2_bbxbs"]
+[ext_resource type="PackedScene" uid="uid://babgdhhfthpqt" path="res://Utility/Spawn_effects.tscn" id="4_tabh4"]
+
+[node name="Summon Troops" type="Node2D"]
+script = ExtResource("1_vlf78")
+summons = Array[PackedScene]([ExtResource("2_bbxbs"), ExtResource("2_bbxbs")])
+summon_effect = ExtResource("4_tabh4")

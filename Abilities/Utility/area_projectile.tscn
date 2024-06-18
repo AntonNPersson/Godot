@@ -1,0 +1,123 @@
+[gd_scene load_steps=13 format=3 uid="uid://bh7f048wuj4qb"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/standard_area.gd" id="1_7gati"]
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="2_kxrwc"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_18h1l"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_8rscn"]
+
+[sub_resource type="Curve" id="Curve_kiopi"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.723881, 100), -142.722, -142.722, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_jyvxj"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_sgcme"]
+colors = PackedColorArray(0.329158, 0.329158, 0.329158, 1, 1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3rywr"]
+
+[sub_resource type="Gradient" id="Gradient_2sh71"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_strs8"]
+colors = PackedColorArray(0.533037, 0.533037, 0.533037, 1, 1, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_yaayq"]
+offsets = PackedFloat32Array(0.0188679, 1)
+colors = PackedColorArray(0.996078, 0.996078, 0.996078, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_exb8l"]
+colors = PackedColorArray(0.244776, 0.244776, 0.244776, 1, 1, 1, 1, 1)
+
+[node name="AreaProjectile" type="Area2D"]
+z_index = -1
+z_as_relative = false
+collision_mask = 3
+script = ExtResource("1_7gati")
+
+[node name="Storm" type="CPUParticles2D" parent="."]
+visible = false
+z_index = 5
+z_as_relative = false
+amount = 500
+texture = ExtResource("2_kxrwc")
+emission_shape = 1
+emission_sphere_radius = 0.01
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+orbit_velocity_min = 0.02
+orbit_velocity_max = 1.0
+damping_curve = SubResource("Curve_kiopi")
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.01
+scale_amount_max = 0.04
+color_ramp = SubResource("Gradient_jyvxj")
+color_initial_ramp = SubResource("Gradient_sgcme")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_3rywr")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+scale = Vector2(1, 0.900391)
+energy = 1.1
+shadow_enabled = true
+texture = ExtResource("3_18h1l")
+offset = Vector2(0, -8)
+texture_scale = 0.4
+script = ExtResource("4_8rscn")
+
+[node name="Blast" type="CPUParticles2D" parent="."]
+visible = false
+z_index = 5
+z_as_relative = false
+emitting = false
+amount = 200
+explosiveness = 0.3
+texture = ExtResource("2_kxrwc")
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, -15)
+initial_velocity_max = 100.0
+angular_velocity_min = -392.73
+angular_velocity_max = 93.51
+radial_accel_min = 1.0
+radial_accel_max = 2.0
+damping_min = 1.0
+damping_max = 10.0
+damping_curve = SubResource("Curve_kiopi")
+angle_min = -720.0
+angle_max = 68.0
+scale_amount_min = 0.01
+scale_amount_max = 0.09
+color_ramp = SubResource("Gradient_2sh71")
+color_initial_ramp = SubResource("Gradient_strs8")
+hue_variation_min = -0.03
+hue_variation_max = 0.72
+
+[node name="Scream" type="CPUParticles2D" parent="."]
+visible = false
+z_index = 5
+z_as_relative = false
+texture_filter = 1
+emitting = false
+amount = 500
+preprocess = 4.0
+explosiveness = 1.0
+texture = ExtResource("2_kxrwc")
+emission_shape = 1
+emission_sphere_radius = 0.01
+particle_flag_align_y = true
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, -50)
+damping_curve = SubResource("Curve_kiopi")
+scale_amount_min = 0.01
+scale_amount_max = 0.04
+color_ramp = SubResource("Gradient_yaayq")
+color_initial_ramp = SubResource("Gradient_exb8l")
+hue_variation_max = 0.35

@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3omlhw6hvji2"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_h5or2"]
+[ext_resource type="Texture2D" uid="uid://dejhl8kfq3xbc" path="res://Abilities/INT/Frostbolt/FrostMage_2.png" id="2_8bxlx"]
+[ext_resource type="SpriteFrames" uid="uid://deq5mpa7fivoe" path="res://Abilities/INT/Frostbolt/frostbolt_projectile.tres" id="2_jnsgv"]
+
+[node name="Frostbolt" type="Node2D"]
+script = ExtResource("1_h5or2")
+icon = ExtResource("2_8bxlx")
+a_name = "Frostbolt"
+tooltip_text = "Shoot an icicle in a straight line, damaging and slowing anything it touches."
+mana_cost = 20.0
+cooldown = 4.0
+_range = 384.0
+ability_type = "INT"
+sprite_frames = ExtResource("2_jnsgv")
+collision_radius = 24.0
+speed = 400.0
+tags = Array[String](["Damage", "Freeze", "Pierce"])
+values = Array[float]([15.0, 30.0, 1.0])
+increased_values = Array[float]([10.0, 3.0, 0.0])
+light_color = Color(0, 0.67451, 0.52549, 1)
+light_scale = 1.45
+weight = 80.0

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://dteqp55jebovs"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_atkkm"]
+[ext_resource type="Texture2D" uid="uid://uuhcdg6qsiua" path="res://Abilities/STR/Blood Scream/blood_scream_icon.png" id="2_n3rrk"]
+
+[node name="BloodScream" type="Node2D"]
+script = ExtResource("1_atkkm")
+icon = ExtResource("2_n3rrk")
+a_name = "Blood Scream"
+tooltip_text = "A scream of bloodlust in battle, dealing damage and inflicting bleed to nearby enemies."
+mana_cost = 30.0
+cooldown = 8.0
+projectile_type = 3
+ability_type = "STR"
+area_type = 2
+duration = 0.3
+radius = 128.0
+tags = Array[String](["Damage", "Bleed"])
+values = Array[float]([20.0, 4.0])
+increased_values = Array[float]([15.0, 2.0])
+light_color = Color(1, 0, 0, 1)
+light_scale = 0.4
+weight = 120.0

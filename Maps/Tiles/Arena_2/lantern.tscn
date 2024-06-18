@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://jmhaufyqgrdr"]
+
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_2/lantern_special.gd" id="1_v7cjw"]
+[ext_resource type="Texture2D" uid="uid://butj03dep76b7" path="res://Sprites/cemetery_lantern.png" id="2_0pfnq"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_ic60d"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_5u502"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mwpgw"]
+radius = 20.2237
+
+[node name="Teleporter" type="Area2D" groups=["obstacles"]]
+script = ExtResource("1_v7cjw")
+metadata/Walkable = true
+metadata/Interactable = false
+metadata/Special = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -7)
+scale = Vector2(1, 1.68)
+shape = SubResource("CircleShape2D_mwpgw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("2_0pfnq")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.584314, 1, 0.815686, 1)
+shadow_enabled = true
+texture = ExtResource("3_ic60d")
+script = ExtResource("4_5u502")

@@ -1,0 +1,123 @@
+[gd_scene load_steps=13 format=3 uid="uid://bm3gbpb1x4bit"]
+
+[ext_resource type="Script" path="res://Units/Stats/playerVariables.gd" id="1_q07mw"]
+[ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="2_3x5th"]
+[ext_resource type="Script" path="res://Units/Utility/PlayerUtility/basicPlayerControl.gd" id="3_44cn5"]
+[ext_resource type="PackedScene" uid="uid://l8llk23jqkt6" path="res://Abilities/Movement/sprint.tscn" id="3_r02b1"]
+[ext_resource type="Texture2D" uid="uid://cl8pjblep7prl" path="res://Sprites/player_south.png" id="4_62ijk"]
+[ext_resource type="Script" path="res://Units/Utility/PlayerUtility/basicPlayerCamera.gd" id="4_fa1ml"]
+[ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="5_ogs4y"]
+[ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="7_hy3k5"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="7_tx7de"]
+[ext_resource type="Texture2D" uid="uid://bcpcpicdwbcik" path="res://Sprites/wall.png" id="7_v6w8f"]
+[ext_resource type="PackedScene" uid="uid://dbafe401smj6k" path="res://Utility/target_marker.tscn" id="11_ggljv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3jws1"]
+radius = 2.66756
+
+[node name="Player" type="Area2D" groups=["players"]]
+top_level = true
+script = ExtResource("1_q07mw")
+basic_attack_scene = ExtResource("2_3x5th")
+movement_skill_scene = ExtResource("3_r02b1")
+base_speed = 200
+base_range = 300
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(5.36, 9.16)
+shape = SubResource("CircleShape2D_3jws1")
+
+[node name="Control" type="Sprite2D" parent="."]
+texture = ExtResource("4_62ijk")
+script = ExtResource("3_44cn5")
+
+[node name="Camera" type="Node" parent="."]
+script = ExtResource("4_fa1ml")
+
+[node name="Camera2D" type="Camera2D" parent="Camera"]
+zoom = Vector2(0.635, 0.635)
+position_smoothing_enabled = true
+
+[node name="InventoryManager" type="Node" parent="."]
+script = ExtResource("5_ogs4y")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="InventoryManager"]
+
+[node name="PanelContainer" type="PanelContainer" parent="InventoryManager/CanvasLayer"]
+visible = false
+custom_minimum_size = Vector2(400, 200)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_right = 200.0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InventoryManager/CanvasLayer/PanelContainer"]
+layout_mode = 2
+
+[node name="abilityList" type="ItemList" parent="InventoryManager/CanvasLayer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+allow_search = false
+max_text_lines = 5
+auto_height = true
+
+[node name="ItemList" type="ItemList" parent="InventoryManager/CanvasLayer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+allow_reselect = true
+allow_search = false
+auto_height = true
+
+[node name="statList" type="ItemList" parent="InventoryManager/CanvasLayer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+allow_search = false
+auto_height = true
+
+[node name="UI" type="Node2D" parent="."]
+scale = Vector2(0.345, 0.345)
+
+[node name="ProgressBar" type="TextureProgressBar" parent="UI" groups=["players"]]
+offset_left = -100.0
+offset_top = -125.0
+offset_right = 28.0
+offset_bottom = 3.00002
+scale = Vector2(1.59367, 0.270626)
+texture_under = ExtResource("7_hy3k5")
+texture_progress = ExtResource("7_v6w8f")
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("7_tx7de")
+
+[node name="ProgressBar2" type="TextureProgressBar" parent="UI" groups=["players"]]
+offset_left = -100.0
+offset_top = -96.875
+offset_right = 28.0
+offset_bottom = 31.125
+scale = Vector2(1.59367, 0.145623)
+texture_under = ExtResource("7_hy3k5")
+texture_progress = ExtResource("7_v6w8f")
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("7_tx7de")
+
+[node name="TargetMarker" parent="UI" instance=ExtResource("11_ggljv")]
+visible = false
+
+[node name="attackBar" type="ProgressBar" parent="UI"]
+visible = false
+offset_left = -37.6812
+offset_top = 84.058
+offset_right = 34.3188
+offset_bottom = 111.058
+show_percentage = false
+
+[connection signal="item_selected" from="InventoryManager/CanvasLayer/PanelContainer/HBoxContainer/abilityList" to="InventoryManager" method="_on_ability_list_item_selected"]
+[connection signal="item_selected" from="InventoryManager/CanvasLayer/PanelContainer/HBoxContainer/ItemList" to="InventoryManager" method="_on_item_list_item_selected"]
+[connection signal="item_selected" from="InventoryManager/CanvasLayer/PanelContainer/HBoxContainer/statList" to="InventoryManager" method="_on_stat_list_item_selected"]

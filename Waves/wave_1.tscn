@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bo5p4mk3x60ix"]
+
+[ext_resource type="PackedScene" uid="uid://ra5y56o6peg0" path="res://Units/Instance/Enemies/Common/goblinRanger.tscn" id="1_x8woo"]
+[ext_resource type="PackedScene" uid="uid://dbkbmyl0v2i8r" path="res://Units/Instance/Enemies/Common/Goblin Farmer.tscn" id="2_dowgx"]
+[ext_resource type="PackedScene" uid="uid://bb2rcvgybikqf" path="res://Units/Instance/Enemies/Elite/Ogre.tscn" id="3_v6qaf"]
+
+[node name="Wave2" type="Node2D"]
+visible = false
+metadata/Color = Color(0.411765, 0.360784, 0.156863, 0.886275)
+
+[node name="basicMeleeCreature2" parent="." instance=ExtResource("2_dowgx")]
+
+[node name="basicRangeCreature4" parent="." instance=ExtResource("1_x8woo")]
+position = Vector2(586, 205)
+aggro_range = 600.0
+
+[node name="Ogre" parent="." instance=ExtResource("3_v6qaf")]

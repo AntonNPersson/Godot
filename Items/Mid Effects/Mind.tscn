@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyy7jhll7d08d"]
+
+[ext_resource type="Script" path="res://Items/Mid Effects/Mind.gd" id="1_ntdur"]
+
+[node name="Mind" type="Node2D"]
+script = ExtResource("1_ntdur")

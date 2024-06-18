@@ -1,0 +1,294 @@
+[gd_scene load_steps=34 format=3 uid="uid://dtr2poygeam3r"]
+
+[ext_resource type="Script" path="res://Managers/CharacterManager.gd" id="3_pvary"]
+[ext_resource type="Script" path="res://Managers/RoundManager.gd" id="4_4y6h6"]
+[ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="5_mw5nv"]
+[ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="7_gu5uy"]
+[ext_resource type="PackedScene" uid="uid://tte1vievd453" path="res://Maps/Tiles/Arena_1/arena_.tscn" id="8_1cf5u"]
+[ext_resource type="Script" path="res://Managers/WaveManager.gd" id="8_g373l"]
+[ext_resource type="Texture2D" uid="uid://bcpcpicdwbcik" path="res://Sprites/wall.png" id="8_uvsjg"]
+[ext_resource type="PackedScene" uid="uid://qnxt8v4bp6bp" path="res://Maps/Tiles/Arena_2/Arena_2.tscn" id="9_ffoda"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_qlqvm"]
+[ext_resource type="Script" path="res://Managers/AbilityManager.gd" id="10_6msql"]
+[ext_resource type="PackedScene" uid="uid://cgmc1c2i7fn3x" path="res://Maps/Tiles/Town/town_1.tscn" id="10_ag130"]
+[ext_resource type="Script" path="res://Managers/MapManager.gd" id="10_o48hw"]
+[ext_resource type="PackedScene" uid="uid://babgdhhfthpqt" path="res://Utility/Spawn_effects.tscn" id="11_dh7s2"]
+[ext_resource type="PackedScene" uid="uid://cb37rpkwu46x2" path="res://Abilities/Utility/hit_effect.tscn" id="13_gx4o2"]
+[ext_resource type="PackedScene" uid="uid://dld07ncmxpsyx" path="res://Abilities/Utility/infected_effect.tscn" id="13_ucx2b"]
+[ext_resource type="PackedScene" uid="uid://bo7pvdl0hpuri" path="res://Abilities/Utility/burn_effect.tscn" id="16_5b4lt"]
+[ext_resource type="Script" path="res://Managers/CombatManager.gd" id="16_6xq26"]
+[ext_resource type="Script" path="res://Managers/InteractionManager.gd" id="16_o7lkj"]
+[ext_resource type="PackedScene" uid="uid://dtbp7mjj6sxej" path="res://Utility/interactable_popup.tscn" id="17_ddkao"]
+[ext_resource type="PackedScene" uid="uid://dg2iyxhbtp8jk" path="res://Abilities/Utility/freeze_effect.tscn" id="17_saor0"]
+[ext_resource type="PackedScene" uid="uid://e4iw4b160x30" path="res://GUI/combat_text.tscn" id="18_hctrb"]
+[ext_resource type="Shader" path="res://Shaders/fog_shader.gdshader" id="22_0mhy5"]
+[ext_resource type="Script" path="res://Managers/CinematicManager.gd" id="22_beavb"]
+[ext_resource type="PackedScene" uid="uid://c8ikvo6rnmtyw" path="res://Utility/boss_title.tscn" id="23_vhcc8"]
+[ext_resource type="Script" path="res://Managers/ItemManager.gd" id="25_fj1hn"]
+[ext_resource type="PackedScene" uid="uid://b6xve3wi8me70" path="res://Items/Bot Effects/Bot Item pieces.tscn" id="26_gq356"]
+[ext_resource type="PackedScene" uid="uid://cmblsxecemyvg" path="res://Items/Low-Mid Effects/lowmidlist.tscn" id="27_4ei4o"]
+[ext_resource type="PackedScene" uid="uid://bugmvirpfn5na" path="res://Items/Item.tscn" id="28_757ui"]
+[ext_resource type="PackedScene" uid="uid://tgn63im6llu7" path="res://Items/Mid Effects/Mid effects list.tscn" id="28_l1ijq"]
+
+[sub_resource type="Gradient" id="Gradient_cfxw4"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_c85ul"]
+noise_type = 5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7m1hr"]
+width = 1920
+height = 1080
+invert = true
+seamless = true
+color_ramp = SubResource("Gradient_cfxw4")
+noise = SubResource("FastNoiseLite_c85ul")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxvlt"]
+shader = ExtResource("22_0mhy5")
+shader_parameter/density = 0.13
+shader_parameter/speed = Vector2(0.02, 0.01)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_7m1hr")
+
+[node name="Main" type="Node"]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.231373, 0.239216, 0.388235, 1)
+
+[node name="Environment" type="Node" parent="CanvasModulate"]
+
+[node name="Units" type="Node" parent="CanvasModulate"]
+
+[node name="WaveManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("8_g373l")
+
+[node name="Waves" type="Node" parent="CanvasModulate/WaveManager"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasModulate/WaveManager"]
+visible = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_top = 203.0
+offset_right = -9.0
+offset_bottom = 223.0
+grow_horizontal = 0
+text = "Objectives:"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_top = 224.0
+offset_right = -9.0
+offset_bottom = 244.0
+grow_horizontal = 0
+text = "Levels: 0/10
+Waves: 0/3
+Enemies: 0/7"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -149.0
+offset_right = 11.0
+offset_bottom = -118.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "5"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -191.0
+offset_right = 11.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "Wave"
+fit_content = true
+autowrap_mode = 0
+
+[node name="CharacterManager" type="Node" parent="CanvasModulate" node_paths=PackedStringArray("units")]
+script = ExtResource("3_pvary")
+units = NodePath("../Units")
+
+[node name="RoundManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("4_4y6h6")
+
+[node name="AbilityManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("10_6msql")
+
+[node name="Abilities" type="Node" parent="CanvasModulate/AbilityManager"]
+
+[node name="Augments" type="Node" parent="CanvasModulate/AbilityManager"]
+
+[node name="UI" type="Node" parent="CanvasModulate/AbilityManager"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasModulate/AbilityManager/UI"]
+
+[node name="choiceList" type="ItemList" parent="CanvasModulate/AbilityManager/UI/CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_mw5nv")
+theme_override_font_sizes/font_size = 11
+auto_height = true
+same_column_width = true
+fixed_icon_size = Vector2i(15, 15)
+
+[node name="showButton" type="Button" parent="CanvasModulate/AbilityManager/UI/CanvasLayer"]
+visible = false
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_fonts/font = ExtResource("5_mw5nv")
+theme_override_font_sizes/font_size = 11
+text = "Show Choices"
+
+[node name="MapManager" type="Node2D" parent="CanvasModulate" node_paths=PackedStringArray("im")]
+script = ExtResource("10_o48hw")
+town_file = "res://Maps/Tiles/Town/town.txt"
+arena_1_scene = ExtResource("8_1cf5u")
+arena_2_scene = ExtResource("9_ffoda")
+town_scene = ExtResource("10_ag130")
+pathfinding_debug = null
+spawn_effects = ExtResource("11_dh7s2")
+im = NodePath("../../ItemManager")
+
+[node name="CombatManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("16_6xq26")
+burn_effect = ExtResource("16_5b4lt")
+freeze_effect = ExtResource("17_saor0")
+hit_effect = ExtResource("13_gx4o2")
+infected_effect = ExtResource("13_ucx2b")
+combat_text = ExtResource("18_hctrb")
+
+[node name="UI" type="CanvasLayer" parent="CanvasModulate/CombatManager" groups=["UI"]]
+
+[node name="ProgressBar" type="TextureProgressBar" parent="CanvasModulate/CombatManager/UI"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -215.0
+offset_top = 2.0
+offset_right = -87.0
+offset_bottom = 130.0
+grow_horizontal = 2
+scale = Vector2(3.35723, 0.232902)
+texture_under = ExtResource("7_gu5uy")
+texture_progress = ExtResource("8_uvsjg")
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("9_qlqvm")
+
+[node name="UI" type="CanvasLayer" parent="CanvasModulate"]
+
+[node name="InteractionManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("16_o7lkj")
+popup_ = ExtResource("17_ddkao")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="CanvasModulate"]
+_spawnable_scenes = PackedStringArray("res://Units/Instance/Characters/Explorer.tscn")
+spawn_path = NodePath("../Units")
+spawn_limit = 2
+
+[node name="CinematicManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("22_beavb")
+boss_encounter_text = ExtResource("23_vhcc8")
+
+[node name="InventoryManager" type="Node" parent="CanvasModulate"]
+script = ExtResource("25_fj1hn")
+bot = ExtResource("26_gq356")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+layer = -2
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
+material = SubResource("ShaderMaterial_cxvlt")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ParallaxBackground" parent="."]
+layer = -3
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Background"]
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="ColorRect2" type="ColorRect" parent="Background/ParallaxLayer"]
+z_as_relative = false
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="ItemManager" type="Node" parent="."]
+script = ExtResource("25_fj1hn")
+bot = ExtResource("26_gq356")
+mid = ExtResource("27_4ei4o")
+top = ExtResource("28_l1ijq")
+item = ExtResource("28_757ui")
+
+[connection signal="get_units" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_get_units"]
+[connection signal="next_sub_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_start_sub_wave"]
+[connection signal="respawn_creatures" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_respawn_creatures"]
+[connection signal="start_boss" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_start_boss_encounter"]
+[connection signal="start_boss" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_start_wave"]
+[connection signal="start_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_wave_manager_start_wave"]
+[connection signal="start_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_start_wave"]
+[connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/RoundManager" method="_on_stop_wave"]
+[connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_stop_wave"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/RoundManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/AbilityManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/MapManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/CombatManager" method="_on_character_selected"]
+[connection signal="character_selected" from="CanvasModulate/CharacterManager" to="ItemManager" method="_on_character_manager_character_selected"]
+[connection signal="start_round_manager" from="CanvasModulate/CharacterManager" to="CanvasModulate/RoundManager" method="_on_start_round_manager"]
+[connection signal="next_choice" from="CanvasModulate/RoundManager" to="CanvasModulate/AbilityManager" method="_on_next_choice"]
+[connection signal="next_shop" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_next_shop"]
+[connection signal="next_wave" from="CanvasModulate/RoundManager" to="CanvasModulate/WaveManager" method="_on_next_wave"]
+[connection signal="start_encounter" from="CanvasModulate/RoundManager" to="CanvasModulate/WaveManager" method="_on_round_manager_start_encounter"]
+[connection signal="start_singleplayer" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_round_manager_start_singleplayer"]
+[connection signal="picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_picked"]
+[connection signal="item_clicked" from="CanvasModulate/AbilityManager/UI/CanvasLayer/choiceList" to="CanvasModulate/AbilityManager" method="_on_choice_list_item_clicked"]
+[connection signal="pressed" from="CanvasModulate/AbilityManager/UI/CanvasLayer/showButton" to="CanvasModulate/AbilityManager" method="_on_button_pressed"]
+[connection signal="changing_map" from="CanvasModulate/MapManager" to="CanvasModulate/InteractionManager" method="_on_changing_map"]
+[connection signal="start_boss_cinematic" from="CanvasModulate/MapManager" to="CanvasModulate/CinematicManager" method="_start_cinematic"]
+[connection signal="used_creatures" from="CanvasModulate/MapManager" to="CanvasModulate/WaveManager" method="_on_map_manager_used_creatures"]
+[connection signal="call_wave_manager" from="CanvasModulate/InteractionManager" to="CanvasModulate/RoundManager" method="_next_area"]
