@@ -11,6 +11,7 @@ var bot_list
 var second_mid_list
 var mid_list
 var top_list
+var second_top_list
 
 var starting_items = 0
 var weapon_list = [14, 15, 16, 17, 18, 19, 20]
@@ -19,7 +20,8 @@ var potion_list
 const ITEM_RARITY = {
 	COMMON = 0,
 	UNCOMMON = 1,
-	RARE = 2
+	RARE = 2,
+	EPIC = 3
 }
 
 # Called when the node enters the scene tree for the first time. vres://Items/Mid Effects/Mid effects list.tscn
@@ -28,12 +30,14 @@ func _ready():
 	var mid_instance = preload('res://Items/Low-Mid Effects/lowmidlist.tscn').instantiate()
 	var second_mid = preload('res://Items/Low-Mid Effects/lowmidlist2.tscn').instantiate()
 	var top_instance = preload('res://Items/Mid Effects/Mid effects list.tscn').instantiate()
+	var second_top = preload('res://Items/Top Effects/top list effects.tscn').instantiate()
 	var potion_instance = preload('res://Items/Potions/potion list.tscn').instantiate()
 
 	bot_list = bot_instance.get_children()
 	second_mid_list = second_mid.get_children()
 	mid_list = mid_instance.get_children()
 	top_list = top_instance.get_children()
+	second_top_list = second_top.get_children()
 	potion_list = potion_instance.get_children()
 
 
@@ -41,11 +45,13 @@ func _ready():
 	get_node('Items').add_child(second_mid)
 	get_node('Items').add_child(mid_instance)
 	get_node('Items').add_child(top_instance)
+	get_node('Items').add_child(second_top)
 	get_node('Items').add_child(potion_instance)
 	bot_instance.global_position = Vector2(-10000, -10000)
 	second_mid.global_position = Vector2(-10000, -10000)
 	mid_instance.global_position = Vector2(-10000, -10000)
 	top_instance.global_position = Vector2(-10000, -10000)
+	second_top.global_position = Vector2(-10000, -10000)
 
 	_add_potion_to_inventory()
 	_add_potion_to_inventory()
@@ -54,28 +60,22 @@ func _ready():
 	for i in range(0, 4):
 		_add_to_inventory()
 
-func _process(delta):
-	if player == null:
-		return
-
-	if !player.in_combat:
-		for child in get_children():
-			if child.name == 'Items':
-				continue
-			child.queue_free()
 
 func _calculate_item_rarity():
+	print_debug("Change this to a proper rarity calculation after testing")
 	var _randi = randi() % 100
 	if _randi < 40:
 		return
 
-	var rarity = randi() % 50
+	var rarity = 53
 	if rarity < 30:
 		return ITEM_RARITY.COMMON
 	elif rarity < 45:
 		return ITEM_RARITY.UNCOMMON
-	elif rarity < 49:
+	elif rarity < 52:
 		return ITEM_RARITY.RARE
+	elif rarity < 54:
+		return ITEM_RARITY.EPIC
 	else:
 		return null
 
@@ -96,7 +96,6 @@ func _create_item(_rarity = null):
 		_item._initialize()
 		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
 		add_child(_item)
-		_item.add_to_group('Items')
 		return _item
 	elif rarity == ITEM_RARITY.UNCOMMON:
 		var bot_piece = bot_list[randi() % bot_list.size()].duplicate()
@@ -119,7 +118,6 @@ func _create_item(_rarity = null):
 		_item._initialize()
 		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
 		add_child(_item)
-		_item.add_to_group('Items')
 		return _item
 	elif rarity == ITEM_RARITY.RARE:
 		var bot_piece = bot_list[randi() % bot_list.size()].duplicate()
@@ -146,7 +144,36 @@ func _create_item(_rarity = null):
 		_item._initialize()
 		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
 		add_child(_item)
-		_item.add_to_group('Items')
+		return _item
+	elif rarity == ITEM_RARITY.EPIC:
+		var bot_piece = bot_list[randi() % bot_list.size()].duplicate()
+		var second_mid_piece = second_mid_list[randi() % second_mid_list.size()].duplicate()
+		var mid_piece = mid_list[randi() % mid_list.size()].duplicate()
+		var top_piece = top_list[randi() % top_list.size()].duplicate()
+		var second_top_piece = second_top_list[randi() % second_top_list.size()].duplicate()
+		second_mid_piece._initialize()
+		bot_piece._initialize()
+		mid_piece._initialize()
+		top_piece._initialize()
+		second_top_piece._initialize()
+		var _item = item.instantiate()
+		_item.i_name = second_top_piece.name + ", " + bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name + " and " + top_piece.name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.EPIC
+		_item.im = self
+		_item.add_child(bot_piece)
+		_item.add_child(second_mid_piece)
+		_item.add_child(mid_piece)
+		_item.add_child(top_piece)
+		_item.add_child(second_top_piece)
+		bot_piece.set_owner(_item)
+		second_mid_piece.set_owner(_item)
+		mid_piece.set_owner(_item)
+		top_piece.set_owner(_item)
+		second_top_piece.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
+		add_child(_item)
 		return _item
 	else:
 		return null
@@ -200,7 +227,6 @@ func _add_to_inventory():
 		starting_items += 1
 	if _item == null:
 		return
-	player.get_node('InventoryManager').add_child(_item)
 	player.get_node('InventoryManager')._on_item_picked_up(_item)
 
 func _create_chest():
@@ -214,8 +240,7 @@ func _create_chest():
 	_item.add_child(chest)
 	_item._initialize()
 	_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
-	add_child(_item)
-	_item.add_to_group('Items')
+	player.get_node('InventoryManager').get_node('Items').add_child(_item)
 	return _item
 
 func _create_legs():
@@ -229,8 +254,7 @@ func _create_legs():
 	_item.add_child(legs)
 	_item._initialize()
 	_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
-	add_child(_item)
-	_item.add_to_group('Items')
+	player.get_node('InventoryManager').get_node('Items').add_child(_item)
 	return _item
 
 func _create_boots():
@@ -244,8 +268,7 @@ func _create_boots():
 	_item.add_child(boots)
 	_item._initialize()
 	_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
-	add_child(_item)
-	_item.add_to_group('Items')
+	player.get_node('InventoryManager').get_node('Items').add_child(_item)
 	return _item
 
 func _create_weapon():
@@ -259,8 +282,7 @@ func _create_weapon():
 	_item.add_child(weapon)
 	_item._initialize()
 	_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
-	add_child(_item)
-	_item.add_to_group('Items')
+	player.get_node('InventoryManager').get_node('Items').add_child(_item)
 	return _item
 
 func _on_character_manager_character_selected(unit):

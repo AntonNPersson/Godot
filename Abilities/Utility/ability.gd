@@ -68,6 +68,10 @@ enum area_types {Storm, Blast, Scream}
 var tooltip : String
 var ad_update : bool = false
 
+var item_tags : Array[String]
+var item_values : Array[float]
+var item_duration : Array[float]
+
 var power : float
 #-------------------#
 # Helper Functions
@@ -181,6 +185,17 @@ func _add_tag(tag, value, increased_value):
 	values.append(value)
 	increased_values.append(increased_value)
 
+func _add_item_tag(tag, value, dur):
+	item_tags.append(tag)
+	item_values.append(value)
+	item_duration.append(dur)
+
+func _remove_item_tag(tag):
+	var index = item_tags.find(tag)
+	item_tags.erase(tag)
+	item_values.remove_at(index)
+	item_duration.remove_at(index)
+
 # Update values based on level
 func _level_grants():
 	for inc in range(values.size()):
@@ -278,6 +293,9 @@ func _use():
 	_advanced_update()
 	if _check_weight(true):
 		unit.get_node('Control').on_action.emit(-(weight + unit.global_weight), unit, weight_duration, 'SpeedBuff')
+		
+	_on_item_use()
+
 	if projectile_type == targeting_type.Line:
 		var pos = unit.get_global_mouse_position()
 		for i in range(amount):
@@ -414,6 +432,13 @@ func _on_hit(area):
 			unit.get_node('Control').on_action.emit(_apply_scaling(values[val], ability_type), area, unit, tags[val])
 			if projectile_type != targeting_type.Area:
 				_shake_camera()
+
+func _on_item_use():
+	if item_tags.size() == 0:
+		return
+
+	for val in item_tags.size():
+		unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val])
 
 # Set targeting to true/false
 func _target(state):

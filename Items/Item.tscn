@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bugmvirpfn5na"]
+[gd_scene load_steps=21 format=3 uid="uid://bugmvirpfn5na"]
 
 [ext_resource type="Script" path="res://Items/Item.gd" id="1_iaam4"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="2_icbnx"]
@@ -6,6 +6,26 @@
 [ext_resource type="Shader" path="res://Items/particle_light.gdshader" id="2_y6cl4"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="3_xxd8r"]
 [ext_resource type="Texture2D" uid="uid://c3w5fvw3fok50" path="res://Sprites/manaball.png" id="5_yim66"]
+
+[sub_resource type="Theme" id="Theme_yy6oc"]
+
+[sub_resource type="Theme" id="Theme_ur17p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vkckk"]
+bg_color = Color(0, 0, 0, 0.266667)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qath3"]
+bg_color = Color(0, 0, 0, 0.266667)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrdtt"]
 bg_color = Color(0, 0, 0, 1)
@@ -127,6 +147,7 @@ script = ExtResource("1_iaam4")
 [node name="Panel" type="Panel" parent="CanvasLayer"]
 visible = false
 modulate = Color(1, 1, 1, 0.552941)
+z_index = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -134,8 +155,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -960.0
 offset_top = -540.0
-offset_right = -727.0
-offset_bottom = -364.0
+offset_right = -706.0
+offset_bottom = -313.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_issgg")
@@ -145,25 +166,72 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 13.0
-offset_top = 10.0
-offset_bottom = -4.0
+offset_left = 10.0
+offset_top = 11.0
+offset_right = -6.0
+offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
 collapsed = true
+dragger_visibility = 2
 
 [node name="Name" type="RichTextLabel" parent="CanvasLayer/Panel/VSplitContainer"]
 layout_mode = 2
+bbcode_enabled = true
 text = "Chest"
 fit_content = true
 
 [node name="Description" type="RichTextLabel" parent="CanvasLayer/Panel/VSplitContainer"]
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
+theme = SubResource("Theme_yy6oc")
+theme_override_colors/default_color = Color(0.513726, 0.513726, 0.513726, 1)
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "Armor: 100"
+fit_content = true
+
+[node name="VSplitContainer2" type="Panel" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 82.0
+offset_right = -17.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ur17p")
+theme_override_styles/panel = SubResource("StyleBoxFlat_vkckk")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Panel/VSplitContainer2"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 10.0
+offset_right = 212.0
+offset_bottom = 137.0
+horizontal_scroll_mode = 0
+
+[node name="Description" type="RichTextLabel" parent="CanvasLayer/Panel/VSplitContainer2/ScrollContainer"]
+custom_minimum_size = Vector2(175, 100)
+layout_mode = 2
+mouse_force_pass_scroll_events = false
+theme = SubResource("Theme_yy6oc")
 theme_override_colors/default_color = Color(0.513726, 0.513726, 0.513726, 1)
 theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 text = "Strenght"
 fit_content = true
+scroll_following = true
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 29.0
+offset_right = 244.0
+offset_bottom = 86.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qath3")
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer" groups=["tooltip"]]
 position = Vector2(-14, 0)

@@ -187,13 +187,16 @@ func _update_inventory():
 	inventory_hud.clear()
 	for item in inventory:
 		if !is_instance_valid(item):
+			print('item not valid')
 			continue
 		inventory_hud.add_item(" " + item.i_name)
 		inventory_hud.set_item_tooltip(inventory_hud.item_count - 1, item.tooltip)
 
 	var empty_slots = max_slots - inventory.size()
+	print(empty_slots)
 	for i in range(empty_slots):
 		inventory_hud.add_item(" Empty Slot")
+		print('doing it')
 
 	potion_hud.clear()
 	for potion in potions:
@@ -282,6 +285,16 @@ func _on_ability_manager_picked(_ability):
 	_ability.unit = self.get_parent()
 	_ability._initialize()
 
+func _add_item_effect_to_ability(abilit, tag, value, duration):
+	if abilities[abilit] == null:
+		return
+	abilities[abilit]._add_item_tag(tag, value, duration)
+
+func _remove_item_effect_from_ability(abilit, tag):
+	if abilities[abilit] == null:
+		return
+	abilities[abilit]._remove_item_tag(tag)
+
 func _on_item_picked_up(item):
 	if inventory.size() < max_slots:
 		inventory.append(item)
@@ -289,6 +302,10 @@ func _on_item_picked_up(item):
 		var children = item.get_children()
 		if children.size() > 2:
 			for i in range(2, children.size()):
+				if "epic" in children[i]:
+					_add_item_effect_to_ability(children[i].epic, children[i].tags[0], children[i].value[0], children[i].duration)
+					continue
+
 				if "range" in children[i]:
 					if weapon_equipped:
 						Utility.get_node("ErrorMessage")._create_error_message("Weapon already equipped", self)
@@ -306,6 +323,10 @@ func _on_item_dropped():
 			var children = selected_item.get_children()
 			if children.size() > 2:
 				for i in range(2, children.size()):
+					if "epic" in children[i]:
+						_remove_item_effect_from_ability(children[i].epic, children[i].tags[0])
+						continue
+
 					if "range" in children[i]:
 						weapon_equipped = false
 					remove_stats.emit(children[i])
@@ -369,3 +390,9 @@ func _on_item_list_item_activated(index:int):
 	if inventory_hud.get_item_text(index) == "Empty Slot":
 		return
 	_on_item_dropped()
+
+func _on_inventory_mouse_entered():
+	unit.lose_camera_focus = true
+
+func _on_inventory_mouse_exited():
+	unit.lose_camera_focus = false

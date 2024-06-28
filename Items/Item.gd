@@ -3,9 +3,9 @@ extends Node2D
 var player
 var rarity
 var im
+
 signal picked_up(item)
 var _picked_up = false
-var tooltip = ""
 
 const ITEM_RARITY = {
 	COMMON = 0,
@@ -15,33 +15,49 @@ const ITEM_RARITY = {
 	LEGENDARY = 4
 }
 
+var tooltip = ""
+var tooltip_name
+var tooltip_main_desc
+var tooltip_sub_desc
+var tooltip_icon
+
+var scroll_panel
+
+
+
 func _initialize():
+	tooltip_name = get_child(0).get_child(0).get_child(0).get_child(0)
+	tooltip_main_desc = get_child(0).get_child(0).get_child(0).get_child(1)
+	tooltip_sub_desc = get_child(0).get_child(0).get_child(1).get_child(0).get_child(0)
+	tooltip_icon = get_child(0).get_child(0).get_child(2)
+	scroll_panel = get_child(0).get_child(0).get_child(1).get_child(0)
+
 	get_child(0).get_child(1).global_position = get_global_transform_with_canvas().get_origin()
 	get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center]' + get_child(2).name
-	get_child(0).get_child(0).get_child(0).get_node('Name').text = i_name
+	tooltip_name.text = i_name
 	if rarity == ITEM_RARITY.COMMON:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center][color=white]' + get_child(2).name + '[/color][/center]'
-		get_child(0).get_child(0).get_child(0).get_node('Name').modulate = Color(1, 1, 1)
+		tooltip_name.modulate = Color(1, 1, 1)
 		get_child(1).color = Color.WHITE
 		get_child(1).get_child(0).color = Color.WHITE
 	elif rarity == ITEM_RARITY.UNCOMMON:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Lawngreen]' + get_child(2).name + '[/color]'
-		get_child(0).get_child(0).get_child(0).get_node('Name').modulate = Color.LAWN_GREEN
+		tooltip_name.modulate = Color.LAWN_GREEN
 		get_child(1).color = Color.LAWN_GREEN
 		get_child(1).get_child(0).color = Color.LAWN_GREEN
 	elif rarity == ITEM_RARITY.RARE:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Dodgerblue]' + get_child(2).name + '[/color]'
-		get_child(0).get_child(0).get_child(0).get_node('Name').modulate = Color.DODGER_BLUE
+		tooltip_name.modulate = Color.DODGER_BLUE
 		get_child(1).color = Color.DODGER_BLUE
 		get_child(1).get_child(0).color = Color.DODGER_BLUE
 	elif rarity == ITEM_RARITY.EPIC:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Blueviolet]' + get_child(2).name + '[/color]'
-		get_child(0).get_child(0).get_child(0).get_node('Name').modulate = Color.BLUE_VIOLET
+		tooltip_name.modulate = Color.BLUE_VIOLET
 		get_child(1).color = Color.BLUE_VIOLET
 		get_child(1).get_child(0).color = Color.BLUE_VIOLET
 	elif rarity == ITEM_RARITY.LEGENDARY:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Darkorange]' + get_child(2).name + '[/color]'
-		get_child(0).get_child(0).get_child(0).get_node('Name').modulate = Color.DARK_ORANGE
+		tooltip_name.modulate = Color.DARK_ORANGE
 		get_child(1).color = Color.DARK_ORANGE
 		get_child(1).get_child(0).color = Color.DARK_ORANGE
 
@@ -53,8 +69,9 @@ func _initialize():
 		tooltip += _create_tooltip(5)
 	if rarity >= ITEM_RARITY.EPIC:
 		tooltip += _create_tooltip(6)
+
+	tooltip_sub_desc.text = tooltip
 	
-	get_child(0).get_child(0).get_child(0).get_node('Description').text = tooltip
 
 func _get_random_animation():
 	var anim = randi() % 4
@@ -73,11 +90,19 @@ func _play_random_animation():
 
 func _create_tooltip(valu):
 	var toolt = ""
+	if valu == 6:
+		toolt += "\n"
+		toolt += get_child(valu)._get_tooltip()
+		return toolt
+
 	var tag_values = {}
 	for i in range(get_child(valu)._get_tags().size()):
-		var tag = "* " + get_child(valu)._get_tags()[i]
+		var tag = get_child(valu)._get_tags()[i]
 		var value = get_child(valu)._get_values()[i]
 		tag = tag.capitalize().replace("_", " ")
+		if tag == "Armor" or tag == "Evade" or tag == "Barrier" or tag == "Attack Damage":
+			tooltip_main_desc.text = tag + ": " + str(value)
+			continue
 
 		if value != 0:
 			if tag in tag_values:
@@ -90,11 +115,11 @@ func _create_tooltip(valu):
 				toolt += tag + ": " + "%.1f"%value + "%" + "\n"
 			else:
 				toolt += tag + ": " + "%.1f"%value + "\n"
-			
+
 	return toolt
 
 func _input(event):
-	if get_child(0).visible == true and _picked_up == false:
+	if get_child(0).get_child(0).visible == true and _picked_up == false:
 		if event.is_action_pressed('Interact'):
 			if player.get_node('InventoryManager').inventory.size() < player.get_node('InventoryManager').max_slots:
 				if "range" in get_child(2)._get_tags():
@@ -105,6 +130,8 @@ func _input(event):
 				_picked_up = true
 				im.remove_child(self)
 				player.get_node('InventoryManager').get_node('Items').add_child(self)
+				get_child(0).visible = false
+				get_child(1).visible = false
 				return
 			else:
 				Utility.get_node("ErrorMessage")._create_error_message("Inventory full", player)
@@ -112,10 +139,12 @@ func _input(event):
 
 func _drop_item():
 	_picked_up = false
+	player.get_node('InventoryManager').get_node('Items').remove_child(self)
 	im.add_child(self)
 	global_position = player.global_position
+	get_child(0).visible = true
+	get_child(0).get_child(0).visible = false
 	get_child(1).visible = true
-	add_to_group("Items")
 
 func find_close_random_position():
 	var pos = global_position + Vector2(randf_range(-10, 10), randf_range(-10, 10))
@@ -124,8 +153,6 @@ func find_close_random_position():
 
 func _process(delta):
 	if player == null or _picked_up == true:
-		get_child(0).visible = false
-		get_child(1).visible = false
 		return
 	
 	if !_picked_up:
@@ -158,8 +185,19 @@ func _on_panel_2_mouse_entered():
 	get_child(0).get_child(0).visible = true
 	get_child(0).get_child(0).global_position = get_global_transform_with_canvas().get_origin()
 	get_child(0).get_child(1).get_child(0).modulate.a = 1
+	scroll_panel.grab_focus()
+	player.lose_camera_focus = true
 
 
 func _on_panel_2_mouse_exited():
 	get_child(0).get_child(0).visible = false
 	get_child(0).get_child(1).get_child(0).modulate.a = 0.5
+	scroll_panel.release_focus()
+	player.lose_camera_focus = false
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			scroll_panel.scroll_vertical -= 1
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			scroll_panel.scroll_vertical += 1

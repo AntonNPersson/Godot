@@ -224,6 +224,8 @@ item = ExtResource("28_757ui")
 [node name="Items" type="Node2D" parent="ItemManager"]
 visible = false
 
+[node name="Equipped" type="Node" parent="ItemManager"]
+
 [node name="Objects" type="Node" parent="."]
 
 [connection signal="get_units" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_get_units"]

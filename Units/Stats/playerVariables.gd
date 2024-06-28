@@ -153,6 +153,7 @@ var regen_timer = 0
 var completed_waves = []
 
 var paused = false
+var lose_camera_focus = false
 
 # Calculate the percentage based on current and total values
 func _calculate_percentage(current, total):

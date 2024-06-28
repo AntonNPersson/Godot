@@ -24,8 +24,9 @@ func cam_speed_set(value):
 	cam_speed = value
 
 func _input(event):
-	if parent.paused:
+	if parent.paused or parent.lose_camera_focus:
 		return
+
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			follow_cam.zoom = clamp(follow_cam.zoom - Vector2(0.01, 0.01), min_zoom, max_zoom)

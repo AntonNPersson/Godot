@@ -108,6 +108,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_protection_passive_action(target, value, "Freeze")
 		"SpeedBuff":
 			_handle_speed_buff_action(target, value, user)
+		"PercentSpeedBuff":
+			_handle_percent_speed_buff_action(target, value, user)
 		"SelfInvincible":
 			_handle_self_invincible_action(user, value)
 		"Stealth":
@@ -362,6 +364,20 @@ func _handle_percent_armor_buff_action(target, value, user):
 		target._update_stats()
 	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Armor"))
+	timer.start()
+
+# Handles the percent speed buff action on the target.
+# Parameters:
+# - target: The target of the action.
+# - value: The value of the speed buff.
+# - user: The user of the action.
+func _handle_percent_speed_buff_action(target, value, user):
+	var percent = value/100 * target.total_speed
+	target.bonus_speed += percent
+	if target.is_in_group('players'):
+		target._update_stats()
+	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, percent, "Speed"))
 	timer.start()
 
 # Handles the attack buff action on the target.

@@ -110,7 +110,7 @@ func _ready():
 #Start a wave, and cache the walkable neighboars for AI pathfinding.
 func _start(file, tiles):
 	for child in im.get_children():
-		if child.name == 'Items' or !child.is_in_group('Items'):
+		if child.name == 'Items':
 			continue
 		child.queue_free()
 	for a in get_tree().get_root().get_node('Main').get_node('Objects').get_children():
