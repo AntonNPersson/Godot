@@ -9,7 +9,7 @@
 visible = false
 script = ExtResource("1_t7jvk")
 metadata/Special = true
-metadata/Color = Color(0, 0, 0, 0.886275)
+metadata/Color = Color(0.141176, 0.141176, 0.141176, 1)
 
 [node name="basicMeleeCreature" parent="." instance=ExtResource("2_ip3k1")]
 position = Vector2(48.119, -49.2413)

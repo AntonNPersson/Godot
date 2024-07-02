@@ -53,8 +53,8 @@ func _ready():
 	top_instance.global_position = Vector2(-10000, -10000)
 	second_top.global_position = Vector2(-10000, -10000)
 
-	_add_potion_to_inventory()
-	_add_potion_to_inventory()
+	_add_potion_to_inventory("Mana")
+	_add_potion_to_inventory("Health")
 	player.get_node('InventoryManager').current_potion_charges[0] = player.get_node('InventoryManager').potion_charges[0]
 	player.get_node('InventoryManager').current_potion_charges[1] = player.get_node('InventoryManager').potion_charges[1]
 	for i in range(0, 4):
@@ -67,7 +67,7 @@ func _calculate_item_rarity():
 	if _randi < 40:
 		return
 
-	var rarity = 53
+	var rarity = randi() % 54
 	if rarity < 30:
 		return ITEM_RARITY.COMMON
 	elif rarity < 45:
@@ -178,8 +178,13 @@ func _create_item(_rarity = null):
 	else:
 		return null
 
-func _create_potion():
-	var potion = potion_list[randi() % potion_list.size()].duplicate()
+func _create_health_potion():
+	var potion = potion_list[0].duplicate()
+	potion._initialize()
+	return potion
+
+func _create_mana_potion():
+	var potion = potion_list[1].duplicate()
 	potion._initialize()
 	return potion
 
@@ -200,14 +205,22 @@ func _drop_bot_item(position):
 	if self.get_children().find(_item) != -1:
 		return
 
-func _drop_potion(position):
-	var _potion = _create_potion()
+func _drop_potion(position, type):
+	var _potion
+	if type == "Mana":
+		_potion = _create_mana_potion()
+	else:
+		_potion = _create_health_potion()
 	_potion.global_position = position
 	if self.get_children().find(_potion) != -1:
 		return
 
-func _add_potion_to_inventory():
-	var _potion = _create_potion()
+func _add_potion_to_inventory(type):
+	var _potion
+	if type == "Mana":
+		_potion = _create_mana_potion()
+	else:
+		_potion = _create_health_potion()
 	player.get_node('InventoryManager').add_child(_potion)
 	player.get_node('InventoryManager')._on_potion_picked_up(_potion)
 

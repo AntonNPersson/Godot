@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw7r4u5xj3ko8"]
+
+[ext_resource type="Script" path="res://Items/Top Effects/Aeolus.gd" id="1_7kr11"]
+
+[node name="Aeolus" type="Node2D"]
+script = ExtResource("1_7kr11")

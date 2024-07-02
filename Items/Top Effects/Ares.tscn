@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpjp2shsojlv0"]
+
+[ext_resource type="Script" path="res://Items/Top Effects/Ares.gd" id="1_v7imd"]
+
+[node name="Ares" type="Node2D"]
+script = ExtResource("1_v7imd")

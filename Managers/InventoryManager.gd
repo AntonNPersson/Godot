@@ -55,8 +55,8 @@ func _ready():
 	
 func _process(delta):
 	_update_stats()
-	potion_bar_1._update_potion(potion_charges[0], current_potion_charges[0], "Health")
-	potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], "Health")
+	potion_bar_1._update_potion(potion_charges[0], current_potion_charges[0], potions[0].type)
+	potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], potions[1].type)
 	for i in abilities.size():
 		cooldown_timers[i] -= 1 * delta
 		hotbar.get_child(i).texture = abilities[i].icon
@@ -204,6 +204,7 @@ func _update_inventory():
 			continue
 		potion_hud.add_item(" " + potion.i_name)
 		potion_hud.set_item_tooltip(potion_hud.item_count - 1, potion.tooltip)
+
 func _update_stats():
 	var stats = {
 		"Total Health": {"base": int(unit.total_health), "bonus": (unit.bonus_health + (unit.total_vitality * 2)) * (1 + unit.global_health/100)},
@@ -285,10 +286,10 @@ func _on_ability_manager_picked(_ability):
 	_ability.unit = self.get_parent()
 	_ability._initialize()
 
-func _add_item_effect_to_ability(abilit, tag, value, duration):
+func _add_item_effect_to_ability(abilit, tag, value, duration, item_color):
 	if abilities[abilit] == null:
 		return
-	abilities[abilit]._add_item_tag(tag, value, duration)
+	abilities[abilit]._add_item_tag(tag, value, duration, item_color)
 
 func _remove_item_effect_from_ability(abilit, tag):
 	if abilities[abilit] == null:
@@ -303,7 +304,7 @@ func _on_item_picked_up(item):
 		if children.size() > 2:
 			for i in range(2, children.size()):
 				if "epic" in children[i]:
-					_add_item_effect_to_ability(children[i].epic, children[i].tags[0], children[i].value[0], children[i].duration)
+					_add_item_effect_to_ability(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0])
 					continue
 
 				if "range" in children[i]:

@@ -153,6 +153,7 @@ func _attack(tags, values):
 		attack_target = _get_closest_visible_enemy_to_mouse()
 		if attack_target == null:
 			return
+	
 	tags.append_array(stats.current_attack_modifier_tags)
 	values.append_array(stats.current_attack_modifier_values)
 	if !stats.melee:

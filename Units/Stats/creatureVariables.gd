@@ -132,6 +132,9 @@ func _process(_delta):
 	if bar != null:
 		bar._update_health(_calculate_health_percentage())
 		bar._update_name(u_name)
+
+	if current_health > total_health:
+		current_health = total_health
 		
 func _on_do_action(value, target, duration, tag):
 	# Emit the do_action signal with the provided parameters.

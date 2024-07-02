@@ -1,7 +1,7 @@
 extends Node2D
 @export var interact_range = 100
 @export var pop : Node
-@export var offset = Vector2(-45, 0)
+@export var offset = Vector2(15, 0)
 var popup = null
 signal enter_portal()
 
@@ -11,6 +11,7 @@ func _ready():
 	var interact_action = InputMap.action_get_events('Interact')
 	if interact_action.size() > 0:
 		interact_action = interact_action[0].as_text()
+		interact_action = remove_part(interact_action, "(Physical)")
 	else:
 		interact_action = 'Interact'
 
@@ -32,3 +33,10 @@ func _process(delta):
 func _on_animation_player_animation_finished(anim_name:StringName):
 	if anim_name == "portal appearing":
 		get_node('AnimationPlayer').play('portal rotating')
+
+func remove_part(original: String, to_remove: String) -> String:
+	var start_index = original.find(to_remove)
+	if start_index == -1:
+		return original  # Substring not found
+	var end_index = start_index + to_remove.length()
+	return original.substr(0, start_index) + original.substr(end_index, original.length() - end_index)

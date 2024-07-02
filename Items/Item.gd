@@ -185,14 +185,12 @@ func _on_panel_2_mouse_entered():
 	get_child(0).get_child(0).visible = true
 	get_child(0).get_child(0).global_position = get_global_transform_with_canvas().get_origin()
 	get_child(0).get_child(1).get_child(0).modulate.a = 1
-	scroll_panel.grab_focus()
 	player.lose_camera_focus = true
 
 
 func _on_panel_2_mouse_exited():
 	get_child(0).get_child(0).visible = false
 	get_child(0).get_child(1).get_child(0).modulate.a = 0.5
-	scroll_panel.release_focus()
 	player.lose_camera_focus = false
 
 func _unhandled_input(event):

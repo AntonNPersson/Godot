@@ -34,7 +34,7 @@ func _action(_delta):
 				attack_timer = _unit.total_windup_time
 				_is_winding = false
 				for i in range(ability_cooldowns.size()):
-					if _is_ability_on_cooldown(i):
+					if !_is_ability_on_cooldown(i):
 						return _change_state.call('casting')
 				return _change_state.call('chasing')
 		else:

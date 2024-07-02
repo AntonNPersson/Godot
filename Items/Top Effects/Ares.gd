@@ -1,16 +1,16 @@
 extends Item
-class_name Artemis
+class_name Ares
 var epic
-var increased_movement_speed: int
+var increased_attack_damage: int
 var duration: int
-var color = Color.GREEN_YELLOW
+var color = Color.RED
 
 func _initialize():
-	increased_movement_speed = 50
-	duration = 1
+	increased_attack_damage = 10
+	duration = 5
 	epic = randi() % 3
-	tags.append("PercentSpeedBuff")
-	values.append(increased_movement_speed)
+	tags.append("PercentAttackDamageBuff")
+	values.append(increased_attack_damage)
 	colors.append(color)
 
 	var inputActions
@@ -28,4 +28,4 @@ func _initialize():
 		inputEvent = remove_part(inputEvent, "(Physical)")
 		break
 
-	tooltip = "On " + inputEvent + ": " + "Increases movement speed by " + str(increased_movement_speed) + "% for " + str(duration) + " second(s)."
+	tooltip = "On " + inputEvent + ": " + "Increases attack damage by " + str(increased_attack_damage) + "% for " + str(duration) + " second(s)."

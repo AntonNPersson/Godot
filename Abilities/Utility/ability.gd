@@ -71,6 +71,7 @@ var ad_update : bool = false
 var item_tags : Array[String]
 var item_values : Array[float]
 var item_duration : Array[float]
+var item_color : Array[Color]
 
 var power : float
 #-------------------#
@@ -185,16 +186,18 @@ func _add_tag(tag, value, increased_value):
 	values.append(value)
 	increased_values.append(increased_value)
 
-func _add_item_tag(tag, value, dur):
+func _add_item_tag(tag, value, dur, i_color):
 	item_tags.append(tag)
 	item_values.append(value)
 	item_duration.append(dur)
+	item_color.append(i_color)
 
 func _remove_item_tag(tag):
 	var index = item_tags.find(tag)
 	item_tags.erase(tag)
 	item_values.remove_at(index)
 	item_duration.remove_at(index)
+	item_color.remove_at(index)
 
 # Update values based on level
 func _level_grants():
@@ -244,6 +247,16 @@ func _create_light(targett):
 		timer = Utility.get_node('TimerCreator')._create_timer(weight_duration, true, targett)
 	else:
 		timer = Utility.get_node('TimerCreator')._create_timer(buff_duration, true, targett)
+	timer.timeout.connect(_remove_light.bind(instance, targett))
+	timer.start()
+
+func _create_light_specifics(targett, dura, color):
+	var instance = load('res://Abilities/Utility/self_effect.tscn').instantiate()
+	instance.get_child(0).color = color
+	instance.get_child(1).color = color
+	targett.add_child(instance)
+	var timer
+	timer = Utility.get_node('TimerCreator')._create_timer(dura, true, instance)
 	timer.timeout.connect(_remove_light.bind(instance, targett))
 	timer.start()
 
@@ -415,7 +428,7 @@ func _on_hit(area):
 			unit.get_node('Control').on_action.emit(values[tags.find("Damage")] * (values[val]/100), area, unit, tags[val])
 		elif "Burn" in tags[val]:
 			unit.get_node('Control').on_action.emit(values[tags.find("Damage")]/2, area, unit, tags[val])
-		elif "Shock" in tags[val]:
+		elif "Shock" in tags[val] or "Wind" in tags[val]:
 			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val])
 		elif "QuickAttack" in tags[val]:
 			var new_values = []
@@ -438,6 +451,12 @@ func _on_item_use():
 		return
 
 	for val in item_tags.size():
+		_create_light_specifics(unit, item_duration[val], item_color[val])
+		if "WindShout" in item_tags[val]:
+			if get_tree().get_nodes_in_group('enemies'):
+				for enemy in get_tree().get_nodes_in_group('enemies'):
+					if enemy.global_position.distance_to(unit.global_position) < 130:
+						unit.get_node('Control').on_action.emit(item_values[val], enemy, unit, "Wind")
 		unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val])
 
 # Set targeting to true/false

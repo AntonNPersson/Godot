@@ -1,7 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://crv0kaa3riryw"]
+[gd_scene load_steps=4 format=3 uid="uid://crv0kaa3riryw"]
 
 [ext_resource type="PackedScene" uid="uid://b3mx4rrua3ibb" path="res://Items/Top Effects/Artemis.tscn" id="1_7icnd"]
+[ext_resource type="PackedScene" uid="uid://dpjp2shsojlv0" path="res://Items/Top Effects/Ares.tscn" id="2_63xf3"]
+[ext_resource type="PackedScene" uid="uid://bw7r4u5xj3ko8" path="res://Items/Top Effects/Aeolus.tscn" id="3_uyo0f"]
 
 [node name="TopListEffects" type="Node2D"]
 
 [node name="Artemis" parent="." instance=ExtResource("1_7icnd")]
+
+[node name="Ares" parent="." instance=ExtResource("2_63xf3")]
+position = Vector2(294.717, -159.038)
+
+[node name="Aeolus" parent="." instance=ExtResource("3_uyo0f")]
+position = Vector2(294.717, -159.038)

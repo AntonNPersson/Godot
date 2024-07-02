@@ -3,7 +3,7 @@ var target : Node
 var origin : Node
 var target_position : Vector2
 var tag = null
-var cooldown = 100000
+var cooldown = 5
 var timer = 0
 var enabled = false
 var _range = 200
@@ -22,16 +22,18 @@ func _process(delta):
 		queue_free()
 		return
 	
-	_get_units_in_range()
 	if timer > 0.5:
+		_get_units_in_range()
 		for unit in units_in_range:
-			unit.do_action(heal, unit, origin, "Heal")
+			unit.do_action.emit(heal, unit, origin, "Heal")
 		timer = 0
 	global_position = origin.global_position
 
 func _use():
+	print("Healing Aura used")
 	global_position = origin.global_position
 	enabled = true
+	cooldown = 9999
 
 func _get_units_in_range():
 	units_in_range = []

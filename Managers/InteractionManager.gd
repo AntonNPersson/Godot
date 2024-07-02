@@ -1,7 +1,7 @@
 extends Node
 var interactRange = 100.0
 var players_arr = []
-var offset = Vector2(-98, -84)
+var offset = Vector2(-104, -84)
 var distance
 @export var popup_ : PackedScene
 signal call_wave_manager(value)
@@ -50,16 +50,21 @@ func _create_ready_message(player):
 	instance.global_position += offset
 	var interact_action = InputMap.action_get_events('Interact')
 	if interact_action.size() > 0:
-		interact_action = interact_action[0].as_text()
+		interact_action = remove_part(interact_action[0].as_text(), "(Physical)")
 	else:
 		interact_action = 'Interact'
-	instance.get_child(0).text = "Press " + interact_action + " to interact"
+	instance.get_child(0).text = "Press " + interact_action + "to interact"
 	player.add_child(instance)
 
 func _on_changing_map():
 	players_arr.clear()
 	
 func _change_map(value):
-	Utility.get_node('Transition')._start(2)
-	await get_tree().create_timer(2.5).timeout
 	call_wave_manager.emit("Combat", value+1)
+
+func remove_part(original: String, to_remove: String) -> String:
+	var start_index = original.find(to_remove)
+	if start_index == -1:
+		return original  # Substring not found
+	var end_index = start_index + to_remove.length()
+	return original.substr(0, start_index) + original.substr(end_index, original.length() - end_index)

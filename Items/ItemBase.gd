@@ -2,6 +2,7 @@ extends Node2D
 class_name Item
 var values = []
 var tags = []
+var colors = []
 var tooltip = ""
 
 func _initialize():

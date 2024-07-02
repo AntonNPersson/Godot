@@ -1,16 +1,16 @@
 extends Item
-class_name Artemis
+class_name Aeolus
 var epic
-var increased_movement_speed: int
+var knockback_distance: int
 var duration: int
-var color = Color.GREEN_YELLOW
+var color = Color.LIGHT_CORAL
 
 func _initialize():
-	increased_movement_speed = 50
-	duration = 1
-	epic = randi() % 3
-	tags.append("PercentSpeedBuff")
-	values.append(increased_movement_speed)
+	knockback_distance = 50
+	duration = 0
+	epic = 0
+	tags.append("WindShout")
+	values.append(knockback_distance)
 	colors.append(color)
 
 	var inputActions
@@ -28,4 +28,4 @@ func _initialize():
 		inputEvent = remove_part(inputEvent, "(Physical)")
 		break
 
-	tooltip = "On " + inputEvent + ": " + "Increases movement speed by " + str(increased_movement_speed) + "% for " + str(duration) + " second(s)."
+	tooltip = "On " + inputEvent + ": " + "An explosion of wind knocks back surrounding enemies for " + str(knockback_distance) + "pixels."

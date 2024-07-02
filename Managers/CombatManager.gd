@@ -7,10 +7,12 @@ extends Node
 @export var combat_text : PackedScene
 
 var invincible_units : Array = []
+var knockback_units : Array = []
 var pve_light_units : Array = []
 var special_objects : Array = []
 var player = null
 var current_marked_pair = null
+var _mutex : Mutex = Mutex.new()
 
 var recent_combat_text_targets = {}
 var recent_combat_text_values = {}
@@ -48,6 +50,18 @@ func _calculate_evade_chance(value: float) -> float:
 
 func _ready():
 	pass
+
+func _process(delta):
+	if knockback_units.size() > 0:
+		for unit in knockback_units:
+			if _check_if_dead(unit):
+				return
+			unit.global_position += unit.get_meta('Knockback_direction') * 200 * delta
+			if unit.global_position.distance_to(unit.get_meta('Knockback_origin')) > unit.get_meta('Knockback_distance'):
+				knockback_units.erase(unit)
+				unit.set_meta('Knockback_direction', Vector2(0, 0))
+				unit.set_meta('Knockback_origin', Vector2(0, 0))
+				unit.set_meta('Knockback_distance', 0)
 # ------------------------------------------------------#
 # Signal Handler
 # ------------------------------------------------------#
@@ -110,6 +124,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_speed_buff_action(target, value, user)
 		"PercentSpeedBuff":
 			_handle_percent_speed_buff_action(target, value, user)
+		"PercentAttackDamageBuff":
+			_handle_percent_attack_buff_action(target, value, user)
 		"SelfInvincible":
 			_handle_self_invincible_action(user, value)
 		"Stealth":
@@ -122,6 +138,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_freeze_action(target, value,)
 		"Shock":
 			_handle_shock_action(target, value)
+		"Wind":
+			_handle_wind_action(target, value, user)
 		"Heal":
 			_handle_heal_action(target, value, tag)
 		"Bleed":
@@ -370,7 +388,7 @@ func _handle_percent_armor_buff_action(target, value, user):
 # Parameters:
 # - target: The target of the action.
 # - value: The value of the speed buff.
-# - user: The user of the action.
+# - user: The duration of the action.
 func _handle_percent_speed_buff_action(target, value, user):
 	var percent = value/100 * target.total_speed
 	target.bonus_speed += percent
@@ -378,6 +396,20 @@ func _handle_percent_speed_buff_action(target, value, user):
 		target._update_stats()
 	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
 	timer.timeout.connect(_deapply_buff.bind(target, percent, "Speed"))
+	timer.start()
+
+# Handles the percent attack buff action on the target.
+# Parameters:
+# - target: The target of the action.
+# - value: The value of the attack buff.
+# - user: The duration of the action.
+func _handle_percent_attack_buff_action(target, value, user):
+	var percent = value/100 * target.total_attack_damage
+	target.bonus_attack_damage += percent
+	if target.is_in_group('players'):
+		target._update_stats()
+	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, percent, "Damage"))
 	timer.start()
 
 # Handles the attack buff action on the target.
@@ -502,6 +534,20 @@ func _handle_heal_action(target, value, tag):
 	target.current_health += value
 	_trigger_effects(target, value, 'green', tag)
 
+# Handles the wind action on the target.
+# Parameters:
+# - target: The target of the action.
+# - value: The amount of knockback.
+# - user: The user of the action.
+func _handle_wind_action(target, value, user):
+	if target in invincible_units or _check_if_dead(target):
+		return
+	var direction = (target.global_position - user.global_position).normalized()
+	target.set_meta('Knockback_direction', direction)
+	target.set_meta('Knockback_origin', target.global_position)
+	target.set_meta('Knockback_distance', value)
+	knockback_units.append(target)
+
 # Handles the bleed action on the target.
 # Parameters:
 # - target: The target of the action.
@@ -514,6 +560,8 @@ func _handle_bleed_action(target, value, user):
 	var tick_interval = 0.5
 	var total_ticks = ceil(duration / tick_interval)
 	var damage_per_tick = value / total_ticks
+
+	_mutex.lock()
 
 	if !target.has_node('Bleed_timer'):
 		var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
@@ -529,6 +577,8 @@ func _handle_bleed_action(target, value, user):
 		target.set_meta('Bleed_count', 0)
 		target.set_meta('Bleed_stacks', target.get_meta('Bleed_stacks') + 1)
 		duration = 2
+
+	_mutex.unlock()
 
 # Handles the infected action on the target.
 # Parameters:
@@ -681,6 +731,8 @@ func _deapply_buff(target, value, tag):
 	if tag == "Shock":
 		target.get_node('Shock_timer').queue_free()
 		target.set_meta('Shock_count', 0)
+	if tag == "Damage":
+		target.bonus_attack_damage -= value
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -717,7 +769,7 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 	if current_tick >= total_ticks:
 		if _check_if_dead(target):
 			return
-		if type == "Burn":
+		if type == "Burn" and target.has_node("Burn_effect"):
 			target.get_node("Burn_effect").queue_free()
 			return
 		if target.has_node(type + "_timer"):

@@ -278,7 +278,8 @@ func _process(delta):
 	if current_mana < 0:
 		current_mana = 0
 	if current_health < 0:
-		current_health = 0
+		is_dead.emit(self)
+		GameManager._change_scene("res://Scenes/Menu.tscn", true)
 	if current_stamina < 0:
 		current_stamina = 0
 	if current_barrier < 0:
