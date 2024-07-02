@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Bow
 var range : int = 200
 var attack_damage : int = 15
 

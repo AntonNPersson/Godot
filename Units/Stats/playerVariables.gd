@@ -137,11 +137,12 @@ var bonus_critical_chance = 0.0
 var bonus_critical_damage = 0.0
 var bonus_attack_targets = 0.0
 
-# Current health, mana, and stamina
+# Current health, mana, stamina and other values
 var current_barrier = 0
 var current_health = 100
 var current_mana = 100
 var current_stamina = 100
+var current_ascension_currency = 0
 
 # Current attack modifier tags and values
 var current_attack_modifier_tags = []
@@ -149,8 +150,11 @@ var current_attack_modifier_values = []
 
 var regen_timer = 0
 
-# Completed waves
-var completed_waves = []
+# Saved variables
+var completed_waves = [0, 1]
+var power = 1
+var ascension_level = 0
+var ascension_currency = 0
 
 var paused = false
 var lose_camera_focus = false
@@ -292,6 +296,15 @@ func _add_completed_wave(wave):
 func _get_completed_waves():
 	return completed_waves
 
+func _reset_completed_waves():
+	completed_waves.clear()
+
+func _is_all_waves_completed():
+	if completed_waves.size() >= get_tree().get_root().get_node('Main').get_child(0).get_node("WaveManager")._get_total_waves():
+		return true
+	else:
+		return false
+
 func _apply_cooldown_reduction(value):
 	value = value * (1 - total_cooldown_reduction/100)
 	return value
@@ -308,7 +321,7 @@ func _apply_quick_attack_chance():
 		amount_of_attacks += int(extra_chance / 100)
 		extra_chance %= 100
 
-	var rnd = randi_range(0, 100)
+	var rnd = randf_range(0, 100)
 	if rnd < extra_chance:
 		amount_of_attacks += 1
 	

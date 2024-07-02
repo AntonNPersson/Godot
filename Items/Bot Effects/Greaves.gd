@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Greaves
 var speed : int = 1
 var armor : int = 3
 

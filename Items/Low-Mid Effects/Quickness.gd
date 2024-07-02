@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Quickness
 var quick_attack_chance : float = 0.8
 
 func _initialize():

@@ -62,12 +62,11 @@ func _ready():
 
 
 func _calculate_item_rarity():
-	print_debug("Change this to a proper rarity calculation after testing")
 	var _randi = randi() % 100
-	if _randi < 40:
+	if _randi < 60:
 		return
 
-	var rarity = randi() % 54
+	var rarity = 53
 	if rarity < 30:
 		return ITEM_RARITY.COMMON
 	elif rarity < 45:
@@ -86,6 +85,7 @@ func _create_item(_rarity = null):
 	if rarity == ITEM_RARITY.COMMON:
 		var bot_piece = bot_list[randi() % bot_list.size()].duplicate()
 		bot_piece._initialize()
+		bot_piece._ascend(player.power)
 		var _item = item.instantiate()
 		_item.i_name = bot_piece.name
 		_item.player = player
@@ -104,6 +104,9 @@ func _create_item(_rarity = null):
 		bot_piece._initialize()
 		var mid_piece = mid_list[randi() % mid_list.size()].duplicate()
 		mid_piece._initialize()
+		second_mid_piece._ascend(player.power)
+		bot_piece._ascend(player.power)
+		mid_piece._ascend(player.power)
 		var _item = item.instantiate()
 		_item.i_name = bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name
 		_item.player = player
@@ -128,6 +131,9 @@ func _create_item(_rarity = null):
 		bot_piece._initialize()
 		mid_piece._initialize()
 		top_piece._initialize()
+		second_mid_piece._ascend(player.power)
+		bot_piece._ascend(player.power)
+		mid_piece._ascend(player.power)
 		var _item = item.instantiate()
 		_item.i_name = bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name + " and " + top_piece.name
 		_item.player = player
@@ -156,6 +162,9 @@ func _create_item(_rarity = null):
 		mid_piece._initialize()
 		top_piece._initialize()
 		second_top_piece._initialize()
+		second_mid_piece._ascend(player.power)
+		bot_piece._ascend(player.power)
+		mid_piece._ascend(player.power)
 		var _item = item.instantiate()
 		_item.i_name = second_top_piece.name + ", " + bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name + " and " + top_piece.name
 		_item.player = player

@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Dagger
 var range : int = 15
 var attack_damage : int = 8
 var quick_attack_chance : int = 100

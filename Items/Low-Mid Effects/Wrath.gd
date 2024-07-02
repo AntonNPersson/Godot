@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Wrath
 var critical_chance : float = 0.3
 
 func _initialize():

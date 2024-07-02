@@ -1,11 +1,11 @@
-extends Node2D
+extends Item
+class_name Robe
 var barrier : int = 20
 
-var tags = ["barrier"]
-var values = [barrier]
-
 func _initialize():
+	tags = ["barrier"]
 	barrier = randi() % 15 + 5
+	values = [barrier]
 
 func _get_values():
 	return values

@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Dexterious
 var dexterity = 10
 
 func _initialize():

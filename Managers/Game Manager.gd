@@ -15,6 +15,7 @@ func _pause_game():
 	var bosses = get_tree().get_nodes_in_group('boss')
 	for boss in bosses:
 		boss.has_aggro = false
+		boss.paused = true
 	var enemies = get_tree().get_nodes_in_group('enemies')
 	for enemy in enemies:
 		enemy.paused = true
@@ -24,6 +25,7 @@ func _continue_game():
 	var bosses = get_tree().get_nodes_in_group('boss')
 	for boss in bosses:
 		boss.has_aggro = true
+		boss.paused = false
 	var enemies = get_tree().get_nodes_in_group('enemies')
 	for enemy in enemies:
 		enemy.paused = false

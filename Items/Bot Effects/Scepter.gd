@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Scepter
 var strength : int = 0
 var dexterity : int = 0
 var intelligence : int = 0

@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Magical
 var intelligence = 10
 
 func _initialize():

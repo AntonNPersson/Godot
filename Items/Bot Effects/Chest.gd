@@ -1,11 +1,11 @@
-extends Node2D
+extends Item
+class_name Chest
 var evade : int = 20
 
-var tags = ["evade"]
-var values = [evade]
-
 func _initialize():
+	tags = ["evade"]
 	evade = randi() % 50 + 20
+	values = [evade]
 
 func _get_values():
 	return values

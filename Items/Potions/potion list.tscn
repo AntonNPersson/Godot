@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://btqt7w4xr4x5f"]
+[gd_scene load_steps=3 format=3 uid="uid://btqt7w4xr4x5f"]
 
 [ext_resource type="PackedScene" uid="uid://sy0rkfmx5vii" path="res://Items/Potions/weak health poition.tscn" id="1_dt2mm"]
 [ext_resource type="PackedScene" uid="uid://llnhk2mmu2qq" path="res://Items/Potions/Weak mana potion.tscn" id="2_2dknc"]
-[ext_resource type="Script" path="res://Items/Potions/Weak mana potion.gd" id="3_8jq16"]
 
 [node name="PotionList" type="Node2D"]
 visible = false
@@ -11,4 +10,3 @@ visible = false
 
 [node name="Weak Mana Potion" parent="." instance=ExtResource("2_2dknc")]
 position = Vector2(294.717, -159.038)
-script = ExtResource("3_8jq16")

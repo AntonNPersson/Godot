@@ -67,6 +67,7 @@ func _start_wave(value, last = false):
 	waves.add_child(current_wave)
 	current_wave.visible = true
 	for child in current_wave.get_children():
+		child._ascend()
 		child.is_dead.connect(_unit_dead)
 		child.paused = true
 		child.visible = false
@@ -195,6 +196,7 @@ func _on_round_manager_start_encounter(value, _completed_waves, player):
 	current_round = value
 	wave_counter = randi_range(2, 3)
 	current_sub_wave.erase(0)
+	print(_completed_waves)
 	completed_waves.append_array(_completed_waves)
 	canvas.visible = true
 	players[0].in_combat = true
@@ -205,6 +207,9 @@ func _on_map_manager_used_creatures(number:Variant, arr:Variant):
 	current_amount_of_enemies = number + 2
 	total_amount_of_enemies = number
 	_update_objectives()
+
+func _get_total_waves():
+	return 2
 
 func _update_objectives():
 	canvas.get_node('RichTextLabel2').text = 'Waves: ' + str(current_wave_counter) + '/' + str(wave_counter) + '\n' + 'Enemies: ' + str((current_amount_of_enemies-2)) + '/' + str(total_amount_of_enemies)	

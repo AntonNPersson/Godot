@@ -17,6 +17,10 @@ func _get_values():
 func _get_tags():
 	return tags
 
+func _ascend(power):
+	for i in range(values.size()):
+		values[i] = round_to_dec(values[i] * power, 2)
+
 func _remove_random_tag():
 	var index = randi() % tags.size()
 	values.remove_at(index)

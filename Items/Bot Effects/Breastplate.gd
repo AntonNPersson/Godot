@@ -1,11 +1,11 @@
-extends Node2D
+extends Item
+class_name Breastplate
 var armor : int = 20
 
-var tags = ["armor"]
-var values = [armor]
-
 func _initialize():
+	tags = ["armor"]
 	armor = randi() % 50 + 20
+	values = [armor]
 
 func _get_values():
 	return values

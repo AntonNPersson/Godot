@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Greataxe
 var range : int = 15
 var attack_damage : int = 10
 var attack_speed : int = -30

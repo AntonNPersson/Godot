@@ -192,6 +192,7 @@ func _add_item_tag(tag, value, dur, i_color):
 	item_duration.append(dur)
 	item_color.append(i_color)
 
+
 func _remove_item_tag(tag):
 	var index = item_tags.find(tag)
 	item_tags.erase(tag)
@@ -449,15 +450,18 @@ func _on_hit(area):
 func _on_item_use():
 	if item_tags.size() == 0:
 		return
-
 	for val in item_tags.size():
-		_create_light_specifics(unit, item_duration[val], item_color[val])
-		if "WindShout" in item_tags[val]:
-			if get_tree().get_nodes_in_group('enemies'):
-				for enemy in get_tree().get_nodes_in_group('enemies'):
-					if enemy.global_position.distance_to(unit.global_position) < 130:
-						unit.get_node('Control').on_action.emit(item_values[val], enemy, unit, "Wind")
-		unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val])
+			_create_light_specifics(unit, item_duration[val], item_color[val])
+			if "WindShout" in item_tags[val]:
+				print("WindShout")
+				if get_tree().get_nodes_in_group('enemies'):
+					for enemy in get_tree().get_nodes_in_group('enemies'):
+						print(enemy)
+						if enemy.global_position.distance_to(unit.global_position) < 130:
+							print('in range')
+							unit.get_node('Control').on_action.emit(item_values[val], enemy, unit, "Wind")
+			else:
+				unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val])
 
 # Set targeting to true/false
 func _target(state):

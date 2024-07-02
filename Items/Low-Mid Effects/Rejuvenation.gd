@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Rejuvenation
 var health_regen : float = 0.2
 
 func _initialize():

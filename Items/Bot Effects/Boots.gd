@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Boots
 var speed : int = 1
 var evade : int = 20
 

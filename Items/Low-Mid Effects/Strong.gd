@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Strong
 var health = 12
 
 func _initialize():

@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Protecting
 var barrier = 12
 
 func _initialize():

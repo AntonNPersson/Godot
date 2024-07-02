@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Foresight
 var cooldown_reduction : int = 2
 
 func _initialize():

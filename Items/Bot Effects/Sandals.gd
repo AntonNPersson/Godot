@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Sandals
 var speed : int = 1
 var barrier : int = 3
 

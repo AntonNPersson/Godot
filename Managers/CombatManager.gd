@@ -59,13 +59,13 @@ func _process(delta):
 			unit.global_position += unit.get_meta('Knockback_direction') * 200 * delta
 			if unit.global_position.distance_to(unit.get_meta('Knockback_origin')) > unit.get_meta('Knockback_distance'):
 				knockback_units.erase(unit)
-				unit.set_meta('Knockback_direction', Vector2(0, 0))
-				unit.set_meta('Knockback_origin', Vector2(0, 0))
-				unit.set_meta('Knockback_distance', 0)
+	
 # ------------------------------------------------------#
 # Signal Handler
 # ------------------------------------------------------#
 func _on_do_action(value, target, user, tag, extra = null):
+	if get_tree().get_nodes_in_group("players")[0].paused:
+		return
 	match tag:
 		"Explosion":
 			_handle_explosion_action(user, value)
@@ -332,15 +332,26 @@ func _handle_poison_action(target, value, user):
 	var total_ticks = ceil(duration / tick_interval)
 	var damage_per_tick = value / total_ticks
 	var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
-	target.set_meta('Poison_count', 0)
-	timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison'))
-	var timer_index = 1
-	var timer_name = "Poison_timer_" + str(timer_index)
-	while target.has_node(timer_name):
-		timer_index += 1
-		timer_name = "Poison_timer_" + str(timer_index)
-	target.add_child(timer)
-	timer.start()
+
+	var i = 0
+	if !target.has_node('Poison_timer' + str(i)):
+		target.set_meta('Poison_count' + str(i), 0)
+		target.set_meta('Damage_per_tick' + str(i), damage_per_tick)
+		var timer_name = "Poison_timer" + str(i)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', i))
+		timer.name = timer_name
+		target.add_child(timer)
+		timer.start()
+	else:
+		while target.has_node('Poison_timer' + str(i)):
+			i += 1
+		target.set_meta('Poison_count' + str(i), 0)
+		target.set_meta('Damage_per_tick' + str(i), damage_per_tick)
+		timer.name = "Poison_timer" + str(i)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', i))
+		target.add_child(timer)
+		timer.start()
+
 # Handles the frenzy buff action on the target.
 # Parameters:
 # - target: The target of the action.
@@ -744,8 +755,8 @@ func _deapply_buff(target, value, tag):
 #   - total_ticks: The total number of ticks for the damage over time effect.
 #   - color: The color of the damage text.
 #   - type: The type of damage over time effect (e.g., "Bleed", "Burn").
-func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, type):
-	if target in invincible_units or _check_if_dead(target):
+func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, type, timer_name = null):
+	if target in invincible_units or _check_if_dead(target) or get_tree().get_nodes_in_group("players")[0].paused:
 		return
 
 	var damage
@@ -763,14 +774,22 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 	if target.is_in_group("enemies"):
 		_trigger_combat_text(target, damage, color)
 	
-	var current_tick = target.get_meta(type + "_count")
-	target.set_meta(type + "_count", current_tick + 1)
+	var current_tick = 0
+	if type == 'Poison':
+		current_tick = target.get_meta('Poison_count' + str(timer_name))
+		target.set_meta('Poison_count' + str(timer_name), current_tick + 1)
+	else:
+		current_tick = target.get_meta(type + "_count")
+		target.set_meta(type + "_count", current_tick + 1)
 
 	if current_tick >= total_ticks:
 		if _check_if_dead(target):
 			return
 		if type == "Burn" and target.has_node("Burn_effect"):
 			target.get_node("Burn_effect").queue_free()
+			return
+		if type == "Poison":
+			target.get_node("Poison_timer" + str(timer_name)).queue_free()
 			return
 		if target.has_node(type + "_timer"):
 			target.get_node(type + "_timer").queue_free()

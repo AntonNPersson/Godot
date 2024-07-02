@@ -37,6 +37,8 @@ var total_windup_time: float
 
 @export var experience = 0
 
+@export var ascension_currency = 0
+
 # The base armor value.
 @export var base_armor = 0
 
@@ -86,10 +88,19 @@ var bonus_attack_speed = 0.0
 var bonus_attack_damage = 0.0
 var current_health = 100
 
+var current_base_armor = 0.0
+var current_base_evade = 0.0
+var current_base_health = 0.0
+var current_base_attack_speed = 0.0
+var current_base_experience = 0.0
+var current_base_ascension_currency = 0.0
+
+
 var _target = null
 
 func _ready():
 	# Update the totals and set the current health.
+	_ascend()
 	_update_totals()
 	current_health = total_health
 	
@@ -106,7 +117,7 @@ func _is_dead(unit):
 		dead = true
 		for child in get_children():
 			child.queue_free()
-		do_action.emit(experience, unit, unit, 'Experience')
+		do_action.emit(current_base_experience, unit, unit, 'Experience')
 		if !unit.is_in_group('summon'):
 			drop_info._drop_item(unit.global_position)
 		queue_free()
@@ -114,15 +125,25 @@ func _is_dead(unit):
 func _calculate_health_percentage():
 	# Calculate the health percentage.
 	return (current_health / total_health) * 100
+
+func _ascend():
+	var power = get_tree().get_nodes_in_group("players")[0].power
+	current_base_armor = base_armor * power
+	current_base_evade = base_evade * power
+	current_base_health = base_health * power
+	current_base_attack_speed = base_attack_speed * power
+	current_base_experience = experience * power
+	current_base_ascension_currency = ascension_currency * power
+
 	
 func _update_totals():
 	# Update the total values based on the base values and bonuses.
-	total_armor = base_armor + bonus_armor
-	total_evade = base_evade + bonus_evade
+	total_armor = current_base_armor + bonus_armor
+	total_evade = current_base_evade + bonus_evade
 	total_speed = base_speed + bonus_speed
-	total_health = base_health + bonus_health
+	total_health = current_base_health + bonus_health
 	total_range = base_range + bonus_range
-	total_attack_speed = base_attack_speed + bonus_attack_speed
+	total_attack_speed = current_base_attack_speed + bonus_attack_speed
 	total_attack_damage = base_attack_damage + bonus_attack_damage
 	total_windup_time = base_windup_time / total_attack_speed
 
@@ -143,4 +164,7 @@ func _on_do_action(value, target, duration, tag):
 		if target.u_name == "Skeleton King":
 			do_action.emit(value, self, duration, tag)
 			return
-	do_action.emit(value, target, duration, tag)
+	if target.is_in_group('players'):
+		do_action.emit(value * target.power, target, duration, tag)
+	else:
+		do_action.emit(value, target, duration, tag)

@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Invoking
 var double_cast_chance : float = 0.8
 
 func _initialize():

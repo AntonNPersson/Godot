@@ -1,4 +1,5 @@
-extends Node2D
+extends Item
+class_name Sword
 var range : int = 25
 var attack_damage : int = 12
 var attack_speed : int = 10
