@@ -430,13 +430,13 @@ func _handle_percent_attack_buff_action(target, value, user):
 # - user: The user of the action.
 # - tag: The tag associated with the attack buff.
 func _handle_attack_buff_action(target, value, user, tag):
-	if !target.is_in_group('players') or target.has_node(tag + "_timer"):
+	if !target.is_in_group('players'):
 		return
 	target.current_attack_modifier_tags.append(tag)
 	target.current_attack_modifier_values.append(value)
 
 	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-	timer.name = tag + "_timer"
+	timer.name = tag + "_attack_timer"
 	timer.timeout.connect(_deapply_attack_buff.bind(target, value, tag))
 	timer.start()
 

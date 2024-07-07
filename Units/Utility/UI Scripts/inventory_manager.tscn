@@ -1,24 +1,31 @@
-[gd_scene load_steps=10 format=3 uid="uid://dlpkjnesre3k2"]
+[gd_scene load_steps=16 format=3 uid="uid://dlpkjnesre3k2"]
 
 [ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="1_rdvac"]
+[ext_resource type="PackedScene" uid="uid://dqxq0qaeoucyb" path="res://Utility/Item_tooltip.tscn" id="2_q5i55"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_qob8h"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="2_y27wo"]
+[ext_resource type="StyleBox" uid="uid://p1i2h6goy2ej" path="res://GUI/testest.tres" id="4_k1w6k"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/Item_tooltips.gd" id="5_1fdgp"]
 [ext_resource type="Texture2D" uid="uid://c5jml2c4kbhm6" path="res://Sprites/test.png" id="5_k7ayx"]
 [ext_resource type="Texture2D" uid="uid://d3r3h43kxsb02" path="res://Sprites/Untitled2.png" id="5_pfkdg"]
 [ext_resource type="Texture2D" uid="uid://cy6m1givnghco" path="res://Sprites/Untitled1.png" id="6_5vbjy"]
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="7_0f38t"]
 [ext_resource type="Texture2D" uid="uid://cu2ro7gfyyvc2" path="res://Sprites/Untitled.png" id="8_3fp80"]
+[ext_resource type="Texture2D" uid="uid://dswmghvs3jkv2" path="res://Sprites/glass_effect.png" id="10_owmaw"]
+[ext_resource type="Texture2D" uid="uid://df3imm2ty3hps" path="res://Sprites/health_potion.png" id="11_o0016"]
+[ext_resource type="Texture2D" uid="uid://b45hijfa43fdg" path="res://Sprites/mana_potion.png" id="12_gxwhe"]
 
 [sub_resource type="FontVariation" id="FontVariation_q5uqw"]
 base_font = ExtResource("2_qob8h")
+spacing_top = 7
 
 [node name="InventoryManager" type="Node"]
 script = ExtResource("1_rdvac")
+item_tooltip = ExtResource("2_q5i55")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." groups=["UI"]]
 
 [node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -56,10 +63,11 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(350, 200)
 layout_mode = 2
 focus_mode = 0
-theme = ExtResource("2_y27wo")
 theme_override_font_sizes/font_size = 10
 allow_reselect = true
 allow_search = false
+script = ExtResource("5_1fdgp")
+item_tooltip = ExtResource("2_q5i55")
 
 [node name="Label3" type="Label" parent="CanvasLayer/PanelContainer2/PanelContainer"]
 layout_mode = 2
@@ -68,7 +76,7 @@ text = "Potions"
 vertical_alignment = 1
 
 [node name="potionList" type="ItemList" parent="CanvasLayer/PanelContainer2/PanelContainer"]
-custom_minimum_size = Vector2(350, 50)
+custom_minimum_size = Vector2(350, 75)
 layout_mode = 2
 focus_mode = 0
 theme = ExtResource("2_y27wo")
@@ -97,7 +105,7 @@ allow_search = false
 [node name="Line2D" type="Line2D" parent="CanvasLayer/PanelContainer2"]
 position = Vector2(181, 22)
 scale = Vector2(1.56, 1)
-points = PackedVector2Array(0, 0, 50, 0)
+points = PackedVector2Array(0, 13, 50, 13)
 width = 2.0
 
 [node name="abilityList" type="ItemList" parent="CanvasLayer"]
@@ -167,13 +175,14 @@ offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("2_y27wo")
+theme_override_styles/panel = ExtResource("4_k1w6k")
 
 [node name="TextureRect1" type="TextureRect" parent="CanvasLayer/Hotbar"]
 layout_mode = 0
-offset_left = 45.0
-offset_top = 30.0
-offset_right = 103.0
-offset_bottom = 87.0
+offset_left = 49.0
+offset_top = 34.0
+offset_right = 99.0
+offset_bottom = 83.0
 expand_mode = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Hotbar/TextureRect1"]
@@ -190,10 +199,10 @@ tab_size = 10
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Hotbar"]
 layout_mode = 0
-offset_left = 125.0
-offset_top = 30.0
-offset_right = 183.0
-offset_bottom = 87.0
+offset_left = 129.0
+offset_top = 34.0
+offset_right = 179.0
+offset_bottom = 83.0
 theme = ExtResource("2_y27wo")
 expand_mode = 1
 
@@ -211,10 +220,10 @@ tab_size = 10
 
 [node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Hotbar"]
 layout_mode = 0
-offset_left = 201.0
-offset_top = 30.0
-offset_right = 259.0
-offset_bottom = 87.0
+offset_left = 205.0
+offset_top = 34.0
+offset_right = 255.0
+offset_bottom = 83.0
 expand_mode = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Hotbar/TextureRect3"]
@@ -292,6 +301,7 @@ scale = Vector2(5, 0.2)
 theme = ExtResource("2_y27wo")
 texture_under = ExtResource("5_pfkdg")
 texture_progress = ExtResource("6_5vbjy")
+texture_progress_offset = Vector2(4, 0)
 tint_under = Color(1, 1, 1, 0.419608)
 script = ExtResource("7_0f38t")
 
@@ -300,9 +310,9 @@ custom_minimum_size = Vector2(10, 10)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 728.0
+offset_left = 730.0
 offset_top = 870.0
-offset_right = -1135.0
+offset_right = -1133.0
 offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -310,6 +320,26 @@ theme = ExtResource("2_y27wo")
 fill_mode = 3
 texture_under = ExtResource("5_pfkdg")
 texture_progress = ExtResource("6_5vbjy")
+texture_progress_offset = Vector2(4, 4)
+tint_under = Color(1, 1, 1, 0.419608)
+script = ExtResource("7_0f38t")
+
+[node name="ProgressBar5" type="TextureProgressBar" parent="CanvasLayer"]
+custom_minimum_size = Vector2(10, 10)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 730.0
+offset_top = 870.0
+offset_right = -1133.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_y27wo")
+fill_mode = 3
+texture_under = ExtResource("5_pfkdg")
+texture_progress = ExtResource("6_5vbjy")
+texture_progress_offset = Vector2(4, 4)
 tint_under = Color(1, 1, 1, 0.419608)
 script = ExtResource("7_0f38t")
 
@@ -327,6 +357,7 @@ theme = ExtResource("2_y27wo")
 fill_mode = 3
 texture_under = ExtResource("5_pfkdg")
 texture_progress = ExtResource("6_5vbjy")
+texture_progress_offset = Vector2(4, 4)
 tint_under = Color(1, 1, 1, 0.419608)
 script = ExtResource("7_0f38t")
 
@@ -427,23 +458,31 @@ grow_vertical = 0
 [node name="Potion1" type="TextureProgressBar" parent="CanvasLayer/Potion_bag"]
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 0
-offset_left = 30.0
-offset_right = 202.0
-offset_bottom = 168.0
-scale = Vector2(0.15, 0.655)
+offset_left = 25.0
+offset_top = 5.0
+offset_right = 197.0
+offset_bottom = 173.0
+scale = Vector2(0.15, 0.64)
 fill_mode = 3
-texture_progress = ExtResource("8_3fp80")
+texture_under = ExtResource("8_3fp80")
+texture_over = ExtResource("10_owmaw")
+texture_progress = ExtResource("11_o0016")
+texture_progress_offset = Vector2(4, 4)
 script = ExtResource("7_0f38t")
 
 [node name="Potion2" type="TextureProgressBar" parent="CanvasLayer/Potion_bag"]
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 0
 offset_left = 68.0
+offset_top = 5.0
 offset_right = 240.0
-offset_bottom = 168.0
-scale = Vector2(0.15, 0.655)
+offset_bottom = 173.0
+scale = Vector2(0.15, 0.64)
 fill_mode = 3
-texture_progress = ExtResource("8_3fp80")
+texture_under = ExtResource("8_3fp80")
+texture_over = ExtResource("10_owmaw")
+texture_progress = ExtResource("12_gxwhe")
+texture_progress_offset = Vector2(4, 4)
 script = ExtResource("7_0f38t")
 
 [node name="Items" type="Node" parent="."]

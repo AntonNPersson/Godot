@@ -32,9 +32,11 @@ const WAVE_COUNTDOWN_TIME = 3
 const START_COUNTDOWN_TIME = 4
 
 var canvas
-var time_left = 10
+var time_left = -1
 enum maps{ROOM, BOSS, WAVE}
 var next_map = maps.ROOM
+
+var curses = []
 
 func _ready():
 	waves = get_node('Waves')
@@ -43,9 +45,12 @@ func _ready():
 
 
 func _process(_delta):
-	if canvas.get_child(2).visible:
+	if time_left > 0:
 		time_left -= get_process_delta_time()
+		canvas.get_child(2).visible = true
 		canvas.get_child(2).text = str(int(time_left))
+	else:
+		canvas.get_child(2).visible = false
 
 	if current_amount_of_enemies <= 0:
 		if boss_ready:
@@ -68,6 +73,8 @@ func _start_wave(value, last = false):
 	current_wave.visible = true
 	for child in current_wave.get_children():
 		child._ascend()
+		for curse in curses:
+			child._add_stats(curse)
 		child.is_dead.connect(_unit_dead)
 		child.paused = true
 		child.visible = false
@@ -101,16 +108,13 @@ func _unit_dead(_unit):
 	var drop_charge = randi_range(0, 100)
 	if drop_charge < players[0].total_charge_drop_chance:
 		players[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
-	canvas.get_node('RichTextLabel2').visible = true
 	if current_amount_of_enemies == INCEPTION_WAVE_THRESHHOLD:
 		if current_wave_counter < wave_counter:
 			current_wave_counter += 1
-			canvas.get_child(2).visible = true
 			time_left = WAVE_COUNTDOWN_TIME
 			next_map = maps.WAVE
-			canvas.get_child(3).visible = true
 			await get_tree().create_timer(WAVE_COUNTDOWN_TIME).timeout
-			_next_wave_countdown()
+			respawn_creatures.emit(current_round)
 			return
 		else:
 			current_amount_of_enemies = SUB_WAVE_THRESHHOLD
@@ -165,11 +169,13 @@ func _start_boss():
 	get_units.emit(current_boss.get_children())
 	current_amount_of_enemies = current_boss.get_child_count()
 	for child in current_boss.get_children():
+		child._ascend()
+		for curse in curses:
+			child._add_stats(curse)
 		child.is_dead.connect(_unit_dead)
 		waves.add_child(current_boss)
 	
 	start_boss.emit(current_boss, current_round)
-	canvas.visible = false
 	wave_ongoing = true
 	boss_ready = true
 	players[0].in_combat = true
@@ -197,8 +203,8 @@ func _on_round_manager_start_encounter(value, _completed_waves, player):
 	wave_counter = randi_range(2, 3)
 	current_sub_wave.erase(0)
 	print(_completed_waves)
+	completed_waves.clear()
 	completed_waves.append_array(_completed_waves)
-	canvas.visible = true
 	players[0].in_combat = true
 
 func _on_map_manager_used_creatures(number:Variant, arr:Variant):
@@ -212,4 +218,26 @@ func _get_total_waves():
 	return 2
 
 func _update_objectives():
+	canvas.get_node('RichTextLabel2').visible = true
+	canvas.get_node('RichTextLabel3').visible = true
 	canvas.get_node('RichTextLabel2').text = 'Waves: ' + str(current_wave_counter) + '/' + str(wave_counter) + '\n' + 'Enemies: ' + str((current_amount_of_enemies-2)) + '/' + str(total_amount_of_enemies)	
+
+func _update_ascension_info():
+	canvas.get_node('Ascension3').get_child(0).play('Ascension_anim')
+	canvas.get_node('Ascension').text = 'Ascension: ' + str(players[0].ascension_level)
+	var aggregated_tooltip = {}
+	for curse in curses:
+		if aggregated_tooltip.has(curse.second_tooltip):
+			aggregated_tooltip[curse.second_tooltip] += 1
+		else:
+			aggregated_tooltip[curse.second_tooltip] = 1
+	canvas.get_node('Ascension2').text = ''
+	for key in aggregated_tooltip.keys():
+		canvas.get_node('Ascension2').text += key + ' x' + str(aggregated_tooltip[key]) + '\n'
+	canvas.get_node('Ascension').visible = true
+	canvas.get_node('Ascension2').visible = true
+
+func _on_ability_manager_curse_picked(curse:Variant):
+	curses.append(curse)
+	_update_ascension_info()
+

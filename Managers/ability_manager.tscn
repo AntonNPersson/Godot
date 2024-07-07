@@ -1,19 +1,29 @@
-[gd_scene load_steps=7 format=3 uid="uid://ogcxhkkfsmdi"]
+[gd_scene load_steps=9 format=3 uid="uid://ogcxhkkfsmdi"]
 
 [ext_resource type="Script" path="res://Managers/AbilityManager.gd" id="1_033sp"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_dib7m"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="3_goub6"]
 [ext_resource type="Texture2D" uid="uid://dww5lou0f1f2e" path="res://Sprites/test3.png" id="4_4u28n"]
+[ext_resource type="StyleBox" uid="uid://p1i2h6goy2ej" path="res://GUI/testest.tres" id="4_bmhgc"]
 [ext_resource type="Shader" path="res://Shaders/glow.gdshader" id="4_k31hf"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tsstx"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jsed8"]
 shader = ExtResource("4_k31hf")
-shader_parameter/color1 = Color(1, 0.686275, 0, 1)
-shader_parameter/color2 = Color(1, 0.686275, 0, 1)
+shader_parameter/color1 = Color(0.803922, 0.701961, 0, 1)
+shader_parameter/color2 = Color(0.803922, 0.701961, 0, 1)
 shader_parameter/threshold = 2.0
 shader_parameter/intensity = 1.0
 shader_parameter/opacity = 0.4
-shader_parameter/glow_color = Color(1, 0.686275, 0, 1)
+shader_parameter/glow_color = Color(0.803922, 0.701961, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tsstx"]
+shader = ExtResource("4_k31hf")
+shader_parameter/color1 = Color(1, 0.164706, 0, 1)
+shader_parameter/color2 = Color(1, 0.164706, 0, 1)
+shader_parameter/threshold = 2.0
+shader_parameter/intensity = 1.0
+shader_parameter/opacity = 0.4
+shader_parameter/glow_color = Color(1, 0.164706, 0, 1)
 
 [node name="AbilityManager" type="Node"]
 script = ExtResource("1_033sp")
@@ -54,6 +64,7 @@ theme_override_font_sizes/font_size = 11
 text = "Show Choices"
 
 [node name="Panel" type="Panel" parent="UI/CanvasLayer"]
+visible = false
 custom_minimum_size = Vector2(600, 400)
 anchors_preset = 8
 anchor_left = 0.5
@@ -67,6 +78,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_goub6")
+theme_override_styles/panel = ExtResource("4_bmhgc")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI/CanvasLayer/Panel"]
 layout_mode = 1
@@ -74,8 +86,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -20.0
+offset_top = 4.0
 offset_right = 20.0
-offset_bottom = 40.0
+offset_bottom = 44.0
 grow_horizontal = 2
 text = "Gifts"
 
@@ -154,20 +167,16 @@ grow_vertical = 2
 texture = ExtResource("4_4u28n")
 expand_mode = 1
 
-[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel/Choice_1"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/CanvasLayer/Panel/Choice_1"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 149.0
+offset_right = 161.0
+offset_bottom = 269.0
+
+[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel/Choice_1/ScrollContainer"]
 custom_minimum_size = Vector2(150, 120)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -75.0
-offset_top = -125.0
-offset_right = 75.0
-offset_bottom = -5.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
 
@@ -231,20 +240,16 @@ grow_vertical = 2
 texture = ExtResource("4_4u28n")
 expand_mode = 1
 
-[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel/Choice_2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/CanvasLayer/Panel/Choice_2"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 149.0
+offset_right = 161.0
+offset_bottom = 269.0
+
+[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel/Choice_2/ScrollContainer"]
 custom_minimum_size = Vector2(150, 120)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -75.0
-offset_top = -125.0
-offset_right = 75.0
-offset_bottom = -5.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
 
@@ -308,27 +313,22 @@ grow_vertical = 2
 texture = ExtResource("4_4u28n")
 expand_mode = 1
 
-[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel/Choice_3"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/CanvasLayer/Panel/Choice_3"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 149.0
+offset_right = 161.0
+offset_bottom = 269.0
+
+[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel/Choice_3/ScrollContainer"]
 custom_minimum_size = Vector2(150, 120)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -75.0
-offset_top = -125.0
-offset_right = 75.0
-offset_bottom = -5.0
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("3_goub6")
+layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI/CanvasLayer/Panel"]
 modulate = Color(1, 0.709804, 0, 1)
-material = SubResource("ShaderMaterial_tsstx")
+material = SubResource("ShaderMaterial_jsed8")
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -369,9 +369,329 @@ offset_bottom = 386.0
 theme = ExtResource("3_goub6")
 text = "Accept"
 
+[node name="Panel2" type="Panel" parent="UI/CanvasLayer"]
+visible = false
+custom_minimum_size = Vector2(600, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_goub6")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -40.0
+offset_right = 43.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "Ascension"
+
+[node name="Reroll" type="Button" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 19.0
+offset_right = 462.0
+offset_bottom = 45.0
+text = "Reroll"
+
+[node name="Reroll_amount" type="RichTextLabel" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 0
+offset_left = 469.0
+offset_top = 26.0
+offset_right = 509.0
+offset_bottom = 47.0
+text = "3x"
+fit_content = true
+scroll_active = false
+
+[node name="Choice_1" type="Panel" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -137.0
+offset_right = 192.0
+offset_bottom = 137.0
+grow_vertical = 2
+
+[node name="Name" type="RichTextLabel" parent="UI/CanvasLayer/Panel2/Choice_1"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "Ability 1"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Icon" type="TextureRect" parent="UI/CanvasLayer/Panel2/Choice_1"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -97.0
+offset_right = 50.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Icon2" type="TextureRect" parent="UI/CanvasLayer/Panel2/Choice_1"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -97.0
+offset_right = 50.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_4u28n")
+expand_mode = 1
+
+[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel2/Choice_1"]
+custom_minimum_size = Vector2(150, 120)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -125.0
+offset_right = 75.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
+theme_override_font_sizes/normal_font_size = 11
+
+[node name="Choice_2" type="Panel" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = -137.0
+offset_right = 86.0
+offset_bottom = 137.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Name" type="RichTextLabel" parent="UI/CanvasLayer/Panel2/Choice_2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "Ability 2"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Icon" type="TextureRect" parent="UI/CanvasLayer/Panel2/Choice_2"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -97.0
+offset_right = 50.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Icon2" type="TextureRect" parent="UI/CanvasLayer/Panel2/Choice_2"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -97.0
+offset_right = 50.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_4u28n")
+expand_mode = 1
+
+[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel2/Choice_2"]
+custom_minimum_size = Vector2(150, 120)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -125.0
+offset_right = 75.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
+theme_override_font_sizes/normal_font_size = 11
+
+[node name="Choice_3" type="Panel" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -137.0
+offset_right = -20.0
+offset_bottom = 137.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Name" type="RichTextLabel" parent="UI/CanvasLayer/Panel2/Choice_3"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "Ability 3"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Icon" type="TextureRect" parent="UI/CanvasLayer/Panel2/Choice_3"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -97.0
+offset_right = 50.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Icon2" type="TextureRect" parent="UI/CanvasLayer/Panel2/Choice_3"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -97.0
+offset_right = 50.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_4u28n")
+expand_mode = 1
+
+[node name="Tooltip" type="RichTextLabel" parent="UI/CanvasLayer/Panel2/Choice_3"]
+custom_minimum_size = Vector2(150, 120)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -125.0
+offset_right = 75.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_goub6")
+theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
+theme_override_font_sizes/normal_font_size = 11
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="UI/CanvasLayer/Panel2"]
+material = SubResource("ShaderMaterial_tsstx")
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -48.0
+offset_top = 35.0
+offset_right = 46.0
+offset_bottom = 75.0
+grow_horizontal = 2
+text = "Choose a curse"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Select_1" type="Button" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 346.0
+offset_right = 163.0
+offset_bottom = 386.0
+theme = ExtResource("3_goub6")
+text = "Accept"
+
+[node name="Select_2" type="Button" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 346.0
+offset_right = 359.0
+offset_bottom = 386.0
+theme = ExtResource("3_goub6")
+text = "Accept"
+
+[node name="Select_3" type="Button" parent="UI/CanvasLayer/Panel2"]
+layout_mode = 0
+offset_left = 439.0
+offset_top = 346.0
+offset_right = 554.0
+offset_bottom = 386.0
+theme = ExtResource("3_goub6")
+text = "Accept"
+
 [connection signal="item_clicked" from="UI/CanvasLayer/choiceList" to="." method="_on_choice_list_item_clicked"]
 [connection signal="pressed" from="UI/CanvasLayer/showButton" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/Panel/Reroll" to="." method="_on_reroll_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/Panel/Select_1" to="." method="_on_select_1_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/Panel/Select_2" to="." method="_on_select_2_pressed"]
 [connection signal="pressed" from="UI/CanvasLayer/Panel/Select_3" to="." method="_on_select_3_pressed"]
+[connection signal="pressed" from="UI/CanvasLayer/Panel2/Reroll" to="." method="_on_curse_reroll_pressed"]
+[connection signal="pressed" from="UI/CanvasLayer/Panel2/Select_1" to="." method="_on_curse_1_selected"]
+[connection signal="pressed" from="UI/CanvasLayer/Panel2/Select_2" to="." method="_on_curse_2_selected"]
+[connection signal="pressed" from="UI/CanvasLayer/Panel2/Select_3" to="." method="_on_curse_3_selected"]

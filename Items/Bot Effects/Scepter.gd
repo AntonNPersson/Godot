@@ -17,6 +17,7 @@ func _initialize():
 			intelligence = randi_range(10, 20)
 	range = 15
 	increased_global_weight = -30
+	icon = preload('res://Sprites/Icons/Scepter.png')
 
 func _get_values():
 	return [intelligence, range, strength, dexterity, increased_global_weight]

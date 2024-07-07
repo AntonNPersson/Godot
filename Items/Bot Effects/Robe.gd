@@ -6,6 +6,7 @@ func _initialize():
 	tags = ["barrier"]
 	barrier = randi() % 15 + 5
 	values = [barrier]
+	icon = preload('res://Sprites/Icons/Robe.png')
 
 func _get_values():
 	return values

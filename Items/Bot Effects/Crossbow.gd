@@ -8,6 +8,7 @@ func _initialize():
 	range = 125
 	attack_damage = randi_range(7, 12)
 	attack_speed = 15
+	icon = preload('res://Sprites/Icons/Crossbow.png')
 
 func _get_values():
 	return [range, attack_damage, attack_speed]

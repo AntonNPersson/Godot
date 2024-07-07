@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dtr2poygeam3r"]
+[gd_scene load_steps=37 format=3 uid="uid://dtr2poygeam3r"]
 
 [ext_resource type="PackedScene" uid="uid://wkhbpwoasb33" path="res://Waves/portal_effect.tscn" id="2_f0bsg"]
 [ext_resource type="Script" path="res://Managers/CharacterManager.gd" id="3_pvary"]
@@ -29,6 +29,67 @@
 [ext_resource type="PackedScene" uid="uid://cmblsxecemyvg" path="res://Items/Low-Mid Effects/lowmidlist.tscn" id="27_4ei4o"]
 [ext_resource type="PackedScene" uid="uid://bugmvirpfn5na" path="res://Items/Item.tscn" id="28_757ui"]
 [ext_resource type="PackedScene" uid="uid://tgn63im6llu7" path="res://Items/Mid Effects/Mid effects list.tscn" id="28_l1ijq"]
+
+[sub_resource type="Animation" id="Animation_kjyko"]
+resource_name = "Ascension_anim"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_kfna7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2wybs"]
+_data = {
+"Ascension_anim": SubResource("Animation_kjyko"),
+"RESET": SubResource("Animation_kfna7")
+}
 
 [sub_resource type="Gradient" id="Gradient_cfxw4"]
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
@@ -66,9 +127,9 @@ portal_effect = ExtResource("2_f0bsg")
 [node name="Waves" type="Node" parent="CanvasModulate/WaveManager"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="CanvasModulate/WaveManager"]
-visible = false
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -79,6 +140,7 @@ offset_bottom = 223.0
 grow_horizontal = 0
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -124,6 +186,45 @@ theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
+
+[node name="Ascension" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+visible = false
+offset_left = 4.0
+offset_top = 203.0
+offset_right = 99.0
+offset_bottom = 223.0
+text = "Ascension: 0"
+
+[node name="Ascension2" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+visible = false
+offset_left = 4.0
+offset_top = 223.0
+offset_right = 289.0
+offset_bottom = 243.0
+bbcode_enabled = true
+text = "* 30% increased speed"
+fit_content = true
+
+[node name="Ascension3" type="RichTextLabel" parent="CanvasModulate/WaveManager/CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.5
+offset_top = -20.0
+offset_right = 74.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 25
+text = "Ascension 1"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasModulate/WaveManager/CanvasLayer/Ascension3"]
+libraries = {
+"": SubResource("AnimationLibrary_2wybs")
+}
 
 [node name="CharacterManager" type="Node" parent="CanvasModulate" node_paths=PackedStringArray("units")]
 script = ExtResource("3_pvary")
@@ -248,6 +349,8 @@ visible = false
 [connection signal="next_wave" from="CanvasModulate/RoundManager" to="CanvasModulate/WaveManager" method="_on_next_wave"]
 [connection signal="start_encounter" from="CanvasModulate/RoundManager" to="CanvasModulate/WaveManager" method="_on_round_manager_start_encounter"]
 [connection signal="start_singleplayer" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_round_manager_start_singleplayer"]
+[connection signal="curse_picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/WaveManager" method="_on_ability_manager_curse_picked"]
+[connection signal="curse_picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_curse_picked"]
 [connection signal="picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_picked"]
 [connection signal="changing_map" from="CanvasModulate/MapManager" to="CanvasModulate/InteractionManager" method="_on_changing_map"]
 [connection signal="start_boss_cinematic" from="CanvasModulate/MapManager" to="CanvasModulate/CinematicManager" method="_start_cinematic"]

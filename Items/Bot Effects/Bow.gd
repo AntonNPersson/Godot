@@ -6,6 +6,7 @@ var attack_damage : int = 15
 func _initialize():
 	range = 200
 	attack_damage = randi_range(15, 25)
+	icon = preload('res://Sprites/Icons/Bow.png')
 
 
 func _get_values():

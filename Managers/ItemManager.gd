@@ -66,7 +66,7 @@ func _calculate_item_rarity():
 	if _randi < 60:
 		return
 
-	var rarity = 53
+	var rarity = randi() % 55
 	if rarity < 30:
 		return ITEM_RARITY.COMMON
 	elif rarity < 45:

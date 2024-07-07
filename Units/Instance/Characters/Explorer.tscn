@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://bm3gbpb1x4bit"]
+[gd_scene load_steps=71 format=3 uid="uid://bm3gbpb1x4bit"]
 
 [ext_resource type="Script" path="res://Units/Stats/Explorer_stats.gd" id="1_fyslq"]
 [ext_resource type="PackedScene" uid="uid://bq7ge7ih4sx00" path="res://Units/Utility/PlayerUtility/level_up_menu.tscn" id="2_0kq6j"]
@@ -27,6 +27,11 @@ shader_parameter/hit_effect_intensity = 0.0
 shader_parameter/outline_intensity = 0.0
 shader_parameter/outline_size = 0.05
 shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Environment" id="Environment_4aqom"]
+background_mode = 3
+tonemap_mode = 2
+tonemap_exposure = 0.8
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cualu"]
 properties/0/path = NodePath("..:position")
@@ -465,6 +470,9 @@ shake_speed = 100.0
 zoom = Vector2(0.6, 0.6)
 position_smoothing_enabled = true
 position_smoothing_speed = 20.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Camera/Camera2D"]
+environment = SubResource("Environment_4aqom")
 
 [node name="InventoryManager" parent="." instance=ExtResource("8_2ksc4")]
 

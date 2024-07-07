@@ -8,6 +8,7 @@ func _initialize():
 	attack_speed = randi() % 10 + 5
 	barrier = randi() % 10 + 2
 	values = [attack_speed, barrier]
+	icon = preload('res://Sprites/Icons/Handwraps.png')
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)

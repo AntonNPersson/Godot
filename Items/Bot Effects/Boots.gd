@@ -6,6 +6,7 @@ var evade : int = 20
 func _initialize():
 	speed = randi() % 3 + 1
 	evade = randi() % 50 + 20
+	icon = preload('res://Sprites/Icons/Boots.png')
 
 func _get_values():
 	return [speed, evade]

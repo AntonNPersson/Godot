@@ -151,7 +151,7 @@ var current_attack_modifier_values = []
 var regen_timer = 0
 
 # Saved variables
-var completed_waves = [0, 1]
+var completed_waves = [1, 2]
 var power = 1
 var ascension_level = 0
 var ascension_currency = 0

@@ -33,9 +33,10 @@ func _use(enable):
 		for i in player._get_completed_waves():
 			var new_tooltip = remove_part(list.get_item_tooltip(i), ' Completed: false')
 			new_tooltip += ' Completed: true'
-			list.set_item_tooltip(i, new_tooltip)
+			list.set_item_tooltip(i-1, new_tooltip)
 		if player._is_all_waves_completed():
 			get_node('list_1').get_child(1).visible = true
+			get_node('list_1').get_child(0).visible = false
 		else:
 			get_node('list_1').get_child(1).visible = false
 		interacting = true

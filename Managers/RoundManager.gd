@@ -95,3 +95,9 @@ func _on_stop_wave(completed, wave):
 			units[0]._add_completed_wave(wave)
 			_next_area('Ability', null)
 			update_characters.emit()
+
+func _on_ability_manager_curse_picked(curse:Variant):
+	Utility.get_node('Transition')._start(0.3)
+	start_singleplayer.emit()
+
+

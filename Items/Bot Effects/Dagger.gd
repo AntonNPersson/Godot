@@ -8,6 +8,7 @@ func _initialize():
 	range = 15
 	attack_damage = randi_range(4, 6)
 	quick_attack_chance = 100
+	icon = preload('res://Sprites/Icons/Dagger.png')
 
 
 

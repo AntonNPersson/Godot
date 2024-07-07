@@ -15,10 +15,10 @@ var units_in_range = []
 
 func _process(delta):
 	timer += delta
-	if origin == null or enabled == false:
+	if enabled == false:
 		return
 	
-	if !is_instance_valid(origin):
+	if !is_instance_valid(origin) or origin == null:
 		queue_free()
 		return
 	

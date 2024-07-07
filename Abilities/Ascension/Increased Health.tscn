@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6enmgpmwnrii"]
+
+[ext_resource type="Script" path="res://Abilities/Ascension/Increased Health.gd" id="1_5awwk"]
+
+[node name="Increased Health" type="Node2D"]
+script = ExtResource("1_5awwk")
+i_name = "Juggernaut"
+tooltip = "Increases the base health of all enemies by 20%."
+increased_health = 20

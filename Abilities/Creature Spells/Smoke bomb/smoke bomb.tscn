@@ -18,7 +18,7 @@ point_count = 2
 offsets = PackedFloat32Array(0, 0.839623, 1)
 colors = PackedColorArray(0.301961, 0.301961, 0.301961, 1, 0.205117, 0.205117, 0.205117, 1, 1, 1, 1, 0)
 
-[node name="SmokeBomb" type="Node2D"]
+[node name="SmokeBomb" type="Node2D" groups=["projectiles"]]
 scale = Vector2(0.7, 0.7)
 script = ExtResource("1_d6y7c")
 

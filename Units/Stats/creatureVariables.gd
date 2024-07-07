@@ -94,6 +94,9 @@ var current_base_health = 0.0
 var current_base_attack_speed = 0.0
 var current_base_experience = 0.0
 var current_base_ascension_currency = 0.0
+var current_base_speed = 0.0
+var current_base_range = 0.0
+var current_base_attack_damage = 0.0
 
 
 var _target = null
@@ -101,6 +104,9 @@ var _target = null
 func _ready():
 	# Update the totals and set the current health.
 	_ascend()
+	current_base_speed = base_speed
+	current_base_range = base_range
+	current_base_attack_damage = base_attack_damage
 	_update_totals()
 	current_health = total_health
 	
@@ -135,16 +141,31 @@ func _ascend():
 	current_base_experience = experience * power
 	current_base_ascension_currency = ascension_currency * power
 
+func _add_stats(curse):
+	if "increased_armor" in curse:
+		current_base_armor = current_base_armor + (current_base_armor * (curse.increased_armor/100))
+	if "increased_evade" in curse:
+		current_base_evade = current_base_evade + (current_base_evade * (curse.increased_evade/100))
+	if "increased_speed" in curse:
+		current_base_speed = current_base_speed + (current_base_speed * (curse.increased_speed/100))
+	if "increased_health" in curse:
+		current_base_health = current_base_health + (current_base_health * (curse.increased_health/100))
+	if "increased_range" in curse:
+		current_base_range = current_base_range + (current_base_range * (curse.increased_range/100))
+	if "increased_attack_speed" in curse:
+		current_base_attack_speed = current_base_attack_speed + (current_base_attack_speed * (curse.increased_attack_speed/100))
+	if "increased_attack_damage" in curse:
+		current_base_attack_damage = current_base_attack_damage + (current_base_attack_damage * (curse.increased_attack_damage/100))
 	
 func _update_totals():
 	# Update the total values based on the base values and bonuses.
 	total_armor = current_base_armor + bonus_armor
 	total_evade = current_base_evade + bonus_evade
-	total_speed = base_speed + bonus_speed
+	total_speed = current_base_speed + bonus_speed
 	total_health = current_base_health + bonus_health
-	total_range = base_range + bonus_range
+	total_range = current_base_range + bonus_range
 	total_attack_speed = current_base_attack_speed + bonus_attack_speed
-	total_attack_damage = base_attack_damage + bonus_attack_damage
+	total_attack_damage = current_base_attack_damage + bonus_attack_damage
 	total_windup_time = base_windup_time / total_attack_speed
 
 func _process(_delta):

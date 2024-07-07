@@ -39,8 +39,8 @@ var ability_mapping = {
 	"Ability_4": 3
 }
 
-@export var max_potion_slots = 2
-@export var max_slots = 6
+@onready var max_potion_slots = 2
+@onready var max_slots = 6
 
 func _ready():
 	unit = get_parent()
@@ -190,12 +190,14 @@ func _update_inventory():
 			print('item not valid')
 			continue
 		inventory_hud.add_item(" " + item.i_name)
-		inventory_hud.set_item_tooltip(inventory_hud.item_count - 1, item.tooltip)
+		inventory_hud.set_item_tooltip(inventory_hud.item_count - 1, item.json_string)
 
 	var empty_slots = max_slots - inventory.size()
 	print(empty_slots)
 	for i in range(empty_slots):
 		inventory_hud.add_item(" Empty Slot")
+		inventory_hud.set_item_tooltip_enabled(inventory_hud.item_count - 1, false)
+		inventory_hud.set_item_selectable(inventory_hud.item_count - 1, false)
 		print('doing it')
 
 	potion_hud.clear()
@@ -204,8 +206,35 @@ func _update_inventory():
 			continue
 		potion_hud.add_item(" " + potion.i_name)
 		potion_hud.set_item_tooltip(potion_hud.item_count - 1, potion.tooltip)
+		potion_hud.set_item_icon(potion_hud.item_count - 1, potion.icon)
 
 func _update_stats():
+	var icons = {
+		"Total Health": preload('res://Sprites/Icons/Total_Health.png'),
+		"Total Mana": preload('res://Sprites/Icons/Total_Mana.png'),
+		"Total Stamina": preload('res://Sprites/Icons/Total_Stamina.png'),
+		"Total Barrier": preload('res://Sprites/Icons/Total_Barrier.png'),
+		"Total Health Regen": preload('res://Sprites/Icons/Total_Health_Regen.png'),
+		"Total Mana Regen": preload('res://Sprites/Icons/Total_Mana_Regen.png'),
+		"Total Stamina Regen": preload('res://Sprites/Icons/Total_Stamina_Regen.png'),
+		"Total Barrier Regen": preload('res://Sprites/Icons/Total_Barrier_Regen.png'),
+		"Total Armor": preload('res://Sprites/Icons/Total_Armor.png'),
+		"Total Evade": preload('res://Sprites/Icons/Total_Evade.png'),
+		"Total Vitality": preload('res://Sprites/Icons/Total_Vitality.png'),
+		"Total Dexterity": preload('res://Sprites/Icons/Total_Dexterity.png'),
+		"Total Strength": preload('res://Sprites/Icons/Total_Strength.png'),
+		"Total Intelligence": preload('res://Sprites/Icons/Total_Intelligence.png'),
+		"Total Attack Speed": preload('res://Sprites/Icons/Total_Attack_Speed.png'),
+		"Total Attack Damage": preload('res://Sprites/Icons/Total_Attack_Damage.png'),
+		"Total Attack Range": preload('res://Sprites/Icons/Total_Attack_Range.png'),
+		"Total Critical Strike Chance": preload('res://Sprites/Icons/Total_Critical_Strike_Chance.png'),
+		"Total Critical Strike Damage": preload('res://Sprites/Icons/Total_Critical_Strike_Damage.png'),
+		"Total Movement Speed": preload('res://Sprites/Icons/Total_Movement_Speed.png'),
+		"Total Cooldown Reduction": preload('res://Sprites/Icons/Total_Cooldown_Reduction.png'),
+		"Total Quick Attack Chance": preload('res://Sprites/Icons/Total_Quick_Attack_Chance.png'),
+		"Total Double Cast Chance": preload('res://Sprites/Icons/Total_Double_Cast_Chance.png')
+	}
+
 	var stats = {
 		"Total Health": {"base": int(unit.total_health), "bonus": (unit.bonus_health + (unit.total_vitality * 2)) * (1 + unit.global_health/100)},
 		"Total Mana": {"base": int(unit.total_mana), "bonus": (unit.bonus_mana + (unit.total_intelligence * 2)) * (1 + unit.global_mana/100)},
@@ -235,7 +264,7 @@ func _update_stats():
 	stat_hud.clear()
 	var stat
 	for s in stats:
-		stat = stat_hud.add_item(" " + s + ": " + str(stats[s].base), null, false)
+		stat = stat_hud.add_item(" " + s + ": " + str(stats[s].base), icons[s], false)
 		stat_hud.set_item_tooltip(stat, 'Base: ' + str(stats[s].base) + ' Bonus: ' + str(int(stats[s].bonus)))
 	stat = stat_hud.add_item(" Global Burn Damage: " + str(unit.global_burn_damage), null, false)
 	stat_hud.set_item_tooltip(stat, 'Burn damage is always half the direct damage of a spell')
@@ -253,7 +282,8 @@ func _update_stats():
 	stat_hud.set_item_tooltip(stat, unit.passive_tooltip)
 
 	get_child(0).get_child(4)._update_health(unit._calculate_percentage(unit.current_health, unit.total_health))
-	get_child(0).get_child(5)._update_mana(unit._calculate_percentage(unit.current_mana, unit.total_mana))
+	get_child(0).get_child(5)._update_barrier(unit._calculate_percentage(unit.current_barrier, unit.total_barrier))
+	get_child(0).get_child(6)._update_mana(unit._calculate_percentage(unit.current_mana, unit.total_mana))
 	get_child(0).get_child(3)._update_stamina(unit._calculate_percentage(unit.current_stamina, unit.total_stamina))
 	get_child(0).get_node('currenthp').text = str(int(unit.current_health))
 	get_child(0).get_node('current').text = str(int(unit.current_mana))

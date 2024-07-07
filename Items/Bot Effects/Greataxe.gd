@@ -9,7 +9,8 @@ func _initialize():
 	range = 15
 	attack_damage = randi_range(4, 6)
 	attack_speed = -15
-
+	attack_targets = 2
+	icon = preload('res://Sprites/Icons/Greataxe.png')
 
 
 func _get_values():

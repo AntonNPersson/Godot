@@ -126,6 +126,8 @@ func _change_map(map_path, tiles):
 	special_positions.clear()
 	Utility.get_node('Interactable').interactable_objects.clear()
 	Utility.get_node('Interactable').special_objects.clear()
+	for i in get_tree().get_nodes_in_group('projectiles'):
+		i.queue_free()
 	for child in get_children():
 		child.queue_free()
 	_loadTileMap(map_path, tiles)
@@ -631,17 +633,13 @@ func _spawn_and_attach():
 	var random_creatures = []
 	var creature_positions = []
 	var random_increase = int(grid_size/20) + randi() % (3+sub_wave) + 2
-	var spawn_time = 0.0
-	if random_increase > 5:
-		spawn_time = 2.0
-	else:
-		spawn_time = 1.5
+	var spawn_time = 1.5
 	
 	if random_increase > grid_size/10:
 		random_increase = grid_size/10
 
 	for i in range(random_increase):
-		random_creatures = _calculate_creature(random_increase)
+		random_creatures = await _calculate_creature(random_increase)
 	for c in random_creatures:
 		var d = c.duplicate()
 		creature_positions.append(_get_random_walkable_tile())
@@ -653,6 +651,8 @@ func _spawn_and_attach():
 		nm += 1
 	used_creatures.emit(nm, arr)
 	for a in range(arr.size()):
+		if a > 0 and a % 10 == 0:
+			await get_tree().create_timer(3).timeout
 		arr[a].paused = false
 		arr[a].visible = true
 		arr[a].add_to_group('enemies', true)
@@ -675,6 +675,9 @@ func _calculate_creature(size):
 	for i in range(0, s):
 		var percentage_of_total = int(size / (i + 1))
 		var num_to_spawn = percentage_of_total
+
+		if i == s - 1 and i != 0:
+			num_to_spawn = min(num_to_spawn, 2)
 		for j in range(0, num_to_spawn):
 			arr.append(creatures[i])
 	return arr

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://tiathqfmhmle"]
+
+[ext_resource type="Script" path="res://Abilities/Ascension/Increased Movement Speed.gd" id="1_apar8"]
+
+[node name="Increased Movement Speed" type="Node2D"]
+script = ExtResource("1_apar8")
+i_name = "Speed Demon"
+tooltip = "Increases the base movement speed of all enemies by 25%."
+increased_speed = 25

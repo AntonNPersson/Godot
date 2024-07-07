@@ -8,6 +8,7 @@ func _initialize():
 	mana_regen = round_to_dec(randf_range(0.2, 0.8), 2)
 	barrier = randi() % 10 + 2
 	values = [mana_regen, barrier]
+	icon = preload('res://Sprites/Icons/Hood.png')
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)

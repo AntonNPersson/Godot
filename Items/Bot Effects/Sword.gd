@@ -8,6 +8,7 @@ func _initialize():
 	range = 25
 	attack_damage = randi_range(12, 22)
 	attack_speed = 10
+	icon = preload('res://Sprites/Icons/Sword.png')
 
 
 func _get_values():

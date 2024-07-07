@@ -4,6 +4,7 @@ var values = []
 var tags = []
 var colors = []
 var tooltip = ""
+var icon = null
 
 func _initialize():
 	pass

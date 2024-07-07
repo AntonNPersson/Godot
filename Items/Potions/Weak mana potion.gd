@@ -5,6 +5,7 @@ var type = "Mana"
 var heal = 30
 var charges = 2
 var player
+var icon = preload('res://Sprites/Icons/Weak_Mana_Potion.png')
 
 func _initialize():
 	heal = 30

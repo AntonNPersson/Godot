@@ -1,12 +1,20 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://bkrtaty4xnk1j"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://bkrtaty4xnk1j"]
 
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="1_0hr8e"]
 [ext_resource type="StyleBox" uid="uid://dnd8euuaxd40t" path="res://GUI/Button_style_hover.tres" id="2_wke16"]
 [ext_resource type="StyleBox" uid="uid://n85lmttv0lin" path="res://GUI/Button_style_normal.tres" id="3_0og1q"]
 [ext_resource type="StyleBox" uid="uid://bnpwxrl1x3kd1" path="res://GUI/Button_style_pressed.tres" id="4_6c4vd"]
-[ext_resource type="StyleBox" uid="uid://cyus77pg6wyib" path="res://GUI/new_style.tres" id="5_dbql6"]
-[ext_resource type="StyleBox" uid="uid://dxny15tohlxvs" path="res://GUI/itemlist_panel.tres" id="5_dpotu"]
+[ext_resource type="StyleBox" uid="uid://b5n7tp8iaefa8" path="res://GUI/new_test_style.tres" id="5_del7q"]
+[ext_resource type="StyleBox" uid="uid://p1i2h6goy2ej" path="res://GUI/testest.tres" id="6_cpune"]
 [ext_resource type="StyleBox" uid="uid://5qiycd4ieibn" path="res://GUI/tooltip_panel.tres" id="6_mle8l"]
+[ext_resource type="StyleBox" uid="uid://ibhilmoenyq5" path="res://GUI/new_test.tres" id="6_rkwgq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ampd0"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
 
 [resource]
 Button/font_sizes/font_size = 14
@@ -21,11 +29,12 @@ ItemList/constants/v_separation = 5
 ItemList/font_sizes/font_size = 14
 ItemList/fonts/font = ExtResource("1_0hr8e")
 ItemList/styles/hovered = ExtResource("2_wke16")
-ItemList/styles/panel = ExtResource("5_dbql6")
+ItemList/styles/panel = null
 ItemList/styles/selected = ExtResource("4_6c4vd")
-Panel/styles/panel = ExtResource("5_dpotu")
-PanelContainer/styles/panel = ExtResource("5_dpotu")
-ProgressBar/styles/background = ExtResource("5_dbql6")
+Panel/styles/panel = ExtResource("5_del7q")
+PanelContainer/styles/panel = ExtResource("6_cpune")
+ProgressBar/styles/background = ExtResource("6_rkwgq")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_ampd0")
 RichTextLabel/fonts/bold_font = ExtResource("1_0hr8e")
 RichTextLabel/fonts/normal_font = ExtResource("1_0hr8e")
 TooltipLabel/colors/font_outline_color = Color(0, 0, 0, 1)

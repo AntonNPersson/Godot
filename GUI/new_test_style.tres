@@ -1,0 +1,7 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://b5n7tp8iaefa8"]
+
+[ext_resource type="Texture2D" uid="uid://bjyjmmwvav1yr" path="res://Sprites/testgui.png" id="1_huo0c"]
+
+[resource]
+texture = ExtResource("1_huo0c")
+modulate_color = Color(0.133333, 0.133333, 0.133333, 1)

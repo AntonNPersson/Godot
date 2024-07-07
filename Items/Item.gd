@@ -22,8 +22,17 @@ var tooltip_sub_desc
 var tooltip_icon
 
 var scroll_panel
+var json_string
 
-
+func _create_json_string(t_name, t_main_desc, t_sub_desc, t_icon, t_rarity):
+	var json = {
+		"tooltip_name": t_name,
+		"tooltip_main_desc": t_main_desc,
+		"tooltip_sub_desc": t_sub_desc,
+		"tooltip_icon": t_icon,
+		"rarity": t_rarity
+	}
+	return JSON.stringify(json)
 
 func _initialize():
 	tooltip_name = get_child(0).get_child(0).get_child(0).get_child(0)
@@ -34,32 +43,40 @@ func _initialize():
 
 	get_child(0).get_child(1).global_position = get_global_transform_with_canvas().get_origin()
 	get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center]' + get_child(2).name
+	if get_child(2).icon != null:
+		tooltip_icon.get_child(0).texture = get_child(2).icon
+
 	tooltip_name.text = i_name
 	if rarity == ITEM_RARITY.COMMON:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center][color=white]' + get_child(2).name + '[/color][/center]'
 		tooltip_name.modulate = Color(1, 1, 1)
 		get_child(1).color = Color.WHITE
 		get_child(1).get_child(0).color = Color.WHITE
+		tooltip_icon.get_child(1).modulate = Color.WHITE
 	elif rarity == ITEM_RARITY.UNCOMMON:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Lawngreen]' + get_child(2).name + '[/color]'
 		tooltip_name.modulate = Color.LAWN_GREEN
 		get_child(1).color = Color.LAWN_GREEN
 		get_child(1).get_child(0).color = Color.LAWN_GREEN
+		tooltip_icon.get_child(1).modulate = Color.LAWN_GREEN
 	elif rarity == ITEM_RARITY.RARE:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Dodgerblue]' + get_child(2).name + '[/color]'
 		tooltip_name.modulate = Color.DODGER_BLUE
 		get_child(1).color = Color.DODGER_BLUE
 		get_child(1).get_child(0).color = Color.DODGER_BLUE
+		tooltip_icon.get_child(1).modulate = Color.DODGER_BLUE
 	elif rarity == ITEM_RARITY.EPIC:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Blueviolet]' + get_child(2).name + '[/color]'
 		tooltip_name.modulate = Color.BLUE_VIOLET
 		get_child(1).color = Color.BLUE_VIOLET
 		get_child(1).get_child(0).color = Color.BLUE_VIOLET
+		tooltip_icon.get_child(1).modulate = Color.BLUE_VIOLET
 	elif rarity == ITEM_RARITY.LEGENDARY:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Darkorange]' + get_child(2).name + '[/color]'
 		tooltip_name.modulate = Color.DARK_ORANGE
 		get_child(1).color = Color.DARK_ORANGE
 		get_child(1).get_child(0).color = Color.DARK_ORANGE
+		tooltip_icon.get_child(1).modulate = Color.DARK_ORANGE
 
 	tooltip += _create_tooltip(2)
 	if rarity >= ITEM_RARITY.UNCOMMON:
@@ -71,6 +88,8 @@ func _initialize():
 		tooltip += _create_tooltip(6)
 
 	tooltip_sub_desc.text = tooltip
+
+	json_string = _create_json_string(tooltip_name.text, tooltip_main_desc.text, tooltip_sub_desc.text, get_child(2).icon.resource_path, rarity)
 	
 
 func _get_random_animation():

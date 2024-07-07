@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8chwfwce6kgm"]
+
+[ext_resource type="PackedScene" uid="uid://debopt64df75q" path="res://Abilities/Ascension/Increased Armor.tscn" id="1_k3hag"]
+[ext_resource type="PackedScene" uid="uid://b6enmgpmwnrii" path="res://Abilities/Ascension/Increased Health.tscn" id="2_jcfxr"]
+[ext_resource type="PackedScene" uid="uid://tiathqfmhmle" path="res://Abilities/Ascension/Increased Movement Speed.tscn" id="3_ptk2l"]
+
+[node name="AscensionDebuffs" type="Node2D"]
+
+[node name="Increased Armor" parent="." instance=ExtResource("1_k3hag")]
+
+[node name="Increased Health" parent="." instance=ExtResource("2_jcfxr")]
+
+[node name="Increased Movement Speed" parent="." instance=ExtResource("3_ptk2l")]

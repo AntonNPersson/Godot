@@ -16,6 +16,7 @@ func _initialize():
 		2:
 			intelligence = randi_range(10, 15)
 	range = 175
+	icon = preload('res://Sprites/Icons/Staff.png')
 
 func _get_values():
 	return [intelligence, range, strength, dexterity]
