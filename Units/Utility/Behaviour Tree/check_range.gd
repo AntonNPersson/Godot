@@ -8,13 +8,13 @@ var tile_size = 128
 func _run(_delta):
 	_range = tile_range * tile_size
 	if reverse:
-		if unit.global_position.distance_to(target.global_position) <= _range:
+		if unit.global_position.distance_to(_get_closest_target().global_position) <= _range:
 			get_child(0)._run(_delta)
 			_running()
 		else:
 			_fail()
 	else:
-		if unit.global_position.distance_to(target.global_position) >= _range:
+		if unit.global_position.distance_to(_get_closest_target().global_position) >= _range:
 			get_child(0)._run(_delta)
 			_running()
 		else:

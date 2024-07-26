@@ -20,6 +20,7 @@ var current_progress = 0.0
 
 var cast_bar = null
 var cast_timer = 0.0
+var is_casting = false
 
 func _setup(change_state, unit):
 	self._change_state = change_state
@@ -34,6 +35,7 @@ func _setup(change_state, unit):
 		var timer = pre.cooldown
 		timers.append(timer)
 		ranges.append(pre._range)
+		print(pre.name)
 		pre.queue_free()
 
 func _update(delta):
@@ -81,6 +83,11 @@ func _update_cast_timer(delta):
 		cast_bar.value = _calculate_cast_percentage(ability_cast_duration[current_index])
 	if cast_bar.value >= 100:
 		cast_bar.visible = false
+		is_casting = false
+
+func _interrupt_cast_timer():
+	cast_timer = 0
+	cast_bar.value = 0
 	
 func _set_ability_on_cooldown(index):
 	timers[index] = ability_cooldowns[index]
@@ -95,8 +102,9 @@ func _calculate_cast_percentage(duration):
 	return perc
 
 func _is_ability_on_cooldown(index):
-	if timers[index] <= 0 and _unit.global_position.distance_to(_get_closest_target().global_position) < ranges[index]:
+	if timers[index] <= 0 and _unit.global_position.distance_to(_get_closest_target().global_position) < ranges[index] and !is_casting:
 		current_index = index
+		print(current_index)
 		return false
 	else:
 		return true

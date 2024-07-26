@@ -126,6 +126,7 @@ script = ExtResource("1_iaam4")
 
 [node name="Panel" parent="CanvasLayer" instance=ExtResource("2_lx2x2")]
 visible = false
+z_as_relative = false
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer" groups=["tooltip"]]
 position = Vector2(-14, 0)

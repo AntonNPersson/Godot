@@ -10,10 +10,13 @@ func _ready():
 	abilities = get_parent().get_parent().abilities
 
 func _start(duration):
+	if running:
+		return false
 	running = true
 	value = 0
 	self.duration = duration
 	visible = true
+	return true
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -26,9 +29,9 @@ func _process(delta):
 		cast_timer += delta
 		value = _calculate_cast_percentage()
 		if cast_timer >= duration:
-			running = false
 			cast_timer = 0
 			value = 0
+			running = false
 
 func _calculate_cast_percentage():
 	var perc = (cast_timer/duration) * 100

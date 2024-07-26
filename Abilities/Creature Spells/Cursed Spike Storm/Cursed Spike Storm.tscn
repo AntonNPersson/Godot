@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b51d301bl84bm"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Cursed Spike Storm/Cursed Spike Storm.gd" id="1_adkh4"]
+[ext_resource type="PackedScene" uid="uid://2s0awm3pdmvc" path="res://Abilities/Creature Spells/Cursed Spike Storm/Cursed Spike.tscn" id="2_6csib"]
+
+[node name="CursedSpikeStorm" type="Node2D"]
+script = ExtResource("1_adkh4")
+cooldown = 15.0
+_range = 4000.0
+values = [40.0]
+cursed_spike_instance = ExtResource("2_6csib")
+num_of_spikes = 12
+radius = 32.0
+speed = 200.0

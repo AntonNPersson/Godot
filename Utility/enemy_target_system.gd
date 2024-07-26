@@ -26,32 +26,38 @@ func _check_collision(hitbox, _call : Callable):
 	hitbox.queue_free()
 	
 
-func _create_circle_ability(size : float, duration : float, direction: Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null):
+func _create_circle_ability(size : float, duration : float, direction: Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null, multipy : float = 1.0):
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
-	var hitbox = hitboxx.duplicate()
-	hitbox._initialize()
-	enemy = origini
-	hitbox.get_node('Circle').visible = true
-	hitbox.scale = Vector2(size, size)
-	hitbox.global_position += direction * 78 * size
-	origini.add_child(hitbox)
-	hitbox.get_node('Circle').get_node('AnimationPlayer').speed_scale = 1/duration
-	hitbox.get_node('Circle').get_node('AnimationPlayer').play('fade_out')
-	await get_tree().create_timer(duration).timeout
-	if !is_instance_valid(origini) or origini.is_queued_for_deletion():
-		return
-	if after_effect:
-		_shake_camera(player)
-		var effect = after_effect.instantiate()
-		hitbox.get_tree().get_root().add_child(effect)
-		effect.global_position = hitbox.global_position
-		effect.emitting = true
-	_check_collision(hitbox, _call)
+	origini.is_rooted = true
+	for i in range(0, multipy):
+		ab.append(i)
+		var hitbox = hitboxx.duplicate()
+		hitbox._initialize()
+		enemy = origini
+		hitbox.get_node('Circle').visible = true
+		hitbox.scale = Vector2(size, size)
+		hitbox.global_position += direction * 78 * size
+		origini.add_child(hitbox)
+		hitbox.get_node('Circle').get_node('AnimationPlayer').speed_scale = 1/duration
+		hitbox.get_node('Circle').get_node('AnimationPlayer').play('fade_out')
+		if i == 0:
+			await get_tree().create_timer(duration).timeout
+		if !is_instance_valid(origini) or origini.is_queued_for_deletion():
+			return
+		origini.is_rooted = false
+		if after_effect:
+			_shake_camera(player)
+			var effect = after_effect.instantiate()
+			hitbox.get_tree().get_root().add_child(effect)
+			effect.global_position = hitbox.global_position
+			effect.emitting = true
+		_check_collision(hitbox, _call)
 
 func _create_rectangle_ability(size : Vector2, duration : float, direction: Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null):
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
+	origini.is_rooted = true
 	var hitbox = hitboxx.duplicate()
 	hitbox._initialize()
 	hitbox.get_node('Rectangle').visible = true
@@ -64,6 +70,7 @@ func _create_rectangle_ability(size : Vector2, duration : float, direction: Vect
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini):
 		return
+	origini.is_rooted = false
 	if after_effect:
 		_shake_camera(player)
 		var effect = after_effect.instantiate()
@@ -75,6 +82,7 @@ func _create_rectangle_ability(size : Vector2, duration : float, direction: Vect
 func _create_targeted_circle_ability(size : float, duration : float, target : Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null):
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
+	origini.is_rooted = true
 	var hitbox = hitboxx.duplicate()
 	hitbox._initialize()
 	hitbox.get_node('Circle').visible = true
@@ -86,6 +94,7 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini):
 		return
+	origini.is_rooted = false
 	if after_effect:
 		_shake_camera(player)
 		var effect = after_effect.instantiate()
@@ -97,6 +106,7 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 func _create_targeted_rectangle_ability(size : Vector2, duration : float, target : Node, origini : Node, _call : Callable, after_effect : PackedScene = null):
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
+	origini.is_rooted = true
 	var hitbox = hitboxx.duplicate()
 	hitbox._initialize()
 	hitbox.get_node('Rectangle').visible = true
@@ -109,6 +119,7 @@ func _create_targeted_rectangle_ability(size : Vector2, duration : float, target
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini):
 		return
+	origini.is_rooted = false
 	if after_effect:
 		_shake_camera(player)
 		var effect = after_effect.instantiate()

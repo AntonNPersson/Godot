@@ -551,7 +551,7 @@ func _handle_heal_action(target, value, tag):
 # - value: The amount of knockback.
 # - user: The user of the action.
 func _handle_wind_action(target, value, user):
-	if target in invincible_units or _check_if_dead(target):
+	if target in invincible_units or _check_if_dead(target) or target.is_in_group('boss'):
 		return
 	var direction = (target.global_position - user.global_position).normalized()
 	target.set_meta('Knockback_direction', direction)
@@ -684,6 +684,8 @@ func _calculate_reduced_damage(damage, armor):
 #   - target: The target from which to deapply the effects.
 #   - old_weight: The original weight value of the target.
 func _deapply_infected(target, old_weight):
+	if _check_if_dead(target):
+		return
 	target.global_weight = old_weight
 	target.set_meta('Infected_stacks', 0)
 	target.get_node('Infected_effect').queue_free()
@@ -694,6 +696,8 @@ func _deapply_infected(target, old_weight):
 #   - value: The value of the attack buff.
 #   - tag: The tag associated with the attack buff.
 func _deapply_attack_buff(target, value, tag):
+	if _check_if_dead(target):
+		return
 	target.current_attack_modifier_tags.erase(tag)
 	target.current_attack_modifier_values.erase(value)
 
@@ -725,6 +729,8 @@ func _deapply_freeze(original_speed, target):
 # Parameters:
 #   - user: The user from which to deapply the stealth effect.
 func _deapply_stealth(user):
+	if _check_if_dead(user):
+		return
 	user.in_stealth = false
 
 # This function deapplies a buff from a target.
@@ -733,6 +739,8 @@ func _deapply_stealth(user):
 #   - value: The value of the buff.
 #   - tag: The tag associated with the buff.
 func _deapply_buff(target, value, tag):
+	if _check_if_dead(target):
+		return
 	if tag == "Armor":
 		target.bonus_armor -= value
 	if tag == "Speed":

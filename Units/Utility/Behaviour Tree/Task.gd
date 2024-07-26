@@ -27,6 +27,7 @@ var current_index = 0
 var cast_bar = null
 var cast_timer = 0
 var cast_duration = 0
+var attack_timer = 0
 var textures : Dictionary = {
 }
 var animation
@@ -63,21 +64,30 @@ func _check_collision():
 			collision_direction = (collision_point - unit.global_position).normalized()
 			colliding = true
 
-func _move_random_target(_target_position, _delta):
-	if unit.global_position.distance_to(_target_position) > 10:
-		_update_path()	
+func _move_random_target(_target_position, _delta, summon = false):
+	if unit.global_position.distance_to(_target_position) > 10 or path == null:
+		_update_path()
+	var _target
+	if summon:
+		_target = _get_closest_enemy()
+	else:
+		_target = _get_closest_target()	
 	_check_collision()
 	if colliding:
 		unit.global_position -= collision_direction * unit.total_speed * _delta
 	else:
-		current_path_index = unit.obstacles_info._walk_from_to(path, unit, _delta, 1, _get_closest_target())
-	if unit.total_speed <= 0:
-		update_sprite_direction(_get_closest_target().global_position, "Walk", true)
+		current_path_index = unit.obstacles_info._walk_from_to(path, unit, _delta, 1, _target)
+	if unit.total_speed <= 0 or unit.is_rooted:
+		update_sprite_direction(_target.global_position, "Walk", true)
 	else:
-		update_sprite_direction(_get_closest_target().global_position, "Walk", false)
+		update_sprite_direction(_target.global_position, "Walk", false)
 	
-func _update_path():
-	var new_path = unit.obstacles_info._a_star(unit.global_position, _get_closest_target().global_position, "AllMoves")
+func _update_path(summon = false):
+	var new_path
+	if summon:
+		new_path = unit.obstacles_info._a_star(unit.global_position, _get_closest_enemy().global_position, "AllMoves")
+	else:
+		new_path = unit.obstacles_info._a_star(unit.global_position, _get_closest_target().global_position, "AllMoves")
 	if new_path.size() > 0:
 		path = new_path
 		current_path_index = 0
@@ -139,7 +149,8 @@ func _start():
 		child.ability_cooldowns = self.ability_cooldowns
 		child.cast_bar = self.cast_bar
 		child.current_index = self.current_index
-		child.target = _get_closest_target()
+		child.target = _get_closest_enemy()
+		child.attack_timer = unit.total_windup_time
 		child._start()
 
 func _reset():
@@ -155,4 +166,15 @@ func _get_closest_target():
 			if distance < distance_to_target:
 				distance_to_target = distance
 				return child
+
+func _get_closest_enemy():
+	var distance_to_target = 99999999
+	if get_tree().get_nodes_in_group('enemies'):
+		for child in get_tree().get_nodes_in_group('enemies'):
+			var distance = unit.global_position.distance_to(child.global_position)
+			
+			if distance < distance_to_target:
+				distance_to_target = distance
+				return child
+	return null
 

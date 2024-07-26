@@ -1,39 +1,64 @@
-[gd_scene load_steps=16 format=3 uid="uid://dlpkjnesre3k2"]
+[gd_scene load_steps=25 format=3 uid="uid://dlpkjnesre3k2"]
 
 [ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="1_rdvac"]
-[ext_resource type="PackedScene" uid="uid://dqxq0qaeoucyb" path="res://Utility/Item_tooltip.tscn" id="2_q5i55"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_qob8h"]
+[ext_resource type="PackedScene" uid="uid://cib4vbbq0aecn" path="res://Utility/Potion_tooltip.tscn" id="2_v1ogu"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="2_y27wo"]
 [ext_resource type="StyleBox" uid="uid://p1i2h6goy2ej" path="res://GUI/testest.tres" id="4_k1w6k"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/Item_tooltips.gd" id="5_1fdgp"]
 [ext_resource type="Texture2D" uid="uid://c5jml2c4kbhm6" path="res://Sprites/test.png" id="5_k7ayx"]
 [ext_resource type="Texture2D" uid="uid://d3r3h43kxsb02" path="res://Sprites/Untitled2.png" id="5_pfkdg"]
 [ext_resource type="Texture2D" uid="uid://cy6m1givnghco" path="res://Sprites/Untitled1.png" id="6_5vbjy"]
+[ext_resource type="Texture2D" uid="uid://d1c7pbgp3vuav" path="res://Sprites/Icons/empty_item_slot.png" id="6_dgjvm"]
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="7_0f38t"]
 [ext_resource type="Texture2D" uid="uid://cu2ro7gfyyvc2" path="res://Sprites/Untitled.png" id="8_3fp80"]
 [ext_resource type="Texture2D" uid="uid://dswmghvs3jkv2" path="res://Sprites/glass_effect.png" id="10_owmaw"]
 [ext_resource type="Texture2D" uid="uid://df3imm2ty3hps" path="res://Sprites/health_potion.png" id="11_o0016"]
 [ext_resource type="Texture2D" uid="uid://b45hijfa43fdg" path="res://Sprites/mana_potion.png" id="12_gxwhe"]
+[ext_resource type="Texture2D" uid="uid://qeg0u4bvnku6" path="res://Sprites/Icons/Inventory.png" id="15_6qje8"]
+[ext_resource type="Texture2D" uid="uid://b71ywqfy7vkgs" path="res://Sprites/Icons/Inventory_hover.png" id="16_ncj1m"]
+[ext_resource type="Texture2D" uid="uid://7rs28780y2pb" path="res://Sprites/Icons/stats.png" id="17_pju4a"]
+[ext_resource type="Texture2D" uid="uid://c4an1encpc4lo" path="res://Sprites/Icons/stats_hover.png" id="18_ao35f"]
+[ext_resource type="Texture2D" uid="uid://76lkpmnsmyvl" path="res://Sprites/Icons/abilities.png" id="19_u4fnx"]
+[ext_resource type="Texture2D" uid="uid://cypp56xo1oen4" path="res://Sprites/Icons/abilities_hovered.png" id="20_wsko6"]
 
 [sub_resource type="FontVariation" id="FontVariation_q5uqw"]
 base_font = ExtResource("2_qob8h")
 spacing_top = 7
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3etbu"]
+texture = ExtResource("6_dgjvm")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3uuyf"]
+content_margin_left = 50.0
+content_margin_top = 20.0
+content_margin_right = 50.0
+content_margin_bottom = 20.0
+bg_color = Color(0.145098, 0.14902, 0.145098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5xac"]
+bg_color = Color(0.12549, 0.129412, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
 [node name="InventoryManager" type="Node"]
 script = ExtResource("1_rdvac")
-item_tooltip = ExtResource("2_q5i55")
+simple_tooltip = ExtResource("2_v1ogu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." groups=["UI"]]
 
 [node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer"]
+visible = false
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -441.0
+offset_left = -385.0
 offset_top = -333.0
-offset_bottom = 343.0
+offset_bottom = 87.0
 grow_horizontal = 0
 grow_vertical = 2
 theme = ExtResource("2_y27wo")
@@ -46,52 +71,603 @@ theme_override_fonts/font = SubResource("FontVariation_q5uqw")
 text = "Inventory"
 vertical_alignment = 1
 
-[node name="PanelContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer2"]
-custom_minimum_size = Vector2(350, 575)
+[node name="Items" type="VBoxContainer" parent="CanvasLayer/PanelContainer2"]
+custom_minimum_size = Vector2(350, 375)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_y27wo")
+size_flags_vertical = 8
 
-[node name="Label" type="Label" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+[node name="Panel" type="Panel" parent="CanvasLayer/PanelContainer2/Items"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer2/Items/Panel"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 18.0
+offset_right = 304.0
+offset_bottom = 336.0
+
+[node name="Equipment" type="Label" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = SubResource("FontVariation_q5uqw")
 text = "Equipment"
 vertical_alignment = 1
 
-[node name="ItemList" type="ItemList" parent="CanvasLayer/PanelContainer2/PanelContainer"]
-custom_minimum_size = Vector2(350, 200)
+[node name="Equipped" type="GridContainer" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
 layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-allow_reselect = true
-allow_search = false
-script = ExtResource("5_1fdgp")
-item_tooltip = ExtResource("2_q5i55")
+columns = 6
 
-[node name="Label3" type="Label" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+[node name="Item_1" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Item_2" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_2"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Item_3" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_3"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Item_4" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_4"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Item_5" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_5"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Item_6" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Potions" type="Label" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = SubResource("FontVariation_q5uqw")
 text = "Potions"
 vertical_alignment = 1
 
-[node name="potionList" type="ItemList" parent="CanvasLayer/PanelContainer2/PanelContainer"]
-custom_minimum_size = Vector2(350, 75)
+[node name="Potion" type="GridContainer" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
 layout_mode = 2
-focus_mode = 0
-theme = ExtResource("2_y27wo")
-theme_override_font_sizes/font_size = 10
-allow_reselect = true
-allow_search = false
+size_flags_horizontal = 4
+size_flags_vertical = 0
+columns = 2
 
-[node name="Label2" type="Label" parent="CanvasLayer/PanelContainer2/PanelContainer"]
+[node name="Item_1" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Item_2" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Storage" type="Label" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = SubResource("FontVariation_q5uqw")
+text = "Storage"
+vertical_alignment = 1
+
+[node name="Storaged" type="GridContainer" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
+layout_mode = 2
+columns = 6
+
+[node name="Item_1" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_2" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_3" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_4" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_4"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_5" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_5"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_6" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_6"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_7" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_7"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_8" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_8"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_9" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_9"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_10" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_10"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_11" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_11"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_12" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_12"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_13" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_13"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_14" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_14"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_15" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_15"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_16" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_16"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_17" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_17"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item_18" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_18"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Line2D" type="Line2D" parent="CanvasLayer/PanelContainer2"]
+position = Vector2(153, 16)
+scale = Vector2(1.56, 1)
+points = PackedVector2Array(0, 13, 50, 13)
+width = 2.0
+
+[node name="Stats" type="VBoxContainer" parent="CanvasLayer/PanelContainer2"]
+visible = false
+custom_minimum_size = Vector2(350, 375)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Panel" type="Panel" parent="CanvasLayer/PanelContainer2/Stats"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer2/Stats/Panel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 21.0
+offset_right = 333.0
+offset_bottom = 357.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Statistics"
 vertical_alignment = 1
 
-[node name="statList" type="ItemList" parent="CanvasLayer/PanelContainer2/PanelContainer"]
-custom_minimum_size = Vector2(300, 200)
+[node name="statList" type="ItemList" parent="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(300, 290)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "This section shows your current stats. Base stats are the stats you start with and bonus stats are the stats you gain from items and abilities.
@@ -100,13 +676,45 @@ It also shows specifics to the chosen character."
 focus_mode = 0
 theme_override_fonts/font = ExtResource("2_qob8h")
 theme_override_font_sizes/font_size = 10
+theme_override_styles/panel = SubResource("StyleBoxFlat_3uuyf")
 allow_search = false
 
-[node name="Line2D" type="Line2D" parent="CanvasLayer/PanelContainer2"]
-position = Vector2(181, 22)
-scale = Vector2(1.56, 1)
-points = PackedVector2Array(0, 13, 50, 13)
-width = 2.0
+[node name="Abilities" type="VBoxContainer" parent="CanvasLayer/PanelContainer2"]
+visible = false
+custom_minimum_size = Vector2(350, 375)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Panel" type="Panel" parent="CanvasLayer/PanelContainer2/Abilities"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer2/Abilities/Panel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 21.0
+offset_right = 333.0
+offset_bottom = 357.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/PanelContainer2/Abilities/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Statistics"
+vertical_alignment = 1
+
+[node name="statList" type="ItemList" parent="CanvasLayer/PanelContainer2/Abilities/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(300, 290)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "This section shows your current stats. Base stats are the stats you start with and bonus stats are the stats you gain from items and abilities.
+
+It also shows specifics to the chosen character."
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_qob8h")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/panel = SubResource("StyleBoxFlat_3uuyf")
+allow_search = false
 
 [node name="abilityList" type="ItemList" parent="CanvasLayer"]
 visible = false
@@ -485,19 +1093,72 @@ texture_progress = ExtResource("12_gxwhe")
 texture_progress_offset = Vector2(4, 4)
 script = ExtResource("7_0f38t")
 
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+visible = false
+offset_left = 1505.0
+offset_top = 273.0
+offset_right = 1536.0
+offset_bottom = 377.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_c5xac")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.202
+anchor_bottom = 0.077
+offset_right = 25.738
+offset_bottom = 62.764
+
+[node name="TextureButton" type="TextureButton" parent="CanvasLayer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture_normal = ExtResource("15_6qje8")
+texture_hover = ExtResource("16_ncj1m")
+
+[node name="TextureButton2" type="TextureButton" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("17_pju4a")
+texture_hover = ExtResource("18_ao35f")
+
+[node name="TextureButton3" type="TextureButton" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("19_u4fnx")
+texture_hover = ExtResource("20_wsko6")
+
 [node name="Items" type="Node" parent="."]
 
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2" to="." method="_on_inventory_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2" to="." method="_on_inventory_mouse_exited"]
-[connection signal="item_activated" from="CanvasLayer/PanelContainer2/PanelContainer/ItemList" to="." method="_on_item_list_item_activated"]
-[connection signal="item_selected" from="CanvasLayer/PanelContainer2/PanelContainer/ItemList" to="." method="_on_item_list_item_selected"]
-[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/PanelContainer/ItemList" to="." method="_on_inventory_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/PanelContainer/ItemList" to="." method="_on_inventory_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/PanelContainer/potionList" to="." method="_on_inventory_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/PanelContainer/potionList" to="." method="_on_inventory_mouse_exited"]
-[connection signal="item_selected" from="CanvasLayer/PanelContainer2/PanelContainer/statList" to="." method="_on_stat_list_item_selected"]
-[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/PanelContainer/statList" to="." method="_on_inventory_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/PanelContainer/statList" to="." method="_on_inventory_mouse_exited"]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_gui_input" binds= [0]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_mouse_entered" binds= [0]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_mouse_exited" binds= [0]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_2" to="." method="_equipment_gui_input" binds= [1]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_2" to="." method="_equipment_mouse_entered" binds= [1]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_2" to="." method="_equipment_mouse_exited" binds= [1]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_3" to="." method="_equipment_gui_input" binds= [2]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_3" to="." method="_equipment_mouse_entered" binds= [2]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_3" to="." method="_equipment_mouse_exited" binds= [2]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_4" to="." method="_equipment_gui_input" binds= [3]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_4" to="." method="_equipment_mouse_entered" binds= [3]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_4" to="." method="_equipment_mouse_exited" binds= [3]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_5" to="." method="_equipment_gui_input" binds= [4]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_5" to="." method="_equipment_mouse_entered" binds= [4]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_5" to="." method="_equipment_mouse_exited" binds= [4]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6" to="." method="_equipment_gui_input" binds= [5]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6" to="." method="_equipment_mouse_entered" binds= [5]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6" to="." method="_equipment_mouse_exited" binds= [5]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1" to="." method="_potions_mouse_entered" binds= [0]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1" to="." method="_potions_mouse_exited" binds= [0]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_entered" binds= [1]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_exited" binds= [1]]
+[connection signal="item_selected" from="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer/statList" to="." method="_on_stat_list_item_selected"]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer/statList" to="." method="_on_inventory_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer/statList" to="." method="_on_inventory_mouse_exited"]
+[connection signal="item_selected" from="CanvasLayer/PanelContainer2/Abilities/Panel/VBoxContainer/statList" to="." method="_on_stat_list_item_selected"]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Abilities/Panel/VBoxContainer/statList" to="." method="_on_inventory_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Abilities/Panel/VBoxContainer/statList" to="." method="_on_inventory_mouse_exited"]
 [connection signal="item_selected" from="CanvasLayer/abilityList" to="." method="_on_ability_list_item_selected"]
 [connection signal="pressed" from="CanvasLayer/abilityList/Level0" to="." method="_on_level_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/Hotbar/TextureRect1" to="." method="_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/Panel/VBoxContainer/TextureButton" to="." method="_on_equipment_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/VBoxContainer/TextureButton2" to="." method="_on_stats_button_pressed"]

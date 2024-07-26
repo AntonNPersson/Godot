@@ -29,9 +29,11 @@ func _action(_delta):
 	_get_closest_target()
 	MAX_SPEED = _unit.total_speed
 	for i in range(ability_cooldowns.size()):
-		if !_is_ability_on_cooldown(i):
-			_change_state.call('casting')
-	
+		if !_is_ability_on_cooldown((ability_cooldowns.size() - 1 )- i):
+			return _change_state.call('casting')
+		break
+	if _unit.is_rooted:
+		return
 	if _closest_distance > _unit.total_range:
 		_move_towards_target(_delta)
 	else:

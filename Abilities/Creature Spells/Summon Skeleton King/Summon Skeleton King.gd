@@ -32,9 +32,11 @@ func _use():
 			instanced.is_dead.connect(_summon_died)
 			instanced.name = str(temp_name)
 			instanced.is_summon = true
+			instanced.add_to_group('summons')
 			instanced.add_to_group('enemies')
 			instanced.paused = false
 			instanced.has_aggro = true
+		cooldown = 9999999
 		unit.summoned = true
 
 func _process(_delta):

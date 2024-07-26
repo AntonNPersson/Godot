@@ -437,15 +437,15 @@ level_up_menu = ExtResource("2_0kq6j")
 passive_name = "Unending Curiosity"
 basic_attack_scene = ExtResource("2_62l0k")
 movement_skill_scene = ExtResource("3_1tfwx")
-type = Array[String](["DEX"])
+type = Array[String](["INT"])
 c_name = "Explorer"
 tooltip = "Loving the thrill of exploration, the explorer gains stats of the players chosing after each wave. Explorer ability pool contains: DEX, INT, STR."
 base_speed = 125
 base_barrier = 50
-base_health = 50
+base_health = 5000
 base_range = 50
 base_attack_speed = 0.7
-base_attack_damage = 5
+base_attack_damage = 500
 base_windup_time = 0.6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -537,6 +537,8 @@ texture_progress_offset = Vector2(2, 2)
 
 [node name="Meleebasicattack" parent="." instance=ExtResource("16_ru67x")]
 position = Vector2(0, -40)
+
+[node name="Summons" type="Node2D" parent="."]
 
 [connection signal="add_stats" from="InventoryManager" to="." method="_on_add_stats"]
 [connection signal="remove_stats" from="InventoryManager" to="." method="_on_remove_stats"]

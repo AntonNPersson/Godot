@@ -7,6 +7,6 @@
 [node name="SummonSkeletonKing" type="Node2D"]
 script = ExtResource("1_v4mxo")
 cast_duration = 2.0
-cooldown = 100000.0
+cooldown = 0.0
 summons = Array[PackedScene]([ExtResource("2_bb4qq")])
 summon_effect = ExtResource("3_0poow")

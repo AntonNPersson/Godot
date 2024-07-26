@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cib4vbbq0aecn"]
+
+[node name="PotionTooltip" type="CanvasLayer"]
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(150, 100)
+offset_right = 185.0
+offset_bottom = 100.0
+
+[node name="Name" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 5.0
+offset_right = 176.0
+offset_bottom = 21.0
+bbcode_enabled = true
+text = "[center]Weak Healing Potion"
+
+[node name="Description" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 24.0
+offset_right = 251.0
+offset_bottom = 118.0
+scale = Vector2(0.7, 0.7)
+theme_override_colors/default_color = Color(0.490196, 0.490196, 0.490196, 1)
+bbcode_enabled = true
+text = "[center] hi"

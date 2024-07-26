@@ -12,16 +12,15 @@ var current_potion_charges = [0,0]
 var cooldown_timers : Array[float]
 var container_hud
 var abilities_hud
-var inventory_hud
 var potion_hud
 var stat_hud
-@export var item_tooltip : PackedScene
+var menu_hud
+@export var simple_tooltip : PackedScene
 var hotbar
 var potion_bar_1
 var potion_bar_2
 var unit
 var selected_item
-var selected_item_index
 var selected_potion
 var movement
 var ability_index
@@ -30,7 +29,8 @@ var PROJECTILE_TYPE = {
 	'Passive' : 4,
 	'EnemyTarget' : 1,
 	'AllyTarget' : 2,
-	'Self' : 5
+	'Self' : 5,
+	'Summon' : 9
 }
 var ability_mapping = {
 	"Ability_1": 0,
@@ -42,16 +42,28 @@ var ability_mapping = {
 @onready var max_potion_slots = 2
 @onready var max_slots = 6
 
+var equipment_slots
+var potion_slots
+var storage_slots
+var statistics
+var items_
+
+
 func _ready():
 	unit = get_parent()
 	container_hud = get_node("CanvasLayer/PanelContainer2")
-	stat_hud = container_hud.get_node("PanelContainer/statList")
+	stat_hud = container_hud.get_node("Stats/Panel/VBoxContainer/statList")
 	abilities_hud = get_node("CanvasLayer/abilityList")
-	inventory_hud = container_hud.get_node("PanelContainer/ItemList")
-	potion_hud = container_hud.get_node("PanelContainer/potionList")
+	potion_hud = container_hud.get_node("Equipment/potionList")
 	potion_bar_1 = get_node("CanvasLayer/Potion_bag/Potion1")
 	potion_bar_2 = get_node("CanvasLayer/Potion_bag/Potion2")
 	hotbar = get_node("CanvasLayer/Hotbar")
+	menu_hud = get_node("CanvasLayer/Panel")
+	equipment_slots = container_hud.get_node("Items/Panel/VBoxContainer/Equipped")
+	potion_slots = container_hud.get_node("Items/Panel/VBoxContainer/Potion")
+	storage_slots = container_hud.get_node("Items/Panel/VBoxContainer/Storaged")
+	statistics = container_hud.get_node("Stats")
+	items_ = container_hud.get_node("Items")
 	
 func _process(delta):
 	_update_stats()
@@ -90,7 +102,7 @@ func _input(event):
 				return
 			potions[0]._use()
 			current_potion_charges[0] -= 1
-			_update_inventory()
+			_update_inventory_test()
 	elif event.is_action_pressed('potion_2') and !event.is_echo():
 		if potions.size() > 1:
 			if current_potion_charges[1] <= 0:
@@ -98,7 +110,7 @@ func _input(event):
 				return
 			potions[1]._use()
 			current_potion_charges[1] -= 1
-			_update_inventory()
+			_update_inventory_test()
 
 	if abilities_targeting[0]:
 		handle_targeting_input(event, abilities[0], 0)
@@ -115,11 +127,17 @@ func _reduce_cooldown(_ability, amount):
 
 func toggle_hud(hud):
 	if hud == "Inventory":
-		_update_inventory()
+		_update_inventory_test()
 		if container_hud.visible:
 			container_hud.visible = false
+			menu_hud.visible = false
+			items_.visible = false
+			statistics.visible = false
 		else:
 			container_hud.visible = true
+			menu_hud.visible = true
+			items_.visible = true
+			statistics.visible = false
 	elif hud == "Abilities":
 		_update_abilities()
 		if abilities_hud.visible:
@@ -127,11 +145,17 @@ func toggle_hud(hud):
 		else:
 			abilities_hud.visible = true
 	elif hud == "Stats":
-		_update_inventory()
+		_update_stats()
 		if container_hud.visible:
 			container_hud.visible = false
+			menu_hud.visible = false
+			items_.visible = false
+			statistics.visible = false
 		else:
 			container_hud.visible = true
+			menu_hud.visible = true
+			items_.visible = false
+			statistics.visible = true
 
 func _get_highest_power_ability():
 	var highest_power = 0
@@ -154,7 +178,7 @@ func activate_ability(index):
 			return
 	
 		abilities_targeting[index] = true
-		if abilities[index].projectile_type == PROJECTILE_TYPE.Self:
+		if abilities[index].projectile_type == PROJECTILE_TYPE.Self or abilities[index].projectile_type == PROJECTILE_TYPE.Summon:
 			abilities[index]._use()
 			if unit._apply_double_cast_chance():
 				await get_tree().create_timer(0.1).timeout
@@ -182,31 +206,25 @@ func handle_targeting_input(event, ab, index):
 		Utility.get_node('AbilityTargetSystem')._erase_targeting()
 		abilities_targeting[index] = false
 
-func _update_inventory():
+func _update_inventory_test():
 	_update_stats()
-	inventory_hud.clear()
 	for item in inventory:
 		if !is_instance_valid(item):
-			print('item not valid')
 			continue
-		inventory_hud.add_item(" " + item.i_name)
-		inventory_hud.set_item_tooltip(inventory_hud.item_count - 1, item.json_string)
+	for i in equipment_slots.get_child_count():
+		equipment_slots.get_child(i).get_node('Icon').texture = null
 
-	var empty_slots = max_slots - inventory.size()
-	print(empty_slots)
-	for i in range(empty_slots):
-		inventory_hud.add_item(" Empty Slot")
-		inventory_hud.set_item_tooltip_enabled(inventory_hud.item_count - 1, false)
-		inventory_hud.set_item_selectable(inventory_hud.item_count - 1, false)
-		print('doing it')
+	for i in potion_slots.get_child_count():
+		potion_slots.get_child(i).get_node('Icon').texture = null
 
-	potion_hud.clear()
-	for potion in potions:
-		if !is_instance_valid(potion):
-			continue
-		potion_hud.add_item(" " + potion.i_name)
-		potion_hud.set_item_tooltip(potion_hud.item_count - 1, potion.tooltip)
-		potion_hud.set_item_icon(potion_hud.item_count - 1, potion.icon)
+	for i in inventory.size():
+		equipment_slots.get_child(i).get_node('Icon').texture = load(inventory[i].get_child(2).icon.resource_path)
+		equipment_slots.get_child(i).get_node('Icon').visible = true
+
+	for i in potions.size():
+		potion_slots.get_child(i).get_node('Icon').texture = load(potions[i].icon.resource_path)
+		potion_slots.get_child(i).get_node('Icon').visible = true
+
 
 func _update_stats():
 	var icons = {
@@ -329,7 +347,7 @@ func _remove_item_effect(type, tag):
 func _on_item_picked_up(item):
 	if inventory.size() < max_slots:
 		inventory.append(item)
-		_update_inventory()
+		_update_inventory_test()
 		var children = item.get_children()
 		if children.size() > 2:
 			for i in range(2, children.size()):
@@ -362,7 +380,7 @@ func _on_item_dropped():
 						weapon_equipped = false
 					remove_stats.emit(children[i])
 			inventory.erase(selected_item)
-			_update_inventory()
+			_update_inventory_test()
 			_update_stats()
 			selected_item._drop_item()
 		else:
@@ -373,7 +391,7 @@ func _on_potion_picked_up(potion):
 		potion.player = get_parent()
 		potions.append(potion)
 		potion_charges.append(potion.charges)
-		_update_inventory()
+		_update_inventory_test()
 	else:
 		Utility.get_node("ErrorMessage")._create_error_message("Potion slots full", self)
 
@@ -383,7 +401,7 @@ func _on_potion_dropped():
 			potions.erase(selected_potion)
 			potion_charges.erase(potion_charges.find(selected_potion.charges))
 			selected_potion.queue_free()
-			_update_inventory()
+			_update_inventory_test()
 		else:
 			print("No potion selected")
 
@@ -392,13 +410,7 @@ func _on_potion_recharge_picked_up():
 		current_potion_charges[i] += 1
 		if current_potion_charges[i] > potion_charges[i]:
 			current_potion_charges[i] = potion_charges[i]
-		_update_inventory()
-
-func _on_item_list_item_selected(index):
-	if inventory_hud.get_item_text(index) == "Empty Slot":
-		return
-	selected_item = inventory[index]
-	selected_item_index = index
+		_update_inventory_test()
 
 func _on_get_item():
 	item_selected.emit(selected_item)
@@ -416,14 +428,54 @@ func _on_level_pressed():
 	else:
 		Utility.get_node('ErrorMessage')._create_error_message('Not enough experience', self)
 
-
-func _on_item_list_item_activated(index:int):
-	if inventory_hud.get_item_text(index) == "Empty Slot":
-		return
-	_on_item_dropped()
-
 func _on_inventory_mouse_entered():
 	unit.lose_camera_focus = true
 
 func _on_inventory_mouse_exited():
 	unit.lose_camera_focus = false
+
+func _equipment_mouse_entered(index):
+	if inventory.size() <= index:
+		return
+	inventory[index].get_child(0).get_child(0).visible = true
+	inventory[index]._show_tooltip_at_mouse()
+
+func _equipment_mouse_exited(index):
+	if inventory.size() <= index:
+		return
+	inventory[index].get_child(0).get_child(0).visible = false
+
+func _equipment_gui_input(event, index):
+	if inventory.size() <= index:
+		return
+	if event is InputEventMouseButton:
+		if event.double_click and event.pressed:
+			selected_item = inventory[index]
+			_on_item_dropped()
+
+func _potions_mouse_entered(index):
+	if potions.size() <= index:
+		return
+	
+	var tooltip = simple_tooltip.instantiate()
+	tooltip.get_node('Panel/Name').text = "[center]" + potions[index].i_name
+	tooltip.get_node('Panel/Description').text = "[center]" + potions[index].tooltip
+
+	tooltip.get_child(0).global_position = get_viewport().get_mouse_position() + Vector2(0,15)
+	tooltip.name = "tooltip" + str(index)
+	get_tree().get_root().add_child(tooltip)
+
+func _potions_mouse_exited(index):
+	if potions.size() <= index:
+		return
+	
+	get_tree().get_root().get_node("tooltip" + str(index)).queue_free()
+
+
+func _on_equipment_button_pressed():
+	equipment_slots.visible = true
+	statistics.visible = false
+
+func _on_stats_button_pressed():
+	equipment_slots.visible = false
+	statistics.visible = true

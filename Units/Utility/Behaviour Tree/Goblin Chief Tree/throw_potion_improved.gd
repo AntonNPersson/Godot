@@ -13,7 +13,7 @@ func _run(_delta):
 		_change_ability_cooldown(1, 0.8)
 		cast_bar._start(ability_cooldowns[1])
 	else:
-		ability_.target_position = target.global_position
+		ability_.target_position = _get_closest_target().global_position
 		ability_.size = 1
 		_change_ability_cooldown(1, 0.5)
 		cast_bar._start(ability_cooldowns[1])

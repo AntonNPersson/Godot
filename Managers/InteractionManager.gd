@@ -35,7 +35,7 @@ func _process(_delta):
 			if !in_range and obj.has_node('list_1'):
 				obj._use(false)
 	for obj in Utility.get_node('Interactable').special_objects:
-		if obj and not obj.is_queued_for_deletion() and is_instance_valid(obj):
+		if obj and is_instance_valid(obj):
 			obj._get_special()
 
 

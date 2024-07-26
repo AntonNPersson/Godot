@@ -62,6 +62,7 @@ func _ready():
 
 
 func _calculate_item_rarity():
+	randomize()
 	var _randi = randi() % 100
 	if _randi < 60:
 		return
@@ -221,8 +222,6 @@ func _drop_potion(position, type):
 	else:
 		_potion = _create_health_potion()
 	_potion.global_position = position
-	if self.get_children().find(_potion) != -1:
-		return
 
 func _add_potion_to_inventory(type):
 	var _potion

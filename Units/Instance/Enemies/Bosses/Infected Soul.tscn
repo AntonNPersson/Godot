@@ -222,6 +222,7 @@ texture_under = ExtResource("32_w7dvs")
 texture_progress = ExtResource("33_vp8ln")
 texture_progress_offset = Vector2(2, 2)
 script = ExtResource("34_afvav")
+metadata/_edit_use_anchors_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_xv25l")

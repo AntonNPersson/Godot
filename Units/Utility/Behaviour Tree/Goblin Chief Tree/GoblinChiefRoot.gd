@@ -1,8 +1,10 @@
 extends Task
+@export var summon = false
 
 func _ready():
 	unit = get_parent()
 	target = _get_closest_target()
+	print(target)
 	tree = self
 	animation = unit.get_node('AnimatedSprite2D')
 	cast_bar = unit.get_node('UI/cast_bar')
@@ -16,6 +18,12 @@ func _ready():
 	_running()
 
 func _process(delta):
+	if summon:
+		print('summoning')
+		target = _get_closest_enemy()
+		unit = get_parent()
+	else:
+		target = _get_closest_target()
 	if cast_bar.value >= 100:
 		cast_bar.visible = false
 	for i in range(ability_cooldowns.size()):

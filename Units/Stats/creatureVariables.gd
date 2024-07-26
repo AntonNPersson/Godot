@@ -20,7 +20,6 @@ var dead = false
 var obstacles_info: Node
 var drop_info: Node
 var summoned = false
-var is_summon = false
 var waves: Node
 var enemy_layer = 1
 var total_armor: float
@@ -97,6 +96,10 @@ var current_base_ascension_currency = 0.0
 var current_base_speed = 0.0
 var current_base_range = 0.0
 var current_base_attack_damage = 0.0
+
+var is_stunned = false
+var is_rooted = false
+var is_summon = false
 
 
 var _target = null
@@ -181,11 +184,12 @@ func _process(_delta):
 func _on_do_action(value, target, duration, tag):
 	# Emit the do_action signal with the provided parameters.
 	_target = target
-	if "u_name" in target:
-		if target.u_name == "Skeleton King":
-			do_action.emit(value, self, duration, tag)
-			return
 	if target.is_in_group('players'):
 		do_action.emit(value * target.power, target, duration, tag)
 	else:
 		do_action.emit(value, target, duration, tag)
+
+func _level_grants():
+	total_attack_damage += 5
+	total_health += 10
+	total_attack_speed += 5

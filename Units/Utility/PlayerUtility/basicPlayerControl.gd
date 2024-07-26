@@ -15,7 +15,7 @@ var collision_direction = Vector2.ZERO
 var movement_target = Vector2.ZERO
 var mouse_pos = Vector2.ZERO
 var rotation_speed = 200.0
-var movement_threshold = 5.0
+var movement_threshold = 32.0
 var basic_attack = false
 var is_winding_upp = false
 
@@ -26,6 +26,9 @@ var attack_target = null
 var movement_skill = null
 var current_sprite_direction = ""
 
+var mouse_pointer_pressed = load('res://Sprites/Icons/pointer_pressed.png')
+var mouse_pointer = load('res://Sprites/Icons/pointer.png')
+
 #--------------------------#
 # Helper functions
 #--------------------------#
@@ -33,7 +36,7 @@ var current_sprite_direction = ""
 func _calculate_attack_percentage():
 	# Calculates the current attack percentage based on the attack timer and total windup time.
 	var perc = (attack_timer / stats.total_windup_time) * 100
-	if perc <= 20:
+	if perc <= 35:
 		attack_bar.modulate = Color.GREEN
 	else:
 		attack_bar.modulate = Color.GRAY
@@ -98,7 +101,9 @@ func _physics_process(delta):
 			attack_bar.value = _calculate_attack_percentage()
 			_attack_movement(delta, attack_target)
 		else:
+			movement_threshold = 20
 			attack_bar.visible = false
+			attack_timer = stats.total_windup_time
 			_normal_movement(delta, movement_target)
 
 func _on_action(value, target, user, tag):
@@ -118,7 +123,6 @@ func _attack_movement(delta, closest_target):
 		if closest_target.global_position.distance_to(stats.global_position) >= 600:
 			attack_target = null
 			return
-
 
 		var distance_to_target = stats.global_position.distance_to(closest_target.global_position)
 		var target_direction = (closest_target.global_position - stats.global_position).normalized()
@@ -152,6 +156,9 @@ func _attack(tags, values):
 	if attack_target == null:
 		attack_target = _get_closest_visible_enemy_to_mouse()
 		if attack_target == null:
+			return
+		if stats.global_position.distance_to(attack_target.global_position) > stats.total_range:
+			attack_target = null
 			return
 	
 	tags.append_array(stats.current_attack_modifier_tags)
@@ -195,8 +202,9 @@ func _normal_movement(delta, current_target):
 		
 	if attack_target != null:
 		stats.target_marker._initialize(stats, false)
-	
+
 	var distance_to_target = stats.global_position.distance_to(mouse_pos)
+	
 	
 	if distance_to_target <= movement_threshold:
 		current_target = Vector2.ZERO
@@ -218,7 +226,8 @@ func _input(event):
 	# Handles input events.
 	if GameManager.settings['moba_controls']:
 		if event.is_action_pressed("Move"):
-			if attack_timer >= 0.0 and attack_timer <= (stats.total_windup_time * 0.2) and basic_attack:
+			Input.set_custom_mouse_cursor(mouse_pointer_pressed)
+			if attack_timer >= 0.0 and attack_timer <= (stats.total_windup_time * 0.35) and basic_attack:
 				for i in range(stats._apply_quick_attack_chance()):
 					_attack([], [])
 					await get_tree().create_timer(0.1).timeout
@@ -241,7 +250,10 @@ func _input(event):
 			await get_tree().create_timer(0.15).timeout
 			if is_instance_valid(sprite):
 				sprite.material = original_material
-				basic_attack = true	
+				basic_attack = true
+
+		if event.is_action_released("Move"):
+			Input.set_custom_mouse_cursor(mouse_pointer)
 
 func _trigger_target_marker(target, on):
 	# Triggers the target marker effect on the given target.

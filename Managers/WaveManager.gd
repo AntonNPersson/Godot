@@ -52,6 +52,11 @@ func _process(_delta):
 	else:
 		canvas.get_child(2).visible = false
 
+	if wave_ongoing:
+		_update_objectives()
+	else:
+		canvas.get_node('RichTextLabel2').visible = false
+
 	if current_amount_of_enemies <= 0:
 		if boss_ready:
 			var portal_effect = portal_effect.instantiate()
@@ -100,14 +105,19 @@ func _start_wave(value, last = false):
 		await get_tree().create_timer(START_COUNTDOWN_TIME).timeout
 		canvas.get_child(2).visible = false
 		players[0].in_combat = true
-	_update_objectives()
 	wave_ongoing = true
 
 func _unit_dead(_unit):
 	current_amount_of_enemies -= 1
 	var drop_charge = randi_range(0, 100)
-	if drop_charge < players[0].total_charge_drop_chance:
-		players[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
+	randomize()
+	if _unit.is_in_group('summons'):
+		if drop_charge < players[0].total_charge_drop_chance + 30:
+			players[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
+	else:
+		if drop_charge < players[0].total_charge_drop_chance:
+			players[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
+
 	if current_amount_of_enemies == INCEPTION_WAVE_THRESHHOLD:
 		if current_wave_counter < wave_counter:
 			current_wave_counter += 1
@@ -135,7 +145,6 @@ func _unit_dead(_unit):
 			get_tree().get_root().add_child(portal_effect)
 			portal_effect.global_position = _unit.global_position
 			portal_effect.enter_portal.connect(_enter_portal_boss)
-	_update_objectives()
 
 func _enter_portal():
 	_start_wave(current_round, true)
@@ -153,7 +162,6 @@ func _next_wave_countdown():
 	time_left = WAVE_COUNTDOWN_TIME
 
 func _stop_wave():
-	Utility.get_node('Brightness')._set_color(Color.ROYAL_BLUE)
 	wave_ongoing = false
 	waves.remove_child(current_boss)
 	players[0].in_combat = false
@@ -219,8 +227,7 @@ func _get_total_waves():
 
 func _update_objectives():
 	canvas.get_node('RichTextLabel2').visible = true
-	canvas.get_node('RichTextLabel3').visible = true
-	canvas.get_node('RichTextLabel2').text = 'Waves: ' + str(current_wave_counter) + '/' + str(wave_counter) + '\n' + 'Enemies: ' + str((current_amount_of_enemies-2)) + '/' + str(total_amount_of_enemies)	
+	canvas.get_node('RichTextLabel2').text = 'Waves: ' + str(current_wave_counter) + '/' + str(wave_counter)
 
 func _update_ascension_info():
 	canvas.get_node('Ascension3').get_child(0).play('Ascension_anim')

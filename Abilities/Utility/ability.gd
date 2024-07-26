@@ -20,7 +20,7 @@ var max_experience = 100.0
 # Exported Variables
 #-------------------#
 
-enum targeting_type {Line, EnemyTarget, AllyTarget, Area, Passive, Self, Movement, EnemyAura, AllyAura, None}
+enum targeting_type {Line, EnemyTarget, AllyTarget, Area, Passive, Self, Movement, EnemyAura, AllyAura, Summon, None}
 enum area_types {Storm, Blast, Scream}
 @export_group('Base')
 @export var icon : Texture
@@ -52,6 +52,12 @@ enum area_types {Storm, Blast, Scream}
 @export var type : String
 @export var movement_speed : float
 @export var pool : bool
+@export_group('Summon Settings')
+@export var summon_scene : PackedScene
+@export var summon_amount : int
+@export var summon_scaling : float
+@export var unique : bool
+var summon_instance
 @export_group('Tags & Values')
 @export var tags : Array[String]
 @export var values : Array[float]
@@ -143,7 +149,17 @@ func _apply_aura():
 
 # Update tooltip based on type of ability
 func _update_tooltip():
+	if unit == null:
+		unit = get_tree().get_nodes_in_group('players')[0]
 	tooltip = tooltip_text + "\n\n"
+	if projectile_type == targeting_type.Summon:
+		tooltip += "\nLevel: " + str(level)
+		tooltip += " Cost: " + str(mana_cost)
+		tooltip += " Cooldown: " + str(unit._apply_cooldown_reduction(cooldown)) + "s"
+		tooltip += " Amount: " + str(summon_amount)
+		tooltip += "\nType: " + str(ability_type)
+		return
+
 	
 	for i in range(tags.size()):
 		tooltip += tags[i] + ": " + str(values[i]) + " "
@@ -202,6 +218,10 @@ func _remove_item_tag(tag):
 
 # Update values based on level
 func _level_grants():
+	if projectile_type == targeting_type.Summon:
+		summon_instance._level_grants()
+		return
+
 	for inc in range(values.size()):
 		values[inc] += increased_values[inc]
 
@@ -273,6 +293,9 @@ func _advanced_update():
 #-------------------#
 # Initialize ability, if needed. Some abilities might need to be initialized because of a specific value or tag
 func _initialize():
+	if projectile_type == targeting_type.Summon:
+		return
+
 	for tag in tags.size():
 		if "Duplicate" in tags[tag] or "Pierce" in tags[tag] or "Explosion" in tags[tag]:
 			unit.get_node('Control').on_action.emit(values[tag], unit, self, tags[tag])
@@ -371,6 +394,25 @@ func _use():
 		instance.has_hit.connect(_on_hit)
 		unit.get_tree().get_root().add_child(instance)
 		instance._start(unit, target, _range, movement_speed, type, light_color, explosion, explosion_radius, self, pool)
+	elif projectile_type == targeting_type.Summon:
+		for s in range(0, summon_amount):
+			summon_instance = summon_scene.instantiate()
+			summon_instance.obstacles_info = unit.obstacles_info
+			summon_instance.do_action.connect(unit.get_node('Control')._on_action)	
+			var number = 0
+			print(summon_instance)
+			for summon in unit.get_node('Summons').get_children():
+				if summon_instance == summon:
+					number += 1
+					if number >= summon_amount:
+						Utility.get_node("ErrorMessage")._create_error_message("Maximum summons on " + a_name + "reached.", unit)
+						summon_instance.queue_free()
+						return
+			unit.get_node('Summons').add_child(summon_instance)
+			summon_instance.global_position = unit.global_position
+			print(summon_instance)
+		
+
 	elif projectile_type == targeting_type.None:
 		pass
 	unit.current_mana -= mana_cost
@@ -422,6 +464,7 @@ func _update_targeting(_delta, _targeting_array, _targeting):
 
 # Hit function, this will be called when the ability hits something, no matter the type
 func _on_hit(area):
+
 	for val in tags.size():
 		if "Buff" in tags[val]:
 			unit.get_node('Control').on_action.emit(values[val], area, buff_duration, tags[val])

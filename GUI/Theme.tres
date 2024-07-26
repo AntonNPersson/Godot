@@ -5,9 +5,17 @@
 [ext_resource type="StyleBox" uid="uid://n85lmttv0lin" path="res://GUI/Button_style_normal.tres" id="3_0og1q"]
 [ext_resource type="StyleBox" uid="uid://bnpwxrl1x3kd1" path="res://GUI/Button_style_pressed.tres" id="4_6c4vd"]
 [ext_resource type="StyleBox" uid="uid://b5n7tp8iaefa8" path="res://GUI/new_test_style.tres" id="5_del7q"]
-[ext_resource type="StyleBox" uid="uid://p1i2h6goy2ej" path="res://GUI/testest.tres" id="6_cpune"]
 [ext_resource type="StyleBox" uid="uid://5qiycd4ieibn" path="res://GUI/tooltip_panel.tres" id="6_mle8l"]
 [ext_resource type="StyleBox" uid="uid://ibhilmoenyq5" path="res://GUI/new_test.tres" id="6_rkwgq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otvsc"]
+bg_color = Color(0.12549, 0.129412, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
+shadow_size = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ampd0"]
 bg_color = Color(1, 1, 1, 1)
@@ -29,10 +37,10 @@ ItemList/constants/v_separation = 5
 ItemList/font_sizes/font_size = 14
 ItemList/fonts/font = ExtResource("1_0hr8e")
 ItemList/styles/hovered = ExtResource("2_wke16")
-ItemList/styles/panel = null
+ItemList/styles/panel = ExtResource("5_del7q")
 ItemList/styles/selected = ExtResource("4_6c4vd")
 Panel/styles/panel = ExtResource("5_del7q")
-PanelContainer/styles/panel = ExtResource("6_cpune")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_otvsc")
 ProgressBar/styles/background = ExtResource("6_rkwgq")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_ampd0")
 RichTextLabel/fonts/bold_font = ExtResource("1_0hr8e")

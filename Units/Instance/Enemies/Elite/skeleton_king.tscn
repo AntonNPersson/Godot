@@ -1,28 +1,23 @@
-[gd_scene load_steps=72 format=3 uid="uid://byhk4644chqur"]
+[gd_scene load_steps=77 format=3 uid="uid://byhk4644chqur"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_rp2ed"]
-[ext_resource type="PackedScene" uid="uid://b2ti2a542aylv" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/Heavy_attack.tscn" id="2_yh8k0"]
+[ext_resource type="PackedScene" uid="uid://cc8kj54yedwk" path="res://Abilities/Creature Spells/Melee_aoe/Double Heavy Attack/Double Heavy Attack.tscn" id="3_bbxhv"]
+[ext_resource type="PackedScene" uid="uid://b51d301bl84bm" path="res://Abilities/Creature Spells/Cursed Spike Storm/Cursed Spike Storm.tscn" id="3_m0uwq"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_m5cqb"]
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_pwmu2"]
-[ext_resource type="Texture2D" uid="uid://d1sey7dhtyti0" path="res://Sprites/Goblin King/goblin fighter.png" id="5_jx00k"]
-[ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_ya23b"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="7_neb28"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="7_xjnbn"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Is_Enountered.gd" id="8_57sry"]
 [ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="8_va2mo"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/selector.gd" id="9_kt22d"]
 [ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="9_vpol1"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="10_cp8jg"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/check_range.gd" id="10_yxqeb"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/is_on_cd.gd" id="11_3upjb"]
 [ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_bqtog"]
 [ext_resource type="Texture2D" uid="uid://ddsp4ddwph1r0" path="res://Units/Instance/Enemies/Elite/ogre.png" id="12_2h62t"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
-radius = 2.85228
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_byabs"]
-shader = ExtResource("4_pwmu2")
-shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
-shader_parameter/hit_effect_intensity = 0.0
-shader_parameter/outline_intensity = 0.0
-shader_parameter/outline_size = 0.05
-shader_parameter/outline_color = Color(0, 0, 0, 1)
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Elite/Cast Double Heavy Attack.gd" id="12_6nphb"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Elite/Cast Spike Storm.gd" id="13_mix3s"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/run_away.gd" id="14_ijmb0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2l1cy"]
 shader = ExtResource("4_pwmu2")
@@ -465,6 +460,9 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_dwdph"]
+radius = 9.80646
+
 [node name="Skeleton King" type="Area2D"]
 top_level = true
 position = Vector2(2, 0)
@@ -474,66 +472,14 @@ script = ExtResource("1_rp2ed")
 u_name = "Skeleton King"
 experience = 200
 base_armor = 200
-base_speed = 100
+base_speed = 90
 base_health = 1200
 base_range = 0
 base_attack_speed = 0.0
 base_attack_damage = 0
-base_windup_time = 1.5
-abilities = Array[PackedScene]([ExtResource("2_yh8k0")])
+base_windup_time = 0.0
+abilities = Array[PackedScene]([ExtResource("3_bbxhv"), ExtResource("3_m0uwq")])
 basic_attack_scene = ExtResource("3_m5cqb")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 9)
-scale = Vector2(7.12, 8.08)
-shape = SubResource("CircleShape2D_ujh6a")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
-material = SubResource("ShaderMaterial_byabs")
-scale = Vector2(2.665, 2.665)
-texture = ExtResource("5_jx00k")
-
-[node name="Control" type="Node" parent="."]
-script = ExtResource("6_ya23b")
-
-[node name="UI" type="Node2D" parent="."]
-
-[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
-z_index = 10
-offset_left = -18.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = -16.0
-theme = ExtResource("7_xjnbn")
-texture_under = ExtResource("8_va2mo")
-texture_progress = ExtResource("9_vpol1")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("10_cp8jg")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-offset_left = -28.0
-offset_top = -32.0
-offset_right = 29.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="cast_bar" type="TextureProgressBar" parent="UI"]
-visible = false
-z_index = 10
-offset_left = -18.0
-offset_top = 44.6667
-offset_right = 16.0
-offset_bottom = 52.6667
-theme = ExtResource("7_xjnbn")
-value = 100.0
-texture_under = ExtResource("8_va2mo")
-texture_progress = ExtResource("9_vpol1")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("11_bqtog")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_2l1cy")
@@ -541,4 +487,60 @@ sprite_frames = SubResource("SpriteFrames_yljm5")
 animation = &"Attack West"
 frame_progress = 0.335895
 
-[node name="Update_timer" type="Node" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3.33333, 20)
+scale = Vector2(1, 2.88)
+shape = SubResource("CircleShape2D_dwdph")
+
+[node name="Infected Soul Tree" type="Node" parent="."]
+script = ExtResource("7_neb28")
+
+[node name="Is Enountered?" type="Node" parent="Infected Soul Tree"]
+script = ExtResource("8_57sry")
+
+[node name="Selector" type="Node" parent="Infected Soul Tree/Is Enountered?"]
+script = ExtResource("9_kt22d")
+
+[node name="Check Range" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector"]
+script = ExtResource("10_yxqeb")
+tile_range = 0.5
+reverse = true
+
+[node name="Check Cooldown" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Check Range"]
+script = ExtResource("11_3upjb")
+ability_index = 0
+
+[node name="Cast Double Heavy Attack" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Check Range/Check Cooldown"]
+script = ExtResource("12_6nphb")
+
+[node name="Check Range2" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector"]
+script = ExtResource("10_yxqeb")
+tile_range = 6.0
+reverse = true
+
+[node name="Check Cooldown" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Check Range2"]
+script = ExtResource("11_3upjb")
+
+[node name="Cast Spike Storm" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Check Range2/Check Cooldown"]
+script = ExtResource("13_mix3s")
+
+[node name="Chase" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector"]
+script = ExtResource("14_ijmb0")
+
+[node name="Summons" type="Node2D" parent="."]
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="cast_bar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+offset_left = -19.3333
+offset_top = 49.3333
+offset_right = 14.6667
+offset_bottom = 57.3333
+theme = ExtResource("7_xjnbn")
+value = 100.0
+texture_under = ExtResource("8_va2mo")
+texture_progress = ExtResource("9_vpol1")
+texture_progress_offset = Vector2(2, 2)
+script = ExtResource("11_bqtog")
+metadata/_edit_use_anchors_ = true

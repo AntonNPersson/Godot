@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bg52y0g2ot3ll" path="res://Sprites/Goblin King/goblin king1.png" id="7_hqojp"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="8_pldn5"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Is_Enountered.gd" id="9_5dc6y"]
-[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/check_range.gd" id="9_24bj5"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/check_range.gd" id="9_24bj5"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/selector.gd" id="9_adr2h"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/abovehalfhp.gd" id="10_gvnrj"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/issummoned.gd" id="11_4xn2a"]

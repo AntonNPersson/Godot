@@ -3,6 +3,8 @@
 extends Area2D
 class_name player_variables
 
+var obstacles_info
+
 # Signal emitted when the unit is dead
 signal is_dead(unit)
 @onready var health_bar = get_node("UI/ProgressBar")
@@ -151,7 +153,7 @@ var current_attack_modifier_values = []
 var regen_timer = 0
 
 # Saved variables
-var completed_waves = [1, 2]
+var completed_waves = []
 var power = 1
 var ascension_level = 0
 var ascension_currency = 0

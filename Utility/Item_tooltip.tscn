@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://dqxq0qaeoucyb"]
+[gd_scene load_steps=7 format=3 uid="uid://dqxq0qaeoucyb"]
 
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="1_cxmy1"]
-[ext_resource type="StyleBox" uid="uid://dxny15tohlxvs" path="res://GUI/itemlist_panel.tres" id="2_rigsf"]
 [ext_resource type="Texture2D" uid="uid://cyapl8nbqc187" path="res://Sprites/Icons/Item_border.png" id="3_lmrem"]
 
 [sub_resource type="Theme" id="Theme_yy6oc"]
@@ -40,16 +39,15 @@ offset_bottom = -313.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_cxmy1")
-theme_override_styles/panel = ExtResource("2_rigsf")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 11.0
-offset_right = -6.0
+offset_left = 14.0
+offset_top = 15.0
+offset_right = -12.0
 offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -78,11 +76,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 18.0
-offset_top = 82.0
-offset_right = -17.0
-offset_bottom = -7.0
+offset_top = 93.0
+offset_right = 31.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.8, 0.8)
 theme = SubResource("Theme_ur17p")
 theme_override_styles/panel = SubResource("StyleBoxFlat_vkckk")
 
@@ -90,28 +89,29 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vkckk")
 layout_mode = 0
 offset_left = 7.0
 offset_top = 10.0
-offset_right = 212.0
-offset_bottom = 137.0
+offset_right = 259.0
+offset_bottom = 149.0
 horizontal_scroll_mode = 0
 
 [node name="Description" type="RichTextLabel" parent="VSplitContainer2/ScrollContainer"]
-custom_minimum_size = Vector2(175, 100)
+custom_minimum_size = Vector2(250, 125)
 layout_mode = 2
 mouse_force_pass_scroll_events = false
 theme = SubResource("Theme_yy6oc")
 theme_override_colors/default_color = Color(0.513726, 0.513726, 0.513726, 1)
-theme_override_font_sizes/normal_font_size = 13
+theme_override_constants/line_separation = 5
 bbcode_enabled = true
-text = "Strenght"
+text = "[u]Streng[/u]ht
+fds"
 fit_content = true
 scroll_following = true
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 185.0
-offset_top = 33.0
+offset_top = 44.0
 offset_right = 233.0
-offset_bottom = 79.0
+offset_bottom = 90.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_qath3")
 
 [node name="Icon" type="TextureRect" parent="Panel"]

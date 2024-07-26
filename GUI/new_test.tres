@@ -4,3 +4,4 @@
 
 [resource]
 texture = ExtResource("1_p1ive")
+modulate_color = Color(0.25098, 0.254902, 0.25098, 1)

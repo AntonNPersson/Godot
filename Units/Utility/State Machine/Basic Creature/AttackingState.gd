@@ -7,6 +7,9 @@ func _ready():
 	attack_timer = _unit.total_windup_time
 	
 func _action(_delta):
+	if _unit.is_stunned:
+		_interrupt_cast_timer()
+		return
 	_update_cast_timer(_delta)
 	var separation_vector = Vector2()
 	for enemy in get_tree().get_nodes_in_group("enemies"):
@@ -20,8 +23,9 @@ func _action(_delta):
 		if !_is_ability_on_cooldown(i):
 			_is_winding = false
 			return _change_state.call('casting')
+		break
 	update_sprite_direction(_get_closest_target().global_position, "Attack", false)
-	if _unit.global_position.distance_to(_get_closest_target().global_position) > _unit.total_range + 30 and attack_timer >= (_unit.total_windup_time * 0.4):
+	if _unit.global_position.distance_to(_get_closest_target().global_position) > _unit.total_range + 30 and attack_timer >= (_unit.total_windup_time * 0.15):
 		return _change_state.call('chasing')
 	if _unit.total_range < 200:
 		if _is_winding:

@@ -48,35 +48,35 @@ func _initialize():
 
 	tooltip_name.text = i_name
 	if rarity == ITEM_RARITY.COMMON:
-		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center][color=white]' + get_child(2).name + '[/color][/center]'
-		tooltip_name.modulate = Color(1, 1, 1)
-		get_child(1).color = Color.WHITE
-		get_child(1).get_child(0).color = Color.WHITE
-		tooltip_icon.get_child(1).modulate = Color.WHITE
+		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center][color=Mistyrose]' + get_child(2).name + '[/color][/center]'
+		tooltip_name.modulate = Color.MISTY_ROSE
+		get_child(1).color = Color.MISTY_ROSE
+		get_child(1).get_child(0).color = Color.MISTY_ROSE
+		tooltip_icon.get_child(1).modulate = Color.MISTY_ROSE
 	elif rarity == ITEM_RARITY.UNCOMMON:
-		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Lawngreen]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.LAWN_GREEN
-		get_child(1).color = Color.LAWN_GREEN
-		get_child(1).get_child(0).color = Color.LAWN_GREEN
-		tooltip_icon.get_child(1).modulate = Color.LAWN_GREEN
+		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Limegreen]' + get_child(2).name + '[/color]'
+		tooltip_name.modulate = Color.LIME_GREEN
+		get_child(1).color = Color.LIME_GREEN
+		get_child(1).get_child(0).color = Color.LIME_GREEN
+		tooltip_icon.get_child(1).modulate = Color.LIME_GREEN
 	elif rarity == ITEM_RARITY.RARE:
-		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Dodgerblue]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.DODGER_BLUE
-		get_child(1).color = Color.DODGER_BLUE
-		get_child(1).get_child(0).color = Color.DODGER_BLUE
-		tooltip_icon.get_child(1).modulate = Color.DODGER_BLUE
+		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Steelblue]' + get_child(2).name + '[/color]'
+		tooltip_name.modulate = Color.STEEL_BLUE
+		get_child(1).color = Color.STEEL_BLUE
+		get_child(1).get_child(0).color = Color.STEEL_BLUE
+		tooltip_icon.get_child(1).modulate = Color.STEEL_BLUE
 	elif rarity == ITEM_RARITY.EPIC:
-		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Blueviolet]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.BLUE_VIOLET
-		get_child(1).color = Color.BLUE_VIOLET
-		get_child(1).get_child(0).color = Color.BLUE_VIOLET
-		tooltip_icon.get_child(1).modulate = Color.BLUE_VIOLET
+		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Mediumorchid]' + get_child(2).name + '[/color]'
+		tooltip_name.modulate = Color.MEDIUM_ORCHID
+		get_child(1).color = Color.MEDIUM_ORCHID
+		get_child(1).get_child(0).color = Color.MEDIUM_ORCHID
+		tooltip_icon.get_child(1).modulate = Color.MEDIUM_ORCHID
 	elif rarity == ITEM_RARITY.LEGENDARY:
-		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Darkorange]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.DARK_ORANGE
-		get_child(1).color = Color.DARK_ORANGE
-		get_child(1).get_child(0).color = Color.DARK_ORANGE
-		tooltip_icon.get_child(1).modulate = Color.DARK_ORANGE
+		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Coral]' + get_child(2).name + '[/color]'
+		tooltip_name.modulate = Color.CORAL
+		get_child(1).color = Color.CORAL
+		get_child(1).get_child(0).color = Color.CORAL
+		tooltip_icon.get_child(1).modulate = Color.CORAL
 
 	tooltip += _create_tooltip(2)
 	if rarity >= ITEM_RARITY.UNCOMMON:
@@ -120,8 +120,9 @@ func _create_tooltip(valu):
 		var value = get_child(valu)._get_values()[i]
 		tag = tag.capitalize().replace("_", " ")
 		if tag == "Armor" or tag == "Evade" or tag == "Barrier" or tag == "Attack Damage":
-			tooltip_main_desc.text = tag + ": " + str(value)
-			continue
+			if valu == 2:
+				tooltip_main_desc.text = tag + ": " + str(value)
+				continue
 
 		if value != 0:
 			if tag in tag_values:
@@ -131,9 +132,11 @@ func _create_tooltip(valu):
 			for ta in tag_values:
 				value = tag_values[ta]
 			if "increased" in tag.to_lower():
-				toolt += tag + ": " + "%.1f"%value + "%" + "\n"
+				var string = tag + ": " + str(value) + "%"
+				toolt += string + "\n"
 			else:
-				toolt += tag + ": " + "%.1f"%value + "\n"
+				var string = tag + ": " + str(value)
+				toolt += string + "\n"
 
 	return toolt
 
@@ -149,7 +152,8 @@ func _input(event):
 				_picked_up = true
 				im.remove_child(self)
 				player.get_node('InventoryManager').get_node('Items').add_child(self)
-				get_child(0).visible = false
+				get_child(0).get_child(0).visible = false
+				get_child(0).get_child(1).visible = false
 				get_child(1).visible = false
 				return
 			else:
@@ -161,7 +165,7 @@ func _drop_item():
 	player.get_node('InventoryManager').get_node('Items').remove_child(self)
 	im.add_child(self)
 	global_position = player.global_position
-	get_child(0).visible = true
+	get_child(0).get_child(1).visible = true
 	get_child(0).get_child(0).visible = false
 	get_child(1).visible = true
 
@@ -203,6 +207,7 @@ func resolve_overlap(area1, area2):
 func _on_panel_2_mouse_entered():
 	get_child(0).get_child(0).visible = true
 	get_child(0).get_child(0).global_position = get_global_transform_with_canvas().get_origin()
+	get_child(0).get_child(0).modulate.a = 0.6
 	get_child(0).get_child(1).get_child(0).modulate.a = 1
 	player.lose_camera_focus = true
 
@@ -211,6 +216,19 @@ func _on_panel_2_mouse_exited():
 	get_child(0).get_child(0).visible = false
 	get_child(0).get_child(1).get_child(0).modulate.a = 0.5
 	player.lose_camera_focus = false
+
+func _show_tooltip_at_mouse():
+	get_child(0).get_child(0).global_position = get_viewport().get_mouse_position() - Vector2(50, -50)
+	get_child(0).get_child(0).modulate.a = 1
+
+	var viewport_size = get_viewport().size
+	if get_child(0).get_child(0).global_position.x + get_child(0).get_child(0).size.x > viewport_size.x:
+		get_child(0).get_child(0).global_position.x = viewport_size.x - get_child(0).get_child(0).size.x
+	
+	if get_child(0).get_child(0).global_position.y + get_child(0).get_child(0).size.y > viewport_size.y:
+		get_child(0).get_child(0).global_position.y = viewport_size.y - get_child(0).get_child(0).size.y
+	
+
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:

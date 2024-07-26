@@ -1,6 +1,6 @@
 # FILEPATH: /C:/Users/Anton/Documents/Godot/Managers/MapManager.gd
 
-extends Node2D
+extends Node
 
 # The path to the town file.
 @export var town_file : String
@@ -98,6 +98,7 @@ var grid_size
 
 var sub_wave = 1
 
+
 #----------------------#
 # Main functions
 #----------------------#
@@ -171,17 +172,6 @@ func _create_tile(scene):
 	add_child(instance)
 
 	return instance.global_position
-func _draw():
-	if pathfinding_debug:
-		for row in tile_positions:
-			for _position in row:
-				if _is_tile_walkable(_position):
-					draw_circle(_position, 20, Color.GREEN)
-				if !temp_path.is_empty():
-					for p in temp_path:
-						draw_circle(p, 20, Color.BLUE)
-				if !_is_tile_walkable(_position):
-					draw_circle(_position, 20, Color.RED)
 # Load the tilemap from layout (file) with specific tileset(tiles). Creates two arrays, tile_positions for all center positions of the tiles
 # and walkable_tiles to represent which tiles are walkable. Populates with _create_tile - teleporter and spawn always needs to have index 2
 # and 3 respectfully to save their position for use.
@@ -231,7 +221,6 @@ func _loadTileMap(file, tiles):
 			cumulative_position.y += tilemap_tile_height
 			tile_positions.append(row)
 			walkable_tiles.append(row2)
-			queue_redraw()
 	else:
 		print("Error: Unable to open the file.")
 
@@ -328,6 +317,12 @@ func _walk_from_to(path, unit, delta, goal_index, _target):
 			var separation = unit.global_position.distance_to(enemy_position)
 			if separation < 22:
 				separation_vector += (unit.global_position - enemy_position).normalized() * (52 - separation)
+	for summon in get_tree().get_nodes_in_group('player_summon'):
+		if summon != unit:
+			var summon_position = summon.global_position
+			var separation = unit.global_position.distance_to(summon_position)
+			if separation < 22:
+				separation_vector += (unit.global_position - summon_position).normalized() * (52 - separation)
 
 	var new_path = path
 	var current_position = unit.global_position
@@ -345,7 +340,6 @@ func _walk_from_to(path, unit, delta, goal_index, _target):
 		current_path_index += 1
 		if current_path_index >= new_path.size() - 1:
 			current_path_index = -1
-		queue_redraw()
 
 	temp_path = new_path
 	return current_path_index
@@ -409,7 +403,7 @@ func _find_walkable_tile_away_from(_position):
 				return random_tile
 		
 		max_attempts -= 1
-	return position
+	return Vector2.ZERO
 
 func _find_walkable_tile_towards(_position):
 	var max_attempts = 100
@@ -429,7 +423,7 @@ func _find_walkable_tile_towards(_position):
 				return random_tile
 		
 		max_attempts -= 1
-	return position
+	return Vector2.ZERO
 	
 func _find_random_walkable_tile():
 	var max_attempts = 100
@@ -556,6 +550,7 @@ func _reconstruct_path(came_from, start, goal, all) -> Array:
 
 func _on_character_selected(unit):
 	players.append(unit)
+	players[0].obstacles_info = self
 
 # map is string name of the map. Should be same as layout. Needs to change to use map variable.
 func _get_tiles_for_map(map):
@@ -682,3 +677,22 @@ func _calculate_creature(size):
 			arr.append(creatures[i])
 	return arr
 
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		print('exiting..')
+		spawn_position.clear()
+		special_positions.clear()
+		Utility.get_node('Interactable').interactable_objects.clear()
+		Utility.get_node('Interactable').special_objects.clear()
+		for i in get_tree().get_nodes_in_group('projectiles'):
+			i.queue_free()
+
+		for i in get_tree().get_nodes_in_group('obstacles'):
+			i.queue_free()
+		
+		for i in get_tree().get_nodes_in_group('enemies'):
+			i.queue_free()
+
+		for child in get_children():
+			child.queue_free()
+		get_tree().quit()

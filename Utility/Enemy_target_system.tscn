@@ -60,6 +60,7 @@ script = ExtResource("2_irwds")
 
 [node name="Circle" type="Area2D" parent="HitBox"]
 visible = false
+self_modulate = Color(1, 1, 1, 0.709804)
 
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/Circle"]
 modulate = Color(1, 0, 0, 1)
