@@ -55,6 +55,7 @@ func _process(delta):
 	if knockback_units.size() > 0:
 		for unit in knockback_units:
 			if _check_if_dead(unit):
+				knockback_units.erase(unit)
 				return
 			unit.global_position += unit.get_meta('Knockback_direction') * 200 * delta
 			if unit.global_position.distance_to(unit.get_meta('Knockback_origin')) > unit.get_meta('Knockback_distance'):

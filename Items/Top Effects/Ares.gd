@@ -1,14 +1,16 @@
 extends Item
 class_name Ares
 var epic
-var increased_attack_damage: int
-var duration: int
-var color = Color.RED
+var unique
+@export var increased_attack_damage: int
+@export var duration: int
+@export var color = Color.RED
 
 func _initialize():
 	increased_attack_damage = 10
 	duration = 5
 	epic = 'OnCast'
+	unique = false
 	tags.append("PercentAttackDamageBuff")
 	values.append(increased_attack_damage)
 	colors.append(color)

@@ -131,7 +131,7 @@ func _create_tooltip(valu):
 				tag_values[tag] = value
 			for ta in tag_values:
 				value = tag_values[ta]
-			if "increased" in tag.to_lower():
+			if "increased" in tag.to_lower() or "cooldown" in tag.to_lower() or "chance" in tag.to_lower():
 				var string = tag + ": " + str(value) + "%"
 				toolt += string + "\n"
 			else:
@@ -218,7 +218,7 @@ func _on_panel_2_mouse_exited():
 	player.lose_camera_focus = false
 
 func _show_tooltip_at_mouse():
-	get_child(0).get_child(0).global_position = get_viewport().get_mouse_position() - Vector2(50, -50)
+	get_child(0).get_child(0).global_position = get_viewport().get_mouse_position() - Vector2(get_child(0).get_child(0).size.x/2, get_child(0).get_child(0).size.y + 10)
 	get_child(0).get_child(0).modulate.a = 1
 
 	var viewport_size = get_viewport().size
@@ -231,8 +231,10 @@ func _show_tooltip_at_mouse():
 
 
 func _unhandled_input(event):
+	if get_child(0).get_child(0).visible == false:
+		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			scroll_panel.scroll_vertical -= 1
+			scroll_panel.scroll_vertical -= 3
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			scroll_panel.scroll_vertical += 1
+			scroll_panel.scroll_vertical += 3

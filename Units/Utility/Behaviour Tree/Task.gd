@@ -35,6 +35,9 @@ var current_sprite_direction
 
 func update_sprite_direction(target_position, type, _idle):
 	var direction_vector = target_position - unit.global_position
+	if _idle:
+		animation.stop()
+		return
 	# Determine the cardinal direction based on the direction vector'
 	if abs(direction_vector.x) > abs(direction_vector.y):
 		if direction_vector.x > 0:
@@ -66,28 +69,20 @@ func _check_collision():
 
 func _move_random_target(_target_position, _delta, summon = false):
 	if unit.global_position.distance_to(_target_position) > 10 or path == null:
-		_update_path()
-	var _target
-	if summon:
-		_target = _get_closest_enemy()
-	else:
-		_target = _get_closest_target()	
+		_update_path(_target_position)
 	_check_collision()
 	if colliding:
 		unit.global_position -= collision_direction * unit.total_speed * _delta
 	else:
-		current_path_index = unit.obstacles_info._walk_from_to(path, unit, _delta, 1, _target)
+		current_path_index = unit.obstacles_info._walk_from_to(path, unit, _delta, 1, _target_position)
 	if unit.total_speed <= 0 or unit.is_rooted:
-		update_sprite_direction(_target.global_position, "Walk", true)
+		update_sprite_direction(_target_position, "Walk", true)
 	else:
-		update_sprite_direction(_target.global_position, "Walk", false)
+		update_sprite_direction(_target_position, "Walk", false)
 	
-func _update_path(summon = false):
+func _update_path(_position):
 	var new_path
-	if summon:
-		new_path = unit.obstacles_info._a_star(unit.global_position, _get_closest_enemy().global_position, "AllMoves")
-	else:
-		new_path = unit.obstacles_info._a_star(unit.global_position, _get_closest_target().global_position, "AllMoves")
+	new_path = unit.obstacles_info._a_star(unit.global_position, _position, "AllMoves")
 	if new_path.size() > 0:
 		path = new_path
 		current_path_index = 0

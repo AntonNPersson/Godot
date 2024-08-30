@@ -2,8 +2,10 @@ extends Task
 class_name teleport_to_player
 
 func _run(_delta):
-	unit.global_position = _get_closest_target().global_position
-	_success()
+	if unit.global_position.distance_to(_get_closest_target().global_position) <= 10:
+		_fail()
+	_move_random_target(_get_closest_target().global_position, _delta, false)
+	_running()
 		
 func _child_success():
 	_success()

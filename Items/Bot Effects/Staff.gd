@@ -4,9 +4,11 @@ var strength : int = 0
 var dexterity : int = 0
 var intelligence : int = 0
 var range : int = 175
+var attack_damage : int = 3
 
 
 func _initialize():
+	attack_damage = randi_range(1, 2)
 	var attribute = _adjust_attributes()
 	match attribute:
 		0:
@@ -19,10 +21,10 @@ func _initialize():
 	icon = preload('res://Sprites/Icons/Staff.png')
 
 func _get_values():
-	return [intelligence, range, strength, dexterity]
+	return [intelligence, range, strength, dexterity, attack_damage]
 
 func _get_tags():
-	return ["intelligence", "range", "strength", "dexterity"]
+	return ["intelligence", "range", "strength", "dexterity", "attack_damage"]
 
 func _adjust_attributes():
 	var ra = randi_range(0,2)

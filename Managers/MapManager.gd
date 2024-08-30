@@ -628,7 +628,7 @@ func _spawn_and_attach():
 	var random_creatures = []
 	var creature_positions = []
 	var random_increase = int(grid_size/20) + randi() % (3+sub_wave) + 2
-	var spawn_time = 1.5
+	var spawn_time = 3
 	
 	if random_increase > grid_size/10:
 		random_increase = grid_size/10
@@ -647,7 +647,7 @@ func _spawn_and_attach():
 	used_creatures.emit(nm, arr)
 	for a in range(arr.size()):
 		if a > 0 and a % 10 == 0:
-			await get_tree().create_timer(3).timeout
+			await get_tree().create_timer(5).timeout
 		arr[a].paused = false
 		arr[a].visible = true
 		arr[a].add_to_group('enemies', true)

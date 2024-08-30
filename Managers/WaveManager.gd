@@ -109,14 +109,6 @@ func _start_wave(value, last = false):
 
 func _unit_dead(_unit):
 	current_amount_of_enemies -= 1
-	var drop_charge = randi_range(0, 100)
-	randomize()
-	if _unit.is_in_group('summons'):
-		if drop_charge < players[0].total_charge_drop_chance + 30:
-			players[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
-	else:
-		if drop_charge < players[0].total_charge_drop_chance:
-			players[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
 
 	if current_amount_of_enemies == INCEPTION_WAVE_THRESHHOLD:
 		if current_wave_counter < wave_counter:

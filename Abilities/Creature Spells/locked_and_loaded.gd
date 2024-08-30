@@ -6,7 +6,7 @@ var timer
 var direction = Vector2(0,0)
 @export var cast_duration = 2.0
 @export var channel_duration = 2.0
-@export var bonus_speed = 300
+@export var bonus_speed = 200
 @export var tag = 'Damage'
 @export var cooldown = 8.0
 @export var damage = 40

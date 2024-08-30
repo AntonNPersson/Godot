@@ -319,13 +319,17 @@ func _apply_quick_attack_chance():
 	var amount_of_attacks = 1
 	var extra_chance = total_quick_attack_chance
 
-	if extra_chance > 100:
-		amount_of_attacks += int(extra_chance / 100)
-		extra_chance %= 100
-
 	var rnd = randf_range(0, 100)
 	if rnd < extra_chance:
 		amount_of_attacks += 1
+		extra_chance -= 100
+		while extra_chance > 0:
+			rnd = randf_range(0, 100)
+			if rnd < extra_chance:
+				amount_of_attacks += 1
+				extra_chance -= 100
+			else:
+				extra_chance = 0
 	
 	return amount_of_attacks
 

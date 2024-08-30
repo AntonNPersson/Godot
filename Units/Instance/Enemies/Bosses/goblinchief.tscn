@@ -351,7 +351,7 @@ u_name = "Goblin Chief"
 experience = 100
 base_armor = 35
 base_speed = 150
-base_health = 1200
+base_health = 600
 abilities = Array[PackedScene]([ExtResource("2_l28r0"), ExtResource("3_3lt1x"), ExtResource("4_8wo2p"), ExtResource("5_5jpcq"), ExtResource("6_yq5n0")])
 basic_attack_scene = ExtResource("5_th56h")
 
@@ -444,6 +444,8 @@ script = ExtResource("22_gh88b")
 
 [node name="isOnCd?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
 script = ExtResource("14_rfam7")
+change_state = true
+new_cooldown = 5.0
 
 [node name="Throw Potion" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?"]
 script = ExtResource("22_tnc18")

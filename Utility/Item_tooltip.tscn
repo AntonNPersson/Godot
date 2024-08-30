@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqxq0qaeoucyb"]
+[gd_scene load_steps=8 format=3 uid="uid://dqxq0qaeoucyb"]
 
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="1_cxmy1"]
 [ext_resource type="Texture2D" uid="uid://cyapl8nbqc187" path="res://Sprites/Icons/Item_border.png" id="3_lmrem"]
 
 [sub_resource type="Theme" id="Theme_yy6oc"]
+
+[sub_resource type="FontVariation" id="FontVariation_aygnw"]
 
 [sub_resource type="Theme" id="Theme_ur17p"]
 
@@ -64,10 +66,11 @@ fit_content = true
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme = SubResource("Theme_yy6oc")
-theme_override_colors/default_color = Color(0.513726, 0.513726, 0.513726, 1)
+theme_override_colors/default_color = Color(0.854902, 0.854902, 0.854902, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_aygnw")
 theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
-text = "Armor: 100"
+text = "[size=14]Armor: 100"
 fit_content = true
 
 [node name="VSplitContainer2" type="Panel" parent="."]
@@ -98,8 +101,8 @@ custom_minimum_size = Vector2(250, 125)
 layout_mode = 2
 mouse_force_pass_scroll_events = false
 theme = SubResource("Theme_yy6oc")
-theme_override_colors/default_color = Color(0.513726, 0.513726, 0.513726, 1)
-theme_override_constants/line_separation = 5
+theme_override_colors/default_color = Color(0.854902, 0.854902, 0.854902, 1)
+theme_override_constants/line_separation = 8
 bbcode_enabled = true
 text = "[u]Streng[/u]ht
 fds"

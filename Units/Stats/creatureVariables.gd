@@ -129,6 +129,15 @@ func _is_dead(unit):
 		do_action.emit(current_base_experience, unit, unit, 'Experience')
 		if !unit.is_in_group('summon'):
 			drop_info._drop_item(unit.global_position)
+
+		var drop_charge = randi_range(0, 100)
+		randomize()
+		if unit.is_in_group('summon'):
+			if drop_charge < get_tree().get_nodes_in_group("players")[0].total_charge_drop_chance * 2:
+				get_tree().get_nodes_in_group("players")[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
+		else:
+			if drop_charge < get_tree().get_nodes_in_group("players")[0].total_charge_drop_chance:
+				get_tree().get_nodes_in_group("players")[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
 		queue_free()
 
 func _calculate_health_percentage():
@@ -171,6 +180,9 @@ func _update_totals():
 	total_attack_damage = current_base_attack_damage + bonus_attack_damage
 	total_windup_time = base_windup_time / total_attack_speed
 
+func _update_stats():
+	pass
+
 func _process(_delta):
 	# Update the totals and the health bar if it exists.
 	_update_totals()
@@ -192,4 +204,4 @@ func _on_do_action(value, target, duration, tag):
 func _level_grants():
 	total_attack_damage += 5
 	total_health += 10
-	total_attack_speed += 5
+	total_attack_speed += 0.1

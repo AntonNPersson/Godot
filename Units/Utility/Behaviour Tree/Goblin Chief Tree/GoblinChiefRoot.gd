@@ -19,11 +19,7 @@ func _ready():
 
 func _process(delta):
 	if summon:
-		print('summoning')
-		target = _get_closest_enemy()
 		unit = get_parent()
-	else:
-		target = _get_closest_target()
 	if cast_bar.value >= 100:
 		cast_bar.visible = false
 	for i in range(ability_cooldowns.size()):

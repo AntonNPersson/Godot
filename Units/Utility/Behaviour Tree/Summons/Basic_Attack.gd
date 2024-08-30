@@ -8,6 +8,10 @@ func _run(_delta):
 		_fail()
 		return
 	target = _get_closest_enemy()
+	var base_frame_time = 1.0/2.0
+	var animation_fps = base_frame_time * 7
+	var speed_scale = animation_fps / unit.total_windup_time
+	unit.get_node('AnimatedSprite2D').speed_scale = speed_scale/2
 	update_sprite_direction(target.global_position, "Attack", false)
 	attack_timer -= _delta
 	_running()

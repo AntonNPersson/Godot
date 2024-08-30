@@ -12,5 +12,5 @@ cooldown = 15.0
 projectile_type = 9
 ability_type = "INT"
 summon_scene = ExtResource("2_jx3ad")
-summon_amount = 3
+summon_amount = 2
 summon_scaling = 0.3

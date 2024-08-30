@@ -6,7 +6,7 @@
 
 [node name="Wave2" type="Node2D"]
 visible = false
-metadata/Color = Color(0.411765, 0.360784, 0.156863, 0.886275)
+metadata/Color = Color(0.537255, 0.47451, 0.219608, 0.886275)
 
 [node name="basicMeleeCreature2" parent="." instance=ExtResource("2_dowgx")]
 

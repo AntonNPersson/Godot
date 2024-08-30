@@ -78,6 +78,9 @@ var item_tags : Array[String]
 var item_values : Array[float]
 var item_duration : Array[float]
 var item_color : Array[Color]
+var item_cooldown : Array[float]
+var item_timers : Array[float]
+var item_unique : Array[bool]
 
 var power : float
 #-------------------#
@@ -91,6 +94,10 @@ func _process(delta):
 
 	if ad_update:
 		_advanced_update()
+
+	for i in range(item_timers.size()):
+		if item_timers[i] >= 0:
+			item_timers[i] -= delta
 # Update scaling of damage
 func _apply_scaling(dmg, type):
 	if unit == null:
@@ -202,11 +209,14 @@ func _add_tag(tag, value, increased_value):
 	values.append(value)
 	increased_values.append(increased_value)
 
-func _add_item_tag(tag, value, dur, i_color):
+func _add_item_tag(tag, value, dur, i_color, i_unique, cd):
 	item_tags.append(tag)
 	item_values.append(value)
 	item_duration.append(dur)
 	item_color.append(i_color)
+	item_cooldown.append(cd)
+	item_timers.append(cd)
+	item_unique.append(i_unique)
 
 
 func _remove_item_tag(tag):
@@ -215,11 +225,15 @@ func _remove_item_tag(tag):
 	item_values.remove_at(index)
 	item_duration.remove_at(index)
 	item_color.remove_at(index)
+	item_cooldown.remove_at(index)
+	item_timers.remove_at(index)
+	item_unique.remove_at(index)
 
 # Update values based on level
 func _level_grants():
 	if projectile_type == targeting_type.Summon:
-		summon_instance._level_grants()
+		for summon in unit.get_node('Summons').get_children():
+			summon._level_grants()
 		return
 
 	for inc in range(values.size()):
@@ -400,9 +414,8 @@ func _use():
 			summon_instance.obstacles_info = unit.obstacles_info
 			summon_instance.do_action.connect(unit.get_node('Control')._on_action)	
 			var number = 0
-			print(summon_instance)
 			for summon in unit.get_node('Summons').get_children():
-				if summon_instance == summon:
+				if summon_instance.u_name == summon.u_name:
 					number += 1
 					if number >= summon_amount:
 						Utility.get_node("ErrorMessage")._create_error_message("Maximum summons on " + a_name + "reached.", unit)
@@ -410,7 +423,6 @@ func _use():
 						return
 			unit.get_node('Summons').add_child(summon_instance)
 			summon_instance.global_position = unit.global_position
-			print(summon_instance)
 		
 
 	elif projectile_type == targeting_type.None:
@@ -493,15 +505,20 @@ func _on_hit(area):
 func _on_item_use():
 	if item_tags.size() == 0:
 		return
+	var current_unique = []
 	for val in item_tags.size():
+		if current_unique.find(item_tags[val]) != -1:
+			print("Already used this item")
+			continue
+		if item_timers[val] <= 0:
+			if item_unique[val]:
+				current_unique.append(item_tags[val])
+			item_timers[val] = item_cooldown[val]
 			_create_light_specifics(unit, item_duration[val], item_color[val])
 			if "WindShout" in item_tags[val]:
-				print("WindShout")
 				if get_tree().get_nodes_in_group('enemies'):
 					for enemy in get_tree().get_nodes_in_group('enemies'):
-						print(enemy)
 						if enemy.global_position.distance_to(unit.global_position) < 130:
-							print('in range')
 							unit.get_node('Control').on_action.emit(item_values[val], enemy, unit, "Wind")
 			else:
 				unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val])

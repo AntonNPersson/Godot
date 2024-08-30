@@ -7,7 +7,7 @@
 script = ExtResource("1_adkh4")
 cooldown = 15.0
 _range = 4000.0
-values = [40.0]
+values = [60.0]
 cursed_spike_instance = ExtResource("2_6csib")
 num_of_spikes = 12
 radius = 32.0

@@ -24,6 +24,9 @@ const ITEM_RARITY = {
 	EPIC = 3
 }
 
+var RARE_STAT_INCREASE = 1.5
+var EPIC_STAT_INCREASE = 2.0
+
 # Called when the node enters the scene tree for the first time. vres://Items/Mid Effects/Mid effects list.tscn
 func _ready():
 	var bot_instance = bot.instantiate()
@@ -67,7 +70,9 @@ func _calculate_item_rarity():
 	if _randi < 60:
 		return
 
-	var rarity = randi() % 55
+	#var rarity = randi() % 55
+	print_debug("changed rarity")
+	var rarity = 53
 	if rarity < 30:
 		return ITEM_RARITY.COMMON
 	elif rarity < 45:
@@ -130,11 +135,12 @@ func _create_item(_rarity = null):
 		var top_piece = top_list[randi() % top_list.size()].duplicate()
 		second_mid_piece._initialize()
 		bot_piece._initialize()
-		mid_piece._initialize()
+		mid_piece._initialize()	
 		top_piece._initialize()
 		second_mid_piece._ascend(player.power)
 		bot_piece._ascend(player.power)
 		mid_piece._ascend(player.power)
+		bot_piece._increase_rarity(RARE_STAT_INCREASE)
 		var _item = item.instantiate()
 		_item.i_name = bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name + " and " + top_piece.name
 		_item.player = player
@@ -166,6 +172,7 @@ func _create_item(_rarity = null):
 		second_mid_piece._ascend(player.power)
 		bot_piece._ascend(player.power)
 		mid_piece._ascend(player.power)
+		bot_piece._increase_rarity(EPIC_STAT_INCREASE)
 		var _item = item.instantiate()
 		_item.i_name = second_top_piece.name + ", " + bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name + " and " + top_piece.name
 		_item.player = player
@@ -187,6 +194,7 @@ func _create_item(_rarity = null):
 		return _item
 	else:
 		return null
+
 
 func _create_health_potion():
 	var potion = potion_list[0].duplicate()

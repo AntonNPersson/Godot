@@ -2,6 +2,7 @@ extends Node
 signal add_stats(value)
 signal remove_stats(value)
 signal item_selected(item)
+var tooltip
 var items : Array
 var inventory : Array
 var potions : Array
@@ -64,6 +65,8 @@ func _ready():
 	storage_slots = container_hud.get_node("Items/Panel/VBoxContainer/Storaged")
 	statistics = container_hud.get_node("Stats")
 	items_ = container_hud.get_node("Items")
+	tooltip = simple_tooltip.instantiate()
+	get_tree().get_root().add_child(tooltip)
 	
 func _process(delta):
 	_update_stats()
@@ -334,10 +337,10 @@ func _on_ability_manager_picked(_ability):
 	_ability.unit = self.get_parent()
 	_ability._initialize()
 
-func _add_item_effect(type, tag, value, duration, item_color):
+func _add_item_effect(type, tag, value, duration, item_color, item_unique = false, item_cooldown = 0):
 	if type == 'OnCast':
 		for a in abilities:
-			a._add_item_tag(tag, value, duration, item_color)
+			a._add_item_tag(tag, value, duration, item_color, item_unique, item_cooldown)
 
 func _remove_item_effect(type, tag):
 	if type == 'OnCast':
@@ -352,8 +355,12 @@ func _on_item_picked_up(item):
 		if children.size() > 2:
 			for i in range(2, children.size()):
 				if "epic" in children[i]:
-					_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0])
-					continue
+					if "cooldown" in children[i]:
+						_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0], children[i].unique, children[i].cooldown)
+						continue
+					else:
+						_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0], children[i].unique)
+						continue
 
 				if "range" in children[i]:
 					if weapon_equipped:
@@ -437,12 +444,14 @@ func _on_inventory_mouse_exited():
 func _equipment_mouse_entered(index):
 	if inventory.size() <= index:
 		return
+	unit.lose_camera_focus = true
 	inventory[index].get_child(0).get_child(0).visible = true
 	inventory[index]._show_tooltip_at_mouse()
 
 func _equipment_mouse_exited(index):
 	if inventory.size() <= index:
 		return
+	unit.lose_camera_focus = false
 	inventory[index].get_child(0).get_child(0).visible = false
 
 func _equipment_gui_input(event, index):
@@ -457,20 +466,19 @@ func _potions_mouse_entered(index):
 	if potions.size() <= index:
 		return
 	
-	var tooltip = simple_tooltip.instantiate()
 	tooltip.get_node('Panel/Name').text = "[center]" + potions[index].i_name
-	tooltip.get_node('Panel/Description').text = "[center]" + potions[index].tooltip
+	tooltip.get_node('Panel/ScrollContainer/Description').text = "[center]" + potions[index].tooltip
 
-	tooltip.get_child(0).global_position = get_viewport().get_mouse_position() + Vector2(0,15)
-	tooltip.name = "tooltip" + str(index)
-	get_tree().get_root().add_child(tooltip)
+	tooltip.get_child(0).global_position = get_viewport().get_mouse_position() + Vector2(-tooltip.get_child(0).size.x/2, -tooltip.get_child(0).size.y - 10)
+	tooltip.visible = true
+	unit.lose_camera_focus = true
 
 func _potions_mouse_exited(index):
 	if potions.size() <= index:
 		return
 	
-	get_tree().get_root().get_node("tooltip" + str(index)).queue_free()
-
+	tooltip.visible = false
+	unit.lose_camera_focus = false
 
 func _on_equipment_button_pressed():
 	equipment_slots.visible = true
@@ -479,3 +487,28 @@ func _on_equipment_button_pressed():
 func _on_stats_button_pressed():
 	equipment_slots.visible = false
 	statistics.visible = true
+
+func _on_hotbar_ability_mouse_entered(index):
+	if abilities.size() <= index:
+		return
+	unit.lose_camera_focus = true
+	tooltip.get_node('Panel/Name').text = "[center]" + abilities[index].name
+	tooltip.get_node('Panel/ScrollContainer/Description').text = "[center]" + abilities[index].tooltip
+	tooltip.get_child(0).global_position = hotbar.get_child(index).global_position + Vector2((-tooltip.get_child(0).size.x/2) + (hotbar.get_child(index).size.x/2),-tooltip.get_child(0).size.y - 10)
+	tooltip.visible = true
+
+func _on_hotbar_ability_mouse_exited(index):
+	if abilities.size() <= index:
+		return
+	
+	tooltip.visible = false
+	unit.lose_camera_focus = false
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton:
+		if tooltip.visible == false:
+			return
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			tooltip.get_node('Panel/ScrollContainer').scroll_vertical -= 3
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			tooltip.get_node('Panel/ScrollContainer').scroll_vertical += 3

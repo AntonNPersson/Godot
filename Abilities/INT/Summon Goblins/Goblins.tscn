@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://c5cj0hwe4je5n"]
+[gd_scene load_steps=89 format=3 uid="uid://c5cj0hwe4je5n"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_nb4p7"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="2_nbl5b"]
@@ -17,6 +17,9 @@
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Summons/Chase.gd" id="10_0ea2d"]
 [ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_ruttq"]
 [ext_resource type="Texture2D" uid="uid://6jiv4b2mj5cg" path="res://Units/Instance/Enemies/Sprite Sheets/Goblin Farmer.png" id="12_1tmmj"]
+[ext_resource type="Script" path="res://Abilities/INT/Summon Goblins/Doesn't have aggro.gd" id="12_l4b8x"]
+[ext_resource type="Script" path="res://Abilities/INT/Summon Goblins/idle.gd" id="14_4b2xl"]
+[ext_resource type="Script" path="res://Abilities/INT/Summon Goblins/teleport.gd" id="16_mt7ob"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
 radius = 16.1555
@@ -532,19 +535,19 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="basicMeleeCreature" type="Area2D" groups=["player_summon"]]
+[node name="basicMeleeCreature" type="Area2D" groups=["player_summon", "players"]]
 top_level = true
 collision_layer = 2
 script = ExtResource("1_nb4p7")
 u_name = "Goblin"
-base_speed = 80
+base_speed = 150
 base_health = 50
 base_range = 75
-base_attack_speed = 0.8
+base_attack_speed = 0.25
 base_attack_damage = 5
 base_windup_time = 1.5
 basic_attack_scene = ExtResource("2_nbl5b")
-aggro_range = 300.0
+aggro_range = 250.0
 paused = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -565,13 +568,6 @@ summon = true
 [node name="Selector" type="Node" parent="Tree"]
 script = ExtResource("7_23to3")
 
-[node name="out_of_range" type="Node" parent="Tree/Selector"]
-script = ExtResource("7_3bpre")
-tile_range = 8.0
-
-[node name="teleport_to_player" type="Node" parent="Tree/Selector/out_of_range"]
-script = ExtResource("8_amns0")
-
 [node name="Check For enemies" type="Node" parent="Tree/Selector"]
 script = ExtResource("9_wqs03")
 
@@ -591,6 +587,29 @@ values = Array[int]([5])
 
 [node name="Chase" type="Node" parent="Tree/Selector/Check For enemies/in_range/Selector"]
 script = ExtResource("10_0ea2d")
+
+[node name="Doesn\'t have aggro" type="Node" parent="Tree/Selector"]
+script = ExtResource("12_l4b8x")
+
+[node name="Selector" type="Node" parent="Tree/Selector/Doesn\'t have aggro"]
+script = ExtResource("7_23to3")
+
+[node name="out of range" type="Node" parent="Tree/Selector/Doesn\'t have aggro/Selector"]
+script = ExtResource("7_3bpre")
+tile_range = 2.0
+
+[node name="teleport" type="Node" parent="Tree/Selector/Doesn\'t have aggro/Selector/out of range"]
+script = ExtResource("16_mt7ob")
+
+[node name="out_of_range" type="Node" parent="Tree/Selector/Doesn\'t have aggro/Selector"]
+script = ExtResource("7_3bpre")
+tile_range = 0.5
+
+[node name="teleport_to_player" type="Node" parent="Tree/Selector/Doesn\'t have aggro/Selector/out_of_range"]
+script = ExtResource("8_amns0")
+
+[node name="idle" type="Node" parent="Tree/Selector/Doesn\'t have aggro/Selector"]
+script = ExtResource("14_4b2xl")
 
 [node name="Summons" type="Node2D" parent="."]
 

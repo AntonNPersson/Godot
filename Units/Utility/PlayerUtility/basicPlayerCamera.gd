@@ -6,7 +6,7 @@ var is_following = true
 
 @export var cam_speed = 3000
 
-@export var min_zoom = Vector2(1, 1)
+@export var min_zoom = Vector2(2, 2)
 @export var max_zoom = Vector2(4, 4)
 
 @export var shake_duration = 0.0

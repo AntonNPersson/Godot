@@ -16,52 +16,25 @@
 
 [node name="Frozen Flash" parent="." instance=ExtResource("1_oktd4")]
 position = Vector2(240.176, -84.2922)
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Healing Grace" parent="." instance=ExtResource("3_7ms2t")]
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Frostbolt" parent="." instance=ExtResource("3_q2o0l")]
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Fireball" parent="." instance=ExtResource("1_vlnpx")]
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Arcane Enchantment" parent="." instance=ExtResource("4_tck2m")]
 
 [node name="Fire Nova" parent="." instance=ExtResource("5_u454j")]
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Lightningball" parent="." instance=ExtResource("6_fglum")]
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Shocked Darnation" parent="." instance=ExtResource("8_ryd6a")]
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Blood Storm" parent="." instance=ExtResource("8_7g0ly")]
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Flaming Flash" parent="." instance=ExtResource("10_oqlo0")]
 position = Vector2(268, 383)
-summon_amount = 0
-summon_scaling = 0.0
-unique = false
 
 [node name="Summon Goblins" parent="." instance=ExtResource("11_d4kjh")]
 position = Vector2(2.91632, 84.8627)

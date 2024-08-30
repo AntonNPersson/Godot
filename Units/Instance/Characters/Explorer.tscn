@@ -442,10 +442,10 @@ c_name = "Explorer"
 tooltip = "Loving the thrill of exploration, the explorer gains stats of the players chosing after each wave. Explorer ability pool contains: DEX, INT, STR."
 base_speed = 125
 base_barrier = 50
-base_health = 5000
+base_health = 80
 base_range = 50
 base_attack_speed = 0.7
-base_attack_damage = 500
+base_attack_damage = 10
 base_windup_time = 0.6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -461,7 +461,6 @@ script = ExtResource("6_3crnk")
 
 [node name="Camera" type="Node" parent="."]
 script = ExtResource("7_vcksv")
-min_zoom = Vector2(1.6, 1.6)
 shake_duration = 0.5
 shake_intensity = 4.0
 shake_speed = 100.0

@@ -7,5 +7,5 @@
 script = ExtResource("1_lcmov")
 cast_duration = 2.0
 size = 0.4
-values = [30.0]
+values = [40.0]
 after_effect = ExtResource("2_endln")

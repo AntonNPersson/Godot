@@ -11,5 +11,5 @@ cast_duration = 2.0
 cooldown = 3.0
 range = 10000.0
 size = 2.0
-values = [40.0]
+values = [80.0]
 after_effect = ExtResource("2_k0jxf")

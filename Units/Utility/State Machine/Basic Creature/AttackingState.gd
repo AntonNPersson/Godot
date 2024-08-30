@@ -24,6 +24,10 @@ func _action(_delta):
 			_is_winding = false
 			return _change_state.call('casting')
 		break
+	var base_frame_time = 1.0/2.0
+	var animation_fps = base_frame_time * 7
+	var speed_scale = animation_fps / _unit.total_windup_time
+	_unit.get_node('AnimatedSprite2D').speed_scale = speed_scale/2
 	update_sprite_direction(_get_closest_target().global_position, "Attack", false)
 	if _unit.global_position.distance_to(_get_closest_target().global_position) > _unit.total_range + 30 and attack_timer >= (_unit.total_windup_time * 0.15):
 		return _change_state.call('chasing')

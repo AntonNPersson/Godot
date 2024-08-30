@@ -114,7 +114,7 @@ shader_parameter/noise_texture = SubResource("NoiseTexture2D_7m1hr")
 [node name="Main" type="Node"]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.231373, 0.239216, 0.388235, 1)
+color = Color(0.305882, 0.317647, 0.498039, 1)
 
 [node name="Environment" type="Node" parent="CanvasModulate"]
 

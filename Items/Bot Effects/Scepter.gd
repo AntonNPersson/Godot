@@ -4,6 +4,7 @@ var strength : int = 0
 var dexterity : int = 0
 var intelligence : int = 0
 var range : int = 15
+var attack_damage : int = 3
 var increased_global_weight : int = -30
 
 func _initialize():
@@ -17,13 +18,14 @@ func _initialize():
 			intelligence = randi_range(10, 20)
 	range = 15
 	increased_global_weight = -30
+	attack_damage = randi_range(1, 2)
 	icon = preload('res://Sprites/Icons/Scepter.png')
 
 func _get_values():
-	return [intelligence, range, strength, dexterity, increased_global_weight]
+	return [intelligence, range, strength, dexterity, increased_global_weight, attack_damage]
 
 func _get_tags():
-	return ["intelligence", "range", "strength", "dexterity", "increased_global_weight"]
+	return ["intelligence", "range", "strength", "dexterity", "increased_global_weight", "attack_damage"]
 
 func _adjust_attributes():
 	var ra = randi_range(0,2)

@@ -5,9 +5,9 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t81g7"]
 
-[node name="Locked and Loaded" type="Area2D"]
+[node name="Locked and Loaded" type="Area2D" groups=["projectile"]]
 visible = false
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_l340k")
 bonus_speed = 250
 damage = 30
