@@ -5,15 +5,10 @@ var offset = Vector2(-104, -84)
 var distance
 @export var popup_ : PackedScene
 signal call_wave_manager(value)
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	for obj in Utility.get_node('Interactable').interactable_objects:
-		if obj and not obj.is_queued_for_deletion() and is_instance_valid(obj):
+		if is_instance_valid(obj):
 			var players = get_tree().get_nodes_in_group('players')
 			var in_range = false
 			for player in players:
@@ -68,3 +63,4 @@ func remove_part(original: String, to_remove: String) -> String:
 		return original  # Substring not found
 	var end_index = start_index + to_remove.length()
 	return original.substr(0, start_index) + original.substr(end_index, original.length() - end_index)
+

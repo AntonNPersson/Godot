@@ -1,0 +1,15 @@
+[gd_scene load_steps=6 format=3 uid="uid://dwvx2fyx0esdi"]
+
+[ext_resource type="Script" path="res://Managers/MapManager.gd" id="1_o7o8i"]
+[ext_resource type="PackedScene" uid="uid://tte1vievd453" path="res://Maps/Tiles/Arena_1/arena_.tscn" id="2_75buk"]
+[ext_resource type="PackedScene" uid="uid://dddrbp70lpbp4" path="res://Maps/Tiles/Arena_2/arena_.tscn" id="3_uvo74"]
+[ext_resource type="PackedScene" uid="uid://cgmc1c2i7fn3x" path="res://Maps/Tiles/Town/town_1.tscn" id="4_g544k"]
+[ext_resource type="PackedScene" uid="uid://babgdhhfthpqt" path="res://Utility/Spawn_effects.tscn" id="5_6517p"]
+
+[node name="MapManager" type="Node2D"]
+script = ExtResource("1_o7o8i")
+town_file = "res://Maps/Tiles/Town/town.txt"
+arena_1_scene = ExtResource("2_75buk")
+arena_2_scene = ExtResource("3_uvo74")
+town_scene = ExtResource("4_g544k")
+spawn_effects = ExtResource("5_6517p")

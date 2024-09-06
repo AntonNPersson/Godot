@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://dp5x3sacbjiw3"]
+
+[ext_resource type="Script" path="res://Managers/InteractionManager.gd" id="1_h6od5"]
+[ext_resource type="PackedScene" uid="uid://dtbp7mjj6sxej" path="res://Utility/interactable_popup.tscn" id="2_lnx6p"]
+
+[node name="InteractionManager" type="Node"]
+script = ExtResource("1_h6od5")
+popup_ = ExtResource("2_lnx6p")

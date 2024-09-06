@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccxvywf5fenkh"]
+
+[ext_resource type="Script" path="res://Managers/ItemManager.gd" id="1_rbrv5"]
+[ext_resource type="PackedScene" uid="uid://b6xve3wi8me70" path="res://Items/Bot Effects/Bot Item pieces.tscn" id="2_xs1ld"]
+[ext_resource type="PackedScene" uid="uid://cmblsxecemyvg" path="res://Items/Low-Mid Effects/lowmidlist.tscn" id="3_trauw"]
+[ext_resource type="PackedScene" uid="uid://tgn63im6llu7" path="res://Items/Mid Effects/Mid effects list.tscn" id="4_3p60w"]
+[ext_resource type="PackedScene" uid="uid://bugmvirpfn5na" path="res://Items/Item.tscn" id="5_umy4r"]
+
+[node name="ItemManager" type="Node" groups=["Persist"]]
+script = ExtResource("1_rbrv5")
+bot = ExtResource("2_xs1ld")
+mid = ExtResource("3_trauw")
+top = ExtResource("4_3p60w")
+item = ExtResource("5_umy4r")
+
+[node name="Items" type="Node2D" parent="."]
+visible = false
+
+[node name="Equipped" type="Node" parent="."]

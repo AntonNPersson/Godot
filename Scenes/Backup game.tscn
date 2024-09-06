@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://crqfj3yrs17kl"]
+[gd_scene load_steps=12 format=3 uid="uid://crqfj3yrs17kl"]
 
 [ext_resource type="Script" path="res://Managers/WaveManager.gd" id="1_g8em1"]
 [ext_resource type="Script" path="res://Managers/CharacterManager.gd" id="2_174nn"]
@@ -6,14 +6,6 @@
 [ext_resource type="Script" path="res://Managers/AbilityManager.gd" id="4_3g1y7"]
 [ext_resource type="Script" path="res://Managers/ShopManager.gd" id="5_vfaul"]
 [ext_resource type="Script" path="res://Managers/MapManager.gd" id="6_fv7wc"]
-[ext_resource type="PackedScene" uid="uid://cosqbwpgdlcb6" path="res://Maps/Tiles/Arena_1/tiles/wall.tscn" id="7_gavre"]
-[ext_resource type="PackedScene" uid="uid://wrpayg25hbhn" path="res://Maps/Tiles/Arena_1/teleporter.tscn" id="8_myo37"]
-[ext_resource type="PackedScene" uid="uid://c4kr1k7bekfs" path="res://Maps/Tiles/Arena_1/tiles/floor.tscn" id="9_etboa"]
-[ext_resource type="PackedScene" uid="uid://3bufdu886nec" path="res://Maps/Tiles/Arena_1/tiles/torch.tscn" id="10_xjs53"]
-[ext_resource type="PackedScene" uid="uid://cqx1pxiuq1p2f" path="res://Maps/Tiles/Required Tiles/spawn.tscn" id="11_k3l1g"]
-[ext_resource type="PackedScene" uid="uid://dd7yxbtrbh8hd" path="res://Maps/Tiles/Town/north_wall.tscn" id="12_i1sxw"]
-[ext_resource type="PackedScene" uid="uid://bn8e7y6xtlarm" path="res://Maps/Tiles/Arena_1/tiles/boulder.tscn" id="13_4yloy"]
-[ext_resource type="PackedScene" uid="uid://p7oa723wfj43" path="res://Maps/Tiles/Arena_1/west_wall.tscn" id="14_60i3i"]
 [ext_resource type="Script" path="res://Managers/CombatManager.gd" id="15_qucq2"]
 [ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="16_vk40f"]
 [ext_resource type="Texture2D" uid="uid://bcpcpicdwbcik" path="res://Sprites/wall.png" id="17_a2l8g"]
@@ -135,16 +127,7 @@ text = "Sell"
 
 [node name="MapManager" type="Node" parent="CanvasModulate"]
 script = ExtResource("6_fv7wc")
-map_file = "res://Maps/arena_1.txt"
 town_file = "res://Maps/town.txt"
-wall = ExtResource("7_gavre")
-teleporter = ExtResource("8_myo37")
-_floor = ExtResource("9_etboa")
-torch = ExtResource("10_xjs53")
-spawn = ExtResource("11_k3l1g")
-north_wall = ExtResource("12_i1sxw")
-west_corner_wall = ExtResource("13_4yloy")
-west_corner_second = ExtResource("14_60i3i")
 
 [node name="CombatManager" type="Node" parent="CanvasModulate"]
 script = ExtResource("15_qucq2")
@@ -195,8 +178,8 @@ autowrap_mode = 0
 [connection signal="next_choice" from="CanvasModulate/RoundManager" to="CanvasModulate/AbilityManager" method="_on_next_choice"]
 [connection signal="next_shop" from="CanvasModulate/RoundManager" to="CanvasModulate/ShopManager" method="_on_next_shop"]
 [connection signal="next_shop" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_next_shop"]
-[connection signal="next_wave" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_round_manager_next_wave"]
 [connection signal="next_wave" from="CanvasModulate/RoundManager" to="CanvasModulate/WaveManager" method="_on_next_wave"]
+[connection signal="next_wave" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_round_manager_next_wave"]
 [connection signal="picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_picked"]
 [connection signal="item_clicked" from="CanvasModulate/AbilityManager/UI/CanvasLayer/choiceList" to="CanvasModulate/AbilityManager" method="_on_choice_list_item_clicked"]
 [connection signal="pressed" from="CanvasModulate/AbilityManager/UI/CanvasLayer/showButton" to="CanvasModulate/AbilityManager" method="_on_button_pressed"]

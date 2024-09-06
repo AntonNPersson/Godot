@@ -28,7 +28,7 @@ var RARE_STAT_INCREASE = 1.5
 var EPIC_STAT_INCREASE = 2.0
 
 # Called when the node enters the scene tree for the first time. vres://Items/Mid Effects/Mid effects list.tscn
-func _ready():
+func _initialize():
 	var bot_instance = bot.instantiate()
 	var mid_instance = preload('res://Items/Low-Mid Effects/lowmidlist.tscn').instantiate()
 	var second_mid = preload('res://Items/Low-Mid Effects/lowmidlist2.tscn').instantiate()
@@ -60,8 +60,10 @@ func _ready():
 	_add_potion_to_inventory("Health")
 	player.get_node('InventoryManager').current_potion_charges[0] = player.get_node('InventoryManager').potion_charges[0]
 	player.get_node('InventoryManager').current_potion_charges[1] = player.get_node('InventoryManager').potion_charges[1]
-	for i in range(0, 4):
-		_add_to_inventory()
+
+	if !GameManager.is_save_file:
+		for i in range(0, 4):
+			_add_to_inventory()
 
 
 func _calculate_item_rarity():
@@ -195,6 +197,70 @@ func _create_item(_rarity = null):
 	else:
 		return null
 
+func _load_item(bot_piece_data, second_mid_piece_data, mid_piece_data, top_piece_data, second_top_piece_data, item_name, rarity):
+	var bot_piece
+	var second_mid_piece
+	var mid_piece
+	var top_piece
+	var second_top_piece
+	var item_ = item.instantiate()
+	item_.i_name = item_name
+	item_.player = player
+	item_.rarity = rarity
+	item_.im = self
+
+	if bot_piece_data != null:
+		var bot_piece_index = _find_item_in_list(bot_piece_data["name"], bot_list)
+		bot_piece = bot_list[bot_piece_index].duplicate()
+		bot_piece._initialize()
+		for i in range(bot_piece_data["values"].size()):
+			bot_piece.set(bot_piece_data["tags"][i], bot_piece_data["values"][i])
+		bot_piece.set_owner(item_)
+		item_.add_child(bot_piece)
+	if second_mid_piece_data != null:
+		var second_mid_piece_index = _find_item_in_list(second_mid_piece_data["name"], second_mid_list)
+		second_mid_piece = second_mid_list[second_mid_piece_index].duplicate()
+		second_mid_piece._initialize()
+		for i in range(second_mid_piece_data["values"].size()):
+			second_mid_piece.set(second_mid_piece_data["tags"][i], second_mid_piece_data["values"][i])
+		second_mid_piece.set_owner(item_)
+		item_.add_child(second_mid_piece)
+	if mid_piece_data != null:
+		var mid_piece_index = _find_item_in_list(mid_piece_data["name"], mid_list)
+		mid_piece = mid_list[mid_piece_index].duplicate()
+		mid_piece._initialize()
+		for i in range(mid_piece_data["values"].size()):
+			mid_piece.set(mid_piece_data["tags"][i], mid_piece_data["values"][i])
+		mid_piece.set_owner(item_)
+		item_.add_child(mid_piece)
+	if top_piece_data != null:
+		var top_piece_index = _find_item_in_list(top_piece_data["name"], top_list)
+		top_piece = top_list[top_piece_index].duplicate()
+		top_piece._initialize()
+		top_piece.set_owner(item_)
+		item_.add_child(top_piece)
+	if second_top_piece_data != null:
+		var second_top_piece_index = _find_item_in_list(second_top_piece_data["name"], second_top_list)
+		second_top_piece = second_top_list[second_top_piece_index].duplicate()
+		second_top_piece._initialize()
+		second_top_piece.set_owner(item_)
+		item_.add_child(second_top_piece)
+	
+	item_._initialize()
+	item_.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
+	item_.picked_up.emit(item_)
+	item_._picked_up = true
+	player.get_node('InventoryManager').get_node('Items').add_child(item_)
+	item_.get_child(0).get_child(0).visible = false
+	item_.get_child(0).get_child(1).visible = false
+	item_.get_child(1).visible = false
+	return item_
+
+func _find_item_in_list(item_name, list):
+	for i in range(list.size()):
+		if list[i].name == item_name:
+			return i
+	return -1
 
 func _create_health_potion():
 	var potion = potion_list[0].duplicate()

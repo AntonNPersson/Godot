@@ -9,6 +9,7 @@ var obstacles_info
 signal is_dead(unit)
 @onready var health_bar = get_node("UI/ProgressBar")
 @onready var barrier_bar = get_node("UI/ProgressBar2")
+@onready var level_up_effect = get_node("Extra/LevelUpEffect")
 
 # Reference to the target marker node
 @onready var target_marker = get_node("UI/TargetMarker")
@@ -19,33 +20,35 @@ signal is_dead(unit)
 @export var movement_skill_scene : PackedScene
 @export var type : Array[String]
 var movement_skill
+var player_is_ready = false
+var item_manager = null
 
 # Player variables
 var in_combat = false
 var in_stealth = false
 var melee = false
 var gold = 0
-var global_weight : float = 0
-var global_movement_speed : float = 0
-var global_evade : float = 0
-var global_armor : float = 0
-var global_strength : float = 0
-var global_dexterity : float = 0
-var global_intelligence : float = 0
-var global_vitality : float = 0
-var global_health_regen : float = 0
-var global_mana_regen : float = 0
-var global_stamina_regen : float = 0
-var global_barrier_regen : float = 0
-var global_health : float = 0
-var global_barrier : float = 0
-var global_mana : float = 0
-var global_stamina : float = 0
-var global_bleed_damage : float = 0
-var global_burn_damage : float = 0
-var global_freeze_effectiveness : float = 0
-var global_heal_effectiveness : float = 0
-var global_damage : float = 0
+var global_weight : float = int(0)
+var global_movement_speed : float = int(0)
+var global_evade : float = int(0)
+var global_armor : float = int(0)
+var global_strength : float = int(0)
+var global_dexterity : float = int(0)
+var global_intelligence : float = int(0)
+var global_vitality : float = int(0)
+var global_health_regen : float = int(0)
+var global_mana_regen : float = int(0)
+var global_stamina_regen : float = int(0)
+var global_barrier_regen : float = int(0)
+var global_health : float = int(0)
+var global_barrier : float = int(0)
+var global_mana : float = int(0)
+var global_stamina : float = int(0)
+var global_bleed_damage : float = int(0)
+var global_burn_damage : float = int(0)
+var global_freeze_effectiveness : float = int(0)
+var global_heal_effectiveness : float = int(0)
+var global_damage : float = int(0)
 
 var global_dict = {
 	"Bleed" : global_bleed_damage,
@@ -76,6 +79,7 @@ var total_mana_regen : float
 var total_stamina_regen : float
 var total_barrier_regen : float
 var total_ability_experience : float
+var total_player_experience : float = 100
 var total_cooldown_reduction : float
 var total_quick_attack_chance : float
 var total_double_cast_chance : float
@@ -144,7 +148,7 @@ var current_barrier = 0
 var current_health = 100
 var current_mana = 100
 var current_stamina = 100
-var current_ascension_currency = 0
+var current_player_experience = 0
 
 # Current attack modifier tags and values
 var current_attack_modifier_tags = []
@@ -160,6 +164,21 @@ var ascension_currency = 0
 
 var paused = false
 var lose_camera_focus = false
+var PLAYER_LEVEL_UP_SCALING = 1.5
+var HEALTH_LEVEL_UP_AMOUNT = 0
+var MANA_LEVEL_UP_AMOUNT = 0
+var STAMINA_LEVEL_UP_AMOUNT = 0
+var STRENGTH_LEVEL_UP_AMOUNT = 0
+var DEXTERITY_LEVEL_UP_AMOUNT = 0
+var INTELLIGENCE_LEVEL_UP_AMOUNT = 0
+
+# Saved inventory manager variables.
+var im_inventory = null
+var im_potions = null
+var im_abilities = null
+var im_potion_charges = null
+var im_current_potion_charges = null
+var im_cooldown_timers = null
 
 # Calculate the percentage based on current and total values
 func _calculate_percentage(current, total):
@@ -249,6 +268,8 @@ func _update_totals():
 	total_critical_chance = base_critical_chance + bonus_critical_chance
 	total_critical_damage = base_critical_damage + bonus_critical_damage
 	total_attack_targets = base_attack_targets + bonus_attack_targets
+
+	print(global_barrier/100)
 	
 # Called when the node is ready
 func _ready():
@@ -259,14 +280,17 @@ func _ready():
 	current_stamina = total_stamina
 	current_barrier = total_barrier
 
-	movement_skill = movement_skill_scene.instantiate()
-	movement_skill.unit = self
-	add_child(movement_skill)
-
 # Process function called every frame
 func _process(delta):
 	if paused:
 		return
+	# Why the fuck is this nessecary suddenly?
+	if movement_skill == null:
+		print_debug('Movement_skill added at runtime for some reason?')
+		movement_skill = movement_skill_scene.instantiate()
+		movement_skill.unit = self
+		add_child(movement_skill)
+	_check_player_level_up()
 	health_bar._update_health(_calculate_percentage(current_health, total_health))
 	barrier_bar._update_barrier(_calculate_percentage(current_barrier, total_barrier))
 	_update_regen(delta)
@@ -285,7 +309,8 @@ func _process(delta):
 		current_mana = 0
 	if current_health < 0:
 		is_dead.emit(self)
-		GameManager._change_scene("res://Scenes/Menu.tscn", true)
+		Utility.get_node("Transition")._start_death(2, ascension_currency, ascension_level)
+		paused = true
 	if current_stamina < 0:
 		current_stamina = 0
 	if current_barrier < 0:
@@ -351,6 +376,23 @@ func _apply_critical_damage(value):
 	if _apply_critical_chance():
 		value = value * (1 + total_critical_damage/100)
 	return value
+
+func _check_player_level_up():
+	if current_player_experience >= total_player_experience:
+		_on_player_level_up()
+
+func _on_player_level_up():
+	total_player_experience = 100 + (total_player_experience * PLAYER_LEVEL_UP_SCALING)
+	current_player_experience = 0
+	level_up_effect.get_child(0).emitting = true
+	_on_add_stats({
+		"health" : HEALTH_LEVEL_UP_AMOUNT,
+		"mana" : MANA_LEVEL_UP_AMOUNT,
+		"stamina" : STAMINA_LEVEL_UP_AMOUNT,
+		"strength" : STRENGTH_LEVEL_UP_AMOUNT,
+		"dexterity" : DEXTERITY_LEVEL_UP_AMOUNT,
+		"intelligence" : INTELLIGENCE_LEVEL_UP_AMOUNT
+	})
 
 # Called when stats are added
 func _on_add_stats(value):
@@ -431,6 +473,7 @@ func _on_add_stats(value):
 	if "increased_health" in value:
 		global_health += value.increased_health
 	if "increased_barrier" in value:
+		print("barrer increas: " + str(value.increased_barrier))
 		global_barrier += value.increased_barrier
 	if "increased_mana" in value:
 		global_mana += value.increased_mana
@@ -544,3 +587,145 @@ func _on_remove_stats(value):
 	if "increased_global_weight" in value:
 		global_weight -= value.increased_global_weight
 	_update_stats()
+
+func save():
+		var ability_data = []
+		var ability_manager = get_node("InventoryManager").abilities
+		for i in range(ability_manager.size()):
+			ability_data.append(ability_manager[i]._get_ability_data())
+		im_abilities = ability_data
+
+		var inventory_data = []
+		var inventory_manager = get_node("InventoryManager").inventory
+		for i in range(inventory_manager.size()):
+			inventory_data.append(inventory_manager[i]._get_item_data())
+		im_inventory = inventory_data
+
+		get_node("InventoryManager")._remove_item_stats_from_inventory()
+
+		var save_dict = {
+			"filename" : get_path(),
+			"melee" : melee,
+			"gold" : gold,
+			"global_weight" : global_weight,
+			"global_movement_speed" : global_movement_speed,
+			"global_evade" : global_evade,
+			"global_armor" : global_armor,
+			"global_strength" : global_strength,
+			"global_dexterity" : global_dexterity,
+			"global_intelligence" : global_intelligence,
+			"global_vitality" : global_vitality,
+			"global_health_regen" : global_health_regen,
+			"global_mana_regen" : global_mana_regen,
+			"global_stamina_regen" : global_stamina_regen,
+			"global_barrier_regen" : global_barrier_regen,
+			"global_health" : global_health,
+			"global_barrier" : global_barrier,
+			"global_mana" : global_mana,
+			"global_stamina" : global_stamina,
+			"global_bleed_damage" : global_bleed_damage,
+			"global_burn_damage" : global_burn_damage,
+			"global_freeze_effectiveness" : global_freeze_effectiveness,
+			"global_heal_effectiveness" : global_heal_effectiveness,
+			"global_damage" : global_damage,
+			"total_charge_drop_chance" : total_charge_drop_chance,
+			"total_armor" : total_armor,
+			"total_evade" : total_evade,
+			"total_speed" : total_speed,
+			"total_barrier" : total_barrier,
+			"total_health" : total_health,
+			"total_mana" : total_mana,
+			"total_stamina" : total_stamina,
+			"total_range" : total_range,
+			"total_attack_speed" : total_attack_speed,
+			"total_attack_damage" : total_attack_damage,
+			"total_windup_time" : total_windup_time,
+			"total_strength" : total_strength,
+			"total_dexterity" : total_dexterity,
+			"total_intelligence" : total_intelligence,
+			"total_vitality" : total_vitality,
+			"total_health_regen" : total_health_regen,
+			"total_mana_regen" : total_mana_regen,
+			"total_stamina_regen" : total_stamina_regen,
+			"total_barrier_regen" : total_barrier_regen,
+			"total_ability_experience" : total_ability_experience,
+			"total_player_experience" : total_player_experience,
+			"total_cooldown_reduction" : total_cooldown_reduction,
+			"total_quick_attack_chance" : total_quick_attack_chance,
+			"total_double_cast_chance" : total_double_cast_chance,
+			"total_critical_chance" : total_critical_chance,
+			"total_critical_damage" : total_critical_damage,
+			"total_attack_targets" : total_attack_targets,
+			"base_armor" : base_armor,
+			"base_evade" : base_evade,
+			"base_speed" : base_speed,
+			"base_barrier" : base_barrier,
+			"base_health" : base_health,
+			"base_mana" : base_mana,
+			"base_stamina" : base_stamina,
+			"base_range" : base_range,
+			"base_attack_speed" : base_attack_speed,
+			"base_attack_damage" : base_attack_damage,
+			"base_windup_time" : base_windup_time,
+			"base_strength" : base_strength,
+			"base_dexterity" : base_dexterity,
+			"base_intelligence" : base_intelligence,
+			"base_vitality" : base_vitality,
+			"base_health_regen" : base_health_regen,
+			"base_mana_regen" : base_mana_regen,
+			"base_stamina_regen" : base_stamina_regen,
+			"base_barrier_regen" : base_barrier_regen,
+			"base_cooldown_reduction" : base_cooldown_reduction,
+			"base_quick_attack_chance" : base_quick_attack_chance,
+			"base_double_cast_chance" : base_double_cast_chance,
+			"base_critical_chance" : base_critical_chance,
+			"base_critical_damage" : base_critical_damage,
+			"base_attack_targets" : base_attack_targets,
+			"bonus_armor" : bonus_armor,
+			"bonus_evade" : bonus_evade,
+			"bonus_speed" : bonus_speed,
+			"bonus_barrier" : bonus_barrier,
+			"bonus_health" : bonus_health,
+			"bonus_mana" : bonus_mana,
+			"bonus_stamina" : bonus_stamina,
+			"bonus_range" : bonus_range,
+			"bonus_attack_speed" : bonus_attack_speed,
+			"bonus_attack_damage" : bonus_attack_damage,
+			"bonus_strength" : bonus_strength,
+			"bonus_dexterity" : bonus_dexterity,
+			"bonus_intelligence" : bonus_intelligence,
+			"bonus_vitality" : bonus_vitality,
+			"bonus_health_regen" : bonus_health_regen,
+			"bonus_mana_regen" : bonus_mana_regen,
+			"bonus_stamina_regen" : bonus_stamina_regen,
+			"bonus_barrier_regen" : bonus_barrier_regen,
+			"bonus_cooldown_reduction" : bonus_cooldown_reduction,
+			"bonus_quick_attack_chance" : bonus_quick_attack_chance,
+			"bonus_double_cast_chance" : bonus_double_cast_chance,
+			"bonus_critical_chance" : bonus_critical_chance,
+			"bonus_critical_damage" : bonus_critical_damage,
+			"bonus_attack_targets" : bonus_attack_targets,
+			"current_barrier" : current_barrier,
+			"current_health" : current_health,
+			"current_mana" : current_mana,
+			"current_stamina" : current_stamina,
+			"current_player_experience" : current_player_experience,
+			"current_attack_modifier_tags" : current_attack_modifier_tags,
+			"current_attack_modifier_values" : current_attack_modifier_values,
+			"regen_timer" : regen_timer,
+			"completed_waves" : completed_waves,
+			"power" : power,
+			"ascension_level" : ascension_level,
+			"ascension_currency" : ascension_currency,
+			"paused" : paused,
+			"lose_camera_focus" : lose_camera_focus,
+			"im_inventory" : im_inventory,
+			"im_potions" : im_potions,
+			"im_abilities" : im_abilities,
+			"im_potion_charges" : get_node('InventoryManager').potion_charges,
+			"im_current_potion_charges" : get_node('InventoryManager').current_potion_charges,
+			"im_cooldown_timers" : get_node('InventoryManager').cooldown_timers
+		}
+
+		get_node("InventoryManager")._add_item_stats_from_inventory()
+		return save_dict

@@ -41,6 +41,7 @@ func _next_area(area, value):
 		await get_tree().create_timer(0.5).timeout
 		Utility.get_node('Brightness')._set_fog_layer(-2)
 		Utility.get_node('Brightness')._set_color(Color8(78, 81, 127))
+		GameManager.save_game()
 		start_singleplayer.emit()
 	if area == 'Combat':
 		Utility.get_node('Transition')._start(2)
@@ -70,10 +71,10 @@ func _on_timer_timeout():
 	
 func _on_start_round_manager():
 	if GameManager.is_singleplayer:
-		await get_tree().create_timer(0.1).timeout
-		#start_singleplayer.emit()
-		_next_area('Ability', null)
-		print_debug('Temporary')
+		if GameManager.is_save_file:
+			_next_area('Town', null)
+		else:
+			_next_area('Ability', null)
 	else:
 		_start_manager()
 
@@ -100,5 +101,3 @@ func _on_stop_wave(completed, wave):
 func _on_ability_manager_curse_picked(curse:Variant):
 	Utility.get_node('Transition')._start(0.3)
 	start_singleplayer.emit()
-
-

@@ -471,6 +471,7 @@ collision_layer = 2
 script = ExtResource("1_rp2ed")
 u_name = "Skeleton King"
 experience = 200
+ascension_currency = 20
 base_armor = 200
 base_speed = 90
 base_health = 600

@@ -1,0 +1,171 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbn7ie0btp67a"]
+
+[ext_resource type="Script" path="res://Managers/WaveManager.gd" id="1_lc6fs"]
+[ext_resource type="PackedScene" uid="uid://wkhbpwoasb33" path="res://Waves/portal_effect.tscn" id="2_dw4bg"]
+
+[sub_resource type="Animation" id="Animation_kjyko"]
+resource_name = "Ascension_anim"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_kfna7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2wybs"]
+_data = {
+"Ascension_anim": SubResource("Animation_kjyko"),
+"RESET": SubResource("Animation_kfna7")
+}
+
+[node name="WaveManager" type="Node"]
+script = ExtResource("1_lc6fs")
+portal_effect = ExtResource("2_dw4bg")
+
+[node name="Waves" type="Node" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_top = 203.0
+offset_right = -9.0
+offset_bottom = 223.0
+grow_horizontal = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_top = 224.0
+offset_right = -9.0
+offset_bottom = 244.0
+grow_horizontal = 0
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -149.0
+offset_right = 11.0
+offset_bottom = -118.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 30
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -191.0
+offset_right = 11.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 0
+
+[node name="Ascension" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+offset_left = 4.0
+offset_top = 203.0
+offset_right = 99.0
+offset_bottom = 223.0
+text = "Ascension: 0"
+
+[node name="Ascension2" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+offset_left = 4.0
+offset_top = 223.0
+offset_right = 289.0
+offset_bottom = 243.0
+bbcode_enabled = true
+text = "* 30% increased speed"
+fit_content = true
+
+[node name="Ascension3" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.5
+offset_top = -20.0
+offset_right = 74.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 25
+text = "Ascension 1"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Ascension3"]
+libraries = {
+"": SubResource("AnimationLibrary_2wybs")
+}

@@ -119,6 +119,7 @@ collision_layer = 2
 script = ExtResource("1_2fkq6")
 u_name = "Cursed Totem"
 experience = 70
+ascension_currency = 3
 base_speed = 0
 base_health = 200
 base_range = 0

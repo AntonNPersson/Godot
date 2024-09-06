@@ -25,7 +25,7 @@ shader_parameter/intensity = 1.0
 shader_parameter/opacity = 0.4
 shader_parameter/glow_color = Color(1, 0.164706, 0, 1)
 
-[node name="AbilityManager" type="Node"]
+[node name="AbilityManager" type="Node" groups=["Persist"]]
 script = ExtResource("1_033sp")
 
 [node name="Abilities" type="Node" parent="."]

@@ -103,7 +103,7 @@ var sub_wave = 1
 # Main functions
 #----------------------#
 
-func _ready():
+func _initialize():
 	used_creatures.connect(get_parent().get_node('WaveManager')._on_map_manager_used_creatures)
 	used_creatures.connect(get_parent().get_node('CombatManager')._update_sub_wave)
 	spawn_effect = spawn_effects.instantiate()
@@ -644,6 +644,7 @@ func _spawn_and_attach():
 		arr.append(d)
 		add_child(d)
 		nm += 1
+		arr.shuffle()
 	used_creatures.emit(nm, arr)
 	for a in range(arr.size()):
 		if a > 0 and a % 10 == 0:
@@ -651,7 +652,7 @@ func _spawn_and_attach():
 		arr[a].paused = false
 		arr[a].visible = true
 		arr[a].add_to_group('enemies', true)
-		_spawn_effects(creature_positions[a])
+		_spawn_effects(arr[a].global_position)
 		await get_tree().create_timer(spawn_time).timeout
 
 func _get_creatures_for_sub_wave(wave, array):

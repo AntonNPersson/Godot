@@ -46,9 +46,7 @@ func update_sprite_direction(target_position, type, idle):
 	current_frame = animation.get_frame()
 	current_progress = animation.get_frame_progress()
 
-	if type == "Attack":
-		animation.set_speed_scale((_unit.total_windup_time))
-	else:
+	if type == "Walk":
 		animation.speed_scale = 1
 	# Determine the cardinal direction based on the direction vector'
 	if abs(direction_vector.x) > abs(direction_vector.y):
@@ -72,6 +70,12 @@ func update_sprite_direction(target_position, type, idle):
 	
 	if idle:
 		animation.play(current_sprite_direction, 0)
+	
+	if type == "Attack":
+		var base_frame_time = 1.0/2.0
+		var animation_fps = base_frame_time * animation.sprite_frames.get_frame_count(current_sprite_direction)
+		var speed_scale = animation_fps / _unit.total_windup_time
+		_unit.get_node('AnimatedSprite2D').speed_scale = speed_scale/2
 		
 
 func _action(_delta):

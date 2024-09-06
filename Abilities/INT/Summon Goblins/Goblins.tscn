@@ -535,7 +535,7 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="basicMeleeCreature" type="Area2D" groups=["player_summon", "players"]]
+[node name="basicMeleeCreature" type="Area2D" groups=["player_summon"]]
 top_level = true
 collision_layer = 2
 script = ExtResource("1_nb4p7")

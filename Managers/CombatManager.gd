@@ -77,6 +77,9 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"Experience":
 			_handle_experience_action(target, value)
 			return
+		"Ascension":
+			_handle_ascension_action(target, value)
+			return
 		"QuickAttack":
 			for i in tag:
 				i = i.replace("Attack", "").replace("Buff", "")
@@ -204,7 +207,16 @@ func _trigger_effects(target, damage, color, tag):
 func _handle_experience_action(_target, value):
 	_trigger_combat_text(player, value, 'Purple')
 	if player.is_in_group('players'):
-		player.total_ability_experience += value
+		player.total_ability_experience += value/2
+		player.current_player_experience += value/2
+
+# Handles ascension currency gain for the player.
+# Parameters:
+# - target: The target of the ascension currency gain.
+# - value: The amount of ascension currency to gain.
+func _handle_ascension_action(_target, value):
+	if player.is_in_group('players'):
+		player.ascension_currency += value
 
 # Handles the pierce action for the user.
 # Parameters:
@@ -910,3 +922,19 @@ func _trigger_combat_text(target, value, color):
 		_create_combat_text_and_update_recent(value, current_time, target, color)
 		return
 
+func save():
+	var save_dict = {
+		"filename" : get_path(),
+		"parent" : get_parent().get_path(),
+		"global_increases": global_increases,
+		"global_defense_passives": global_defense_passives,
+		"recent_combat_text_values": recent_combat_text_values,
+		"recent_combat_text_timestamps": recent_combat_text_timestamps,
+		"recent_combat_text_instances": recent_combat_text_instances,
+		"invincible_units": invincible_units,
+		"knockback_units": knockback_units,
+		"pve_light_units": pve_light_units,
+		"special_objects": special_objects,
+		"current_marked_pair": current_marked_pair
+	}
+	return save_dict

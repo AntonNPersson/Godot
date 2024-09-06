@@ -7,7 +7,7 @@
 [ext_resource type="FontFile" uid="uid://dbn5ru6k8442x" path="res://GUI/kenvector_future_thin.ttf" id="5_cs4gk"]
 [ext_resource type="Script" path="res://Managers/ShopManager.gd" id="6_xb8t3"]
 [ext_resource type="Script" path="res://Managers/MapManager.gd" id="7_dk7ij"]
-[ext_resource type="PackedScene" uid="uid://dsmsgybendx58" path="res://Maps/Tiles/Arena_1/Arena_1.tscn" id="8_byxa3"]
+[ext_resource type="PackedScene" uid="uid://df2c8lkmxid82" path="res://Maps/Tiles/Arena_1/Arena_1.tscn" id="8_byxa3"]
 [ext_resource type="Script" path="res://Managers/CombatManager.gd" id="9_e0x4p"]
 [ext_resource type="PackedScene" uid="uid://bo7pvdl0hpuri" path="res://Abilities/Utility/burn_effect.tscn" id="10_kb10s"]
 [ext_resource type="PackedScene" uid="uid://dg2iyxhbtp8jk" path="res://Abilities/Utility/freeze_effect.tscn" id="11_nn64g"]
@@ -138,7 +138,6 @@ text = "Sell"
 
 [node name="MapManager" type="Node" parent="CanvasModulate"]
 script = ExtResource("7_dk7ij")
-map_file = "res://Maps/arena_1.txt"
 town_file = "res://Maps/town.txt"
 arena_1_scene = ExtResource("8_byxa3")
 

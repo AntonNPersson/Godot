@@ -56,3 +56,6 @@ func _check_collision():
 		if area.is_in_group('players') and area not in hit_enemies:
 			hit_enemies.append(area)
 			do_damage.emit(damage, area, self, tag)
+		if area.is_in_group('player_summon'):
+			hit_enemies.append(area)
+			do_damage.emit(damage, area, self, tag)

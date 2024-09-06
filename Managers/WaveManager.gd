@@ -36,15 +36,18 @@ var time_left = -1
 enum maps{ROOM, BOSS, WAVE}
 var next_map = maps.ROOM
 
+var initialized = false
+
 var curses = []
 
-func _ready():
+func _initialize():
 	waves = get_node('Waves')
 	canvas = get_node('CanvasLayer')
-
-
+	initialized = true
 
 func _process(_delta):
+	if !initialized:
+		return
 	if time_left > 0:
 		time_left -= get_process_delta_time()
 		canvas.get_child(2).visible = true
@@ -157,7 +160,7 @@ func _stop_wave():
 	wave_ongoing = false
 	waves.remove_child(current_boss)
 	players[0].in_combat = false
-	if current_round in completed_waves:
+	if current_round in players[0]._get_completed_waves():
 		stop_wave.emit(true, current_round)
 	else:
 		stop_wave.emit(false, current_round)
@@ -239,4 +242,3 @@ func _update_ascension_info():
 func _on_ability_manager_curse_picked(curse:Variant):
 	curses.append(curse)
 	_update_ascension_info()
-

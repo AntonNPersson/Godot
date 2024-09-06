@@ -23,6 +23,8 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("Ability_1"):
 		_quick_start()
+	if event.is_action_pressed("Ability_2"):
+		GameManager.load_game()
 
 func _button_pressed():
 	start_button.visible = false
@@ -36,7 +38,7 @@ func _singleplayer():
 
 func _quick_start():
 	GameManager.selected_character_name = "Explorer"
-	GameManager._change_scene("res://Scenes/Game.tscn", true)
+	GameManager.new_game()
 
 func _create_multiplayer():
 	var peer = ENetMultiplayerPeer.new()

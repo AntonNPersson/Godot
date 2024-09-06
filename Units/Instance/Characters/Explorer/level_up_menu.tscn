@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" uid="uid://dbn5ru6k8442x" path="res://GUI/kenvector_future_thin.ttf" id="1_pmuyh"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
+visible = false
 
 [node name="ItemList" type="ItemList" parent="."]
 anchors_preset = 7

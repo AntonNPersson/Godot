@@ -228,6 +228,52 @@ func _show_tooltip_at_mouse():
 	if get_child(0).get_child(0).global_position.y + get_child(0).get_child(0).size.y > viewport_size.y:
 		get_child(0).get_child(0).global_position.y = viewport_size.y - get_child(0).get_child(0).size.y
 	
+func _get_item_data() -> Dictionary:
+	var item_data = {
+		"item_name": i_name,
+		"rarity": rarity
+	}
+
+	# Ensure that the child exists before accessing it
+	for i in range(2, 7): # 2 to 6 are the indices of the children
+		if i < get_child_count():  # Ensure the child index is within bounds
+			var child = get_child(i)
+			if is_instance_valid(child):
+				match i:
+					2:
+						item_data["bot_piece"] = child._get_item_data()
+					3:
+						item_data["second_mid_piece"] = child._get_item_data()
+					4:
+						item_data["mid_piece"] = child._get_item_data()
+					5:
+						item_data["top_piece"] = child._get_item_data()
+					6:
+						item_data["second_top_piece"] = child._get_item_data()
+			else:
+				# Optional: set the value to null if the child is not valid
+				match i:
+					3:
+						item_data["second_mid_piece"] = null
+					4:
+						item_data["mid_piece"] = null
+					5:
+						item_data["top_piece"] = null
+					6:
+						item_data["second_top_piece"] = null
+		else:
+			# Optional: handle the case where the child doesn't exist at all
+			match i:
+				3:
+					item_data["second_mid_piece"] = null
+				4:
+					item_data["mid_piece"] = null
+				5:
+					item_data["top_piece"] = null
+				6:
+					item_data["second_top_piece"] = null
+
+	return item_data
 
 
 func _unhandled_input(event):

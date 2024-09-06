@@ -537,3 +537,10 @@ func _shake_camera():
 		unit.get_node('Camera').shake_duration = weight_duration/2
 		unit.get_node('Camera').is_shaking = true
 
+func _get_ability_data():
+	var data = {
+		'name': a_name,
+		'level': level,
+		'type': ability_type
+	}
+	return data

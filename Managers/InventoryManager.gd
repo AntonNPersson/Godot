@@ -49,7 +49,6 @@ var storage_slots
 var statistics
 var items_
 
-
 func _ready():
 	unit = get_parent()
 	container_hud = get_node("CanvasLayer/PanelContainer2")
@@ -62,13 +61,14 @@ func _ready():
 	menu_hud = get_node("CanvasLayer/Panel")
 	equipment_slots = container_hud.get_node("Items/Panel/VBoxContainer/Equipped")
 	potion_slots = container_hud.get_node("Items/Panel/VBoxContainer/Potion")
-	storage_slots = container_hud.get_node("Items/Panel/VBoxContainer/Storaged")
+	storage_slots = container_hud.get_node("Items/Panel/VBoxContainer/Storaged")	
 	statistics = container_hud.get_node("Stats")
 	items_ = container_hud.get_node("Items")
 	tooltip = simple_tooltip.instantiate()
 	get_tree().get_root().add_child(tooltip)
-	
+
 func _process(delta):
+	_update_inventory_test()
 	_update_stats()
 	potion_bar_1._update_potion(potion_charges[0], current_potion_charges[0], potions[0].type)
 	potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], potions[1].type)
@@ -293,14 +293,18 @@ func _update_stats():
 	stat_hud.set_item_tooltip(stat, 'Bleed damage varies depending on the spell')
 	stat = stat_hud.add_item(' Global Freeze Effectiveness: ' + str(unit.global_freeze_effectiveness), null, false)
 	stat_hud.set_item_tooltip(stat, 'Freeze effectiveness increases the slow amount of a spells freeze effect')
-	var chars = {
-		"Movement Ability": unit.movement_skill.name,
-		"Passive Ability" : unit.passive_name
-	}
-	stat = stat_hud.add_item(' Movement Ability: ' + chars["Movement Ability"], null, false)
-	stat_hud.set_item_tooltip(stat, unit.movement_skill.tooltip)
-	stat = stat_hud.add_item(' Passive Ability: ' + chars["Passive Ability"], null, false)
-	stat_hud.set_item_tooltip(stat, unit.passive_tooltip)
+	# For some reason movement skill can't be added in ready function?
+	if unit.movement_skill != null:
+		var chars = {
+			"Movement Ability": unit.movement_skill.name,
+			"Passive Ability" : unit.passive_name
+		}
+		stat = stat_hud.add_item(' Movement Ability: ' + chars["Movement Ability"], null, false)
+		stat_hud.set_item_tooltip(stat, unit.movement_skill.tooltip)
+		stat = stat_hud.add_item(' Passive Ability: ' + chars["Passive Ability"], null, false)
+		stat_hud.set_item_tooltip(stat, unit.passive_tooltip)
+	else:
+		print_debug("Why can't i instantiate this in ready function?")
 
 	get_child(0).get_child(4)._update_health(unit._calculate_percentage(unit.current_health, unit.total_health))
 	get_child(0).get_child(5)._update_barrier(unit._calculate_percentage(unit.current_barrier, unit.total_barrier))
@@ -367,7 +371,10 @@ func _on_item_picked_up(item):
 						Utility.get_node("ErrorMessage")._create_error_message("Weapon already equipped", self)
 						return
 					weapon_equipped = true
-				add_stats.emit(children[i])
+				var added_stats = {}
+				for j in range(children[i]._get_tags().size()):
+					added_stats[children[i]._get_tags()[j]] = children[i]._get_values()[j]
+				add_stats.emit(added_stats)
 		_update_stats()
 		item.remove_from_group("Items")
 	else:
@@ -385,13 +392,48 @@ func _on_item_dropped():
 
 					if "range" in children[i]:
 						weapon_equipped = false
-					remove_stats.emit(children[i])
+					var removed_stats = {}
+					for j in range(children[i]._get_tags().size()):
+						removed_stats[children[i]._get_tags()[j]] = children[i]._get_values()[j]
+					remove_stats.emit(removed_stats)
 			inventory.erase(selected_item)
 			_update_inventory_test()
 			_update_stats()
 			selected_item._drop_item()
 		else:
 			print("No item selected")
+
+func _remove_item_stats_from_inventory():
+	for i in inventory.size():
+		var children = inventory[i].get_children()
+		if children.size() > 2:
+			for j in range(2, children.size()):
+				if "epic" in children[j]:
+					_remove_item_effect(children[j].epic, children[j].tags[0])
+					continue
+
+				if "range" in children[j]:
+					weapon_equipped = false
+				var removed_stats = {}
+				for k in range(children[j]._get_tags().size()):
+					removed_stats[children[j]._get_tags()[k]] = children[j]._get_values()[k]
+				remove_stats.emit(removed_stats)
+
+func _add_item_stats_from_inventory():
+	for i in inventory.size():
+		var children = inventory[i].get_children()
+		if children.size() > 2:
+			for j in range(2, children.size()):
+				if "epic" in children[j]:
+					_add_item_effect(children[j].epic, children[j].tags[0], children[j].values[0], children[j].duration, children[j].colors[0], children[j].unique)
+					continue
+
+				if "range" in children[j]:
+					weapon_equipped = true
+				var added_stats = {}
+				for k in range(children[j]._get_tags().size()):
+					added_stats[children[j]._get_tags()[k]] = children[j]._get_values()[k]
+				add_stats.emit(added_stats)
 
 func _on_potion_picked_up(potion):
 	if potions.size() < max_potion_slots:
@@ -503,6 +545,11 @@ func _on_hotbar_ability_mouse_exited(index):
 	
 	tooltip.visible = false
 	unit.lose_camera_focus = false
+
+func load_items():
+	for i in range(unit.im_inventory.size()):
+		var the_item_data = unit.im_inventory[i]
+		var the_item = unit.item_manager._load_item(the_item_data['bot_piece'], the_item_data['second_mid_piece'], the_item_data['mid_piece'], the_item_data['top_piece'], the_item_data['second_top_piece'], the_item_data['item_name'], the_item_data['rarity'])
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:

@@ -127,6 +127,7 @@ func _is_dead(unit):
 		for child in get_children():
 			child.queue_free()
 		do_action.emit(current_base_experience, unit, unit, 'Experience')
+		do_action.emit(ascension_currency, unit, unit, 'Ascension')
 		if !unit.is_in_group('summon'):
 			drop_info._drop_item(unit.global_position)
 

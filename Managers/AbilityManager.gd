@@ -27,8 +27,10 @@ var curse_list
 var curse_instance
 
 var target
+
+var initialized = false
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _initialize():
 	int_scene = preload("res://Abilities/int.tscn")
 	dex_Scene = preload("res://Abilities/dex.tscn")
 	str_Scene =  preload("res://Abilities/str.tscn")
@@ -51,6 +53,8 @@ func _ready():
 	curse_popup = get_node('UI/CanvasLayer/Panel2')
 
 func _process(delta):
+	if !initialized:
+		return
 	get_node("UI/CanvasLayer/Panel/Reroll_amount").text = str(reroll_amount) + "x"
 
 func _choose_ability_choices(list):
@@ -120,6 +124,32 @@ func _on_button_pressed():
 func _on_character_selected(unit):
 	picked.connect(unit.get_node("InventoryManager")._on_ability_manager_picked)
 
+func _load_abilities(abilities):
+	for i in range(abilities.size()):
+		var current_ability_data = abilities[i]
+		_create_ability_based_on_type(current_ability_data['type'], current_ability_data)
+
+func _create_ability_based_on_type(type, ability_data):
+	var index
+	if type == "INT":
+		for i in range(int_list.size()):
+			if int_list[i].a_name == ability_data['name']:
+				index = i
+	if type == "DEX":
+		for i in range(dex_List.size()):
+			if dex_List[i].a_name == ability_data['name']:
+				index = i
+	if type == "STR":
+		for i in range(str_List.size()):
+			if str_List[i].a_name == ability_data['name']:
+				index = i
+
+	var created_ability = int_list[index].duplicate()
+	picked.emit(created_ability)
+	chosen_ability_choices.append(created_ability)
+	for level in ability_data['level'] - 1:
+		created_ability._add_level()
+
 
 func _on_select_1_pressed():
 	picked.emit(current_ability_choices[0])
@@ -173,3 +203,13 @@ func _on_curse_reroll_pressed():
 		_show_curse_choices()
 	else:
 		Utility.get_node("ErrorMessage")._create_error_message("You have no rerolls left", target)
+
+func save():
+	var save_dict = {
+		"filename" : get_path(),
+		"parent" : get_parent().get_path(),
+		"reroll_amount": reroll_amount,
+		"chosen_ability_choices": chosen_ability_choices,
+		"current_ability_round": current_ability_round
+	}
+	return save_dict

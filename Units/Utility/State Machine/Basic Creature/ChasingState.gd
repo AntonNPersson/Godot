@@ -124,8 +124,7 @@ func _walk_from_to(path, unit, delta, tile_update_interval, target):
 	if distance > 0:
 		unit.global_position += _velocity * delta
 	
-	if distance < 5:
-		unit.global_position = next_tile
+	if distance < 25:
 		current_path_index += 1
 		if current_path_index > tile_update_interval:
 			current_path_index = -1

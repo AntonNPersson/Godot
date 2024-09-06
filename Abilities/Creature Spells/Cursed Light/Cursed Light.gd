@@ -51,6 +51,9 @@ func _on_area_entered(area:Area2D):
 	if area.is_in_group('players') and area not in hit_enemies:
 		hit_enemies.append(area)
 		do_damage.emit(damage, area, self, tag)
+	if area.is_in_group('player_summon'):
+		hit_enemies.append(area)
+		do_damage.emit(damage, area, self, tag)
 	if area.is_in_group('obstacles'):
 		var normal = (area.global_position - global_position).normalized()
 		if abs(normal.x) > abs(normal.y):

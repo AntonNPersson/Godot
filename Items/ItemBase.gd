@@ -40,3 +40,11 @@ func remove_part(original: String, to_remove: String) -> String:
 
 func _get_tooltip():
 	return tooltip
+
+func _get_item_data():
+	var data = {
+		"name" : name,
+		"values" : _get_values(),
+		"tags" : _get_tags()
+	}
+	return data

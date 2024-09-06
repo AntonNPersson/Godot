@@ -473,6 +473,7 @@ collision_layer = 2
 script = ExtResource("1_tr8uq")
 u_name = "Captured Ogre"
 experience = 35
+ascension_currency = 3
 base_armor = 30
 base_speed = 100
 base_health = 150

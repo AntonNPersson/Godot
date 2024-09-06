@@ -541,6 +541,7 @@ collision_layer = 2
 script = ExtResource("1_y6jol")
 u_name = "Goblin Grunt"
 experience = 10
+ascension_currency = 1
 base_speed = 80
 base_health = 50
 base_range = 75

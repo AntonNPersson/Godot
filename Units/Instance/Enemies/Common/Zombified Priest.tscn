@@ -543,6 +543,7 @@ collision_layer = 2
 script = ExtResource("1_ugbp7")
 u_name = "Zombified Priest"
 experience = 75
+ascension_currency = 5
 base_armor = 50
 base_speed = 45
 base_health = 200

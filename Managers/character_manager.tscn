@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://6xyp8od12xnf"]
+
+[ext_resource type="Script" path="res://Managers/CharacterManager.gd" id="1_wiain"]
+
+[node name="CharacterManager" type="Node" node_paths=PackedStringArray("units") groups=["Persist"]]
+script = ExtResource("1_wiain")
+units = NodePath("")

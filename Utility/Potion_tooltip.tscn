@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cib4vbbq0aecn"]
 
 [node name="PotionTooltip" type="CanvasLayer"]
+visible = false
 
 [node name="Panel" type="Panel" parent="."]
 custom_minimum_size = Vector2(150, 100)

@@ -16,5 +16,5 @@ func _process(delta):
 		queue_free()
 
 func _on_area_entered(area:Area2D):
-	if area.is_in_group('players'):
+	if area.is_in_group('players') or area.is_in_group('player_summon'):
 		do_damage.emit(damage, area, self, tag)
