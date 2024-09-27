@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bh7f048wuj4qb"]
+[gd_scene load_steps=17 format=3 uid="uid://bh7f048wuj4qb"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/standard_area.gd" id="1_7gati"]
 [ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="2_kxrwc"]
@@ -16,7 +16,17 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [sub_resource type="Gradient" id="Gradient_sgcme"]
 colors = PackedColorArray(0.329158, 0.329158, 0.329158, 1, 1, 1, 1, 1)
 
+[sub_resource type="Curve" id="Curve_mmdtu"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_3rywr"]
+
+[sub_resource type="Curve" id="Curve_k4tke"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_2sh71"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -24,12 +34,22 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [sub_resource type="Gradient" id="Gradient_strs8"]
 colors = PackedColorArray(0.533037, 0.533037, 0.533037, 1, 1, 1, 1, 1)
 
+[sub_resource type="Curve" id="Curve_v5v2b"]
+min_value = -1.0
+_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(0.556452, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="Gradient" id="Gradient_yaayq"]
 offsets = PackedFloat32Array(0.0188679, 1)
 colors = PackedColorArray(0.996078, 0.996078, 0.996078, 1, 1, 1, 1, 0)
 
 [sub_resource type="Gradient" id="Gradient_exb8l"]
 colors = PackedColorArray(0.244776, 0.244776, 0.244776, 1, 1, 1, 1, 1)
+
+[sub_resource type="Curve" id="Curve_2hb72"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="AreaProjectile" type="Area2D"]
 z_index = -1
@@ -39,8 +59,9 @@ script = ExtResource("1_7gati")
 
 [node name="Storm" type="CPUParticles2D" parent="."]
 visible = false
-z_index = 5
+z_index = -1
 z_as_relative = false
+emitting = false
 amount = 500
 texture = ExtResource("2_kxrwc")
 emission_shape = 1
@@ -57,6 +78,9 @@ scale_amount_min = 0.01
 scale_amount_max = 0.04
 color_ramp = SubResource("Gradient_jyvxj")
 color_initial_ramp = SubResource("Gradient_sgcme")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+hue_variation_curve = SubResource("Curve_mmdtu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -81,31 +105,31 @@ explosiveness = 0.3
 texture = ExtResource("2_kxrwc")
 direction = Vector2(0, 0)
 spread = 180.0
-gravity = Vector2(0, -15)
+gravity = Vector2(0, -40)
 initial_velocity_max = 100.0
-angular_velocity_min = -392.73
+angular_velocity_min = -72.73
 angular_velocity_max = 93.51
 radial_accel_min = 1.0
 radial_accel_max = 2.0
 damping_min = 1.0
 damping_max = 10.0
-damping_curve = SubResource("Curve_kiopi")
+damping_curve = SubResource("Curve_k4tke")
 angle_min = -720.0
-angle_max = 68.0
 scale_amount_min = 0.01
 scale_amount_max = 0.09
 color_ramp = SubResource("Gradient_2sh71")
 color_initial_ramp = SubResource("Gradient_strs8")
-hue_variation_min = -0.03
-hue_variation_max = 0.72
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+hue_variation_curve = SubResource("Curve_v5v2b")
 
 [node name="Scream" type="CPUParticles2D" parent="."]
 visible = false
-z_index = 5
-z_as_relative = false
+z_index = -1
 texture_filter = 1
+position = Vector2(0, 20)
 emitting = false
-amount = 500
+amount = 200
 preprocess = 4.0
 explosiveness = 1.0
 texture = ExtResource("2_kxrwc")
@@ -115,9 +139,13 @@ particle_flag_align_y = true
 direction = Vector2(0, 0)
 spread = 180.0
 gravity = Vector2(0, -50)
+damping_min = 10.0
+damping_max = 10.0
 damping_curve = SubResource("Curve_kiopi")
 scale_amount_min = 0.01
 scale_amount_max = 0.04
 color_ramp = SubResource("Gradient_yaayq")
 color_initial_ramp = SubResource("Gradient_exb8l")
-hue_variation_max = 0.35
+hue_variation_min = -0.03
+hue_variation_max = 0.02
+hue_variation_curve = SubResource("Curve_2hb72")

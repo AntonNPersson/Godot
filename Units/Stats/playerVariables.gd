@@ -26,6 +26,12 @@ var item_manager = null
 # Player variables
 var in_combat = false
 var in_stealth = false
+var is_rooted = false
+var is_stunned = false
+var is_silenced = false
+var is_charmed = false
+var is_taunted = false
+var is_frozen = false
 var melee = false
 var gold = 0
 var global_weight : float = int(0)
@@ -46,16 +52,22 @@ var global_mana : float = int(0)
 var global_stamina : float = int(0)
 var global_bleed_damage : float = int(0)
 var global_burn_damage : float = int(0)
+var global_poison_damage : float = int(0)
 var global_freeze_effectiveness : float = int(0)
 var global_heal_effectiveness : float = int(0)
 var global_damage : float = int(0)
+var global_block : float = int(0)
+var global_attack_damage : float = int(0)
 
 var global_dict = {
 	"Bleed" : global_bleed_damage,
 	"Burn" : global_burn_damage,
 	"Freeze" : global_freeze_effectiveness,
 	"Heal" : global_heal_effectiveness,
-	"Damage" : global_damage
+	"Damage" : global_damage,
+	"Block" : global_block,
+	"Movement Speed" : global_movement_speed,
+	"Poison" : global_poison_damage
 }
 
 var total_charge_drop_chance : float = 15
@@ -86,6 +98,11 @@ var total_double_cast_chance : float
 var total_critical_chance : float
 var total_critical_damage : float
 var total_attack_targets : float
+var total_frozen_chance : float
+var total_affliction_resistance : float
+var total_crowd_control_resistance : float
+var total_slow_resistance : float
+var total_block : float
 
 # Exported variables for base stats
 @export_group("Base Stats")
@@ -116,6 +133,11 @@ var total_attack_targets : float
 @export var base_critical_chance = 0
 @export var base_critical_damage = 125
 @export var base_attack_targets = 1
+@export var base_frozen_chance = 5
+@export var base_affliction_resistance = 0
+@export var base_crowd_control_resistance = 0
+@export var base_slow_resistance = 0
+@export var base_block = 0
 
 # Bonus variables
 var bonus_armor = 0.0
@@ -142,6 +164,15 @@ var bonus_double_cast_chance = 0.0
 var bonus_critical_chance = 0.0
 var bonus_critical_damage = 0.0
 var bonus_attack_targets = 0.0
+var bonus_frozen_chance = 0.0
+var bonus_affliction_resistance = 0.0
+var bonus_crowd_control_resistance = 0.0
+var bonus_slow_resistance = 0.0
+var bonus_block = 0.0
+
+var item_drop_chance_multiplier = 1.0
+var ascension_currency_multiplier = 1.0
+var experience_multiplier = 1.0
 
 # Current health, mana, stamina and other values
 var current_barrier = 0
@@ -161,6 +192,7 @@ var completed_waves = []
 var power = 1
 var ascension_level = 0
 var ascension_currency = 0
+var rerolls = 99
 
 var paused = false
 var lose_camera_focus = false
@@ -174,6 +206,7 @@ var INTELLIGENCE_LEVEL_UP_AMOUNT = 0
 
 # Saved inventory manager variables.
 var im_inventory = null
+var im_storage = null
 var im_potions = null
 var im_abilities = null
 var im_potion_charges = null
@@ -241,6 +274,16 @@ func _update_regen(delta):
 func _update_stats():
 	_update_totals()
 
+func _add_current_attack_modifier(tag, value):
+	current_attack_modifier_tags.append(tag)
+	current_attack_modifier_values.append(value)
+
+func _remove_current_attack_modifier(tag):
+	var index = current_attack_modifier_tags.find(tag)
+	if index != -1:
+		current_attack_modifier_tags.remove(index)
+		current_attack_modifier_values.remove(index)
+
 # Update the total values of stats
 func _update_totals():
 	total_strength = (base_strength + bonus_strength) * (1 + global_strength/100)
@@ -248,16 +291,16 @@ func _update_totals():
 	total_intelligence = (base_intelligence + bonus_intelligence) * (1 + global_intelligence/100)
 	total_vitality = (base_vitality + bonus_vitality) * (1 + global_vitality/100)
 	total_speed = (base_speed + bonus_speed + (total_dexterity/100)) * (1 + global_movement_speed/100)
-	total_health = (base_health + bonus_health + (total_vitality * 2)) * (1 + global_health/100)
+	total_health = (base_health + bonus_health + (total_vitality * 0.5)) * (1 + global_health/100)
 	total_mana = (base_mana + bonus_mana + (total_intelligence * 2)) * (1 + global_mana/100)
 	total_stamina = (base_stamina + bonus_stamina + (total_strength / 10)) * (1 + global_stamina/100)
 	total_armor = (base_armor + bonus_armor) * (1 + global_armor/100)
 	total_evade = (base_evade + bonus_evade) * (1 + global_evade/100)
 	total_range = base_range + bonus_range 
 	total_attack_speed = base_attack_speed * (1 + bonus_attack_speed/100)
-	total_attack_damage = base_attack_damage + bonus_attack_damage
+	total_attack_damage = (base_attack_damage + bonus_attack_damage) * (1 + global_attack_damage/100)
 	total_windup_time = base_windup_time/(total_attack_speed)
-	total_health_regen = (base_health_regen + bonus_health_regen) * (1 + global_health_regen/100)
+	total_health_regen = (base_health_regen + bonus_health_regen + (total_vitality * 0.05)) * (1 + global_health_regen/100)
 	total_mana_regen = (base_mana_regen + bonus_mana_regen) * (1 + global_mana_regen/100)
 	total_stamina_regen = (base_stamina_regen + bonus_stamina_regen) * (1 + global_stamina_regen/100)
 	total_cooldown_reduction = base_cooldown_reduction + bonus_cooldown_reduction
@@ -268,8 +311,12 @@ func _update_totals():
 	total_critical_chance = base_critical_chance + bonus_critical_chance
 	total_critical_damage = base_critical_damage + bonus_critical_damage
 	total_attack_targets = base_attack_targets + bonus_attack_targets
+	total_frozen_chance = base_frozen_chance + bonus_frozen_chance
+	total_affliction_resistance = (base_affliction_resistance + bonus_affliction_resistance)
+	total_crowd_control_resistance = (base_crowd_control_resistance + bonus_crowd_control_resistance)
+	total_slow_resistance = base_slow_resistance + bonus_slow_resistance
+	total_block = (base_block + bonus_block) * (1 + global_block/100)
 
-	print(global_barrier/100)
 	
 # Called when the node is ready
 func _ready():
@@ -297,11 +344,6 @@ func _process(delta):
 	if total_speed < 0:
 		total_speed = 0
 	
-	if in_stealth:
-		remove_from_group("players")
-	else:
-		add_to_group("players")
-
 	if total_attack_speed < 0.1:
 		total_attack_speed = 0.1
 
@@ -309,6 +351,9 @@ func _process(delta):
 		current_mana = 0
 	if current_health < 0:
 		is_dead.emit(self)
+		for ab in get_node('InventoryManager').abilities:
+			ab._remove_all_enchants()
+
 		Utility.get_node("Transition")._start_death(2, ascension_currency, ascension_level)
 		paused = true
 	if current_stamina < 0:
@@ -375,7 +420,10 @@ func _apply_critical_chance():
 func _apply_critical_damage(value):
 	if _apply_critical_chance():
 		value = value * (1 + total_critical_damage/100)
-	return value
+	return {
+		"value" : value,
+		"critical" : _apply_critical_chance()
+	}
 
 func _check_player_level_up():
 	if current_player_experience >= total_player_experience:
@@ -435,6 +483,8 @@ func _on_add_stats(value):
 		bonus_stamina_regen += value.stamina_regen
 	if "evade" in value:
 		bonus_evade += value.evade
+	if "block" in value:
+		bonus_block += value.block
 	if "cooldown_reduction" in value:
 		bonus_cooldown_reduction += value.cooldown_reduction
 	if "quick_attack_chance" in value:
@@ -473,7 +523,6 @@ func _on_add_stats(value):
 	if "increased_health" in value:
 		global_health += value.increased_health
 	if "increased_barrier" in value:
-		print("barrer increas: " + str(value.increased_barrier))
 		global_barrier += value.increased_barrier
 	if "increased_mana" in value:
 		global_mana += value.increased_mana
@@ -493,6 +542,26 @@ func _on_add_stats(value):
 		bonus_attack_targets += value.attack_targets
 	if "increased_global_weight" in value:
 		global_weight += value.increased_global_weight
+	if "increased_block" in value:
+		global_block += value.increased_block
+	if "increased_poison_damage" in value:
+		global_poison_damage += value.increased_poison_damage
+	if "increased_affliction_resistance" in value:
+		bonus_affliction_resistance += value.increased_affliction_resistance
+	if "increased_crowd_control_resistance" in value:
+		bonus_crowd_control_resistance += value.increased_crowd_control_resistance
+	if "increased_slow_resistance" in value:
+		bonus_slow_resistance += value.increased_slow_resistance
+	if "increased_vitality" in value:
+		global_vitality += value.increased_vitality
+	if "increased_drop_chance" in value:
+		item_drop_chance_multiplier += value.increased_drop_chance
+	if "increased_ascension_currency" in value:
+		ascension_currency_multiplier += value.increased_ascension_currency
+	if "increased_experience" in value:
+		experience_multiplier += value.increased_experience
+	if "increased_attack_damage" in value:
+		global_attack_damage += value.increased_attack_damage
 	_update_stats()
 
 # Called when stats are removed
@@ -529,6 +598,8 @@ func _on_remove_stats(value):
 		bonus_stamina_regen -= value.stamina_regen
 	if "evade" in value:
 		bonus_evade -= value.evade
+	if "block" in value:
+		bonus_block -= value.block
 	if "cooldown_reduction" in value:
 		bonus_cooldown_reduction -= value.cooldown_reduction
 	if "quick_attack_chance" in value:
@@ -586,6 +657,26 @@ func _on_remove_stats(value):
 		bonus_attack_targets -= value.attack_targets
 	if "increased_global_weight" in value:
 		global_weight -= value.increased_global_weight
+	if "increased_block" in value:
+		global_block -= value.increased_block
+	if "increased_poison_damage" in value:
+		global_poison_damage -= value.increased_poison_damage
+	if "increased_affliction_resistance" in value:
+		bonus_affliction_resistance -= value.increased_affliction_resistance
+	if "increased_crowd_control_resistance" in value:
+		bonus_crowd_control_resistance -= value.increased_crowd_control_resistance
+	if "increased_slow_resistance" in value:
+		bonus_slow_resistance -= value.increased_slow_resistance
+	if "increased_vitality" in value:
+		global_vitality -= value.increased_vitality
+	if "increased_drop_chance" in value:
+		item_drop_chance_multiplier -= value.increased_drop_chance
+	if "increased_ascension_currency" in value:
+		ascension_currency_multiplier -= value.increased_ascension_currency
+	if "increased_experience" in value:
+		experience_multiplier -= value.increased_experience
+	if "increased_attack_damage" in value:
+		global_damage -= value.increased_attack_damage
 	_update_stats()
 
 func save():
@@ -600,6 +691,12 @@ func save():
 		for i in range(inventory_manager.size()):
 			inventory_data.append(inventory_manager[i]._get_item_data())
 		im_inventory = inventory_data
+
+		var storage_data = []
+		var storage_manager = get_node("InventoryManager").storage
+		for i in range(storage_manager.size()):
+			storage_data.append(storage_manager[i]._get_item_data())
+		im_storage = storage_data
 
 		get_node("InventoryManager")._remove_item_stats_from_inventory()
 
@@ -628,6 +725,8 @@ func save():
 			"global_freeze_effectiveness" : global_freeze_effectiveness,
 			"global_heal_effectiveness" : global_heal_effectiveness,
 			"global_damage" : global_damage,
+			"global_block" : global_block,
+			"global_poison_damage" : global_poison_damage,
 			"total_charge_drop_chance" : total_charge_drop_chance,
 			"total_armor" : total_armor,
 			"total_evade" : total_evade,
@@ -656,6 +755,11 @@ func save():
 			"total_critical_chance" : total_critical_chance,
 			"total_critical_damage" : total_critical_damage,
 			"total_attack_targets" : total_attack_targets,
+			"total_frozen_chance" : total_frozen_chance,
+			"total_affliction_resistance" : total_affliction_resistance,
+			"total_crowd_control_resistance" : total_crowd_control_resistance,
+			"total_slow_resistance" : total_slow_resistance,
+			"total_block" : total_block,
 			"base_armor" : base_armor,
 			"base_evade" : base_evade,
 			"base_speed" : base_speed,
@@ -681,6 +785,11 @@ func save():
 			"base_critical_chance" : base_critical_chance,
 			"base_critical_damage" : base_critical_damage,
 			"base_attack_targets" : base_attack_targets,
+			"base_frozen_chance" : base_frozen_chance,
+			"base_affliction_resistance" : base_affliction_resistance,
+			"base_crowd_control_resistance" : base_crowd_control_resistance,
+			"base_slow_resistance" : base_slow_resistance,
+			"base_block" : base_block,
 			"bonus_armor" : bonus_armor,
 			"bonus_evade" : bonus_evade,
 			"bonus_speed" : bonus_speed,
@@ -705,6 +814,11 @@ func save():
 			"bonus_critical_chance" : bonus_critical_chance,
 			"bonus_critical_damage" : bonus_critical_damage,
 			"bonus_attack_targets" : bonus_attack_targets,
+			"bonus_frozen_chance" : bonus_frozen_chance,
+			"bonus_affliction_resistance" : bonus_affliction_resistance,
+			"bonus_crowd_control_resistance" : bonus_crowd_control_resistance,
+			"bonus_slow_resistance" : bonus_slow_resistance,
+			"bonus_block" : bonus_block,
 			"current_barrier" : current_barrier,
 			"current_health" : current_health,
 			"current_mana" : current_mana,
@@ -719,13 +833,19 @@ func save():
 			"ascension_currency" : ascension_currency,
 			"paused" : paused,
 			"lose_camera_focus" : lose_camera_focus,
+			"rerolls" : rerolls,
 			"im_inventory" : im_inventory,
+			"im_storage" : im_storage,
 			"im_potions" : im_potions,
 			"im_abilities" : im_abilities,
 			"im_potion_charges" : get_node('InventoryManager').potion_charges,
 			"im_current_potion_charges" : get_node('InventoryManager').current_potion_charges,
-			"im_cooldown_timers" : get_node('InventoryManager').cooldown_timers
+			"im_cooldown_timers" : get_node('InventoryManager').cooldown_timers,
+			"ascension_currency_multiplier" : ascension_currency_multiplier,
+			"item_drop_chance_multiplier" : item_drop_chance_multiplier,
+			"experience_multiplier" : experience_multiplier
 		}
 
 		get_node("InventoryManager")._add_item_stats_from_inventory()
+		
 		return save_dict

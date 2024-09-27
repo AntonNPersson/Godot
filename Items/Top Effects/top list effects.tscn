@@ -1,10 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://crv0kaa3riryw"]
+[gd_scene load_steps=13 format=3 uid="uid://crv0kaa3riryw"]
 
 [ext_resource type="PackedScene" uid="uid://b3mx4rrua3ibb" path="res://Items/Top Effects/Artemis.tscn" id="1_7icnd"]
+[ext_resource type="PackedScene" uid="uid://c8gr2dt24ska8" path="res://Items/Top Effects/Ignis.tscn" id="1_n4g5q"]
 [ext_resource type="PackedScene" uid="uid://dpjp2shsojlv0" path="res://Items/Top Effects/Ares.tscn" id="2_63xf3"]
 [ext_resource type="PackedScene" uid="uid://bw7r4u5xj3ko8" path="res://Items/Top Effects/Aeolus.tscn" id="3_uyo0f"]
+[ext_resource type="PackedScene" uid="uid://ci76er5qlhlkt" path="res://Items/Top Effects/Hermes.tscn" id="4_jpr0x"]
+[ext_resource type="PackedScene" uid="uid://h8x1y7pgy6ld" path="res://Items/Top Effects/Skadi.tscn" id="6_qk5kj"]
+[ext_resource type="PackedScene" uid="uid://5v6hjnvhk4lm" path="res://Items/Top Effects/Achlys.tscn" id="7_kkvu0"]
+[ext_resource type="PackedScene" uid="uid://cnlwir724lvyj" path="res://Items/Top Effects/Mefitis.tscn" id="8_1mdpp"]
+[ext_resource type="PackedScene" uid="uid://818robaem1gt" path="res://Items/Top Effects/Heka.tscn" id="9_cxhr0"]
+[ext_resource type="PackedScene" uid="uid://pcvpuitnqjb4" path="res://Items/Top Effects/Morozko.tscn" id="10_0mr3h"]
+[ext_resource type="PackedScene" uid="uid://ctvpkakhxpo3b" path="res://Items/Top Effects/Lilith.tscn" id="12_15mdd"]
+[ext_resource type="PackedScene" uid="uid://bccsu6640oaob" path="res://Items/Top Effects/Thoth.tscn" id="12_hmhrk"]
 
 [node name="TopListEffects" type="Node2D"]
+
+[node name="Ignis" parent="." instance=ExtResource("1_n4g5q")]
 
 [node name="Artemis" parent="." instance=ExtResource("1_7icnd")]
 
@@ -13,3 +24,23 @@ position = Vector2(294.717, -159.038)
 
 [node name="Aeolus" parent="." instance=ExtResource("3_uyo0f")]
 position = Vector2(294.717, -159.038)
+
+[node name="Hermes" parent="." instance=ExtResource("4_jpr0x")]
+
+[node name="Skadi" parent="." instance=ExtResource("6_qk5kj")]
+
+[node name="Achlys" parent="." instance=ExtResource("7_kkvu0")]
+
+[node name="Mefitis" parent="." instance=ExtResource("8_1mdpp")]
+
+[node name="Heka" parent="." instance=ExtResource("9_cxhr0")]
+position = Vector2(911.402, 510.092)
+
+[node name="Morozko" parent="." instance=ExtResource("10_0mr3h")]
+position = Vector2(462.343, 457.689)
+
+[node name="Thoth" parent="." instance=ExtResource("12_hmhrk")]
+position = Vector2(462.343, 457.689)
+
+[node name="Lilith" parent="." instance=ExtResource("12_15mdd")]
+position = Vector2(462.343, 457.689)

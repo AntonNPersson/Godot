@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://bm3gbpb1x4bit"]
+[gd_scene load_steps=83 format=3 uid="uid://bm3gbpb1x4bit"]
 
 [ext_resource type="Script" path="res://Units/Stats/Explorer_stats.gd" id="1_i84bd"]
 [ext_resource type="PackedScene" uid="uid://bq7ge7ih4sx00" path="res://Units/Instance/Characters/Explorer/level_up_menu.tscn" id="2_vi8p1"]
@@ -17,11 +17,23 @@
 [ext_resource type="PackedScene" uid="uid://dbafe401smj6k" path="res://Utility/target_marker.tscn" id="15_7wxsg"]
 [ext_resource type="PackedScene" uid="uid://fchpkn11m8fx" path="res://Abilities/Basic Attacks/meleebasicattack.tscn" id="16_06yuj"]
 [ext_resource type="PackedScene" uid="uid://pkk5ydt3lqld" path="res://Units/Instance/Characters/addons/level_up_effect.tscn" id="17_mrnto"]
+[ext_resource type="Texture2D" uid="uid://dmfhvtnr8g22x" path="res://Sprites/Lightningball1.png" id="18_clyco"]
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="19_bqsbi"]
+[ext_resource type="Script" path="res://Units/Instance/Characters/Explorer/BowEffect.gd" id="20_oi66i"]
+[ext_resource type="Texture2D" uid="uid://b0scg0eqo0jg7" path="res://Sprites/iron arrow.png" id="21_vrdna"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3jws1"]
 radius = 2.66756
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2bv44"]
+shader = ExtResource("5_4wjc6")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_22k75"]
 shader = ExtResource("5_4wjc6")
 shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
 shader_parameter/hit_effect_intensity = 0.0
@@ -429,6 +441,30 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_87agy"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_k4tke"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_mi7dr"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.620968, 100), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_fgfq3"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_igy2e"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yjem8"]
+size = Vector2(65, 16)
+
 [node name="Explorer" type="Area2D" groups=["Persist", "players"]]
 top_level = true
 position = Vector2(-1, 0)
@@ -437,19 +473,18 @@ script = ExtResource("1_i84bd")
 level_up_menu = ExtResource("2_vi8p1")
 passive_name = "Unending Curiosity"
 passive_tooltip = "Hi"
-passive_increase = 15
+passive_increase = 20
 basic_attack_scene = ExtResource("3_8knno")
 movement_skill_scene = ExtResource("4_m6dbq")
-type = Array[String](["INT"])
+type = Array[String](["DEX"])
 c_name = "Explorer"
 tooltip = "Loving the thrill of exploration, the explorer gains stats of the players chosing after each wave. Explorer ability pool contains: DEX, INT, STR."
-base_speed = 125
+base_speed = 115
 base_barrier = 50
 base_health = 80
 base_range = 50
 base_attack_speed = 0.7
-base_attack_damage = 10
-base_windup_time = 0.6
+base_attack_damage = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(5.36, 9.16)
@@ -461,6 +496,7 @@ z_index = 5
 z_as_relative = false
 material = SubResource("ShaderMaterial_2bv44")
 script = ExtResource("6_i6g6i")
+original_material = SubResource("ShaderMaterial_22k75")
 
 [node name="Camera" type="Node" parent="."]
 script = ExtResource("7_wqxnp")
@@ -520,11 +556,13 @@ texture_progress_offset = Vector2(2, 1)
 script = ExtResource("14_ob5c0")
 
 [node name="TargetMarker" parent="UI" instance=ExtResource("15_7wxsg")]
+visible = false
 z_as_relative = false
 position = Vector2(0, 23.1884)
 scale = Vector2(0.990133, -1.13225)
 
 [node name="attackBar" type="TextureProgressBar" parent="UI"]
+visible = false
 z_index = 10
 offset_left = -52.1739
 offset_top = 95.6522
@@ -545,6 +583,85 @@ position = Vector2(0, -40)
 [node name="Extra" type="Node2D" parent="."]
 
 [node name="LevelUpEffect" parent="Extra" instance=ExtResource("17_mrnto")]
+
+[node name="StaffEffect" type="CPUParticles2D" parent="Extra"]
+emitting = false
+lifetime = 1.25
+one_shot = true
+texture = ExtResource("18_clyco")
+emission_shape = 3
+emission_rect_extents = Vector2(20, 20)
+direction = Vector2(0, -1)
+spread = 50.0
+gravity = Vector2(0, -20)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+angular_velocity_min = -120.0
+scale_amount_min = 0.06
+scale_amount_max = 0.06
+color = Color(0, 0.313726, 1, 1)
+color_ramp = SubResource("Gradient_87agy")
+hue_variation_min = -0.75
+hue_variation_max = 1.0
+
+[node name="ScepterEffect" type="CPUParticles2D" parent="Extra"]
+z_index = -1
+position = Vector2(0, 20)
+emitting = false
+amount = 50
+lifetime = 0.86
+one_shot = true
+preprocess = 0.1
+explosiveness = 1.0
+draw_order = 1
+texture = ExtResource("18_clyco")
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 60.0
+initial_velocity_max = 60.0
+angular_velocity_min = -120.0
+damping_curve = SubResource("Curve_k4tke")
+scale_amount_min = 0.06
+scale_amount_max = 0.06
+color_ramp = SubResource("Gradient_87agy")
+hue_variation_min = -0.75
+hue_variation_max = 1.0
+
+[node name="GreataxeEffect" type="CPUParticles2D" parent="Extra"]
+position = Vector2(0, 20)
+scale = Vector2(1.32572, 0.653485)
+emitting = false
+amount = 4
+lifetime = 0.3
+speed_scale = 2.0
+texture = ExtResource("19_bqsbi")
+emission_shape = 3
+emission_rect_extents = Vector2(20, 20)
+direction = Vector2(0, 0)
+gravity = Vector2(0, 0)
+damping_min = 0.05
+damping_max = 0.05
+damping_curve = SubResource("Curve_mi7dr")
+scale_amount_min = 0.01
+scale_amount_max = 0.1
+color = Color(1, 0, 0, 1)
+color_ramp = SubResource("Gradient_fgfq3")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+hue_variation_curve = SubResource("Curve_igy2e")
+
+[node name="BowEffect" type="Area2D" parent="Extra" groups=["projectile"]]
+visible = false
+collision_mask = 2
+script = ExtResource("20_oi66i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Extra/BowEffect"]
+position = Vector2(1.5, -2)
+shape = SubResource("RectangleShape2D_yjem8")
+
+[node name="Sprite2D" type="Sprite2D" parent="Extra/BowEffect"]
+texture = ExtResource("21_vrdna")
 
 [connection signal="add_stats" from="InventoryManager" to="." method="_on_add_stats"]
 [connection signal="remove_stats" from="InventoryManager" to="." method="_on_remove_stats"]

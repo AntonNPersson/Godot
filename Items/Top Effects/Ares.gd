@@ -7,7 +7,7 @@ var unique
 @export var color = Color.RED
 
 func _initialize():
-	increased_attack_damage = 10
+	increased_attack_damage = randi() % 10 + 4	
 	duration = 5
 	epic = 'OnCast'
 	unique = false

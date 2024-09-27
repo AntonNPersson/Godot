@@ -7,7 +7,7 @@
 script = ExtResource("1_o4r2f")
 icon = ExtResource("2_ti7nh")
 a_name = "Frozen Blitz"
-tooltip_text = "Charge towards targeted direction, freezing nearby targets massively."
+tooltip_text = "Charge towards targeted direction, freezing nearby targets massively; freezing has a chance to apply frozen to target."
 mana_cost = 30.0
 cooldown = 8.0
 _range = 200.0

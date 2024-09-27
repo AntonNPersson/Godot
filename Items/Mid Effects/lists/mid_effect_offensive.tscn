@@ -1,0 +1,38 @@
+[gd_scene load_steps=10 format=3 uid="uid://dwagig8mnhwnn"]
+
+[ext_resource type="PackedScene" uid="uid://7jffqxi0fal7" path="res://Items/Mid Effects/Ice.tscn" id="1_tajs2"]
+[ext_resource type="PackedScene" uid="uid://c7efjsuurscby" path="res://Items/Mid Effects/Flames.tscn" id="2_gs5jm"]
+[ext_resource type="PackedScene" uid="uid://21i0ygmo5qa0" path="res://Items/Mid Effects/Endurance.tscn" id="3_vtj5o"]
+[ext_resource type="PackedScene" uid="uid://cufnna1b1fw5b" path="res://Items/Mid Effects/Haste.tscn" id="4_3twjh"]
+[ext_resource type="PackedScene" uid="uid://d13ew3v536lv8" path="res://Items/Mid Effects/War.tscn" id="5_uters"]
+[ext_resource type="PackedScene" uid="uid://cyy7jhll7d08d" path="res://Items/Mid Effects/Mind.tscn" id="6_hldx2"]
+[ext_resource type="PackedScene" uid="uid://slsqh6icjrg4" path="res://Items/Mid Effects/Malady.tscn" id="7_q8j10"]
+[ext_resource type="PackedScene" uid="uid://mhn7imh7hwct" path="res://Items/Mid Effects/Destruction.tscn" id="8_dkpxc"]
+[ext_resource type="Script" path="res://Items/Mid Effects/Destruction.gd" id="9_mk1dd"]
+
+[node name="MidEffectOffensive" type="Node2D"]
+
+[node name="Ice" parent="." instance=ExtResource("1_tajs2")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Flames" parent="." instance=ExtResource("2_gs5jm")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Endurance" parent="." instance=ExtResource("3_vtj5o")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Haste" parent="." instance=ExtResource("4_3twjh")]
+position = Vector2(535.126, 43.8267)
+
+[node name="War" parent="." instance=ExtResource("5_uters")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Mind" parent="." instance=ExtResource("6_hldx2")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Malady" parent="." instance=ExtResource("7_q8j10")]
+position = Vector2(121.775, 19.19)
+
+[node name="Destruction" parent="." instance=ExtResource("8_dkpxc")]
+position = Vector2(-664, -91)
+script = ExtResource("9_mk1dd")

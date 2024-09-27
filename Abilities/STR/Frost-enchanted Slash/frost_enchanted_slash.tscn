@@ -7,7 +7,7 @@
 script = ExtResource("1_h8nlv")
 icon = ExtResource("2_v5i41")
 a_name = "Frost Slash"
-tooltip_text = "Enchant your weapon to deal increased damage and freeze, on your next hit against your target."
+tooltip_text = "Enchant your weapon to deal increased damage and freeze, on your next hit against your target; freezing has a chance to apply frozen to target."
 mana_cost = 15.0
 cooldown = 3.0
 projectile_type = 5

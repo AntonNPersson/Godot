@@ -7,11 +7,13 @@ func _initialize():
 	armor = randi() % 50 + 20
 	values = [armor]
 	icon = preload('res://Sprites/Icons/Breastplate.png')
+	type = ["Defense"]
+	# Types: Defense, Utility, Offense, All
 
 func _get_values():
-	return values
+	return [armor]
 
 func _get_tags():
-	return tags
+	return ["armor"]
  
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1kqyjpf6ntbw"]
+[gd_scene load_steps=8 format=3 uid="uid://d1kqyjpf6ntbw"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/explosion.gd" id="1_yryeg"]
 [ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="2_sj2xn"]
@@ -18,6 +18,11 @@ point_count = 2
 offsets = PackedFloat32Array(0, 0.801887, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
+[sub_resource type="Curve" id="Curve_pfy8v"]
+min_value = -1.0
+_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_4uw3f"]
 radius = 87.6926
 
@@ -26,6 +31,7 @@ collision_mask = 2
 script = ExtResource("1_yryeg")
 
 [node name="particle" type="CPUParticles2D" parent="."]
+position = Vector2(0, 5)
 emitting = false
 amount = 300
 one_shot = true
@@ -44,9 +50,12 @@ damping_curve = SubResource("Curve_k4tke")
 scale_amount_min = 0.01
 scale_amount_max = 0.09
 color_ramp = SubResource("Gradient_xc20f")
-hue_variation_min = -0.29
+hue_variation_min = -0.15
+hue_variation_max = -0.08
+hue_variation_curve = SubResource("Curve_pfy8v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_4uw3f")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

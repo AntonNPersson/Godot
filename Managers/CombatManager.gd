@@ -2,9 +2,13 @@ extends Node
 @onready var health_bar = get_node("UI/ProgressBar")
 @export var burn_effect : PackedScene
 @export var freeze_effect : PackedScene
+@export var frozen_effect : PackedScene
 @export var hit_effect : PackedScene
 @export var infected_effect : PackedScene
 @export var combat_text : PackedScene
+
+@export var map_manager : Node
+@export var ability_manager : Node
 
 var invincible_units : Array = []
 var knockback_units : Array = []
@@ -12,7 +16,6 @@ var pve_light_units : Array = []
 var special_objects : Array = []
 var player = null
 var current_marked_pair = null
-var _mutex : Mutex = Mutex.new()
 
 var recent_combat_text_targets = {}
 var recent_combat_text_values = {}
@@ -21,6 +24,24 @@ var recent_combat_text_instances = {}
 
 var global_increases : Dictionary = {}
 var global_defense_passives : Dictionary = {}
+
+var burn_effect_values = {}
+var frozen_effect_values = {}
+var poison_effect_values = {}
+var bleed_effect_values = {}
+var shock_effect_values = {}
+var extra_effect_values = {}
+
+var timers = {}
+
+var poisoned_targets = []
+var poisoned_stacks_name = 0
+
+var bleed_targets = []
+var bleed_stacks_name = 0
+
+var frozen_targets = []
+var frozen_stacks_name = 0
 
 const COMBINE_TIME_PERIOD = 0.4
 
@@ -52,6 +73,12 @@ func _ready():
 	pass
 
 func _process(delta):
+	
+	if timers.size() > 0:
+		if timers.has("ChaosMagic"):
+			if typeof(timers["ChaosMagic"]) == TYPE_FLOAT or typeof(timers["ChaosMagic"]) == TYPE_INT:
+				timers["ChaosMagic"] -= delta
+
 	if knockback_units.size() > 0:
 		for unit in knockback_units:
 			if _check_if_dead(unit):
@@ -61,6 +88,9 @@ func _process(delta):
 			if unit.global_position.distance_to(unit.get_meta('Knockback_origin')) > unit.get_meta('Knockback_distance'):
 				knockback_units.erase(unit)
 	
+		
+	
+
 # ------------------------------------------------------#
 # Signal Handler
 # ------------------------------------------------------#
@@ -68,12 +98,42 @@ func _on_do_action(value, target, user, tag, extra = null):
 	if get_tree().get_nodes_in_group("players")[0].paused:
 		return
 	match tag:
+		"MovementPenalty":
+			_handle_movement_penalty_action(target, value, user)
+			return
+		"VampiricalHeal":
+			_handle_vampirical_heal_action(target, value)
+			return
+		"FrozenPercentageDamageBuff":
+			_handle_frozen_percentage_damage_buff_action(target, value)
+			return
+		"ChaosMagic":
+			_handle_chaos_magic_action(target, value, extra)
+			return
+		"BurnHeal":
+			_handle_burn_heal_action(target, value)
+			return
+		"FrozenQuickAttack":
+			_handle_frozen_quick_attack_action(target, value)
+			return
+		"PoisonAttack":
+			_handle_poison_attack_action(target, value)
+			return
+		"LuckyPoison":
+			_handle_lucky_poison_action(target, value, extra)
+			return
+		"DamagingTeleport":
+			_handle_damaging_teleport_action(target, value)
+			return
 		"Explosion":
 			_handle_explosion_action(user, value)
+			return
 		"Pierce":
 			_handle_pierce_action(user)
+			return
 		"Duplicate":
 			_handle_duplicate_action(user, value)
+			return
 		"Experience":
 			_handle_experience_action(target, value)
 			return
@@ -85,27 +145,40 @@ func _on_do_action(value, target, user, tag, extra = null):
 				i = i.replace("Attack", "").replace("Buff", "")
 			_handle_attack_action(user, value, extra, target)
 			return
+		"ProjectileSpeed":
+			_handle_projectile_speed_action(user, value)
+			return
+		"AbilityPercentDamage":
+			_handle_ability_percent_damage_action(user, value)
+			return
+		"BoostManaRegen":
+			_handle_boost_mana_regen_action(target, value, user)
+			return
 	_check_if_dead(target)
 	
 	_get_global_increases()
 	if _has_global_increase(tag, user):
-		value = value * ( 1 + global_increases[tag]/100)
+		value = value * ( 1.0 + global_increases[tag]/100.0)
+		print(value)
 	var damage = _calculate_reduced_damage(value, target.total_armor)
 
 	match tag:
 		"Damage":
 			if _calculate_evade_chance(target.total_evade):
-				_trigger_combat_text(target, 0, 'white')
+				_trigger_combat_text(target, 0, 'Springgreen')
 				return
-			_handle_damage_action(target, damage, tag, user)
+			_handle_damage_action(target, damage, tag, user, extra)
 		"AttackModifiers":
 			_handle_modifier_action(user, target)
+			return
 		"Lifesteal":
 			_handle_lifesteal_action(user, damage, tag)
 		"PercentArmorBuff":
 			_handle_percent_armor_buff_action(target, value, user)
 		"FrenzyBuff":
 			_handle_frenzy_buff_action(target, value, user)
+		"CriticalChanceBuff":
+			_handle_crit_chance_buff_action(target, value, user, "CriticalChanceBuff", extra)
 		"AttackBurnBuff":
 			_handle_attack_buff_action(target, value, user, "Burn")
 		"AttackFreezeBuff":
@@ -148,6 +221,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_heal_action(target, value, tag)
 		"Bleed":
 			_handle_bleed_action(target, value, user)
+		"RefundMana":
+			_handle_refund_mana_action(target, value, extra)
 		"Infected":
 			_handle_infected_action(target)
 		"Mark":
@@ -168,13 +243,13 @@ func _on_do_action(value, target, user, tag, extra = null):
 func _barrier_protection(target, value):
 	var rest_damage = value
 	if target.is_in_group('players'):
-		rest_damage = target.current_barrier - value
+		rest_damage = value - target.current_barrier
 		target.current_barrier -= value
 		if target.current_barrier < 0:
 			target.current_barrier = 0
-		if rest_damage > 0:
+		if rest_damage < 0:
 			rest_damage = 0
-		_trigger_combat_text(target, value, 'blue')
+			_trigger_combat_text(target, value, 'blue')
 	return abs(rest_damage)
 
 func _apply_global_protection_passives(damage, user):
@@ -190,6 +265,84 @@ func _apply_shock(target, damage):
 		damage += 10 * target.get_meta('Shock_count')
 	return damage
 
+func _chance_calculator(chance):
+	var random = randi() % 100
+	if random < chance:
+		return true
+	return false
+
+func _on_basic_attack(target):
+	if poison_effect_values.has("PoisonAttack"):
+		if _chance_calculator(poison_effect_values["PoisonAttack"]):
+			_on_do_action(_spell_scaling(player, 5), target, player, "Poison")
+	if poison_effect_values.has("LuckyPoison") and poisoned_targets.has(player.get_node('Control').attack_target):
+			_on_do_action(poison_effect_values["LuckyPoison"], player, player, "CriticalChanceBuff", poison_effect_values["LuckyPoisonDuration"])
+	if extra_effect_values.has("ChaosMagic"):
+		if timers.has("ChaosMagic") and timers["ChaosMagic"] >= 0:
+			print("Chaos Magic")
+			return
+		timers["ChaosMagic"] = extra_effect_values["ChaosMagicCooldown"]
+		var types = [0, 1]
+		ability_manager._use_ability_based_on_type(types)
+
+func _handle_movement_penalty_action(target, value, unit):
+	if target:
+		unit.bonus_speed -= value
+		if unit.is_in_group('players'):
+			unit._update_stats()
+	else:
+		unit.bonus_speed += value
+		if unit.is_in_group('players'):
+			unit._update_stats()
+
+func _handle_vampirical_heal_action(target, value):
+	if target:
+		extra_effect_values["VampiricalHeal"] = value
+	else:
+		extra_effect_values.erase("VampiricalHeal")
+
+func _handle_burn_heal_action(target, value):
+	if target:
+		burn_effect_values["BurnHeal"] = value
+	else:
+		burn_effect_values.erase("BurnHeal")
+
+func _handle_frozen_quick_attack_action(target, value):
+	if target:
+		frozen_effect_values["FrozenQuickAttack"] = value
+	else:
+		frozen_effect_values.erase("FrozenQuickAttack")
+
+func _handle_poison_attack_action(target, value):
+	if target:
+		poison_effect_values["PoisonAttack"] = value
+	else:
+		poison_effect_values.erase("PoisonAttack")
+
+func _handle_lucky_poison_action(target, value, extra):
+	if target:
+		poison_effect_values["LuckyPoison"] = value
+		poison_effect_values["LuckyPoisonDuration"] = extra['Duration']
+	else:
+		poison_effect_values.erase("LuckyPoison")
+		poison_effect_values.erase("LuckyPoisonDuration")
+
+func _handle_chaos_magic_action(target, value, extra):
+	if target:
+		extra_effect_values["ChaosMagic"] = value
+		extra_effect_values["ChaosMagicCooldown"] = extra['Cooldown']
+		if !timers.has("ChaosMagic"):
+			timers["ChaosMagic"] = extra['Cooldown']
+	else:
+		extra_effect_values.erase("ChaosMagic")
+		extra_effect_values.erase("ChaosMagicCooldown")
+		timers.erase("ChaosMagic")
+
+func _handle_frozen_percentage_damage_buff_action(target, value):
+	if target:
+		frozen_effect_values["FrozenPercentageDamageBuff"] = value
+	else:
+		frozen_effect_values.erase("FrozenPercentageDamageBuff")
 # Triggers the effects of a combat action on the target.
 # Parameters:
 # - target: The target of the combat action.
@@ -199,6 +352,12 @@ func _trigger_effects(target, damage, color, tag):
 	_trigger_combat_text(target, damage, color)
 	if color != 'green':
 		_trigger_hit_effect(target, tag)
+
+func _handle_boost_mana_regen_action(target, value, unit):
+	var timer = Utility.get_node('TimerCreator')._create_timer(target, true, unit)
+	timer.timeout.connect(_deapply_buff.bind(unit, unit.bonus_mana_regen * (1 + value/100.0), "ManaRegen"))
+	unit.bonus_mana_regen += unit.bonus_mana_regen * (1 + value/100.0)
+	timer.start()
 
 # Handles experience gain for the player.
 # Parameters:
@@ -226,6 +385,54 @@ func _handle_pierce_action(user):
 		return
 	user.line_pierce = true
 
+# Handles the refunding of mana.
+# Parameters:
+# - target: The target of the mana refund.
+# - value: The amount of mana to refund.
+func _handle_refund_mana_action(target, value, extra):
+	if target.is_in_group('players'):
+		target.current_mana += extra.mana_cost * (value/100)
+		if target.current_mana > target.total_mana:
+			target.current_mana = target.total_mana
+		_trigger_combat_text(target, extra.mana_cost * (value/100), 'blue')
+
+# Spell scaling based on main stat
+# Parameters:
+# - user: The user of the action.
+# - value: The value to scale the spell with.
+func _spell_scaling(user, value):
+	if user.type.find("INT") != -1:
+		return (0.3*user.total_intelligence) * value
+	if user.type.find("STR") != -1:
+		return (0.3*user.total_strength) * value
+	if user.type.find("DEX") != -1:
+		return (0.3*user.total_dexterity) * value
+
+func _handle_crit_chance_buff_action(target, value, user, tag, duration):
+	if user.is_in_group('players'):
+		user.bonus_critical_chance += value
+		user._update_stats()
+		var timer = Utility.get_node('TimerCreator')._create_timer(duration, true, user)
+		timer.timeout.connect(_deapply_buff.bind(user, value, "CriticalChance"))
+		timer.start()
+
+
+# Handles the damaging teleport action for the user.
+# Parameters:
+# - user: The user of the action.
+# - value: The target location of the teleport.
+func _handle_damaging_teleport_action(user, value):
+	var teleport_location = map_manager._get_random_walkable_tile()
+	var damage = _spell_scaling(user, 10)
+	var targets = []
+	await get_tree().create_timer(0.1).timeout
+	user.global_position = teleport_location
+	for i in get_tree().get_nodes_in_group("enemies"):
+		if i.global_position.distance_to(teleport_location) < 100:
+			targets.append(i)
+	for i in targets:
+		_on_do_action(damage, i, user, "Damage")
+
 func _handle_explosion_action(user, value):
 	user.explosion = true
 	user.explosion_radius = value
@@ -239,6 +446,14 @@ func _handle_duplicate_action(user, value):
 		return
 	user.amount += value
 
+func _handle_projectile_speed_action(user, value):
+	user.speed += value
+
+func _handle_ability_percent_damage_action(user, value):
+	var dmg = user.tags.find("Damage")
+	if dmg != -1:
+		user.values[dmg] = user.values[dmg] * (1 + value/100.0)
+
 # Handles the modifier action for the user.
 # Parameters:
 # - user: The user of the action.
@@ -246,24 +461,46 @@ func _handle_duplicate_action(user, value):
 func _handle_modifier_action(user, target):
 	var modifiers = user.current_attack_modifier_tags
 	var values = user.current_attack_modifier_values
+	user.get_node('Control').basic_attacking.emit(target)
 	for i in range(modifiers.size()):
 		_on_do_action(values[i], target, user, modifiers[i])
 # Handles the damage action on the target.
 # Parameters:
 # - target: The target of the action.
 # - damage: The amount of damage to deal.
-func _handle_damage_action(target, damage, tag, user):
-	if target in invincible_units:
+func _handle_damage_action(target, damage, tag, user, extra = {"basic_attacking": false, "critical": false}):
+	if target in invincible_units:	
 		return
-	var new_damage = _apply_shock(target, _apply_global_protection_passives(damage, user))
 
-	target.current_health -= _barrier_protection(target, new_damage)
-	_trigger_effects(target, new_damage, 'white', tag)
+	if extra == null:
+		extra = {"basic_attacking": false, "critical": false}
+		
+	var new_damage = _apply_shock(target, _apply_global_protection_passives(damage, user))
+	if target.is_in_group('players'):
+		new_damage -= target.total_block
+
+	# Effects:
+	if !target.is_in_group('players'):
+		if target.is_frozen:
+			if frozen_effect_values.has("FrozenPercentageDamageBuff"):
+				new_damage += new_damage *(1 + frozen_effect_values["FrozenPercentageDamageBuff"]/100)
+	
+	var rest_damage = _barrier_protection(target, new_damage)
+	if rest_damage == 0:
+		return
+	target.current_health -= rest_damage
+	if extra["basic_attacking"]:
+		if extra_effect_values.has("VampiricalHeal"):
+			_on_do_action(float(player.total_attack_damage * (extra_effect_values["VampiricalHeal"]/100.0)), player, player, "Heal")
+	if !extra["critical"]:
+		_trigger_effects(target, rest_damage, 'white', tag)
+	else:
+		_trigger_effects(target, rest_damage, 'yellow', tag)
 	if target.has_node('Shock_timer'):
 		await get_tree().create_timer(0.1).timeout
 		if _check_if_dead(target):
 			return
-		_trigger_combat_text(target, 10 * target.get_meta('Shock_count'), 'yellow')
+		_trigger_combat_text(target, 10 * target.get_meta('Shock_count'), 'goldenrod')
 
 # Handles the attack range passive on the target.
 # Parameters:
@@ -341,27 +578,27 @@ func _handle_poison_action(target, value, user):
 	if target in invincible_units or _check_if_dead(target):
 		return
 	var duration = 5
+	if target.is_in_group('players'):
+		duration = 5 - ((target.total_affliction_resistance/100) * duration)
 	var tick_interval = 1
 	var total_ticks = ceil(duration / tick_interval)
 	var damage_per_tick = value / total_ticks
 	var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
 
-	var i = 0
-	if !target.has_node('Poison_timer' + str(i)):
-		target.set_meta('Poison_count' + str(i), 0)
-		target.set_meta('Damage_per_tick' + str(i), damage_per_tick)
-		var timer_name = "Poison_timer" + str(i)
-		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', i))
+	if !target.has_node('Poison_timer' + str(poisoned_stacks_name)):
+		target.set_meta('Poison_count' + str(poisoned_stacks_name), 0)
+		target.set_meta('Damage_per_tick' + str(poisoned_stacks_name), damage_per_tick)
+		var timer_name = "Poison_timer" + str(poisoned_stacks_name)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', poisoned_stacks_name))
 		timer.name = timer_name
 		target.add_child(timer)
 		timer.start()
 	else:
-		while target.has_node('Poison_timer' + str(i)):
-			i += 1
-		target.set_meta('Poison_count' + str(i), 0)
-		target.set_meta('Damage_per_tick' + str(i), damage_per_tick)
-		timer.name = "Poison_timer" + str(i)
-		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', i))
+		poisoned_stacks_name += 1
+		target.set_meta('Poison_count' + str(poisoned_stacks_name), 0)
+		target.set_meta('Damage_per_tick' + str(poisoned_stacks_name), damage_per_tick)
+		timer.name = "Poison_timer" + str(poisoned_stacks_name)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', poisoned_stacks_name))
 		target.add_child(timer)
 		timer.start()
 
@@ -414,6 +651,7 @@ func _handle_percent_armor_buff_action(target, value, user):
 # - value: The value of the speed buff.
 # - user: The duration of the action.
 func _handle_percent_speed_buff_action(target, value, user):
+	print("Percent Speed Buff")
 	var percent = value/100 * target.total_speed
 	target.bonus_speed += percent
 	if target.is_in_group('players'):
@@ -471,6 +709,10 @@ func _handle_attack_damage_passive(target, value):
 # - value: The value of the speed buff.
 # - user: The user of the action.
 func _handle_speed_buff_action(target, value, user):
+	if target.is_in_group('players'):
+		if value < 0:
+			value += ((target.total_slow_resistance/100) * value)
+
 	target.bonus_speed += value
 	if target.is_in_group('players'):
 		target._update_stats()
@@ -484,6 +726,7 @@ func _handle_speed_buff_action(target, value, user):
 # - value: The duration of the invincibility.
 func _handle_self_invincible_action(user, value):
 	invincible_units.append(user)
+	_create_light_specifics(user, 0.3, Color.GOLD)
 	var timer = Utility.get_node('TimerCreator')._create_timer(value, true, user)
 	timer.timeout.connect(_deapply_invincibility.bind(user))
 	timer.start()
@@ -497,6 +740,8 @@ func _handle_burn_action(target, value, user):
 	if target in invincible_units or _check_if_dead(target):
 		return
 	var duration = 5
+	if target.is_in_group('players'):
+		duration = 5 - ((target.total_affliction_resistance/100) * duration)
 	var tick_interval = 1
 	var total_ticks = ceil(duration / tick_interval)
 	var damage_per_tick = value / total_ticks
@@ -540,6 +785,22 @@ func _handle_freeze_action(target, value):
 	var duration = 4.2
 	var value_to_percent = value/100
 	var new_speed = target.total_speed * value_to_percent
+	var frozen_duration = 1.5
+	var is_frozen = _chance_calculator(player.total_frozen_chance)
+	if is_frozen:
+		var frozen_timer = Utility.get_node('TimerCreator')._create_timer(frozen_duration, true, target)
+		frozen_timer.timeout.connect(_deapply_frozen.bind(target))
+		frozen_timer.name = "Frozen_timer"
+		target.is_frozen = true
+		var frozen = frozen_effect.instantiate()
+		frozen.name = "Frozen_effect"
+		target.add_child(frozen)
+		frozen_timer.start()
+		# Add frozen effects here:
+		frozen_targets.append(target)
+		if frozen_effect_values.has("FrozenQuickAttack"):
+			if _chance_calculator(frozen_effect_values["FrozenQuickAttack"]):
+				player.get_node('Control')._attack()
 	var timer = Utility.get_node('TimerCreator')._create_timer(duration, true, target)
 	timer.timeout.connect(_deapply_freeze.bind(new_speed, target))
 	timer.name = "Freeze_timer"
@@ -581,12 +842,13 @@ func _handle_bleed_action(target, value, user):
 	if target in invincible_units or _check_if_dead(target):
 		return
 	var duration = 2
+	if target.is_in_group('players'):
+		duration = 2 - ((target.total_affliction_resistance/100) * duration)
 	var tick_interval = 0.5
 	var total_ticks = ceil(duration / tick_interval)
 	var damage_per_tick = value / total_ticks
 
-	_mutex.lock()
-
+	
 	if !target.has_node('Bleed_timer'):
 		var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
 		target.set_meta('Bleed_count', 0)
@@ -602,7 +864,6 @@ func _handle_bleed_action(target, value, user):
 		target.set_meta('Bleed_stacks', target.get_meta('Bleed_stacks') + 1)
 		duration = 2
 
-	_mutex.unlock()
 
 # Handles the infected action on the target.
 # Parameters:
@@ -611,6 +872,8 @@ func _handle_infected_action(target):
 	if target in invincible_units or _check_if_dead(target):
 		return
 	var duration = 2
+	if target.is_in_group('players'):
+		duration = 2 - ((target.total_affliction_resistance/100) * duration)
 	var old_weight
 	if !target.has_node('Infected_timer'):
 		old_weight = target.global_weight
@@ -672,6 +935,17 @@ func _handle_pve_light_action(target, value, type, user):
 # ------------------------------------------------------#
 # Timeout Handler
 # ------------------------------------------------------#
+
+# This function deapplies the frozen effect from a target.
+# Parameters:
+#   - target: The target from which to deapply the frozen effect.
+func _deapply_frozen(target):
+	if _check_if_dead(target):
+		return
+	target.is_frozen = false
+	frozen_targets.erase(target)
+	target.get_node('Frozen_effect').queue_free()
+	target.get_node('Frozen_timer').queue_free()
 
 # This function removes a target from an array.
 # Parameters:
@@ -765,6 +1039,11 @@ func _deapply_buff(target, value, tag):
 		target.set_meta('Shock_count', 0)
 	if tag == "Damage":
 		target.bonus_attack_damage -= value
+	if tag == "CriticalChance":
+		target.bonus_critical_chance -= value
+	if tag == "ManaRegen":
+		target.bonus_mana_regen -= value
+	
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -782,17 +1061,24 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 
 	var damage
 	if type == "Bleed":
+		print('testing')
 		damage = _calculate_reduced_damage(damage_per_tick * target.get_meta('Bleed_stacks'), target.total_armor)
 	elif type == "Frenzy":
 		damage = damage_per_tick
 	elif type == "Poison":
 		damage = damage_per_tick
+		if !poisoned_targets.has(target):
+			poisoned_targets.append(target)
 	else:    
 		damage = _calculate_reduced_damage(damage_per_tick, target.total_armor)
+		if burn_effect_values.has("BurnHeal"):
+			if user == player:
+				_on_do_action(damage * (burn_effect_values['BurnHeal']/100), user, target, "Heal")
 
 	target.current_health -= _barrier_protection(target, damage)
 
 	if target.is_in_group("enemies"):
+		print('testing')
 		_trigger_combat_text(target, damage, color)
 	
 	var current_tick = 0
@@ -811,6 +1097,8 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 			return
 		if type == "Poison":
 			target.get_node("Poison_timer" + str(timer_name)).queue_free()
+			target.set_meta("Poison_count" + str(timer_name), 0)
+			poisoned_targets.erase(target)
 			return
 		if target.has_node(type + "_timer"):
 			target.get_node(type + "_timer").queue_free()
@@ -824,6 +1112,7 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 #------------------------------------------------------#
 func _on_character_selected(unit):
 	unit.get_node('Control').on_action.connect(_on_do_action)
+	unit.get_node('Control').basic_attacking.connect(_on_basic_attack)
 	player = unit
 
 func _update_sub_wave(_number, arr):
@@ -870,8 +1159,8 @@ func _trigger_hit_effect(target, tag):
 	new_material.set_shader_parameter("hit_effect_intensity", 0.6)
 	sprite.material = new_material
 	if target.is_in_group('enemies') and tag == "Damage":
-		if !target.is_in_group('boss'):
-			target.do_action.emit(-target.total_speed, target, 0.2, "SpeedBuff")
+		if !target.is_in_group('boss') or !target.is_in_group('special'):
+			target.do_action.emit(5, target, player, "Wind")
 		if !target.has_node('HitEffect'):
 			var instance = hit_effect.instantiate()
 			target.add_child(instance)
@@ -881,10 +1170,23 @@ func _trigger_hit_effect(target, tag):
 
 	var timer = Timer.new()
 	timer.one_shot = true
-	timer.wait_time = 0.2
+	timer.wait_time = 0.5
 	timer.timeout.connect(_deapply_trigger_effect.bind(target, original_material))
 	target.add_child(timer)
 	timer.start()
+
+func _create_light_specifics(targett, dura, color):
+	var instance = load('res://Abilities/Utility/self_effect.tscn').instantiate()
+	instance.get_child(0).color = color
+	targett.add_child(instance)
+	var timer
+	timer = Utility.get_node('TimerCreator')._create_timer(dura, true, instance)
+	timer.timeout.connect(_remove_light.bind(instance, targett))
+	timer.start()
+
+func _remove_light(instance, targett):
+	targett.remove_child(instance)
+	instance.queue_free()
 
 func _deapply_trigger_effect(target, original_material):
 	original_material.set_shader_parameter('hit_effect_intensity', 0.0)
@@ -900,9 +1202,6 @@ func _create_combat_text_and_update_recent(value, current_time, target, color):
 
 func _trigger_combat_text(target, value, color):
 	var current_time = Time.get_ticks_msec() / 1000.0
-	if value <= 1:
-		return
-
 	if recent_combat_text_values.has(target):
 		if recent_combat_text_values[target].has(color):
 			if (current_time - recent_combat_text_timestamps[target][color]) < COMBINE_TIME_PERIOD:

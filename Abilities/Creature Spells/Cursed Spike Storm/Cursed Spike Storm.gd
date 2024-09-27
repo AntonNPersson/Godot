@@ -30,6 +30,7 @@ func _use():
 		spike.origin = origin
 		spike.target = target
 		spike.damage = values[0]
+		spike.scale = Vector2(0.5, 0.5)
 		spike.do_damage.connect(origin._on_do_action)
 		spike.add_to_group('projectiles')
 		origin.get_tree().get_root().get_node('Main').add_child(spike)

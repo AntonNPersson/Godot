@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwuxpytflpe55"]
+
+[ext_resource type="PackedScene" uid="uid://ch4lpkbnopjq" path="res://Items/Low-Mid Effects/Rejuvenation.tscn" id="1_odbhu"]
+
+[node name="SecondLowMidDefense" type="Node2D"]
+
+[node name="Rejuvenation" parent="." instance=ExtResource("1_odbhu")]
+position = Vector2(535.126, 43.8267)

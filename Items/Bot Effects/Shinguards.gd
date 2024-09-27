@@ -7,9 +7,10 @@ func _initialize():
 	barrier = randi() % 15 + 5
 	values = [barrier]
 	icon = preload('res://Sprites/Icons/Shinguards.png')
+	type = ["Defense", "Utility"]
 
 func _get_values():
-	return values
+	return [barrier]
 
 func _get_tags():
-	return tags
+	return ["barrier"]

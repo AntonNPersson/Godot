@@ -7,9 +7,6 @@ class_name is_on_cd
 func _run(_delta):
 	self.current_index = ability_index
 
-	if change_state:
-		_change_ability_cooldown(current_index, new_cooldown)
-		change_state = false
 	if timers[current_index] <= 0:
 		get_child(0)._run(_delta)
 		_running()

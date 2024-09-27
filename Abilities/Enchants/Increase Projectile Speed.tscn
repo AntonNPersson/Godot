@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bn5612yhr2td3"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/Increase Projectile Speed.gd" id="1_y3s3n"]
+
+[node name="IncreaseProjectileSpeed" type="Node2D"]
+script = ExtResource("1_y3s3n")
+i_name = "Projectile Speed Addition"
+tooltip = "Add flat amount of speed to selected projectile ability."
+increased_speed = 100

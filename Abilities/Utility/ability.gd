@@ -70,7 +70,7 @@ var summon_instance
 @export var buff_type : String
 @export var buff_duration : float
 @export var weight : float
-@export var weight_duration : float = 0.55
+@export var weight_duration : float = 0.45
 var tooltip : String
 var ad_update : bool = false
 
@@ -81,6 +81,13 @@ var item_color : Array[Color]
 var item_cooldown : Array[float]
 var item_timers : Array[float]
 var item_unique : Array[bool]
+var forced_closest : bool = false
+
+var enchants = {
+	"Tags" : [],
+	"Values" : [],
+	"Types" : []
+}
 
 var power : float
 #-------------------#
@@ -99,15 +106,13 @@ func _process(delta):
 		if item_timers[i] >= 0:
 			item_timers[i] -= delta
 # Update scaling of damage
-func _apply_scaling(dmg, type):
-	if unit == null:
-		return dmg
+func _apply_scaling(dmg, _type):
 	var attribute_map = {
 		'INT': unit.total_intelligence,
 		'STR': unit.total_strength,
 		'DEX': unit.total_dexterity
 	}
-	var extra_dmg = attribute_map[type] * 0.3
+	var extra_dmg = attribute_map[_type] * 0.15
 	return dmg + extra_dmg
 
 func _calculate_power():
@@ -157,7 +162,7 @@ func _apply_aura():
 # Update tooltip based on type of ability
 func _update_tooltip():
 	if unit == null:
-		unit = get_tree().get_nodes_in_group('players')[0]
+		unit = get_tree().get_first_node_in_group('players')
 	tooltip = tooltip_text + "\n\n"
 	if projectile_type == targeting_type.Summon:
 		tooltip += "\nLevel: " + str(level)
@@ -205,18 +210,40 @@ func _add_level():
 
 # Add tag and value to ability
 func _add_tag(tag, value, increased_value):
+	if tags.find(tag) != -1:
+		var index = tags.find(tag)
+		values[index] += value
+		increased_values[index] += increased_value
+		return
 	tags.append(tag)
 	values.append(value)
 	increased_values.append(increased_value)
 
-func _add_item_tag(tag, value, dur, i_color, i_unique, cd):
+func _remove_tag(tag, value, _type):
+	var index = tags.find(tag)
+	tags.erase(tag)
+	values.remove_at(index)
+	increased_values.remove_at(index)
+
+func _add_enchant(tag, value, _type):
+	enchants["Tags"].append(tag)
+	enchants["Values"].append(value)
+	enchants["Types"].append(_type)
+	
+	_add_tag(tag, value, 0)
+	unit.get_node('Control').on_action.emit(value, unit, self, tag)
+
+func _remove_all_enchants():
+	for i in range(enchants["Tags"].size()):
+		_remove_tag(enchants["Tags"][i], enchants["Values"][i], enchants["Types"][i])
+
+func _add_item_tag(tag, value, dur, i_color, cd):
 	item_tags.append(tag)
 	item_values.append(value)
 	item_duration.append(dur)
 	item_color.append(i_color)
 	item_cooldown.append(cd)
 	item_timers.append(cd)
-	item_unique.append(i_unique)
 
 
 func _remove_item_tag(tag):
@@ -248,8 +275,8 @@ func _get_closest_visible_enemy_to_mouse():
 	var mouse_pos = unit.get_global_mouse_position()
 	var closest_node = null
 	var closest_distance = 99999999
-	if get_tree().get_nodes_in_group('enemies'):
-		for child in get_tree().get_nodes_in_group('enemies'):
+	if unit.get_tree().get_nodes_in_group('enemies'):
+		for child in unit.get_tree().get_nodes_in_group('enemies'):
 			var distance = mouse_pos.distance_to(child.global_position)
 		
 			if distance < closest_distance:
@@ -262,8 +289,8 @@ func _get_closest_visible_ally_to_mouse():
 	var mouse_pos = unit.get_global_mouse_position()
 	var closest_node = null
 	var closest_distance = 99999999
-	if get_tree().get_nodes_in_group('players'):
-		for child in get_tree().get_nodes_in_group('players'):
+	if unit.get_tree().get_nodes_in_group('players'):
+		for child in unit.get_tree().get_nodes_in_group('players'):
 			var distance = mouse_pos.distance_to(child.global_position)
 		
 			if distance < closest_distance:
@@ -275,7 +302,6 @@ func _get_closest_visible_ally_to_mouse():
 func _create_light(targett):
 	var instance = load('res://Abilities/Utility/self_effect.tscn').instantiate()
 	instance.get_child(0).color = light_color
-	instance.get_child(1).color = light_color
 	targett.add_child(instance)
 	var timer
 	if !is_buff:
@@ -288,7 +314,6 @@ func _create_light(targett):
 func _create_light_specifics(targett, dura, color):
 	var instance = load('res://Abilities/Utility/self_effect.tscn').instantiate()
 	instance.get_child(0).color = color
-	instance.get_child(1).color = color
 	targett.add_child(instance)
 	var timer
 	timer = Utility.get_node('TimerCreator')._create_timer(dura, true, instance)
@@ -298,6 +323,7 @@ func _create_light_specifics(targett, dura, color):
 # Remove light from ability
 func _remove_light(instance, targett):
 	targett.remove_child(instance)
+	instance.queue_free()
 
 func _advanced_update():
 	pass
@@ -311,7 +337,7 @@ func _initialize():
 		return
 
 	for tag in tags.size():
-		if "Duplicate" in tags[tag] or "Pierce" in tags[tag] or "Explosion" in tags[tag]:
+		if "Duplicate" in tags[tag] or "Pierce" in tags[tag] or "Explosion" in tags[tag] or "AbilityPercentDamage" in tags[tag] or "ProjectileSpeed" in tags[tag]:
 			unit.get_node('Control').on_action.emit(values[tag], unit, self, tags[tag])
 	if advanced_update:
 		ad_update = true
@@ -349,13 +375,15 @@ func _use():
 
 	if projectile_type == targeting_type.Line:
 		var pos = unit.get_global_mouse_position()
+		if forced_closest:
+			pos = _get_closest_visible_enemy_to_mouse().global_position
 		for i in range(amount):
 			var instance = load("res://Abilities/Utility/line_projectile.tscn").instantiate()
 			instance.has_hit.connect(_on_hit)
 			unit.get_tree().get_root().add_child(instance)
 			instance.global_position = unit.global_position
 			instance._start(pos, _range, speed, unit.global_position, sprite_frames, collision_radius, light_scale, light_color, sprite_scale, line_pierce, explosion, explosion_radius, self)
-			await get_tree().create_timer(0.1).timeout
+			await unit.get_tree().create_timer(0.1).timeout
 	elif projectile_type == targeting_type.AllyTarget:
 			target = _get_closest_visible_ally_to_mouse()
 			if !target or target.global_position.distance_to(unit.global_position) > _range:
@@ -397,7 +425,7 @@ func _use():
 			unit.get_tree().get_root().add_child(instance)
 			instance.global_position = unit.global_position
 			instance._start(pos, _range, speed, unit.global_position, radius, duration, area_type, light_color, always_trigger)
-			await get_tree().create_timer(0.1).timeout
+			await unit.get_tree().create_timer(0.1).timeout
 		_shake_camera()
 	elif projectile_type == targeting_type.Movement:
 		if type == "Sprint":
@@ -493,26 +521,21 @@ func _on_hit(area):
 				new_values.append(values[i])
 				new_tags.append(tags[i])
 			unit.get_node('Control').on_action.emit(values[val], new_values, unit, tags[val], new_tags)
-		elif "Duplicate" in tags[val] or "Pierce" in tags[val] or "Explosion" in tags[val]:
+		elif "Duplicate" in tags[val] or "Pierce" in tags[val] or "Explosion" in tags[val] or "AbilityPercentDamage" in tags[val] or "ProjectileSpeed" in tags[val]:
 			continue
 		elif "Passive" in tags[val]:
 			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val])
-		else:
+		elif "Damage" in tags[val]:
 			unit.get_node('Control').on_action.emit(_apply_scaling(values[val], ability_type), area, unit, tags[val])
-			if projectile_type != targeting_type.Area:
-				_shake_camera()
+			_shake_camera()
+		else:
+			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val])
 
 func _on_item_use():
 	if item_tags.size() == 0:
 		return
-	var current_unique = []
-	for val in item_tags.size():
-		if current_unique.find(item_tags[val]) != -1:
-			print("Already used this item")
-			continue
+	for val in range(item_timers.size()):
 		if item_timers[val] <= 0:
-			if item_unique[val]:
-				current_unique.append(item_tags[val])
 			item_timers[val] = item_cooldown[val]
 			_create_light_specifics(unit, item_duration[val], item_color[val])
 			if "WindShout" in item_tags[val]:
@@ -521,7 +544,8 @@ func _on_item_use():
 						if enemy.global_position.distance_to(unit.global_position) < 130:
 							unit.get_node('Control').on_action.emit(item_values[val], enemy, unit, "Wind")
 			else:
-				unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val])
+				print(item_tags[val])
+				unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val], self)
 
 # Set targeting to true/false
 func _target(state):
@@ -541,6 +565,9 @@ func _get_ability_data():
 	var data = {
 		'name': a_name,
 		'level': level,
-		'type': ability_type
+		'type': ability_type,
+		"enchant_tag": enchants["Tags"],
+		"enchant_value": enchants["Values"],
+		"enchant_type": enchants["Types"]
 	}
 	return data

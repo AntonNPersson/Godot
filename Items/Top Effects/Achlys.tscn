@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://5v6hjnvhk4lm"]
+
+[ext_resource type="Script" path="res://Items/Top Effects/Achlys.gd" id="1_lcbcl"]
+
+[node name="Achlys" type="Node2D"]
+script = ExtResource("1_lcbcl")

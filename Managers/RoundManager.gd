@@ -101,3 +101,10 @@ func _on_stop_wave(completed, wave):
 func _on_ability_manager_curse_picked(curse:Variant):
 	Utility.get_node('Transition')._start(0.3)
 	start_singleplayer.emit()
+	_next_area('Town', null)
+
+func _on_ability_manager_enchantment_picked(enchantment:Variant, unit):
+	Utility.get_node('Transition')._start(0.3)
+	print('enchantment')
+	_next_area('Town', null)
+	update_characters.emit()

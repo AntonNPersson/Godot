@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b6xve3wi8me70"]
+[gd_scene load_steps=23 format=3 uid="uid://b6xve3wi8me70"]
 
 [ext_resource type="PackedScene" uid="uid://db3lvcryx11i6" path="res://Items/Bot Effects/Boots.tscn" id="1_sqeyo"]
 [ext_resource type="PackedScene" uid="uid://pe20r26ed8in" path="res://Items/Bot Effects/Bow.tscn" id="2_tuqn4"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://fmpsce0yeq15" path="res://Items/Bot Effects/Head.tscn" id="5_yva68"]
 [ext_resource type="PackedScene" uid="uid://cgxshlijlaocc" path="res://Items/Bot Effects/Legs.tscn" id="6_qifww"]
 [ext_resource type="PackedScene" uid="uid://duoidth4ltcah" path="res://Items/Bot Effects/Staff.tscn" id="7_eur0i"]
+[ext_resource type="Script" path="res://Items/Bot Effects/Sandals.gd" id="7_o461h"]
 [ext_resource type="PackedScene" uid="uid://crrp6yqolwgj" path="res://Items/Bot Effects/Sword.tscn" id="8_ife03"]
 [ext_resource type="PackedScene" uid="uid://73vaan3hycat" path="res://Items/Bot Effects/Sandals.tscn" id="9_lmt4h"]
 [ext_resource type="PackedScene" uid="uid://dh28k75qy88gb" path="res://Items/Bot Effects/Breastplate.tscn" id="10_7fep5"]
@@ -25,36 +26,53 @@
 [node name="BotItemPieces" type="Node2D"]
 
 [node name="Boots" parent="." instance=ExtResource("1_sqeyo")]
+position = Vector2(231, 213)
 
 [node name="Chest" parent="." instance=ExtResource("3_cfube")]
+position = Vector2(231, 213)
 
 [node name="Gloves" parent="." instance=ExtResource("4_1o1sq")]
+position = Vector2(231, 213)
 
 [node name="Head" parent="." instance=ExtResource("5_yva68")]
+position = Vector2(231, 213)
 
 [node name="Legs" parent="." instance=ExtResource("6_qifww")]
+position = Vector2(231, 213)
 
 [node name="Sandals" parent="." instance=ExtResource("9_lmt4h")]
+position = Vector2(231, 213)
+script = ExtResource("7_o461h")
 
 [node name="Breastplate" parent="." instance=ExtResource("10_7fep5")]
+position = Vector2(231, 213)
 
 [node name="Robe" parent="." instance=ExtResource("11_2hy8v")]
+position = Vector2(231, 213)
 
 [node name="Handwraps" parent="." instance=ExtResource("12_jhkyq")]
+position = Vector2(231, 213)
 
 [node name="Greaves" parent="." instance=ExtResource("13_wgky7")]
+position = Vector2(231, 213)
 
 [node name="Helmet" parent="." instance=ExtResource("14_jxjk0")]
+position = Vector2(231, 213)
 
 [node name="Hood" parent="." instance=ExtResource("15_mb4i1")]
+position = Vector2(231, 213)
 
 [node name="Shinguards" parent="." instance=ExtResource("16_xauk6")]
+position = Vector2(231, 213)
 
 [node name="Legplates" parent="." instance=ExtResource("17_tmdl7")]
+position = Vector2(231, 213)
 
 [node name="Greataxe" parent="." instance=ExtResource("19_rufw0")]
+position = Vector2(231, 213)
 
 [node name="Bow" parent="." instance=ExtResource("2_tuqn4")]
+position = Vector2(231, 213)
 
 [node name="Crossbow" parent="." instance=ExtResource("20_nqfb0")]
 

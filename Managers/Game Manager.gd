@@ -5,7 +5,8 @@ var selected_character_name
 
 var settings = {
 	"screen_shake" : true,
-	"moba_controls" : true,}
+	"moba_controls" : false,
+	"roguelike_controls" : true,}
 
 func _change_scene(parameter: String, mode : bool):
 	get_tree().change_scene_to_file(parameter)	
@@ -72,5 +73,14 @@ func load_game():
 	is_singleplayer = true
 	is_save_file = true
 	_change_scene("res://Scenes/Game.tscn", true)
+
+func load_menu():
+	_change_scene("res://Scenes/Menu.tscn", false)
+
+func _shake_camera(unit, weight, weight_duration):
+	if GameManager.settings['screen_shake']:
+		unit.get_node('Camera').shake_intensity = weight/25
+		unit.get_node('Camera').shake_duration = weight_duration/2
+		unit.get_node('Camera').is_shaking = true
 
 	

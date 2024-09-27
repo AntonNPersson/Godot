@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxhvtm4nc2lcj"]
+
+[ext_resource type="Script" path="res://Items/Low-Mid Effects/Vitalizing.gd" id="1_x5jjk"]
+
+[node name="Vitalizing" type="Node2D"]
+script = ExtResource("1_x5jjk")

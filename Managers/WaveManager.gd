@@ -5,6 +5,7 @@ signal stop_wave(completed, wave)
 signal start_boss(value, wave)
 signal start_wave(value, wave)
 signal get_units(unit)
+signal unit_dead()
 
 @export var portal_effect : PackedScene
 
@@ -59,7 +60,6 @@ func _process(_delta):
 		_update_objectives()
 	else:
 		canvas.get_node('RichTextLabel2').visible = false
-
 	if current_amount_of_enemies <= 0:
 		if boss_ready:
 			var portal_effect = portal_effect.instantiate()
@@ -67,13 +67,14 @@ func _process(_delta):
 			get_tree().get_root().add_child(portal_effect)
 			portal_effect.global_position = players[0].global_position
 			portal_effect.enter_portal.connect(_enter_portal_exit)
-			current_amount_of_enemies = RESET_ENEMY
+			boss_ready = false
 
 	if wave_ongoing:
 		if current_wave.has_meta('Special'):
 			current_wave._get_special()
 
 func _start_wave(value, last = false):
+
 	current_round = value
 	current_wave_scene = load("res://Waves/wave_" + str(current_round) +".tscn")
 	current_wave = current_wave_scene.instantiate()
@@ -112,6 +113,7 @@ func _start_wave(value, last = false):
 
 func _unit_dead(_unit):
 	current_amount_of_enemies -= 1
+	unit_dead.emit()
 
 	if current_amount_of_enemies == INCEPTION_WAVE_THRESHHOLD:
 		if current_wave_counter < wave_counter:
@@ -164,6 +166,7 @@ func _stop_wave():
 		stop_wave.emit(true, current_round)
 	else:
 		stop_wave.emit(false, current_round)
+		players[0].power += 0.05
 
 func _start_boss():
 	var current_boss_scene = load("res://Waves/boss/boss_" + str(current_round) +".tscn")

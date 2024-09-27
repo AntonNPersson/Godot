@@ -1,10 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://dlpkjnesre3k2"]
+[gd_scene load_steps=26 format=3 uid="uid://dlpkjnesre3k2"]
 
 [ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="1_rdvac"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_qob8h"]
 [ext_resource type="PackedScene" uid="uid://cib4vbbq0aecn" path="res://Utility/Potion_tooltip.tscn" id="2_v1ogu"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="2_y27wo"]
-[ext_resource type="StyleBox" uid="uid://p1i2h6goy2ej" path="res://GUI/testest.tres" id="4_k1w6k"]
 [ext_resource type="Texture2D" uid="uid://c5jml2c4kbhm6" path="res://Sprites/test.png" id="5_k7ayx"]
 [ext_resource type="Texture2D" uid="uid://d3r3h43kxsb02" path="res://Sprites/Untitled2.png" id="5_pfkdg"]
 [ext_resource type="Texture2D" uid="uid://cy6m1givnghco" path="res://Sprites/Untitled1.png" id="6_5vbjy"]
@@ -12,6 +11,7 @@
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="7_0f38t"]
 [ext_resource type="Texture2D" uid="uid://cu2ro7gfyyvc2" path="res://Sprites/Untitled.png" id="8_3fp80"]
 [ext_resource type="Texture2D" uid="uid://dswmghvs3jkv2" path="res://Sprites/glass_effect.png" id="10_owmaw"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/center.gd" id="10_wohmw"]
 [ext_resource type="Texture2D" uid="uid://df3imm2ty3hps" path="res://Sprites/health_potion.png" id="11_o0016"]
 [ext_resource type="Texture2D" uid="uid://b45hijfa43fdg" path="res://Sprites/mana_potion.png" id="12_gxwhe"]
 [ext_resource type="Texture2D" uid="uid://qeg0u4bvnku6" path="res://Sprites/Icons/Inventory.png" id="15_6qje8"]
@@ -21,6 +21,14 @@
 [ext_resource type="Texture2D" uid="uid://76lkpmnsmyvl" path="res://Sprites/Icons/abilities.png" id="19_u4fnx"]
 [ext_resource type="Texture2D" uid="uid://cypp56xo1oen4" path="res://Sprites/Icons/abilities_hovered.png" id="20_wsko6"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dr1ap"]
+bg_color = Color(0.145098, 0.14902, 0.145098, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
 [sub_resource type="FontVariation" id="FontVariation_q5uqw"]
 base_font = ExtResource("2_qob8h")
 spacing_top = 7
@@ -29,7 +37,7 @@ spacing_top = 7
 texture = ExtResource("6_dgjvm")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3uuyf"]
-content_margin_left = 50.0
+content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 50.0
 content_margin_bottom = 20.0
@@ -50,7 +58,7 @@ simple_tooltip = ExtResource("2_v1ogu")
 [node name="CanvasLayer" type="CanvasLayer" parent="." groups=["UI"]]
 
 [node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer"]
-visible = false
+modulate = Color(1, 1, 1, 0.698039)
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -58,10 +66,12 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -385.0
 offset_top = -333.0
-offset_bottom = 87.0
+offset_bottom = 117.0
 grow_horizontal = 0
 grow_vertical = 2
+scale = Vector2(0.997504, 0.997488)
 theme = ExtResource("2_y27wo")
+theme_override_styles/panel = SubResource("StyleBoxFlat_dr1ap")
 
 [node name="Label3" type="Label" parent="CanvasLayer/PanelContainer2"]
 layout_mode = 2
@@ -75,7 +85,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(350, 375)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 4
 
 [node name="Panel" type="Panel" parent="CanvasLayer/PanelContainer2/Items"]
 layout_mode = 2
@@ -300,6 +310,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -319,6 +330,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_2"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -338,6 +350,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_3"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -357,6 +370,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_4"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -376,6 +390,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_5"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -395,6 +410,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_6"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -414,6 +430,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_7"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -433,6 +450,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_8"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -452,6 +470,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_9"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -471,6 +490,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_10"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -490,6 +510,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_11"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -509,6 +530,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_12"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -528,6 +550,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_13"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -547,6 +570,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_14"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -566,6 +590,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_15"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -585,6 +610,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_16"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -604,6 +630,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_17"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -623,6 +650,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_3etbu")
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_18"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -647,17 +675,18 @@ visible = false
 custom_minimum_size = Vector2(350, 375)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 4
 
 [node name="Panel" type="Panel" parent="CanvasLayer/PanelContainer2/Stats"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_y27wo")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer2/Stats/Panel"]
 layout_mode = 0
-offset_left = 15.0
+offset_left = 11.0
 offset_top = 21.0
-offset_right = 333.0
+offset_right = 337.0
 offset_bottom = 357.0
 
 [node name="Label2" type="Label" parent="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer"]
@@ -771,6 +800,7 @@ offset_bottom = 126.0
 text = "+"
 
 [node name="Hotbar" type="Panel" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.698039)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -783,7 +813,6 @@ offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("2_y27wo")
-theme_override_styles/panel = ExtResource("4_k1w6k")
 
 [node name="TextureRect1" type="TextureRect" parent="CanvasLayer/Hotbar"]
 layout_mode = 0
@@ -895,6 +924,7 @@ texture = ExtResource("5_k7ayx")
 expand_mode = 1
 
 [node name="ProgressBar4" type="TextureProgressBar" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.698039)
 custom_minimum_size = Vector2(10, 10)
 anchors_preset = 15
 anchor_right = 1.0
@@ -905,7 +935,7 @@ offset_right = -1063.0
 offset_bottom = -116.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(5, 0.2)
+scale = Vector2(4.84472, 0.199884)
 theme = ExtResource("2_y27wo")
 texture_under = ExtResource("5_pfkdg")
 texture_progress = ExtResource("6_5vbjy")
@@ -914,6 +944,7 @@ tint_under = Color(1, 1, 1, 0.419608)
 script = ExtResource("7_0f38t")
 
 [node name="ProgressBar2" type="TextureProgressBar" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.698039)
 custom_minimum_size = Vector2(10, 10)
 anchors_preset = 15
 anchor_right = 1.0
@@ -952,6 +983,7 @@ tint_under = Color(1, 1, 1, 0.419608)
 script = ExtResource("7_0f38t")
 
 [node name="ProgressBar3" type="TextureProgressBar" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.698039)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -985,6 +1017,8 @@ grow_vertical = 2
 text = "120"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("10_wohmw")
+left = true
 
 [node name="maxhp" type="Label" parent="CanvasLayer"]
 z_index = 2
@@ -1002,13 +1036,8 @@ grow_vertical = 2
 text = "120"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Line2D" type="Line2D" parent="CanvasLayer"]
-z_index = 2
-position = Vector2(747, 921)
-scale = Vector2(1.09659, 1)
-points = PackedVector2Array(0, 0, 6.9438, 0, 20, 0)
-width = 1.0
+script = ExtResource("10_wohmw")
+left = true
 
 [node name="current" type="Label" parent="CanvasLayer"]
 z_index = 2
@@ -1026,6 +1055,7 @@ grow_vertical = 2
 text = "120"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("10_wohmw")
 
 [node name="max" type="Label" parent="CanvasLayer"]
 z_index = 2
@@ -1043,14 +1073,10 @@ grow_vertical = 2
 text = "120"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Line2D2" type="Line2D" parent="CanvasLayer"]
-z_index = 2
-position = Vector2(1112, 920)
-points = PackedVector2Array(0, 0, 20, 0)
-width = 1.0
+script = ExtResource("10_wohmw")
 
 [node name="Potion_bag" type="Panel" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.698039)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -1095,6 +1121,7 @@ script = ExtResource("7_0f38t")
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]
 visible = false
+modulate = Color(1, 1, 1, 0.698039)
 offset_left = 1505.0
 offset_top = 273.0
 offset_right = 1536.0
@@ -1127,8 +1154,8 @@ texture_hover = ExtResource("20_wsko6")
 
 [node name="Items" type="Node" parent="."]
 
-[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2" to="." method="_on_inventory_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2" to="." method="_on_inventory_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped" to="." method="_on_inventory_mouse_entered"]
 [connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_gui_input" binds= [0]]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_mouse_entered" binds= [0]]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_mouse_exited" binds= [0]]
@@ -1151,6 +1178,61 @@ texture_hover = ExtResource("20_wsko6")
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1" to="." method="_potions_mouse_exited" binds= [0]]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_entered" binds= [1]]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_exited" binds= [1]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged" to="." method="_on_inventory_mouse_entered"]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1" to="." method="_storage_gui_input" binds= [0]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1" to="." method="_storage_mouse_entered" binds= [0]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1" to="." method="_storage_mouse_exited" binds= [0]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_2" to="." method="_storage_gui_input" binds= [1]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_2" to="." method="_storage_mouse_entered" binds= [1]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_2" to="." method="_storage_mouse_exited" binds= [1]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_3" to="." method="_storage_gui_input" binds= [2]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_3" to="." method="_storage_mouse_entered" binds= [2]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_3" to="." method="_storage_mouse_exited" binds= [2]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_4" to="." method="_storage_gui_input" binds= [3]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_4" to="." method="_storage_mouse_entered" binds= [3]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_4" to="." method="_storage_mouse_exited" binds= [3]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_5" to="." method="_storage_gui_input" binds= [4]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_5" to="." method="_potions_mouse_entered" binds= [4]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_5" to="." method="_storage_mouse_exited" binds= [4]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_6" to="." method="_storage_gui_input" binds= [5]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_6" to="." method="_storage_mouse_entered" binds= [5]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_6" to="." method="_storage_mouse_exited" binds= [5]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_7" to="." method="_storage_gui_input" binds= [6]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_7" to="." method="_storage_mouse_entered" binds= [6]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_7" to="." method="_storage_mouse_exited" binds= [6]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_8" to="." method="_storage_gui_input" binds= [7]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_8" to="." method="_storage_mouse_entered" binds= [7]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_8" to="." method="_storage_mouse_exited" binds= [7]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_9" to="." method="_storage_gui_input" binds= [8]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_9" to="." method="_storage_mouse_entered" binds= [8]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_9" to="." method="_storage_mouse_exited" binds= [8]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_10" to="." method="_storage_gui_input" binds= [9]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_10" to="." method="_storage_mouse_entered" binds= [9]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_10" to="." method="_storage_mouse_exited" binds= [9]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_11" to="." method="_storage_gui_input" binds= [10]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_11" to="." method="_storage_mouse_entered" binds= [10]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_11" to="." method="_storage_mouse_exited" binds= [10]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_12" to="." method="_storage_gui_input" binds= [11]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_12" to="." method="_storage_mouse_entered" binds= [11]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_12" to="." method="_storage_mouse_exited" binds= [11]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_13" to="." method="_storage_gui_input" binds= [12]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_13" to="." method="_storage_mouse_entered" binds= [12]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_13" to="." method="_storage_mouse_exited" binds= [12]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_14" to="." method="_storage_gui_input" binds= [13]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_14" to="." method="_storage_mouse_entered" binds= [13]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_14" to="." method="_storage_mouse_exited" binds= [13]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_15" to="." method="_storage_gui_input" binds= [14]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_15" to="." method="_storage_mouse_entered" binds= [14]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_15" to="." method="_storage_mouse_exited" binds= [14]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_16" to="." method="_storage_gui_input" binds= [15]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_16" to="." method="_storage_mouse_entered" binds= [15]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_16" to="." method="_storage_mouse_exited" binds= [15]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_17" to="." method="_storage_gui_input" binds= [16]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_17" to="." method="_storage_mouse_entered" binds= [16]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_17" to="." method="_storage_mouse_exited" binds= [16]]
+[connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_18" to="." method="_storage_gui_input" binds= [17]]
+[connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_18" to="." method="_storage_mouse_entered" binds= [17]]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_18" to="." method="_storage_mouse_exited" binds= [17]]
 [connection signal="item_selected" from="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer/statList" to="." method="_on_stat_list_item_selected"]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer/statList" to="." method="_on_inventory_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Stats/Panel/VBoxContainer/statList" to="." method="_on_inventory_mouse_exited"]

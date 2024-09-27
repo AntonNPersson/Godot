@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://b3x0xxx55sr1"]
+
+[ext_resource type="PackedScene" uid="uid://cvposqxpuydps" path="res://Items/Low-Mid Effects/Foresight.tscn" id="1_dxnsa"]
+[ext_resource type="PackedScene" uid="uid://y8p1whj3821n" path="res://Items/Low-Mid Effects/Blessing.tscn" id="2_g0uq3"]
+[ext_resource type="PackedScene" uid="uid://c0y5qyw7t4lyw" path="res://Items/Low-Mid Effects/Ascension.tscn" id="3_w0nho"]
+[ext_resource type="PackedScene" uid="uid://cwhs6jp24c6il" path="res://Items/Low-Mid Effects/Exploration.tscn" id="4_id2rm"]
+
+[node name="SecondLowMidUtlity" type="Node2D"]
+
+[node name="Foresight" parent="." instance=ExtResource("1_dxnsa")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Blessing" parent="." instance=ExtResource("2_g0uq3")]
+
+[node name="Ascension" parent="." instance=ExtResource("3_w0nho")]
+
+[node name="Exploration" parent="." instance=ExtResource("4_id2rm")]

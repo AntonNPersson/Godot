@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0qsdrcgkrr5w"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/Increase Damage.gd" id="1_nd1p1"]
+
+[node name="IncreaseDamage" type="Node2D"]
+script = ExtResource("1_nd1p1")
+i_name = "Damage Addition"
+tooltip = "Add percentage damage increase to selected ability."
+increased_damage = 20

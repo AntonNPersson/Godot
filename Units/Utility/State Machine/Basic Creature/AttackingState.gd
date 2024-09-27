@@ -7,7 +7,7 @@ func _ready():
 	attack_timer = _unit.total_windup_time
 	
 func _action(_delta):
-	if _unit.is_stunned:
+	if _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		_interrupt_cast_timer()
 		return
 	_update_cast_timer(_delta)
@@ -25,7 +25,7 @@ func _action(_delta):
 			return _change_state.call('casting')
 		break
 	update_sprite_direction(_get_closest_target().global_position, "Attack", false)
-	if _unit.global_position.distance_to(_get_closest_target().global_position) > _unit.total_range + 30 and attack_timer >= (_unit.total_windup_time * 0.15):
+	if _unit.global_position.distance_to(_get_closest_target().global_position) > _unit.total_range + 60 and attack_timer >= (_unit.total_windup_time * 0.15):
 		return _change_state.call('chasing')
 	if _unit.total_range < 200:
 		if _is_winding:

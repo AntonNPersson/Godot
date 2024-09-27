@@ -56,7 +56,9 @@ item_manager = NodePath("../ItemManager")
 [node name="MapManager" parent="CanvasModulate" node_paths=PackedStringArray("im") instance=ExtResource("5_rckfc")]
 im = NodePath("../ItemManager")
 
-[node name="CombatManager" parent="CanvasModulate" instance=ExtResource("6_cvaja")]
+[node name="CombatManager" parent="CanvasModulate" node_paths=PackedStringArray("map_manager", "ability_manager") instance=ExtResource("6_cvaja")]
+map_manager = NodePath("../MapManager")
+ability_manager = NodePath("../AbilityManager")
 
 [node name="UI" type="CanvasLayer" parent="CanvasModulate"]
 
@@ -106,7 +108,6 @@ color = Color(0, 0, 0, 1)
 
 [connection signal="get_units" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_get_units"]
 [connection signal="next_sub_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_start_sub_wave"]
-[connection signal="next_sub_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_update_sub_wave"]
 [connection signal="respawn_creatures" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_respawn_creatures"]
 [connection signal="start_boss" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_start_boss_encounter"]
 [connection signal="start_boss" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_start_wave"]
@@ -114,6 +115,7 @@ color = Color(0, 0, 0, 1)
 [connection signal="start_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_start_wave"]
 [connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/RoundManager" method="_on_stop_wave"]
 [connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_stop_wave"]
+[connection signal="unit_dead" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_creature_dead"]
 [connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/RoundManager" method="_on_character_selected"]
 [connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/AbilityManager" method="_on_character_selected"]
 [connection signal="character_selected" from="CanvasModulate/CharacterManager" to="CanvasModulate/MapManager" method="_on_character_selected"]
@@ -126,6 +128,7 @@ color = Color(0, 0, 0, 1)
 [connection signal="start_singleplayer" from="CanvasModulate/RoundManager" to="CanvasModulate/MapManager" method="_on_round_manager_start_singleplayer"]
 [connection signal="curse_picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/WaveManager" method="_on_ability_manager_curse_picked"]
 [connection signal="curse_picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_curse_picked"]
+[connection signal="enchant_picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_enchantment_picked"]
 [connection signal="picked" from="CanvasModulate/AbilityManager" to="CanvasModulate/RoundManager" method="_on_ability_manager_picked"]
 [connection signal="changing_map" from="CanvasModulate/MapManager" to="CanvasModulate/InteractionManager" method="_on_changing_map"]
 [connection signal="start_boss_cinematic" from="CanvasModulate/MapManager" to="CanvasModulate/CinematicManager" method="_start_cinematic"]

@@ -7,6 +7,7 @@ func _initialize():
 	speed = randi() % 3 + 1
 	armor = randi() % 50 + 20
 	icon = preload('res://Sprites/Icons/Greaves.png')
+	type = ["All"]
 
 func _get_values():
 	return [speed, armor]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://44dgwirs02e0"]
+
+[ext_resource type="PackedScene" uid="uid://cyy7jhll7d08d" path="res://Items/Mid Effects/Mind.tscn" id="1_c152k"]
+[ext_resource type="PackedScene" uid="uid://cufnna1b1fw5b" path="res://Items/Mid Effects/Haste.tscn" id="2_gjrir"]
+[ext_resource type="PackedScene" uid="uid://slsqh6icjrg4" path="res://Items/Mid Effects/Malady.tscn" id="3_3mfuq"]
+[ext_resource type="PackedScene" uid="uid://dw6pd4eiwwfn1" path="res://Items/Mid Effects/Spirit.tscn" id="5_jw47y"]
+[ext_resource type="PackedScene" uid="uid://i7nuh2fml885" path="res://Items/Mid Effects/Obstruct.tscn" id="7_xejgg"]
+
+[node name="MidEffectDefensive" type="Node2D"]
+
+[node name="Mind" parent="." instance=ExtResource("1_c152k")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Haste" parent="." instance=ExtResource("2_gjrir")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Malady" parent="." instance=ExtResource("3_3mfuq")]
+position = Vector2(121.775, 19.19)
+
+[node name="Spirit" parent="." instance=ExtResource("5_jw47y")]
+position = Vector2(121.775, 19.19)
+
+[node name="Obstruct" parent="." instance=ExtResource("7_xejgg")]
+position = Vector2(121.775, 19.19)

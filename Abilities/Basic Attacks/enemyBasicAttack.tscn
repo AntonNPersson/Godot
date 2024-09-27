@@ -1,28 +1,32 @@
 [gd_scene load_steps=6 format=3 uid="uid://7ofsclymrk5m"]
 
 [ext_resource type="Script" path="res://Abilities/Basic Attacks/PlayerBasicAttack.gd" id="1_0ulba"]
-[ext_resource type="Texture2D" uid="uid://c3w5fvw3fok50" path="res://Sprites/manaball.png" id="2_tj3v6"]
+[ext_resource type="Texture2D" uid="uid://b0scg0eqo0jg7" path="res://Sprites/iron arrow.png" id="2_20goj"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_b5534"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_x2w6w"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ptwv7"]
 
 [node name="playerBasicAttack" type="Area2D"]
-scale = Vector2(0.1, 0.1)
+rotation = 0.571946
+scale = Vector2(0.15, 0.15)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_0ulba")
-speed = 300
+speed = 400
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ptwv7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_tj3v6")
+scale = Vector2(0.947983, 1.40168)
+texture = ExtResource("2_20goj")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-color = Color(0.952941, 0.282353, 0.270588, 1)
-energy = 2.0
+position = Vector2(0, -2)
+scale = Vector2(1.30208, 0.130208)
+color = Color(0.976471, 0, 0.270588, 1)
+energy = 0.5
 texture = ExtResource("3_b5534")
-texture_scale = 0.6
+texture_scale = 0.2
 script = ExtResource("4_x2w6w")

@@ -9,6 +9,8 @@ func _initialize():
 	armor = randi() % 50 + 10
 	values = [attack_speed, armor]
 	icon = preload('res://Sprites/Icons/Gauntlet.png')
+	type = ["Defense, Offense"]
+	# Types: Defense, Utility, Offense, All
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)

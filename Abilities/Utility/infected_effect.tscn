@@ -15,7 +15,6 @@ point_count = 2
 
 [node name="infected_effect" type="CPUParticles2D"]
 texture_filter = 1
-amount = 3
 texture = ExtResource("1_abvlc")
 emission_shape = 3
 emission_rect_extents = Vector2(40, 40)

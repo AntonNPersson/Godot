@@ -7,6 +7,7 @@ func _initialize():
 	speed = randi() % 3 + 1
 	barrier = randi() % 10 + 3
 	icon = preload('res://Sprites/Icons/Sandals.png')
+	type = ["Defense", "Utility"]
 
 func _get_values():
 	return [speed, barrier]

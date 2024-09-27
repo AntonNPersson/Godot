@@ -9,12 +9,13 @@ func _initialize():
 	barrier = randi() % 10 + 2
 	values = [attack_speed, barrier]
 	icon = preload('res://Sprites/Icons/Handwraps.png')
+	type = ["Defense", "Offense"]
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
 func _get_values():
-	return values
+	return [attack_speed, barrier]
 
 func _get_tags():
-	return tags
+	return ["attack_speed", "barrier"]

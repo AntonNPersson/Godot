@@ -465,7 +465,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Ogre" type="Area2D"]
+[node name="Ogre" type="Area2D" groups=["special"]]
 top_level = true
 position = Vector2(2, 0)
 scale = Vector2(1.5, 1.5)
@@ -475,7 +475,7 @@ u_name = "Captured Ogre"
 experience = 35
 ascension_currency = 3
 base_armor = 30
-base_speed = 100
+base_speed = 65
 base_health = 150
 base_range = 0
 base_attack_speed = 0.0

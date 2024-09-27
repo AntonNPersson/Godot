@@ -1,7 +1,7 @@
 extends Node
 var unit
 @export var tooltip = "Dash forward, becoming invincible for a short time. Costs 35 stamina, and has zero cooldown."
-@export var dash_speed = 500
+@export var dash_speed = 200
 @export var cost = 35
 @export var dash_duration = 0.2
 @export var particle_effects : CPUParticles2D

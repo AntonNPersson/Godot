@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://slvbxmwh715i"]
+[gd_scene load_steps=11 format=3 uid="uid://slvbxmwh715i"]
 
 [ext_resource type="Script" path="res://Managers/CombatManager.gd" id="1_2mio6"]
 [ext_resource type="PackedScene" uid="uid://bo7pvdl0hpuri" path="res://Abilities/Utility/burn_effect.tscn" id="2_b7ees"]
 [ext_resource type="PackedScene" uid="uid://dg2iyxhbtp8jk" path="res://Abilities/Utility/freeze_effect.tscn" id="3_pd307"]
 [ext_resource type="PackedScene" uid="uid://cb37rpkwu46x2" path="res://Abilities/Utility/hit_effect.tscn" id="4_tvwgo"]
+[ext_resource type="PackedScene" uid="uid://dpm1vfpq3uypm" path="res://Abilities/Utility/frozen_effect.tscn" id="4_vccxh"]
 [ext_resource type="PackedScene" uid="uid://dld07ncmxpsyx" path="res://Abilities/Utility/infected_effect.tscn" id="5_xywp1"]
 [ext_resource type="PackedScene" uid="uid://e4iw4b160x30" path="res://GUI/combat_text.tscn" id="6_nfvwq"]
 [ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="7_r1ark"]
@@ -14,6 +15,7 @@
 script = ExtResource("1_2mio6")
 burn_effect = ExtResource("2_b7ees")
 freeze_effect = ExtResource("3_pd307")
+frozen_effect = ExtResource("4_vccxh")
 hit_effect = ExtResource("4_tvwgo")
 infected_effect = ExtResource("5_xywp1")
 combat_text = ExtResource("6_nfvwq")

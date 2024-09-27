@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://bkrtaty4xnk1j"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://bkrtaty4xnk1j"]
 
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="1_0hr8e"]
 [ext_resource type="StyleBox" uid="uid://dnd8euuaxd40t" path="res://GUI/Button_style_hover.tres" id="2_wke16"]
@@ -6,10 +6,27 @@
 [ext_resource type="StyleBox" uid="uid://bnpwxrl1x3kd1" path="res://GUI/Button_style_pressed.tres" id="4_6c4vd"]
 [ext_resource type="StyleBox" uid="uid://b5n7tp8iaefa8" path="res://GUI/new_test_style.tres" id="5_del7q"]
 [ext_resource type="StyleBox" uid="uid://5qiycd4ieibn" path="res://GUI/tooltip_panel.tres" id="6_mle8l"]
-[ext_resource type="StyleBox" uid="uid://ibhilmoenyq5" path="res://GUI/new_test.tres" id="6_rkwgq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_goo63"]
+bg_color = Color(0.12549, 0.129412, 0.12549, 0.698039)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
+shadow_size = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otvsc"]
 bg_color = Color(0.12549, 0.129412, 0.12549, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0862745, 0.0862745, 0.0862745, 1)
+shadow_size = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4lxp7"]
+bg_color = Color(0.12549, 0.129412, 0.12549, 0.576471)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -39,9 +56,9 @@ ItemList/fonts/font = ExtResource("1_0hr8e")
 ItemList/styles/hovered = ExtResource("2_wke16")
 ItemList/styles/panel = ExtResource("5_del7q")
 ItemList/styles/selected = ExtResource("4_6c4vd")
-Panel/styles/panel = ExtResource("5_del7q")
+Panel/styles/panel = SubResource("StyleBoxFlat_goo63")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_otvsc")
-ProgressBar/styles/background = ExtResource("6_rkwgq")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_4lxp7")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_ampd0")
 RichTextLabel/fonts/bold_font = ExtResource("1_0hr8e")
 RichTextLabel/fonts/normal_font = ExtResource("1_0hr8e")

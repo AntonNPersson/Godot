@@ -7,11 +7,13 @@ func _initialize():
 	evade = randi() % 50 + 20
 	values = [evade]
 	icon = preload('res://Sprites/Icons/Chest.png')
+	type = ["Defense"]
+	# Types: Defense, Utility, Offense, All
 
 func _get_values():
-	return values
+	return [evade]
 
 func _get_tags():
-	return tags
+	return ["evade"]
  
 

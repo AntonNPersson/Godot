@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://dbkbmyl0v2i8r"]
+[gd_scene load_steps=81 format=3 uid="uid://dbkbmyl0v2i8r"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_y6jol"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_m36s2"]
@@ -15,14 +15,6 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
 radius = 16.1555
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_byabs"]
-shader = ExtResource("4_ckpgt")
-shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
-shader_parameter/hit_effect_intensity = 0.0
-shader_parameter/outline_intensity = 0.0
-shader_parameter/outline_size = 0.05
-shader_parameter/outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2l1cy"]
 shader = ExtResource("4_ckpgt")
@@ -542,11 +534,11 @@ script = ExtResource("1_y6jol")
 u_name = "Goblin Grunt"
 experience = 10
 ascension_currency = 1
-base_speed = 80
-base_health = 50
+base_speed = 95
+base_health = 25
 base_range = 75
 base_attack_speed = 0.8
-base_attack_damage = 2
+base_attack_damage = 3
 base_windup_time = 1.5
 basic_attack_scene = ExtResource("3_m36s2")
 aggro_range = 10000.0
@@ -558,7 +550,6 @@ shape = SubResource("CircleShape2D_ujh6a")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
-material = SubResource("ShaderMaterial_byabs")
 scale = Vector2(2.665, 2.665)
 texture = ExtResource("5_hcy1u")
 
@@ -607,6 +598,7 @@ script = ExtResource("10_545c8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_2l1cy")
+position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_yljm5")
 animation = &"Attack West"
 

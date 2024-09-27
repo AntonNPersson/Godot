@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://i7nuh2fml885"]
+
+[ext_resource type="Script" path="res://Items/Mid Effects/Obstruct.gd" id="1_1lk0f"]
+
+[node name="Obstruct" type="Node2D"]
+script = ExtResource("1_1lk0f")

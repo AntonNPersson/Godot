@@ -32,7 +32,7 @@ func _action(_delta):
 		if !_is_ability_on_cooldown((ability_cooldowns.size() - 1 )- i):
 			return _change_state.call('casting')
 		break
-	if _unit.is_rooted:
+	if _unit.is_rooted or _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		return
 	if _closest_distance > _unit.total_range:
 		_move_towards_target(_delta)

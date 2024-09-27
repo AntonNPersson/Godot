@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://bugmvirpfn5na"]
+[gd_scene load_steps=19 format=3 uid="uid://bugmvirpfn5na"]
 
 [ext_resource type="Script" path="res://Items/Item.gd" id="1_iaam4"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="2_icbnx"]
 [ext_resource type="PackedScene" uid="uid://dqxq0qaeoucyb" path="res://Utility/Item_tooltip.tscn" id="2_lx2x2"]
 [ext_resource type="Shader" path="res://Items/particle_light.gdshader" id="2_y6cl4"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="3_xxd8r"]
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="4_4rg3y"]
 [ext_resource type="Texture2D" uid="uid://c3w5fvw3fok50" path="res://Sprites/manaball.png" id="5_yim66"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrdtt"]
@@ -29,6 +30,11 @@ shader = ExtResource("2_y6cl4")
 shader_parameter/radius = 100.0
 shader_parameter/intensity = 100.0
 shader_parameter/accuracy = 32
+
+[sub_resource type="Curve" id="Curve_ncwpa"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.66129, 100), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="Animation" id="Animation_g4uy6"]
 length = 0.001
@@ -127,6 +133,7 @@ script = ExtResource("1_iaam4")
 
 [node name="Panel" parent="CanvasLayer" instance=ExtResource("2_lx2x2")]
 visible = false
+z_index = -1
 z_as_relative = false
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer" groups=["tooltip"]]
@@ -168,13 +175,17 @@ material = SubResource("ShaderMaterial_8mxl0")
 lifetime = 3.0
 randomness = 0.69
 lifetime_randomness = 1.0
+texture = ExtResource("4_4rg3y")
 direction = Vector2(0, 0)
 spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 15.0
-initial_velocity_max = 15.0
-scale_amount_min = 0.5
-scale_amount_max = 5.0
+gravity = Vector2(0, -20)
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+damping_min = 1.0
+damping_max = 1.0
+damping_curve = SubResource("Curve_ncwpa")
+scale_amount_min = 0.01
+scale_amount_max = 0.03
 color = Color(1, 1, 0.513726, 1)
 
 [node name="PointLight2D" type="PointLight2D" parent="CPUParticles2D"]

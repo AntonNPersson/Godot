@@ -2,6 +2,5 @@
 
 [ext_resource type="Script" path="res://Managers/CharacterManager.gd" id="1_wiain"]
 
-[node name="CharacterManager" type="Node" node_paths=PackedStringArray("units") groups=["Persist"]]
+[node name="CharacterManager" type="Node" groups=["Persist"]]
 script = ExtResource("1_wiain")
-units = NodePath("")

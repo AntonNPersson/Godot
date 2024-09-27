@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://jg40w51mf1ji"]
+
+[ext_resource type="PackedScene" uid="uid://b0qsdrcgkrr5w" path="res://Abilities/Enchants/Increase Damage.tscn" id="1_kkwiw"]
+[ext_resource type="PackedScene" uid="uid://dieybv3pe5a4x" path="res://Abilities/Enchants/Increase Projectile Amount.tscn" id="2_u337b"]
+[ext_resource type="PackedScene" uid="uid://bn5612yhr2td3" path="res://Abilities/Enchants/Increase Projectile Speed.tscn" id="3_ipjjw"]
+
+[node name="EnchantList" type="Node2D"]
+
+[node name="IncreaseDamage" parent="." instance=ExtResource("1_kkwiw")]
+
+[node name="IncreaseProjectileAmount" parent="." instance=ExtResource("2_u337b")]
+
+[node name="IncreaseProjectileSpeed" parent="." instance=ExtResource("3_ipjjw")]

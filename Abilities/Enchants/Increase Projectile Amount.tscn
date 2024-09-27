@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dieybv3pe5a4x"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/Increase Projectile Amount.gd" id="1_wd0jr"]
+
+[node name="IncreaseProjectileAmount" type="Node2D"]
+script = ExtResource("1_wd0jr")
+i_name = "Projectile Addition"
+tooltip = "Adds one extra projectile to owned selected projectile ability."
+increased_amount = 1

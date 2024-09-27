@@ -55,6 +55,8 @@ var units = []
 # The array of creatures.
 var creatures = []
 
+var alive_creatures = 10
+
 # A cache for storing the neighbors of each tile.
 var cached_neighbors = {}
 
@@ -628,11 +630,8 @@ func _spawn_and_attach():
 	var random_creatures = []
 	var creature_positions = []
 	var random_increase = int(grid_size/20) + randi() % (3+sub_wave) + 2
-	var spawn_time = 3
+	var spawn_time = 1.5
 	
-	if random_increase > grid_size/10:
-		random_increase = grid_size/10
-
 	for i in range(random_increase):
 		random_creatures = await _calculate_creature(random_increase)
 	for c in random_creatures:
@@ -648,12 +647,16 @@ func _spawn_and_attach():
 	used_creatures.emit(nm, arr)
 	for a in range(arr.size()):
 		if a > 0 and a % 10 == 0:
-			await get_tree().create_timer(5).timeout
+			await get_tree().create_timer(alive_creatures).timeout
+			alive_creatures += 10
 		arr[a].paused = false
 		arr[a].visible = true
 		arr[a].add_to_group('enemies', true)
 		_spawn_effects(arr[a].global_position)
 		await get_tree().create_timer(spawn_time).timeout
+
+func _on_creature_dead():
+	alive_creatures -= 1
 
 func _get_creatures_for_sub_wave(wave, array):
 	array.append(creatures[randi() % wave + 1])

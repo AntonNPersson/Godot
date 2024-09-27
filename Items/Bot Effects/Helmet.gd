@@ -9,12 +9,13 @@ func _initialize():
 	armor = randi() % 42 + 10
 	values = [mana_regen, armor]
 	icon = preload('res://Sprites/Icons/Helmet.png')
+	type = ["All"]
 
 func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 	
 func _get_values():
-	return values
+	return [mana_regen, armor]
 
 func _get_tags():
-	return tags
+	return ["mana_regen", "armor"]

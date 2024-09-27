@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://boa8qxtncbxv4"]
+
+[ext_resource type="PackedScene" uid="uid://cufnna1b1fw5b" path="res://Items/Mid Effects/Haste.tscn" id="1_vlu20"]
+[ext_resource type="PackedScene" uid="uid://7jffqxi0fal7" path="res://Items/Mid Effects/Ice.tscn" id="2_kk2v6"]
+[ext_resource type="PackedScene" uid="uid://21i0ygmo5qa0" path="res://Items/Mid Effects/Endurance.tscn" id="3_3s8ww"]
+
+[node name="MidEffectUtility" type="Node2D"]
+
+[node name="Haste" parent="." instance=ExtResource("1_vlu20")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Ice" parent="." instance=ExtResource("2_kk2v6")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Endurance" parent="." instance=ExtResource("3_3s8ww")]
+position = Vector2(535.126, 43.8267)

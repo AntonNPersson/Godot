@@ -10,7 +10,7 @@ var cooldown
 func _initialize():
 	knockback_distance = 50
 	duration = 0
-	cooldown = 2
+	cooldown = randi() % 10 + 4
 	epic = 'OnCast'
 	unique = true
 	tags.append("WindShout")

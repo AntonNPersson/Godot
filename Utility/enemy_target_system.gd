@@ -37,7 +37,7 @@ func _create_circle_ability(size : float, duration : float, direction: Vector2, 
 		enemy = origini
 		hitbox.get_node('Circle').visible = true
 		hitbox.scale = Vector2(size, size)
-		hitbox.global_position += direction * 78 * size
+		hitbox.global_position += direction * 64 * size
 		origini.add_child(hitbox)
 		hitbox.get_node('Circle').get_node('AnimationPlayer').speed_scale = 1/duration
 		hitbox.get_node('Circle').get_node('AnimationPlayer').play('Fade_in')

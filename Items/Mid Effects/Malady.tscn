@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://slsqh6icjrg4"]
+
+[ext_resource type="Script" path="res://Items/Mid Effects/Malady.gd" id="1_iyqvb"]
+
+[node name="Malady" type="Node2D"]
+script = ExtResource("1_iyqvb")

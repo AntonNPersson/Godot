@@ -100,6 +100,10 @@ var current_base_attack_damage = 0.0
 var is_stunned = false
 var is_rooted = false
 var is_summon = false
+var is_taunted = false
+var is_silenced = false
+var is_frozen = false
+var is_hovered = false
 
 
 var _target = null
@@ -127,7 +131,7 @@ func _is_dead(unit):
 		for child in get_children():
 			child.queue_free()
 		do_action.emit(current_base_experience, unit, unit, 'Experience')
-		do_action.emit(ascension_currency, unit, unit, 'Ascension')
+		do_action.emit(ascension_currency * get_tree().get_nodes_in_group("players")[0].ascension_currency_multiplier, unit, unit, 'Ascension')
 		if !unit.is_in_group('summon'):
 			drop_info._drop_item(unit.global_position)
 
@@ -151,6 +155,8 @@ func _ascend():
 	current_base_evade = base_evade * power
 	current_base_health = base_health * power
 	current_base_attack_speed = base_attack_speed * power
+	current_base_attack_damage = base_attack_damage * power
+	current_base_speed = base_speed * power/5
 	current_base_experience = experience * power
 	current_base_ascension_currency = ascension_currency * power
 
@@ -193,14 +199,20 @@ func _process(_delta):
 
 	if current_health > total_health:
 		current_health = total_health
+
+	if is_hovered:
+		var new_material = get_node('AnimatedSprite2D').material.duplicate()
+		get_node('AnimatedSprite2D').material = new_material
+		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_color", Color.GREEN)
+		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_intensity", 0.6)
+	else:
+		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_color", Color.RED)
+		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_intensity", 0.0)
 		
 func _on_do_action(value, target, duration, tag):
 	# Emit the do_action signal with the provided parameters.
 	_target = target
-	if target.is_in_group('players'):
-		do_action.emit(value * target.power, target, duration, tag)
-	else:
-		do_action.emit(value, target, duration, tag)
+	do_action.emit(value * get_tree().get_nodes_in_group("players")[0].power, target, duration, tag)
 
 func _level_grants():
 	total_attack_damage += 5

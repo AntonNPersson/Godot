@@ -463,7 +463,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_dwdph"]
 radius = 9.80646
 
-[node name="Skeleton King" type="Area2D"]
+[node name="Skeleton King" type="Area2D" groups=["special"]]
 top_level = true
 position = Vector2(2, 0)
 scale = Vector2(1.5, 1.5)
@@ -473,7 +473,7 @@ u_name = "Skeleton King"
 experience = 200
 ascension_currency = 20
 base_armor = 200
-base_speed = 90
+base_speed = 80
 base_health = 600
 base_range = 0
 base_attack_speed = 0.0

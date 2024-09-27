@@ -20,9 +20,12 @@ var tooltip_name
 var tooltip_main_desc
 var tooltip_sub_desc
 var tooltip_icon
+var tooltip_weapon_effect = ""
 
 var scroll_panel
 var json_string
+
+var t_v = {}
 
 func _create_json_string(t_name, t_main_desc, t_sub_desc, t_icon, t_rarity):
 	var json = {
@@ -78,19 +81,43 @@ func _initialize():
 		get_child(1).get_child(0).color = Color.CORAL
 		tooltip_icon.get_child(1).modulate = Color.CORAL
 
-	tooltip += _create_tooltip(2)
+	t_v = _create_tooltip(2)
 	if rarity >= ITEM_RARITY.UNCOMMON:
-		tooltip += _create_tooltip(3)
-		tooltip += _create_tooltip(4)
+		t_v = _merge_dicts(t_v, _create_tooltip(3))
+		t_v = _merge_dicts(t_v, _create_tooltip(4))
 	if rarity >= ITEM_RARITY.RARE:
-		tooltip += _create_tooltip(5)
+		t_v = _merge_dicts(t_v, _create_tooltip(5))
+
+	for key in t_v.keys():
+		if key.find('Range') != -1:
+			continue
+		if key.find('Increased') != -1 or key.find('Attack Speed') != -1 or key.find('Cooldown Reduction') != -1 or key.find('Chance') != -1:
+			tooltip += "[color=Mistyrose]✦ " + key + ": " + str(t_v[key]) + "%\n"
+		else:
+			tooltip += "[color=Mistyrose]✦ " + key + ": " + str(t_v[key]) + "\n"
+	
 	if rarity >= ITEM_RARITY.EPIC:
 		tooltip += _create_tooltip(6)
 
+	if tooltip_weapon_effect != "":
+		if rarity >= ITEM_RARITY.EPIC:
+			tooltip += "\n" + tooltip_weapon_effect
+		else:
+			tooltip += tooltip_weapon_effect		
 	tooltip_sub_desc.text = tooltip
+
 
 	json_string = _create_json_string(tooltip_name.text, tooltip_main_desc.text, tooltip_sub_desc.text, get_child(2).icon.resource_path, rarity)
 	
+func _merge_dicts(dict1, dict2):
+	var merged_dict = dict1
+
+	for key in dict2.keys():
+		if key in merged_dict:
+			merged_dict[key] += dict2[key]
+		else:
+			merged_dict[key] = dict2[key]
+	return merged_dict
 
 func _get_random_animation():
 	var anim = randi() % 4
@@ -109,19 +136,20 @@ func _play_random_animation():
 
 func _create_tooltip(valu):
 	var toolt = ""
+	var tag_values = {}
 	if valu == 6:
 		toolt += "\n"
-		toolt += get_child(valu)._get_tooltip()
+		toolt += "[color=Mediumorchid]✦ [/color]" + get_child(valu)._get_tooltip()
 		return toolt
-
-	var tag_values = {}
 	for i in range(get_child(valu)._get_tags().size()):
 		var tag = get_child(valu)._get_tags()[i]
 		var value = get_child(valu)._get_values()[i]
 		tag = tag.capitalize().replace("_", " ")
-		if tag == "Armor" or tag == "Evade" or tag == "Barrier" or tag == "Attack Damage":
-			if valu == 2:
-				tooltip_main_desc.text = tag + ": " + str(value)
+		if valu == 2:
+			if "Armor" in tag or "Barrier" in tag or "Attack Damage" in tag or "Evade" in tag:
+				print(value)
+				tooltip_main_desc.text = "[color=Mistyrose]" + tag + ": " + str(value) + "\n"
+				tooltip_weapon_effect = get_child(valu).weapon_tooltip
 				continue
 
 		if value != 0:
@@ -129,16 +157,7 @@ func _create_tooltip(valu):
 				tag_values[tag] += value
 			else:
 				tag_values[tag] = value
-			for ta in tag_values:
-				value = tag_values[ta]
-			if "increased" in tag.to_lower() or "cooldown" in tag.to_lower() or "chance" in tag.to_lower():
-				var string = tag + ": " + str(value) + "%"
-				toolt += string + "\n"
-			else:
-				var string = tag + ": " + str(value)
-				toolt += string + "\n"
-
-	return toolt
+	return tag_values
 
 func _input(event):
 	if get_child(0).get_child(0).visible == true and _picked_up == false:
@@ -146,7 +165,15 @@ func _input(event):
 			if player.get_node('InventoryManager').inventory.size() < player.get_node('InventoryManager').max_slots:
 				if "range" in get_child(2)._get_tags():
 					if player.get_node('InventoryManager').weapon_equipped:
-						Utility.get_node("ErrorMessage")._create_error_message("You already have a weapon equipped", self)
+						Utility.get_node("ErrorMessage")._create_error_message("You already have a weapon equipped, adding to storage", self)
+						if player.get_node('InventoryManager').storage.size() < player.get_node('InventoryManager').max_storage_slots:
+							picked_up.emit(self)
+							_picked_up = true
+							im.remove_child(self)
+							player.get_node('InventoryManager').get_node('Items').add_child(self)
+							get_child(0).get_child(0).visible = false
+							get_child(0).get_child(1).visible = false
+							get_child(1).visible = false
 						return
 				picked_up.emit(self)
 				_picked_up = true
@@ -157,8 +184,18 @@ func _input(event):
 				get_child(1).visible = false
 				return
 			else:
-				Utility.get_node("ErrorMessage")._create_error_message("Inventory full", player)
-				return
+				if player.get_node('InventoryManager').storage.size() < player.get_node('InventoryManager').max_storage_slots:
+					picked_up.emit(self)
+					_picked_up = true
+					im.remove_child(self)
+					player.get_node('InventoryManager').get_node('Items').add_child(self)
+					get_child(0).get_child(0).visible = false
+					get_child(0).get_child(1).visible = false
+					get_child(1).visible = false
+					return
+				else:
+					Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
+					return
 
 func _drop_item():
 	_picked_up = false
@@ -179,7 +216,7 @@ func _process(delta):
 		return
 	
 	if !_picked_up:
-		get_child(0).get_child(1).global_position = get_global_transform_with_canvas().get_origin()
+		get_child(0).get_child(1).global_position = get_global_transform_with_canvas().get_origin() - Vector2(12, 0)
 	
 	var overlapping = get_child(0).get_child(1).get_overlapping_areas()
 	for area in overlapping:

@@ -350,8 +350,8 @@ script = ExtResource("1_dmg4a")
 u_name = "Goblin Chief"
 experience = 100
 base_armor = 35
-base_speed = 150
-base_health = 600
+base_speed = 200
+base_health = 800
 abilities = Array[PackedScene]([ExtResource("2_l28r0"), ExtResource("3_3lt1x"), ExtResource("4_8wo2p"), ExtResource("5_5jpcq"), ExtResource("6_yq5n0")])
 basic_attack_scene = ExtResource("5_th56h")
 

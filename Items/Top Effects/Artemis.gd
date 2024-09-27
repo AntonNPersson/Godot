@@ -7,8 +7,8 @@ var duration: int
 var color = Color.GREEN_YELLOW
 
 func _initialize():
-	increased_movement_speed = 50
-	duration = 1
+	increased_movement_speed = randi() % 15 + 10
+	duration = randi() % 3 + 1
 	epic = 'OnCast'
 	unique = false
 	tags.append("PercentSpeedBuff")

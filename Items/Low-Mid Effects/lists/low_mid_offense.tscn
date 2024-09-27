@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://dafs76dyhej7n"]
+
+[ext_resource type="PackedScene" uid="uid://c17mduk4t8t6w" path="res://Items/Low-Mid Effects/Dexterious.tscn" id="1_prvmn"]
+[ext_resource type="PackedScene" uid="uid://dunpu687qf50k" path="res://Items/Low-Mid Effects/Magical.tscn" id="2_jritn"]
+[ext_resource type="PackedScene" uid="uid://dy71mgvjyxn0k" path="res://Items/Low-Mid Effects/Everlasting.tscn" id="3_sg3qt"]
+[ext_resource type="PackedScene" uid="uid://c7j55s4rva5uc" path="res://Items/Low-Mid Effects/Swiftening.tscn" id="4_jffcr"]
+
+[node name="LowMidOffense" type="Node2D"]
+
+[node name="Dexterious" parent="." instance=ExtResource("1_prvmn")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Magical" parent="." instance=ExtResource("2_jritn")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Everlasting" parent="." instance=ExtResource("3_sg3qt")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Swiftening" parent="." instance=ExtResource("4_jffcr")]

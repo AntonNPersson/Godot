@@ -28,16 +28,16 @@ border_color = Color(0, 0, 0, 1)
 [node name="Panel" type="Panel"]
 modulate = Color(1, 1, 1, 0.552941)
 z_index = 1
-custom_minimum_size = Vector2(254, 227)
+custom_minimum_size = Vector2(275, 227)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -960.0
+offset_left = -970.0
 offset_top = -540.0
-offset_right = -706.0
-offset_bottom = -313.0
+offset_right = -669.0
+offset_bottom = -271.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_cxmy1")
@@ -80,7 +80,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 18.0
 offset_top = 93.0
-offset_right = 31.0
+offset_right = 42.0
 offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -92,28 +92,27 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vkckk")
 layout_mode = 0
 offset_left = 7.0
 offset_top = 10.0
-offset_right = 259.0
-offset_bottom = 149.0
+offset_right = 320.0
+offset_bottom = 194.0
 horizontal_scroll_mode = 0
 
 [node name="Description" type="RichTextLabel" parent="VSplitContainer2/ScrollContainer"]
-custom_minimum_size = Vector2(250, 125)
+custom_minimum_size = Vector2(310, 125)
 layout_mode = 2
 mouse_force_pass_scroll_events = false
 theme = SubResource("Theme_yy6oc")
 theme_override_colors/default_color = Color(0.854902, 0.854902, 0.854902, 1)
 theme_override_constants/line_separation = 8
 bbcode_enabled = true
-text = "[u]Streng[/u]ht
-fds"
+text = "[color=purple]✦"
 fit_content = true
 scroll_following = true
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 185.0
+offset_left = 230.0
 offset_top = 44.0
-offset_right = 233.0
+offset_right = 278.0
 offset_bottom = 90.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_qath3")
 

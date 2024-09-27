@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkqe6mgv6lbef"]
+
+[ext_resource type="PackedScene" uid="uid://d3s31bct0uwyq" path="res://Items/Low-Mid Effects/Protecting.tscn" id="1_trnc6"]
+[ext_resource type="PackedScene" uid="uid://cg62fasjp578u" path="res://Items/Low-Mid Effects/Strong.tscn" id="2_204jn"]
+[ext_resource type="PackedScene" uid="uid://dxhvtm4nc2lcj" path="res://Items/Low-Mid Effects/Vitalizing.tscn" id="3_tohbh"]
+
+[node name="LowMidDefense" type="Node2D"]
+
+[node name="Protecting" parent="." instance=ExtResource("1_trnc6")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Strong" parent="." instance=ExtResource("2_204jn")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Vitalizing" parent="." instance=ExtResource("3_tohbh")]
+position = Vector2(121.775, 19.19)

@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8mjj7mqgflr7"]
+
+[ext_resource type="PackedScene" uid="uid://cvposqxpuydps" path="res://Items/Low-Mid Effects/Foresight.tscn" id="1_qbyc6"]
+[ext_resource type="PackedScene" uid="uid://ql4c16tyyopa" path="res://Items/Low-Mid Effects/Wrath.tscn" id="2_fni06"]
+[ext_resource type="PackedScene" uid="uid://cybw6j3ulp1xb" path="res://Items/Low-Mid Effects/Invoking.tscn" id="3_oaq8d"]
+[ext_resource type="PackedScene" uid="uid://ifunh721srwu" path="res://Items/Low-Mid Effects/Quickness.tscn" id="4_14dmb"]
+
+[node name="SecondLowMidOffense" type="Node2D"]
+
+[node name="Foresight" parent="." instance=ExtResource("1_qbyc6")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Wrath" parent="." instance=ExtResource("2_fni06")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Invoking" parent="." instance=ExtResource("3_oaq8d")]
+position = Vector2(535.126, 43.8267)
+
+[node name="Quickness" parent="." instance=ExtResource("4_14dmb")]
+position = Vector2(535.126, 43.8267)
