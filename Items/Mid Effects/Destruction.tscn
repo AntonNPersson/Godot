@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://mhn7imh7hwct"]
+[gd_scene load_steps=2 format=3 uid="uid://mhn7imh7hwct"]
+
+[ext_resource type="Script" path="res://Items/Mid Effects/Destruction.gd" id="1_05p2b"]
 
 [node name="Destruction" type="Node2D"]
+script = ExtResource("1_05p2b")

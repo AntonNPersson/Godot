@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://wkhbpwoasb33"]
+[gd_scene load_steps=10 format=3 uid="uid://wkhbpwoasb33"]
 
 [ext_resource type="Script" path="res://Waves/portal_effect.gd" id="1_5ussc"]
-[ext_resource type="PackedScene" uid="uid://dtbp7mjj6sxej" path="res://Utility/interactable_popup.tscn" id="2_0x5u8"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_xwqh7"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_idjwe"]
 [ext_resource type="Texture2D" uid="uid://cyqhjmrfnpk7i" path="res://Sprites/Sprite2.png" id="5_a5v1p"]
@@ -152,11 +151,5 @@ color = Color(1, 0, 1, 1)
 color_ramp = SubResource("Gradient_ug0xy")
 hue_variation_min = -0.67
 hue_variation_max = 1.0
-
-[node name="PanelContainer" parent="CPUParticles2D" instance=ExtResource("2_0x5u8")]
-offset_left = -93.617
-offset_top = -140.426
-offset_right = 69.383
-offset_bottom = -114.426
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -21,65 +21,83 @@
 [node name="Arena_" type="Node2D"]
 
 [node name="boss_encounter" parent="." instance=ExtResource("1_kuq1q")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Floor" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="_Area2D_104" parent="." instance=ExtResource("4_5im1f")]
+scale = Vector2(0.25, 0.25)
 
 [node name="player_spawn" parent="." instance=ExtResource("5_y2sqs")]
+scale = Vector2(0.25, 0.25)
 
 [node name="creature_spawn" parent="." instance=ExtResource("6_povx3")]
+scale = Vector2(0.25, 0.25)
 
 [node name="torch" parent="." instance=ExtResource("8_ii36f")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Wall" parent="." instance=ExtResource("7_uqmt8")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Floor_obstacle" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="Floor_obstacle"]
 texture = ExtResource("8_yc60v")
 
 [node name="@Area2D@143" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@143"]
 texture = ExtResource("9_6h3d5")
 
 [node name="@Area2D@144" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@144"]
 texture = ExtResource("10_hsw8k")
 
 [node name="@Area2D@145" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@145"]
 texture = ExtResource("11_ufewl")
 
 [node name="@Area2D@146" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@146"]
 texture = ExtResource("12_eqj2o")
 
 [node name="@Area2D@147" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@147"]
 texture = ExtResource("13_40egw")
 
 [node name="@Area2D@148" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@148"]
 texture = ExtResource("14_8x8r5")
 
 [node name="@Area2D@149" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@149"]
 texture = ExtResource("15_pw60x")
 
 [node name="@Area2D@150" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@150"]
 texture = ExtResource("16_757kq")
 
 [node name="@Area2D@151" parent="." instance=ExtResource("3_5peci")]
+scale = Vector2(0.25, 0.25)
+metadata/Walkable = false
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@151"]
 texture = ExtResource("17_f7rja")

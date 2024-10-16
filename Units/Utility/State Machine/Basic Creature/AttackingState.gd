@@ -10,7 +10,6 @@ func _action(_delta):
 	if _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		_interrupt_cast_timer()
 		return
-	_update_cast_timer(_delta)
 	var separation_vector = Vector2()
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy != _unit:

@@ -3,7 +3,11 @@ class_name ChasingState
 var MAX_SPEED = 0
 var colliding = false
 var collision_direction = Vector2.ZERO
+var colliding_obstacle_position = Vector2.ZERO
+var colliding_obstacle_size = Vector2.ZERO
+var avoidance_direction_type = ""
 var closest_direction
+var closest_avoidance_direction
 var avoidance_force: float = 0.8
 var avoidance_distance: float = 32.0
 var ray_length: float = 1
@@ -25,8 +29,8 @@ var player_tile = Vector2()
 var timer = 3
 
 func _action(_delta):
-	_update_cast_timer(_delta)
 	_get_closest_target()
+	_check_collision()
 	MAX_SPEED = _unit.total_speed
 	for i in range(ability_cooldowns.size()):
 		if !_is_ability_on_cooldown((ability_cooldowns.size() - 1 )- i):
@@ -88,26 +92,45 @@ func _move_towards_target(_delta):
 		update_sprite_direction(path[current_path_index], "Walk", false)
 
 	if colliding:
-		_unit.global_position -= (collision_direction).normalized() * (_unit.total_speed) * _delta
+		if closest_avoidance_direction == null:
+			colliding = false
+			return
+		update_sprite_direction(_get_closest_target().global_position, "Walk", false)
+		_unit.global_position += closest_avoidance_direction * _unit.total_speed * _delta
+		if avoidance_direction_type == "Horizontal":
+			if _unit.global_position.distance_to(colliding_obstacle_position) > colliding_obstacle_size.size.x + 15:
+				_update_path(colliding_obstacle_position)
+				print('Horizontal')
+				colliding = false
+				_unit.is_colliding = false
+		elif avoidance_direction_type == "Vertical":
+			if _unit.global_position.distance_to(colliding_obstacle_position) > colliding_obstacle_size.size.y + 15:
+				_update_path(colliding_obstacle_position)
+				print('Vertical')
+				colliding = false
+				_unit.is_colliding = false
 	else:
 		_walk_from_to(path, _unit, _delta, PATH_TILE_UPDATE_INTERVAL, _get_closest_target())
+	if _closest_distance > _unit.total_range + 15:
+		var separation_vector = Vector2()
+		for enemy in get_tree().get_nodes_in_group("enemies"):
+			if enemy != _unit:
+				var enemy_position = enemy.global_position
+				var separation = _unit.global_position.distance_to(enemy_position)
+				if separation < 30 and _unit.total_speed > 0:
+					separation_vector += (_unit.global_position - enemy_position).normalized() * (30 - separation)
+		_unit.global_position += separation_vector * _delta * 2
 
-	var separation_vector = Vector2()
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if enemy != _unit:
-			var enemy_position = enemy.global_position
-			var separation = _unit.global_position.distance_to(enemy_position)
-			if separation < 30 and _unit.total_speed > 0:
-				separation_vector += (_unit.global_position - enemy_position).normalized() * (30 - separation)
-	_unit.global_position += separation_vector * _delta * 2
+
 
 func _walk_from_to(path, unit, delta, tile_update_interval, target):
 	var target_tile = unit.obstacles_info._world_to_tilemap_position(target.global_position)
 	var current_tile = unit.obstacles_info._world_to_tilemap_position(unit.global_position)
 	var next_tile = path[current_path_index]
+	var smooth_factor = 0.8
 	var distance = unit.global_position.distance_to(next_tile)
 	var direction = (next_tile - unit.global_position).normalized()
-	var _velocity = direction * unit.total_speed
+	var _velocity = direction * unit.total_speed * smooth_factor
 	var separation_vector = Vector2()
 	
 
@@ -124,7 +147,7 @@ func _walk_from_to(path, unit, delta, tile_update_interval, target):
 	if distance > 0:
 		unit.global_position += _velocity * delta
 	
-	if distance < 25:
+	if distance < 5:
 		current_path_index += 1
 		if current_path_index > tile_update_interval:
 			current_path_index = -1
@@ -139,8 +162,8 @@ func _check_if_player_moved():
 		_set_player_tile_position(new_player_tile)
 		_update_path()
 
-func _update_path():
-	var new_path = _unit.obstacles_info._a_star(_unit.global_position, _get_closest_target().global_position, "AllMoves")
+func _update_path(excluded_tile = null):
+	var new_path = _unit.obstacles_info._a_star(_unit.global_position, _get_closest_target().global_position, "AllMoves", _unit, excluded_tile)
 	if new_path.size() == 0:
 		return -1
 
@@ -160,10 +183,37 @@ func _linear_interpolate(start, end, weight):
 
 func _check_collision():
 	var overlapping = _unit.get_overlapping_areas()
-	colliding = false
 	
 	for area in overlapping:
 		if area.is_in_group('obstacles'):
 			var collision_point = area.get_node("CollisionShape2D").global_position
 			collision_direction = (collision_point - _unit.global_position).normalized()
+			colliding_obstacle_position = area.get_node("CollisionShape2D").global_position
+			colliding_obstacle_size = area.get_node("CollisionShape2D").get_shape().get_rect()
+			var direction_to_target = (_get_closest_target().global_position - _unit.global_position).normalized()
+			var avoidance_direction = Vector2.ZERO
+			var movement_threshold = 0
+			var possible_avoidance_directions = []
+
+			if abs(collision_direction.x) > abs(collision_direction.y):
+				# Horizontal collision (from left or right)
+				if abs(collision_direction.x) > movement_threshold:
+					possible_avoidance_directions.append(Vector2(0, -1))  # Move right
+					possible_avoidance_directions.append(Vector2(0, 1))  # Move left
+					avoidance_direction_type = "Horizontal"
+			else:
+				# Vertical collision (from above or below)
+				if abs(collision_direction.y) > movement_threshold:
+					possible_avoidance_directions.append(Vector2(-1, 0))  # Move down
+					possible_avoidance_directions.append(Vector2(1, 0))  # Move up
+					avoidance_direction_type = "Vertical"
+
+			var closest_angle_difference = 360
+
+			for avoidance in possible_avoidance_directions:
+				var angle_differences = abs(direction_to_target.angle_to(avoidance))
+				if angle_differences < closest_angle_difference:
+					closest_angle_difference = angle_differences
+					closest_avoidance_direction = avoidance
 			colliding = true
+			_unit.is_colliding = true

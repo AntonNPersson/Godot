@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dwagig8mnhwnn"]
+[gd_scene load_steps=9 format=3 uid="uid://dwagig8mnhwnn"]
 
 [ext_resource type="PackedScene" uid="uid://7jffqxi0fal7" path="res://Items/Mid Effects/Ice.tscn" id="1_tajs2"]
 [ext_resource type="PackedScene" uid="uid://c7efjsuurscby" path="res://Items/Mid Effects/Flames.tscn" id="2_gs5jm"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://cyy7jhll7d08d" path="res://Items/Mid Effects/Mind.tscn" id="6_hldx2"]
 [ext_resource type="PackedScene" uid="uid://slsqh6icjrg4" path="res://Items/Mid Effects/Malady.tscn" id="7_q8j10"]
 [ext_resource type="PackedScene" uid="uid://mhn7imh7hwct" path="res://Items/Mid Effects/Destruction.tscn" id="8_dkpxc"]
-[ext_resource type="Script" path="res://Items/Mid Effects/Destruction.gd" id="9_mk1dd"]
 
 [node name="MidEffectOffensive" type="Node2D"]
 
@@ -35,4 +34,3 @@ position = Vector2(121.775, 19.19)
 
 [node name="Destruction" parent="." instance=ExtResource("8_dkpxc")]
 position = Vector2(-664, -91)
-script = ExtResource("9_mk1dd")

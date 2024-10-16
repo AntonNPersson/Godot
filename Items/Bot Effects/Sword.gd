@@ -7,6 +7,8 @@ var attack_speed : int = 10
 var timer = 0
 var cooldown = 6
 
+var attack_sprite = null
+
 func _initialize():
 	range = 25
 	attack_damage = randi_range(12, 22)
@@ -33,10 +35,15 @@ func _initialize_weapon(player):
 					player.get_node('Control')._on_action(player.current_attack_modifier_values[i], enemy, player, player.current_attack_modifier_tags[i])
 
 		player.get_node('Control').update_sprite_direction(player.get_node('Control').movement_target, "Attack")
-		player.get_node('Control').attack_sprite.get_child(0).play('default')
-		player.get_node('Control').attack_sprite.global_position = player.global_position
-		player.get_node('Control').attack_sprite.scale = Vector2(0.3, 0.3)
-		player.get_node('Control').attack_sprite.modulate = Color(0.6, 0.6, 1, 1)
+		
+		if attack_sprite == null:
+			attack_sprite = player.get_node('Control').attack_sprite.duplicate()
+			player.get_node('Extra').add_child(attack_sprite)
+
+		attack_sprite.get_child(0).play('default')
+		attack_sprite.global_position = player.global_position
+		attack_sprite.scale = Vector2(0.3, 0.3)
+		attack_sprite.modulate = Color(0.6, 0.6, 1, 1)
 	else:
 		Utility.get_node('ErrorMessage')._create_error_message('Weapon effect is on cooldown.', player)
 func _get_values():

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bc20geqg6yw2q"]
+[gd_scene load_steps=6 format=3 uid="uid://bc20geqg6yw2q"]
 
 [ext_resource type="PackedScene" uid="uid://bo5p4mk3x60ix" path="res://Waves/wave_1.tscn" id="1_fa1sv"]
 [ext_resource type="Script" path="res://Waves/wave_specials.gd" id="2_l0s1y"]
 [ext_resource type="PackedScene" uid="uid://dga2d1af05bay" path="res://Waves/wave_2.tscn" id="2_o1rts"]
+[ext_resource type="Texture2D" uid="uid://id4wqherqhhy" path="res://Sprites/Goblin_camp_icon.jpg" id="3_bfu10"]
+[ext_resource type="Texture2D" uid="uid://j7q0g4aq72tl" path="res://Sprites/cemetery_icon.jpg" id="5_dqmie"]
 
 [node name="WaveList" type="Node2D"]
 
@@ -10,9 +12,13 @@
 script = ExtResource("2_l0s1y")
 tooltip = "A dungeon in the form of a goblin camp, used as an introduction to dungeoneering."
 grade = "F"
+icon = ExtResource("3_bfu10")
+wave_name = "Goblin Camp"
 metadata/Color = Color(0.196078, 0.196078, 0.196078, 0.815686)
 
-[node name="Cemetery" parent="." instance=ExtResource("2_o1rts")]
+[node name="Infected Cemetery" parent="." instance=ExtResource("2_o1rts")]
 position = Vector2(443, 122)
 tooltip = "An infected cemetery, plagued with eternal darkness. This dungeon is said to be annoying even for veteran dungeoneers."
 grade = "F"
+icon = ExtResource("5_dqmie")
+wave_name = "Infected Cemetery"

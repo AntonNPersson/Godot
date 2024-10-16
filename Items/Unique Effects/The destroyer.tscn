@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cf47f6omsm5ox"]
+
+[ext_resource type="Script" path="res://Items/Unique Effects/The destroyer.gd" id="1_yhr0x"]
+
+[node name="The Destroyer" type="Node2D"]
+script = ExtResource("1_yhr0x")

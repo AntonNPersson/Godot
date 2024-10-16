@@ -1,13 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8chwfwce6kgm"]
+[gd_scene load_steps=11 format=3 uid="uid://c8chwfwce6kgm"]
 
 [ext_resource type="PackedScene" uid="uid://debopt64df75q" path="res://Abilities/Ascension/Increased Armor.tscn" id="1_k3hag"]
 [ext_resource type="PackedScene" uid="uid://b6enmgpmwnrii" path="res://Abilities/Ascension/Increased Health.tscn" id="2_jcfxr"]
+[ext_resource type="Texture2D" uid="uid://dwkb32b1uuhqe" path="res://Sprites/Curses/armored chinchilla.jpg" id="2_nyn05"]
 [ext_resource type="PackedScene" uid="uid://tiathqfmhmle" path="res://Abilities/Ascension/Increased Movement Speed.tscn" id="3_ptk2l"]
+[ext_resource type="PackedScene" uid="uid://c5h1x038dvy1m" path="res://Abilities/Ascension/Meteor Shower.tscn" id="4_2oed8"]
+[ext_resource type="Texture2D" uid="uid://c6ola1lortoo3" path="res://Sprites/Curses/juggernaut.jpg" id="4_jdb1f"]
+[ext_resource type="Texture2D" uid="uid://csx10qagas5fx" path="res://Sprites/Curses/speed demon.jpg" id="6_y4oes"]
+[ext_resource type="Texture2D" uid="uid://uajkdeeqd0vo" path="res://Sprites/Curses/Meteor Shower.jpg" id="8_wilp8"]
+[ext_resource type="PackedScene" uid="uid://b2733pdw4edo1" path="res://Abilities/Ascension/Stormy Winds.tscn" id="9_ql4gh"]
+[ext_resource type="Texture2D" uid="uid://bcmeccowv071h" path="res://Sprites/Curses/stormy winds.jpg" id="10_kl7dx"]
 
 [node name="AscensionDebuffs" type="Node2D"]
 
 [node name="Increased Armor" parent="." instance=ExtResource("1_k3hag")]
+icon = ExtResource("2_nyn05")
 
 [node name="Increased Health" parent="." instance=ExtResource("2_jcfxr")]
+icon = ExtResource("4_jdb1f")
 
 [node name="Increased Movement Speed" parent="." instance=ExtResource("3_ptk2l")]
+icon = ExtResource("6_y4oes")
+
+[node name="MeteorShower" parent="." instance=ExtResource("4_2oed8")]
+icon = ExtResource("8_wilp8")
+
+[node name="StormyWinds" parent="." instance=ExtResource("9_ql4gh")]
+icon = ExtResource("10_kl7dx")

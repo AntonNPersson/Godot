@@ -82,7 +82,8 @@ func _create_rectangle_ability(size : Vector2, duration : float, direction: Vect
 func _create_targeted_circle_ability(size : float, duration : float, target : Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null):
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
-	origini.is_rooted = true
+	if origini != get_tree().get_nodes_in_group('players')[0]:
+		origini.is_rooted = true
 	var hitbox = hitboxx.duplicate()
 	hitbox._initialize()
 	hitbox.get_node('Circle').visible = true

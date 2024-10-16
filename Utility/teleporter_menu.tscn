@@ -1,12 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://dvbhbi2x5wrvp"]
+[gd_scene load_steps=5 format=3 uid="uid://dvbhbi2x5wrvp"]
 
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="1_3oyej"]
 [ext_resource type="Script" path="res://Utility/Ascend_menu.gd" id="2_1vryr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_47dp2"]
+bg_color = Color(0.145098, 0.14902, 0.145098, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7h45q"]
+bg_color = Color(0.145098, 0.14902, 0.145098, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
 
 [node name="CanvasLayer" type="CanvasLayer"]
 
 [node name="ItemList" type="ItemList" parent="."]
 visible = false
+modulate = Color(1, 1, 1, 0.698039)
 custom_minimum_size = Vector2(200, 200)
 anchors_preset = 8
 anchor_left = 0.5
@@ -21,9 +38,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_3oyej")
 theme_override_font_sizes/font_size = 11
+theme_override_styles/panel = SubResource("StyleBoxFlat_47dp2")
 
 [node name="Panel" type="Panel" parent="."]
 visible = false
+modulate = Color(1, 1, 1, 0.698039)
 custom_minimum_size = Vector2(200, 100)
 anchors_preset = 8
 anchor_left = 0.5
@@ -63,6 +82,105 @@ offset_top = 60.0
 offset_right = 188.0
 offset_bottom = 82.0
 text = "Return"
+
+[node name="Maps" type="Panel" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.698039)
+custom_minimum_size = Vector2(300, 300)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 107.0
+offset_top = -150.0
+offset_right = 407.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_7h45q")
+
+[node name="Title" type="RichTextLabel" parent="Maps"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 40.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[center]Goblin Camp"
+fit_content = true
+
+[node name="Icon" type="TextureRect" parent="Maps"]
+custom_minimum_size = Vector2(125, 125)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 30.0
+offset_right = 20.0
+offset_bottom = 70.0
+grow_horizontal = 2
+expand_mode = 2
+
+[node name="Tooltip" type="RichTextLabel" parent="Maps"]
+custom_minimum_size = Vector2(250, 75)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -125.0
+offset_top = -125.0
+offset_right = 125.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+
+[node name="Enter" type="Button" parent="Maps"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Enter"
+
+[node name="Line2D" type="Line2D" parent="Maps"]
+points = PackedVector2Array(88, 170, 212, 170)
+width = 2.0
+default_color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[node name="Panel" type="Panel" parent="Maps"]
+modulate = Color(1, 1, 1, 0.698039)
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -122.5
+offset_right = 65.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="pressed" from="Panel/Ascend" to="Panel" method="_on_ascend_pressed"]
 [connection signal="pressed" from="Panel/Return" to="Panel" method="_on_return_pressed"]

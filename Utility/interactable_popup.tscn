@@ -3,8 +3,13 @@
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="1_ner1q"]
 
 [node name="PanelContainer" type="PanelContainer"]
-offset_right = 200.0
+anchors_preset = -1
+anchor_left = 0.026
+anchor_right = 0.026
+offset_left = -49.92
+offset_right = 150.08
 offset_bottom = 30.0
+scale = Vector2(0.5, 0.5)
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2

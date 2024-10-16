@@ -156,7 +156,7 @@ func _get_special_positions():
 	return special_positions
 
 # Instantiate the tile scene
-func _create_tile(scene):
+func _create_tile(scene, debug_color = Color.GREEN, debug = false):
 	var instance = scene.duplicate()
 	if instance.has_meta('Interactable'):
 		if instance.get_meta('Interactable'):
@@ -166,6 +166,8 @@ func _create_tile(scene):
 			Utility.get_node('Interactable').special_objects.append(instance)
 			special_positions.append(cumulative_position + Vector2(tilemap_tile_width, 0))
 	var sprite = instance.get_node("Sprite2D").texture
+	if debug:
+		instance.modulate = debug_color
 	tilemap_tile_width = sprite.get_width() * instance.scale.x
 	tilemap_tile_height = sprite.get_height() * instance.scale.y
 	instance.global_position = cumulative_position + Vector2(tilemap_tile_width, 0)
@@ -179,6 +181,7 @@ func _create_tile(scene):
 # and 3 respectfully to save their position for use.
 func _loadTileMap(file, tiles):
 	var f = FileAccess.open(file, FileAccess.READ)
+	var debug_walkable = Color.GREEN
 	if f:
 		var content = f.get_as_text()
 		f.close()
@@ -204,9 +207,10 @@ func _loadTileMap(file, tiles):
 					if tile_int == tile:
 						if tiles[tile].get_meta('Walkable'):
 							row2.append(true)
+							debug_walkable = Color.GREEN
 						else:
+							debug_walkable = Color.RED
 							row2.append(false)
-
 						if tiles[tile].has_meta('Player_Spawn'):
 							teleporter_position = _create_tile(tiles[tile])
 							row.append(teleporter_position)
@@ -217,7 +221,7 @@ func _loadTileMap(file, tiles):
 							boss_spawn_position = _create_tile(tiles[tile])
 							row.append(boss_spawn_position)
 						else:
-							_create_tile(tiles[tile])
+							_create_tile(tiles[tile], debug_walkable)
 							row.append(cumulative_position)
 			cumulative_position.x = 0  # Reset X for the next row
 			cumulative_position.y += tilemap_tile_height
@@ -267,12 +271,13 @@ func _get_random_spawn_position():
 	return spawn_position[randi() % spawn_position.size()]
 
 # Typical a-star  algorithm, where you can either chose to get the first move or all moves calculated to a goal.
-func _a_star(startt, goalt, type):
+func _a_star(startt, goalt, type, unit = null, excluded_tile = null):
 	var open_set = []
 	var closed_set = []
 	var came_from = {}
 	var start = _world_to_tilemap_position(startt)
 	var goal = _world_to_tilemap_position(goalt)
+	var excluded = _world_to_tilemap_position(excluded_tile)
 	var current = start
 
 	open_set.append(start)
@@ -287,7 +292,10 @@ func _a_star(startt, goalt, type):
 		closed_set.append(current)
 
 		for neighbor in _get_neighbors(current):
-			if closed_set.find(neighbor) != -1 or !_is_tile_walkable(neighbor):
+			if closed_set.find(neighbor) != -1 or !_is_tile_walkable(neighbor, unit):
+				continue
+			
+			if excluded != null and neighbor == excluded:
 				continue
 
 			var tentative_g_score = _calculate_g_score(current, start) + current.distance_squared_to(neighbor)
@@ -377,6 +385,9 @@ func smooth_path(path, unit):
 
 # Finds the closest tile to arbritary world position.	
 func _world_to_tilemap_position(_world_position):
+	if _world_position == null:
+		return
+
 	var distance = INF
 	var current_tile
 	for tile in tile_data_dict.values():
@@ -446,7 +457,8 @@ func _find_random_walkable_tile():
 
 # Check if a tile at the given position is walkable.
 # Returns true if the tile is walkable, false otherwise.
-func _is_tile_walkable(tile_position):
+func _is_tile_walkable(tile_position, unit = null) -> bool:
+	var tile_size = Vector2(128, 128)
 	var index = _find_index_in_2d_array(tile_position)	
 	return walkable_tiles[index.y][index.x]
 	
@@ -463,13 +475,18 @@ func _cache_neighbors():
 func _calculate_neighbors(pos: Vector2) -> Array:
 	var neighbors = []
 	var index = _find_index_in_2d_array(pos)
-	
-	for i in range(-1, 2):
-		for j in range(-1, 2):
 
-			var neighbor_pos = index + Vector2(i, j)
-			if _is_valid_neighbor(neighbor_pos, pos) and neighbor_pos != index:
-				neighbors.append(tile_positions[neighbor_pos.y][neighbor_pos.x])
+	var offsets = [
+		Vector2(0, -1),  # Up
+		Vector2(0, 1),   # Down
+		Vector2(-1, 0),  # Left
+		Vector2(1, 0)    # Right
+	]
+	
+	for offset in offsets:
+		var neighbor_pos = index + offset
+		if _is_valid_neighbor(neighbor_pos, pos):
+			neighbors.append(tile_positions[neighbor_pos.y][neighbor_pos.x])
 
 	return neighbors
 

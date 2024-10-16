@@ -9,6 +9,7 @@ var timer = 0
 var cooldown = 6
 
 var target = null
+var attack_sprite = null
 
 func _initialize():
 	range = 15
@@ -38,11 +39,16 @@ func _use_weapon(player, delta):
 			player.get_node('Control')._on_action(new_damage, target, player, "Damage", extra)
 			player.get_node('Control').update_sprite_direction(player.global_position.direction_to(target.global_position), "Attack")
 			player.get_node('Extra').get_node('GreataxeEffect').emitting = false
-			player.get_node('Control').attack_sprite.get_child(0).play('default')
-			player.get_node('Control').attack_sprite.global_position = player.global_position + 20 * player.global_position.direction_to(target.global_position)
-			player.get_node('Control').attack_sprite.scale = Vector2(0.1, 0.1)
-			player.get_node('Control').attack_sprite.modulate = Color(1, 0.0, 0.0, 1)
-			player.get_node('Control').attack_sprite.rotation = player.global_position.direction_to(target.global_position).angle()
+			
+			if attack_sprite == null:
+				attack_sprite = player.get_node('Control').attack_sprite.duplicate()
+				player.get_node('Extra').add_child(attack_sprite)
+
+			attack_sprite.get_child(0).play('default')
+			attack_sprite.global_position = player.global_position + 20 * player.global_position.direction_to(target.global_position)
+			attack_sprite.scale = Vector2(0.1, 0.1)
+			attack_sprite.modulate = Color(1, 0.0, 0.0, 1)
+			attack_sprite.rotation = player.global_position.direction_to(target.global_position).angle()
 			is_using = false
 		else:
 			player.global_position += player.global_position.direction_to(target.global_position) * 450 * delta

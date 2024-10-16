@@ -10,6 +10,7 @@ var duration = 0.2
 var cooldown = 5
 var timer = 0
 
+var attack_sprite = null
 
 func _initialize():
 	range = 15
@@ -53,11 +54,16 @@ func _initialize_weapon(player):
 		is_using = true
 		duration = 0.2
 		hit_targets = []
-		player.get_node('Control').attack_sprite.get_child(0).play('default')
-		player.get_node('Control').attack_sprite.rotation = target_location.angle()
-		player.get_node('Control').attack_sprite.global_position = player.global_position + (target_location - player.global_position).normalized()
-		player.get_node('Control').attack_sprite.scale = Vector2(0.35, 0.06)
-		player.get_node('Control').attack_sprite.modulate = Color(0.6, 1, 0.6, 1)
+
+		if attack_sprite == null:
+			attack_sprite = player.get_node('Control').attack_sprite.duplicate()
+			player.get_node('Extra').add_child(attack_sprite)
+
+		attack_sprite.get_child(0).play('default')
+		attack_sprite.rotation = target_location.angle()
+		attack_sprite.global_position = player.global_position + (target_location - player.global_position).normalized()
+		attack_sprite.scale = Vector2(0.35, 0.06)
+		attack_sprite.modulate = Color(0.6, 1, 0.6, 1)
 	else:
 		Utility.get_node('ErrorMessage')._create_error_message('Weapon effect is on cooldown.', player)
 

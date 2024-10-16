@@ -15,6 +15,7 @@ var target_marker
 var level = 1
 var current_experience = 0.0
 var max_experience = 100.0
+var is_docile = true
 			
 #-------------------#
 # Exported Variables
@@ -95,6 +96,8 @@ var power : float
 #-------------------#
 
 func _process(delta):
+	if is_docile:
+		return
 	_update_tooltip()
 	if projectile_type == targeting_type.EnemyAura or projectile_type == targeting_type.AllyAura:
 		_apply_aura()
@@ -265,10 +268,14 @@ func _level_grants():
 
 	for inc in range(values.size()):
 		values[inc] += increased_values[inc]
+	
+	if projectile_type == targeting_type.Passive:
+		_update_passive()
+		return
 
 # Update passive abilities. If ability is passive, a new passive_ability class must be used, that inherits from this class
 func _update_passive():
-	pass
+	unit.get_node('Control').on_action.emit(values[0], unit, self, tags[0], self)
 
 # Get closest visible enemy to mouse
 func _get_closest_visible_enemy_to_mouse():
@@ -333,7 +340,10 @@ func _advanced_update():
 #-------------------#
 # Initialize ability, if needed. Some abilities might need to be initialized because of a specific value or tag
 func _initialize():
-	if projectile_type == targeting_type.Summon:
+	if projectile_type == targeting_type.Summon or is_docile:
+		return
+	if projectile_type == targeting_type.Passive:
+		_update_passive()
 		return
 
 	for tag in tags.size():
@@ -341,9 +351,6 @@ func _initialize():
 			unit.get_node('Control').on_action.emit(values[tag], unit, self, tags[tag])
 	if advanced_update:
 		ad_update = true
-
-	if projectile_type == targeting_type.Passive:
-		_update_passive()
 
 func _get_enemies_close_to_mouse():
 	var mouse_pos = unit.get_global_mouse_position()
@@ -524,7 +531,7 @@ func _on_hit(area):
 		elif "Duplicate" in tags[val] or "Pierce" in tags[val] or "Explosion" in tags[val] or "AbilityPercentDamage" in tags[val] or "ProjectileSpeed" in tags[val]:
 			continue
 		elif "Passive" in tags[val]:
-			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val])
+			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val], self)
 		elif "Damage" in tags[val]:
 			unit.get_node('Control').on_action.emit(_apply_scaling(values[val], ability_type), area, unit, tags[val])
 			_shake_camera()

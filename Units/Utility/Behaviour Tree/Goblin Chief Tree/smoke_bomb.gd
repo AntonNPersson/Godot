@@ -7,5 +7,5 @@ func _run(_delta):
 	ability_.origin = unit
 	ability_.target = _get_closest_target()
 	ability_.origin.get_tree().get_root().get_node('Main').add_child(ability_)
-	ability_._use()
+	ability_._use(unit.get_node('Summons').get_children())
 	_success()

@@ -32,6 +32,7 @@ var is_silenced = false
 var is_charmed = false
 var is_taunted = false
 var is_frozen = false
+var is_colliding = false
 var melee = false
 var gold = 0
 var global_weight : float = int(0)
@@ -188,7 +189,7 @@ var current_attack_modifier_values = []
 var regen_timer = 0
 
 # Saved variables
-var completed_waves = []
+var completed_waves = [0, 1, 2, 3]
 var power = 1
 var ascension_level = 0
 var ascension_currency = 0

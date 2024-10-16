@@ -4,6 +4,8 @@ extends Node2D
 @export var icon : Texture
 
 @export var increased_health : int
+
+var ascension_currency_multiplier = 0.2
 var second_tooltip
 
 func _ready():

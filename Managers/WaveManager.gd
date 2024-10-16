@@ -8,6 +8,7 @@ signal get_units(unit)
 signal unit_dead()
 
 @export var portal_effect : PackedScene
+@export var map_manager : Node
 
 var players = []
 var waves
@@ -40,6 +41,7 @@ var next_map = maps.ROOM
 var initialized = false
 
 var curses = []
+var current_curses = []
 
 func _initialize():
 	waves = get_node('Waves')
@@ -65,6 +67,7 @@ func _process(_delta):
 			var portal_effect = portal_effect.instantiate()
 			portal_effect.modulate = Color.GREEN
 			get_tree().get_root().add_child(portal_effect)
+			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
 			portal_effect.global_position = players[0].global_position
 			portal_effect.enter_portal.connect(_enter_portal_exit)
 			boss_ready = false
@@ -72,14 +75,21 @@ func _process(_delta):
 	if wave_ongoing:
 		if current_wave.has_meta('Special'):
 			current_wave._get_special()
+		for curse in curses:
+			if "special" in curse:
+				curse._update_special(_delta)
 
 func _start_wave(value, last = false):
-
 	current_round = value
 	current_wave_scene = load("res://Waves/wave_" + str(current_round) +".tscn")
 	current_wave = current_wave_scene.instantiate()
 	waves.add_child(current_wave)
 	current_wave.visible = true
+
+	for curse in curses:
+		if "special" in curse:
+			curse._start_special(players[0], map_manager)
+
 	for child in current_wave.get_children():
 		child._ascend()
 		for curse in curses:
@@ -133,6 +143,7 @@ func _unit_dead(_unit):
 			current_wave_counter = 1
 			var portal_effect = portal_effect.instantiate()
 			get_tree().get_root().add_child(portal_effect)
+			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
 			portal_effect.global_position = _unit.global_position
 			portal_effect.enter_portal.connect(_enter_portal)
 		else:
@@ -140,6 +151,7 @@ func _unit_dead(_unit):
 			var portal_effect = portal_effect.instantiate()
 			portal_effect.modulate = Color.RED
 			get_tree().get_root().add_child(portal_effect)
+			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
 			portal_effect.global_position = _unit.global_position
 			portal_effect.enter_portal.connect(_enter_portal_boss)
 
@@ -162,6 +174,11 @@ func _stop_wave():
 	wave_ongoing = false
 	waves.remove_child(current_boss)
 	players[0].in_combat = false
+
+	for curse in curses:
+		if "special" in curse:
+			curse._stop_special()
+
 	if current_round in players[0]._get_completed_waves():
 		stop_wave.emit(true, current_round)
 	else:
@@ -174,6 +191,11 @@ func _start_boss():
 	waves.add_child(current_boss)
 	get_units.emit(current_boss.get_children())
 	current_amount_of_enemies = current_boss.get_child_count()
+
+	for curse in curses:
+		if "special" in curse:
+			curse._start_special(players[0], map_manager)
+
 	for child in current_boss.get_children():
 		child._ascend()
 		for curse in curses:
@@ -221,7 +243,16 @@ func _on_map_manager_used_creatures(number:Variant, arr:Variant):
 	_update_objectives()
 
 func _get_total_waves():
-	return 2
+	var dir = DirAccess.open('res://Waves/')
+	dir.list_dir_begin()
+	var waves_amount = 0
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		if file.ends_with('.tscn'):
+			waves_amount += 1
+	return waves_amount
 
 func _update_objectives():
 	canvas.get_node('RichTextLabel2').visible = true
@@ -238,10 +269,20 @@ func _update_ascension_info():
 			aggregated_tooltip[curse.second_tooltip] = 1
 	canvas.get_node('Ascension2').text = ''
 	for key in aggregated_tooltip.keys():
-		canvas.get_node('Ascension2').text += key + ' x' + str(aggregated_tooltip[key]) + '\n'
+		if key.find('increased') == -1:
+			canvas.get_node('Ascension2').text += key + '\n'
+		else:
+			canvas.get_node('Ascension2').text += key + ' x' + str(aggregated_tooltip[key]) + '\n'
 	canvas.get_node('Ascension').visible = true
 	canvas.get_node('Ascension2').visible = true
 
 func _on_ability_manager_curse_picked(curse:Variant):
 	curses.append(curse)
+	current_curses.append(curse.name)
 	_update_ascension_info()
+
+func _load_curses(cursess:Variant, player):
+	print(cursess)
+	players.append(player)
+	for i in range(cursess.size()):
+		_on_ability_manager_curse_picked(cursess[i])

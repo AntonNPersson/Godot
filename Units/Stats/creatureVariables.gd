@@ -104,6 +104,7 @@ var is_taunted = false
 var is_silenced = false
 var is_frozen = false
 var is_hovered = false
+var is_colliding = false
 
 
 var _target = null
@@ -113,7 +114,7 @@ func _ready():
 	_ascend()
 	current_base_speed = base_speed
 	current_base_range = base_range
-	current_base_attack_damage = base_attack_damage
+	current_base_attack_speed = base_attack_speed
 	_update_totals()
 	current_health = total_health
 	
@@ -154,11 +155,9 @@ func _ascend():
 	current_base_armor = base_armor * power
 	current_base_evade = base_evade * power
 	current_base_health = base_health * power
-	current_base_attack_speed = base_attack_speed * power
 	current_base_attack_damage = base_attack_damage * power
-	current_base_speed = base_speed * power/5
 	current_base_experience = experience * power
-	current_base_ascension_currency = ascension_currency * power
+	current_base_ascension_currency = ascension_currency
 
 func _add_stats(curse):
 	if "increased_armor" in curse:

@@ -44,25 +44,25 @@ position = Vector2(231, 213)
 position = Vector2(231, 213)
 script = ExtResource("7_o461h")
 
-[node name="Breastplate" parent="." instance=ExtResource("10_7fep5")]
-position = Vector2(231, 213)
-
 [node name="Robe" parent="." instance=ExtResource("11_2hy8v")]
 position = Vector2(231, 213)
 
 [node name="Handwraps" parent="." instance=ExtResource("12_jhkyq")]
 position = Vector2(231, 213)
 
-[node name="Greaves" parent="." instance=ExtResource("13_wgky7")]
-position = Vector2(231, 213)
-
-[node name="Helmet" parent="." instance=ExtResource("14_jxjk0")]
-position = Vector2(231, 213)
-
 [node name="Hood" parent="." instance=ExtResource("15_mb4i1")]
 position = Vector2(231, 213)
 
 [node name="Shinguards" parent="." instance=ExtResource("16_xauk6")]
+position = Vector2(231, 213)
+
+[node name="Breastplate" parent="." instance=ExtResource("10_7fep5")]
+position = Vector2(231, 213)
+
+[node name="Greaves" parent="." instance=ExtResource("13_wgky7")]
+position = Vector2(231, 213)
+
+[node name="Helmet" parent="." instance=ExtResource("14_jxjk0")]
 position = Vector2(231, 213)
 
 [node name="Legplates" parent="." instance=ExtResource("17_tmdl7")]

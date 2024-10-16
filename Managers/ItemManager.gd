@@ -12,6 +12,7 @@ var second_mid_list
 var mid_list
 var top_list
 var second_top_list
+var unique_list
 
 # Test
 var second_mid_list_offense
@@ -28,6 +29,9 @@ var top_list_utility
 
 var starting_items = 0
 var weapon_list = [14, 15, 16, 17, 18, 19, 20]
+var evade_armor_list = [0, 1, 2, 3, 4]
+var barrier_armor_list = [5, 6, 7, 8, 9]
+var armor_armor_list = [10, 11, 12, 13]
 var potion_list
 
 var last_items = []
@@ -36,7 +40,9 @@ const ITEM_RARITY = {
 	COMMON = 0,
 	UNCOMMON = 1,
 	RARE = 2,
-	EPIC = 3
+	EPIC = 3,
+	LEGENDARY = 4,
+	UNIQUE = 5
 }
 
 var RARE_STAT_INCREASE = 1.1
@@ -50,6 +56,7 @@ func _initialize():
 	var top_instance = preload('res://Items/Mid Effects/Mid effects list.tscn').instantiate()
 	var second_top = preload('res://Items/Top Effects/top list effects.tscn').instantiate()
 	var potion_instance = preload('res://Items/Potions/potion list.tscn').instantiate()
+	var unique_instance = preload('res://Items/Unique Effects/Lists/unique list.tscn').instantiate()
 
 	var second_mid_list_offense_scene = preload("res://Items/Low-Mid Effects/lists/low_mid_offense.tscn").instantiate()
 	var second_mid_list_defense_scene = preload("res://Items/Low-Mid Effects/lists/low_mid_defense.tscn").instantiate()
@@ -81,6 +88,7 @@ func _initialize():
 	top_list = top_instance.get_children()
 	second_top_list = second_top.get_children()
 	potion_list = potion_instance.get_children()
+	unique_list = unique_instance.get_children()
 
 	get_node('Items').add_child(second_mid_list_offense_scene)
 	get_node('Items').add_child(second_mid_list_defense_scene)
@@ -94,13 +102,13 @@ func _initialize():
 	get_node('Items').add_child(top_list_defense_scene)
 	get_node('Items').add_child(top_list_utility_scene)
 
-
 	get_node('Items').add_child(bot_instance)
 	get_node('Items').add_child(second_mid)
 	get_node('Items').add_child(mid_instance)
 	get_node('Items').add_child(top_instance)
 	get_node('Items').add_child(second_top)
 	get_node('Items').add_child(potion_instance)
+	get_node('Items').add_child(unique_instance)
 	bot_instance.global_position = Vector2(-10000, -10000)
 	second_mid.global_position = Vector2(-10000, -10000)
 	mid_instance.global_position = Vector2(-10000, -10000)
@@ -124,7 +132,7 @@ func _calculate_item_rarity():
 		return
 		
 	print_debug("changed rarity")
-	var rarity = randf_range(35, 37.3 * player.item_drop_chance_multiplier)
+	var rarity = 37.2 * player.item_drop_chance_multiplier
 	if rarity < 30 * player.item_drop_chance_multiplier:
 		return ITEM_RARITY.COMMON
 	elif rarity < 35 * player.item_drop_chance_multiplier:
@@ -133,8 +141,8 @@ func _calculate_item_rarity():
 		return ITEM_RARITY.RARE
 	elif rarity < 37.3 * player.item_drop_chance_multiplier:
 		return ITEM_RARITY.EPIC
-	else:
-		return null
+	elif rarity < 37.5 * player.item_drop_chance_multiplier:
+		return ITEM_RARITY.UNIQUE
 
 func _balance_item_drops():
 	if last_items.size() >= 3:
@@ -348,6 +356,32 @@ func _create_item(_rarity = null):
 		mid_piece.set_owner(_item)
 		top_piece.set_owner(_item)
 		second_top_piece.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
+		add_child(_item)
+		return _item
+	elif rarity == ITEM_RARITY.UNIQUE:
+		var unique_piece = unique_list[randi() % unique_list.size()].duplicate()
+		unique_piece._initialize()
+
+		var bot_piece
+		if unique_piece.unique_type == "Weapon":
+			bot_piece = bot_list[weapon_list.pick_random()].duplicate()
+		bot_piece._initialize()
+
+		var second_top_piece = second_top_list[randi() % top_list.size()].duplicate()
+		second_top_piece._initialize()
+		var _item = item.instantiate()
+		_item.i_name = second_top_piece.name + ", " + bot_piece.name + " of " + unique_piece.name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.UNIQUE
+		_item.im = self
+		_item.add_child(bot_piece)
+		_item.add_child(unique_piece)
+		_item.add_child(second_top_piece)
+		bot_piece.set_owner(_item)
+		second_top_piece.set_owner(_item)
+		unique_piece.set_owner(_item)
 		_item._initialize()
 		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
 		add_child(_item)

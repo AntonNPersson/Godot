@@ -43,7 +43,8 @@ script = ExtResource("1_osw0d")
 
 [node name="Units" type="Node" parent="CanvasModulate"]
 
-[node name="WaveManager" parent="CanvasModulate" instance=ExtResource("1_6yxuh")]
+[node name="WaveManager" parent="CanvasModulate" node_paths=PackedStringArray("map_manager") instance=ExtResource("1_6yxuh")]
+map_manager = NodePath("../MapManager")
 
 [node name="CharacterManager" parent="CanvasModulate" node_paths=PackedStringArray("units", "item_manager") instance=ExtResource("2_rdbr4")]
 units = NodePath("../Units")

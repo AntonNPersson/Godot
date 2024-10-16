@@ -71,6 +71,7 @@ theme_override_font_sizes/font_size = 11
 text = "Show Choices"
 
 [node name="Ability" type="Panel" parent="UI/CanvasLayer"]
+visible = false
 custom_minimum_size = Vector2(600, 400)
 anchors_preset = 8
 anchor_left = 0.5
@@ -184,6 +185,7 @@ custom_minimum_size = Vector2(150, 120)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="Choice_2" type="Panel" parent="UI/CanvasLayer/Ability"]
 layout_mode = 1
@@ -257,6 +259,7 @@ custom_minimum_size = Vector2(150, 120)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="Choice_3" type="Panel" parent="UI/CanvasLayer/Ability"]
 layout_mode = 1
@@ -330,6 +333,7 @@ custom_minimum_size = Vector2(150, 120)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI/CanvasLayer/Ability"]
 modulate = Color(1, 0.709804, 0, 1)
@@ -492,6 +496,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="Choice_2" type="Panel" parent="UI/CanvasLayer/Curse"]
 layout_mode = 1
@@ -569,6 +574,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="Choice_3" type="Panel" parent="UI/CanvasLayer/Curse"]
 layout_mode = 1
@@ -647,6 +653,7 @@ grow_vertical = 0
 theme = ExtResource("3_goub6")
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI/CanvasLayer/Curse"]
 material = SubResource("ShaderMaterial_tsstx")
@@ -806,6 +813,7 @@ custom_minimum_size = Vector2(150, 120)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="Choice_2" type="Panel" parent="UI/CanvasLayer/Enchant"]
 layout_mode = 1
@@ -879,6 +887,7 @@ custom_minimum_size = Vector2(150, 120)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="Choice_3" type="Panel" parent="UI/CanvasLayer/Enchant"]
 layout_mode = 1
@@ -952,6 +961,7 @@ custom_minimum_size = Vector2(150, 120)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.345098, 0.345098, 0.345098, 1)
 theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI/CanvasLayer/Enchant"]
 modulate = Color(1, 0.709804, 0, 1)

@@ -283,6 +283,7 @@ func _normal_movement(delta, current_target):
 			current_target = Vector2.ZERO
 			stats.global_position -= collision_direction * stats.total_speed * delta
 			colliding = false
+			stats.is_colliding = false
 
 func _wasd_movement(delta):
 	# Handles the movement behavior using the WASD keys.
@@ -314,6 +315,7 @@ func _wasd_movement(delta):
 	else:
 		stats.global_position -= collision_direction * stats.total_speed * delta
 		colliding = false
+		stats.is_colliding = false
 
 #--------------------------#
 # Input and extra functions
@@ -408,3 +410,4 @@ func _check_collision():
 			var collision_point = area.get_node("CollisionShape2D").global_position
 			collision_direction = (collision_point - stats.global_position).normalized()
 			colliding = true
+			stats.is_colliding = true

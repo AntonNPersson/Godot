@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dlpkjnesre3k2"]
+[gd_scene load_steps=27 format=3 uid="uid://dlpkjnesre3k2"]
 
 [ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="1_rdvac"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_qob8h"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://d3r3h43kxsb02" path="res://Sprites/Untitled2.png" id="5_pfkdg"]
 [ext_resource type="Texture2D" uid="uid://cy6m1givnghco" path="res://Sprites/Untitled1.png" id="6_5vbjy"]
 [ext_resource type="Texture2D" uid="uid://d1c7pbgp3vuav" path="res://Sprites/Icons/empty_item_slot.png" id="6_dgjvm"]
+[ext_resource type="Texture2D" uid="uid://cyapl8nbqc187" path="res://Sprites/Icons/Item_border.png" id="6_kswhx"]
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="7_0f38t"]
 [ext_resource type="Texture2D" uid="uid://cu2ro7gfyyvc2" path="res://Sprites/Untitled.png" id="8_3fp80"]
 [ext_resource type="Texture2D" uid="uid://dswmghvs3jkv2" path="res://Sprites/glass_effect.png" id="10_owmaw"]
@@ -131,6 +132,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_2" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -151,6 +163,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_3" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
 custom_minimum_size = Vector2(40, 40)
@@ -173,6 +196,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_3"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_4" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -193,6 +227,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_4"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_5" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
 custom_minimum_size = Vector2(40, 40)
@@ -215,6 +260,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_5"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_6" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -235,6 +291,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Potions" type="Label" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
 layout_mode = 2
@@ -271,6 +338,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_2" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -291,6 +369,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Storage" type="Label" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer"]
 layout_mode = 2
@@ -324,6 +413,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_2" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -343,6 +443,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_3" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -364,6 +475,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_3"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_4" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -383,6 +505,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_4"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_5" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -404,6 +537,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_5"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_6" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -423,6 +567,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_6"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_7" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -444,6 +599,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_7"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_8" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -463,6 +629,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_8"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_9" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -484,6 +661,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_9"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_10" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -503,6 +691,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_10"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_11" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -524,6 +723,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_11"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_12" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -543,6 +753,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_12"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_13" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -564,6 +785,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_13"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_14" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -583,6 +815,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_14"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_15" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -604,6 +847,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_15"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_16" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -623,6 +877,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_16"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Item_17" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
@@ -644,6 +909,17 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_17"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
+
 [node name="Item_18" type="Panel" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged"]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
@@ -663,6 +939,17 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Icon_border" type="TextureRect" parent="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_18"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_kswhx")
+expand_mode = 2
 
 [node name="Line2D" type="Line2D" parent="CanvasLayer/PanelContainer2"]
 position = Vector2(153, 16)
@@ -1155,7 +1442,9 @@ texture_hover = ExtResource("20_wsko6")
 [node name="Items" type="Node" parent="."]
 
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2" to="." method="_on_inventory_mouse_exited"]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items" to="." method="_on_inventory_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped" to="." method="_on_inventory_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped" to="." method="_on_inventory_mouse_exited"]
 [connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_gui_input" binds= [0]]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_mouse_entered" binds= [0]]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_1" to="." method="_equipment_mouse_exited" binds= [0]]
@@ -1179,6 +1468,7 @@ texture_hover = ExtResource("20_wsko6")
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_entered" binds= [1]]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_exited" binds= [1]]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged" to="." method="_on_inventory_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged" to="." method="_on_inventory_mouse_exited"]
 [connection signal="gui_input" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1" to="." method="_storage_gui_input" binds= [0]]
 [connection signal="mouse_entered" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1" to="." method="_storage_mouse_entered" binds= [0]]
 [connection signal="mouse_exited" from="CanvasLayer/PanelContainer2/Items/Panel/VBoxContainer/Storaged/Item_1" to="." method="_storage_mouse_exited" binds= [0]]

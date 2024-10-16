@@ -41,13 +41,15 @@ func _setup(change_state, unit):
 func _update(delta):
 	for i in range(timers.size()):
 		timers[i] -= delta
+	_update_cast_timer(delta)
+	
 func update_sprite_direction(target_position, type, idle):
 	var direction_vector = target_position - _unit.global_position
 	current_frame = animation.get_frame()
 	current_progress = animation.get_frame_progress()
 
 	if type == "Walk":
-		animation.speed_scale = 1
+		animation.speed_scale = _unit.total_speed / 100
 	# Determine the cardinal direction based on the direction vector'
 	if abs(direction_vector.x) > abs(direction_vector.y):
 		if direction_vector.x > 0:

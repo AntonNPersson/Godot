@@ -105,14 +105,14 @@ func _process(delta):
 		abilities[i]._update_targeting(delta,abilities_targeting, abilities_targeting[i])
 
 func _clean_up_inventory():
-	var new_array = []
+	unique_items.clear()
 	for i in inventory.size():
-		if inventory[i].get_children().size() > 6:
-			new_array.append(inventory[i].get_child(6).name)
+		for j in inventory[i].get_children():
+			if "unique" in j:
+				if !unique_items.has(j.name):
+					unique_items.append(j.name)
+					print_debug(j.name)
 
-	for i in unique_items.size():
-		if new_array.find(unique_items[i]) == -1:
-			unique_items.erase(unique_items[i])
 func _input(event):
 	if event.is_action_released("Inventory"):
 		toggle_hud('Inventory')
@@ -274,16 +274,23 @@ func _update_inventory_test():
 			continue
 	for i in equipment_slots.get_child_count():
 		equipment_slots.get_child(i).get_node('Icon').texture = null
+		equipment_slots.get_child(i).get_node('Icon').visible = false
+		equipment_slots.get_child(i).get_node('Icon_border').visible = false
 
 	for i in potion_slots.get_child_count():
 		potion_slots.get_child(i).get_node('Icon').texture = null
+		potion_slots.get_child(i).get_node('Icon').visible = false
 
 	for i in storage_slots.get_child_count():
 		storage_slots.get_child(i).get_node('Icon').texture = null
+		storage_slots.get_child(i).get_node('Icon').visible = false
+		storage_slots.get_child(i).get_node('Icon_border').visible = false
 
 	for i in inventory.size():
 		equipment_slots.get_child(i).get_node('Icon').texture = load(inventory[i].get_child(2).icon.resource_path)
 		equipment_slots.get_child(i).get_node('Icon').visible = true
+		equipment_slots.get_child(i).get_node('Icon_border').modulate = inventory[i].rarity_color
+		equipment_slots.get_child(i).get_node('Icon_border').visible = true
 
 	for i in potions.size():
 		potion_slots.get_child(i).get_node('Icon').texture = load(potions[i].icon.resource_path)
@@ -292,6 +299,8 @@ func _update_inventory_test():
 	for i in storage.size():
 		storage_slots.get_child(i).get_node('Icon').texture = load(storage[i].get_child(2).icon.resource_path)
 		storage_slots.get_child(i).get_node('Icon').visible = true
+		storage_slots.get_child(i).get_node('Icon_border').modulate = storage[i].rarity_color
+		storage_slots.get_child(i).get_node('Icon_border').visible = true
 
 
 func _update_stats():
@@ -418,6 +427,7 @@ func _on_ability_manager_picked(_ability):
 	abilities_hud.set_item_tooltip(_index, _ability.tooltip)
 	abilities_hud.set_item_icon(_index, _ability.icon)
 	_ability.unit = self.get_parent()
+	_ability.is_docile = false
 	_ability._initialize()
 
 func _on_enchant_picked(enchant, index):
@@ -469,7 +479,20 @@ func _remove_item_effect(type, tag):
 func _on_item_picked_up(item):
 	var children_ = item.get_children()
 	var unique_item = null
+	# Clean from unique items and check if unique item is already equipped
 	_clean_up_inventory()
+
+	# Check if inventory is full
+	if inventory.size() >= max_slots:
+		if storage.size() < max_storage_slots:
+			storage.append(item)
+			_update_inventory_test()
+			item.remove_from_group("Items")
+		else:
+			Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
+		return
+
+	# Check if item is unique
 	for i in range(2, children_.size()):
 		if "unique" in children_[i]:
 			if unique_items.find(children_[i].name) != -1:
@@ -484,6 +507,7 @@ func _on_item_picked_up(item):
 			unique_item = children_[i].name
 			unique_items.append(children_[i].name)
 	
+	# Check if item is a weapon
 	if "range" in children_[2]:
 			if weapon_equipped:
 				if storage.size() < max_storage_slots:
@@ -497,32 +521,28 @@ func _on_item_picked_up(item):
 			current_weapon = item.get_child(2)
 			weapon_equipped = true
 
-	if inventory.size() < max_slots:
-		inventory.append(item)
-		_update_inventory_test()
-		var children = item.get_children()
-		if children.size() > 2:
-			for i in range(2, children.size()):
-				if "epic" in children[i]:
-					if "cooldown" in children[i]:
-						_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0], children[i].cooldown)
-						continue
-					else:
-						_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0], children[i].unique)
-						continue
-				var added_stats = {}
-				for j in range(children[i]._get_tags().size()):
-					added_stats[children[i]._get_tags()[j]] = children[i]._get_values()[j]
-				add_stats.emit(added_stats)
-		_update_stats()
-		item.remove_from_group("Items")
-	else:
-		if storage.size() < max_storage_slots:
-			storage.append(item)
-			_update_inventory_test()
-			item.remove_from_group("Items")
-		else:
-			Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
+	# Add item to inventory
+	inventory.append(item)
+	_update_inventory_test()
+
+	# Add stats from item
+	var children = item.get_children()
+	if children.size() > 2:
+		for i in range(2, children.size()):
+			# Check if item is an epic item, and add the effect
+			if "epic" in children[i]:
+				if "cooldown" in children[i]:
+					_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0], children[i].cooldown)
+					continue
+				else:
+					_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0])
+					continue
+			var added_stats = {}
+			for j in range(children[i]._get_tags().size()):
+				added_stats[children[i]._get_tags()[j]] = children[i]._get_values()[j]
+			add_stats.emit(added_stats)
+	_update_stats()
+	item.remove_from_group("Items")
 
 func _on_item_dropped(to_storage = false):
 	if inventory.size() >= 0:
@@ -572,11 +592,14 @@ func _add_from_inventory_to_storage(it):
 
 func _add_from_storage_to_inventory(it):
 	selected_storage_item = it
-	if "unique" in selected_storage_item.get_child(6):
-		if selected_storage_item.get_child(6).name in unique_items:
-			Utility.get_node("ErrorMessage")._create_error_message("Unique item already equipped", self)
-			return
+	# Check if item is unique, and if it's already equipped
+	for i in range(2, selected_storage_item.get_children().size()):
+		if "unique" in selected_storage_item.get_child(i):
+			if selected_storage_item.get_child(i).name in unique_items:
+				Utility.get_node("ErrorMessage")._create_error_message("Unique item already equipped", self)
+				return
 
+	# Check if item is a weapon, and if it's already equipped
 	if storage.size() > 0:
 		if weapon_equipped:
 			if "range" in it.get_child(2):
@@ -598,6 +621,7 @@ func _add_from_storage_to_inventory(it):
 
 
 func _remove_item_stats_from_inventory():
+	# Remove all stats from inventory, used for save/load
 	for i in inventory.size():
 		var children = inventory[i].get_children()
 		if children.size() > 2:
@@ -615,6 +639,7 @@ func _remove_item_stats_from_inventory():
 				remove_stats.emit(removed_stats)
 
 func _add_item_stats_from_inventory():
+	# Add all stats from inventory, used for save/load
 	for i in inventory.size():
 		var children = inventory[i].get_children()
 		if children.size() > 2:

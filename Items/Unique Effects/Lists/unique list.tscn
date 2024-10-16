@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3gtmxesgqntu"]
+
+[ext_resource type="PackedScene" uid="uid://cf47f6omsm5ox" path="res://Items/Unique Effects/The destroyer.tscn" id="1_q2qvo"]
+
+[node name="UniqueList" type="Node2D"]
+
+[node name="The Destroyer" parent="." instance=ExtResource("1_q2qvo")]

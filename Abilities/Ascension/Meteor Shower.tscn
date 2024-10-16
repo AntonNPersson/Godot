@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5h1x038dvy1m"]
+
+[ext_resource type="Script" path="res://Abilities/Ascension/Meteor Shower.gd" id="1_3mlis"]
+[ext_resource type="PackedScene" uid="uid://sc5kauyr4m0k" path="res://Abilities/Utility/after_effect_fire.tscn" id="2_vpw7g"]
+
+[node name="MeteorShower" type="Node2D"]
+script = ExtResource("1_3mlis")
+i_name = "Meteor Shower"
+tooltip = "Meteors shower from the sky every second, dealing damage based on the ascension level."
+after_effect = ExtResource("2_vpw7g")

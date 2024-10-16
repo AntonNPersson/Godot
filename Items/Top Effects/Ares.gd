@@ -1,7 +1,6 @@
 extends Item
 class_name Ares
 var epic
-var unique
 @export var increased_attack_damage: int
 @export var duration: int
 @export var color = Color.RED
@@ -10,7 +9,6 @@ func _initialize():
 	increased_attack_damage = randi() % 10 + 4	
 	duration = 5
 	epic = 'OnCast'
-	unique = false
 	tags.append("PercentAttackDamageBuff")
 	values.append(increased_attack_damage)
 	colors.append(color)

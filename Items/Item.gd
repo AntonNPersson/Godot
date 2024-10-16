@@ -12,7 +12,8 @@ const ITEM_RARITY = {
 	UNCOMMON = 1,
 	RARE = 2,
 	EPIC = 3,
-	LEGENDARY = 4
+	LEGENDARY = 4,
+	UNIQUE = 5
 }
 
 var tooltip = ""
@@ -24,6 +25,7 @@ var tooltip_weapon_effect = ""
 
 var scroll_panel
 var json_string
+var rarity_color = Color.MISTY_ROSE
 
 var t_v = {}
 
@@ -52,41 +54,37 @@ func _initialize():
 	tooltip_name.text = i_name
 	if rarity == ITEM_RARITY.COMMON:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center][color=Mistyrose]' + get_child(2).name + '[/color][/center]'
-		tooltip_name.modulate = Color.MISTY_ROSE
-		get_child(1).color = Color.MISTY_ROSE
-		get_child(1).get_child(0).color = Color.MISTY_ROSE
-		tooltip_icon.get_child(1).modulate = Color.MISTY_ROSE
+		rarity_color = Color.MISTY_ROSE
 	elif rarity == ITEM_RARITY.UNCOMMON:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Limegreen]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.LIME_GREEN
-		get_child(1).color = Color.LIME_GREEN
-		get_child(1).get_child(0).color = Color.LIME_GREEN
-		tooltip_icon.get_child(1).modulate = Color.LIME_GREEN
+		rarity_color = Color.LIME_GREEN
 	elif rarity == ITEM_RARITY.RARE:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Steelblue]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.STEEL_BLUE
-		get_child(1).color = Color.STEEL_BLUE
-		get_child(1).get_child(0).color = Color.STEEL_BLUE
-		tooltip_icon.get_child(1).modulate = Color.STEEL_BLUE
+		rarity_color = Color.STEEL_BLUE
 	elif rarity == ITEM_RARITY.EPIC:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Mediumorchid]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.MEDIUM_ORCHID
-		get_child(1).color = Color.MEDIUM_ORCHID
-		get_child(1).get_child(0).color = Color.MEDIUM_ORCHID
-		tooltip_icon.get_child(1).modulate = Color.MEDIUM_ORCHID
+		rarity_color = Color.MEDIUM_ORCHID
 	elif rarity == ITEM_RARITY.LEGENDARY:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Coral]' + get_child(2).name + '[/color]'
-		tooltip_name.modulate = Color.CORAL
-		get_child(1).color = Color.CORAL
-		get_child(1).get_child(0).color = Color.CORAL
-		tooltip_icon.get_child(1).modulate = Color.CORAL
+		rarity_color = Color.CORAL
+	elif rarity == ITEM_RARITY.UNIQUE:
+		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=CYAN]' + get_child(2).name + '[/color]'
+		rarity_color = Color.CYAN
+
+	tooltip_name.modulate = rarity_color
+	get_child(1).color = rarity_color
+	get_child(1).get_child(0).color = rarity_color
+	tooltip_icon.get_child(1).modulate = rarity_color
+
 
 	t_v = _create_tooltip(2)
-	if rarity >= ITEM_RARITY.UNCOMMON:
+	if rarity >= ITEM_RARITY.UNCOMMON and rarity != ITEM_RARITY.UNIQUE:
 		t_v = _merge_dicts(t_v, _create_tooltip(3))
 		t_v = _merge_dicts(t_v, _create_tooltip(4))
-	if rarity >= ITEM_RARITY.RARE:
+	if rarity >= ITEM_RARITY.RARE and rarity != ITEM_RARITY.UNIQUE:
 		t_v = _merge_dicts(t_v, _create_tooltip(5))
+	if rarity == ITEM_RARITY.UNIQUE:
+		t_v = _merge_dicts(t_v, _create_tooltip(3))
 
 	for key in t_v.keys():
 		if key.find('Range') != -1:
@@ -139,7 +137,7 @@ func _create_tooltip(valu):
 	var tag_values = {}
 	if valu == 6:
 		toolt += "\n"
-		toolt += "[color=Mediumorchid]✦ [/color]" + get_child(valu)._get_tooltip()
+		toolt += "[color=Mediumorchid]✦ [/color]" + get_child(get_children().size()-1)._get_tooltip()
 		return toolt
 	for i in range(get_child(valu)._get_tags().size()):
 		var tag = get_child(valu)._get_tags()[i]
@@ -318,6 +316,6 @@ func _unhandled_input(event):
 		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			scroll_panel.scroll_vertical -= 3
+			scroll_panel.scroll_vertical -= 6
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			scroll_panel.scroll_vertical += 3
+			scroll_panel.scroll_vertical += 6

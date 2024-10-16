@@ -27,6 +27,9 @@ var reroll_amount = 99
 var curse_scene
 var curse_list
 var curse_instance
+var removed_curses = []
+var chosen_curses = []
+var loaded_curses = []
 
 var enchant_scene
 var enchant_list
@@ -92,9 +95,9 @@ func _show_enchant_choices():
 	enchant_popup.get_node('Choice_2').get_node('Icon').texture = current_ability_choices[1].icon
 	enchant_popup.get_node('Choice_3').get_node('Icon').texture = current_ability_choices[2].icon
 
-	enchant_popup.get_node('Choice_1').get_node('ScrollContainer').get_node('Tooltip').text = current_ability_choices[0].tooltip
-	enchant_popup.get_node('Choice_2').get_node('ScrollContainer').get_node('Tooltip').text = current_ability_choices[1].tooltip
-	enchant_popup.get_node('Choice_3').get_node('ScrollContainer').get_node('Tooltip').text = current_ability_choices[2].tooltip
+	enchant_popup.get_node('Choice_1').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[0].tooltip
+	enchant_popup.get_node('Choice_2').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[1].tooltip
+	enchant_popup.get_node('Choice_3').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[2].tooltip
 	enchant_popup.visible = true
 
 	enchant_popup.get_node('Select_1').get_node('Ability_select').visible = false
@@ -113,9 +116,9 @@ func _show_ability_choices():
 	for i in current_ability_choices:
 		i._update_tooltip()
 
-	ability_popup.get_node('Choice_1').get_node('ScrollContainer').get_node('Tooltip').text = current_ability_choices[0].tooltip
-	ability_popup.get_node('Choice_2').get_node('ScrollContainer').get_node('Tooltip').text = current_ability_choices[1].tooltip
-	ability_popup.get_node('Choice_3').get_node('ScrollContainer').get_node('Tooltip').text = current_ability_choices[2].tooltip
+	ability_popup.get_node('Choice_1').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[0].tooltip
+	ability_popup.get_node('Choice_2').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[1].tooltip
+	ability_popup.get_node('Choice_3').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[2].tooltip
 	ability_popup.visible = true
 
 func _show_curse_choices():
@@ -127,12 +130,13 @@ func _show_curse_choices():
 	curse_popup.get_node('Choice_2').get_node('Icon').texture = current_ability_choices[1].icon
 	curse_popup.get_node('Choice_3').get_node('Icon').texture = current_ability_choices[2].icon
 
-	curse_popup.get_node('Choice_1').get_node('Tooltip').text = current_ability_choices[0].tooltip
-	curse_popup.get_node('Choice_2').get_node('Tooltip').text = current_ability_choices[1].tooltip
-	curse_popup.get_node('Choice_3').get_node('Tooltip').text = current_ability_choices[2].tooltip
+	curse_popup.get_node('Choice_1').get_node('Tooltip').text = "[center]" + current_ability_choices[0].tooltip + "\n\n AC Multiplier: \n " + str(current_ability_choices[0].ascension_currency_multiplier) + "x"
+	curse_popup.get_node('Choice_2').get_node('Tooltip').text = "[center]" + current_ability_choices[1].tooltip + "\n\n AC Multiplier: \n " + str(current_ability_choices[1].ascension_currency_multiplier) + "x"
+	curse_popup.get_node('Choice_3').get_node('Tooltip').text = "[center]" + current_ability_choices[2].tooltip + "\n\n AC Multiplier: \n " + str(current_ability_choices[2].ascension_currency_multiplier) + "x"
 	curse_popup.visible = true
 
 func _on_next_choice(unit):
+	unit.paused = true
 	current_ability_round += 1
 	var ability_list = []
 	target = unit
@@ -149,10 +153,12 @@ func _on_next_choice(unit):
 		_on_next_enchant()
 
 func _on_next_enchant():
+	target.paused = true
 	_choose_ability_choices(enchant_list)
 	_show_enchant_choices()
 
 func _on_next_curse():
+	target.paused = true
 	_choose_ability_choices(curse_list)
 	_show_curse_choices()
 
@@ -174,20 +180,23 @@ func _create_ability_based_on_type(type, ability_data):
 	var index
 	var created_ability
 	if type == "INT":
-		for i in range(int_list.size()):
+		for i in range(int_list.size() - 1):
 			if int_list[i].a_name == ability_data['name']:
 				index = i
 				created_ability = int_list[i].duplicate()
+				int_list.erase(int_list[i])
 	if type == "DEX":
-		for i in range(dex_List.size()):
+		for i in range(dex_List.size() - 1):
 			if dex_List[i].a_name == ability_data['name']:
 				index = i
 				created_ability = dex_List[i].duplicate()
+				dex_List.erase(dex_List[i])
 	if type == "STR":
-		for i in range(str_List.size()):
+		for i in range(str_List.size() - 1):
 			if str_List[i].a_name == ability_data['name']:
 				index = i
 				created_ability = str_List[i].duplicate()
+				str_List.erase(str_List[i])
 
 	picked.emit(created_ability)
 	chosen_ability_choices.append(created_ability)
@@ -200,6 +209,7 @@ func _on_enchant_1_pressed(event, index):
 			if target.get_node("InventoryManager").abilities.size() > index:
 				enchant_picked.emit(current_ability_choices[enchant_index], index)
 				enchant_popup.visible = false
+				target.paused = false
 
 func _use_ability_based_on_name(name):
 	var all_lists = []
@@ -263,7 +273,16 @@ func _open_enchant_ability_select(index):
 func _on_select_1_pressed(index):
 	picked.emit(current_ability_choices[index])
 	chosen_ability_choices.append(current_ability_choices[index])
+
+	if int_list.find(current_ability_choices[index]) != -1:
+		int_list.erase(current_ability_choices[index])
+	if dex_List.find(current_ability_choices[index]) != -1:
+		dex_List.erase(current_ability_choices[index])
+	if str_List.find(current_ability_choices[index]) != -1:
+		str_List.erase(current_ability_choices[index])
+
 	ability_popup.visible = false
+	target.paused = false
 
 func _on_reroll_pressed():
 	if target.rerolls > 0:
@@ -282,7 +301,13 @@ func _on_reroll_pressed():
 
 func _on_curse_1_selected(index):
 	curse_picked.emit(current_ability_choices[index])
+	chosen_curses.append(current_ability_choices[index].name)
+	if "special" in current_ability_choices[index]:
+		curse_list.erase(current_ability_choices[index])
+		removed_curses.append(current_ability_choices[index].name)
 	curse_popup.visible = false
+	target.ascension_currency_multiplier += current_ability_choices[index].ascension_currency_multiplier
+	target.paused = false
 
 func _on_curse_reroll_pressed():
 	if target.rerolls > 0:
@@ -292,12 +317,27 @@ func _on_curse_reroll_pressed():
 	else:
 		Utility.get_node("ErrorMessage")._create_error_message("You have no rerolls left", target)
 
+func _load_curses():
+	if chosen_curses.size() > 0:
+		for i in chosen_curses:
+			for j in curse_list:
+				if j.name == i:
+					loaded_curses.append(j)
+
+	if removed_curses.size() > 0:
+		for i in removed_curses:
+			for j in curse_list:
+				if j.name == i:
+					curse_list.erase(j)
+	
 func save():
 	var save_dict = {
 		"filename" : get_path(),
 		"parent" : get_parent().get_path(),
 		"reroll_amount": reroll_amount,
 		"chosen_ability_choices": chosen_ability_choices,
-		"current_ability_round": current_ability_round
+		"current_ability_round": current_ability_round,
+		"chosen_curses": chosen_curses,
+		"removed_curses": removed_curses
 	}
 	return save_dict

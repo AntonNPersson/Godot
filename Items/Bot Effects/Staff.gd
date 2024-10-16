@@ -11,7 +11,7 @@ var duration = 2.25
 var cooldown = 10
 
 func _initialize():
-	attack_damage = randi_range(1, 2)
+	attack_damage = randi_range(3, 6)
 	var attribute = _adjust_attributes()
 	match attribute:
 		0:

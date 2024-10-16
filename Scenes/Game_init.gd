@@ -7,15 +7,20 @@ func _initialize_managers():
 	print('Game Initialized')
 	if GameManager.is_save_file:
 		get_node('CharacterManager').selected_character_name = load_specific_value(get_node('CharacterManager').get_path(), "selected_character_name")
+
 	var player = get_node('CharacterManager')._initialize()
 	get_node('WaveManager')._initialize()
 	get_node('MapManager')._initialize()
 	get_node('AbilityManager')._initialize()
 	get_node('ItemManager')._initialize()
+
 	if GameManager.is_save_file:
 		load_game()
 		get_node('AbilityManager')._load_abilities(player.im_abilities)
+		get_node("AbilityManager")._load_curses()
+		get_node('WaveManager')._load_curses(get_node('AbilityManager').loaded_curses, player)
 		player.get_node('InventoryManager').load_items()
+
 	await get_tree().create_timer(0.5).timeout
 	get_node('CharacterManager').start_round_manager.emit()
 

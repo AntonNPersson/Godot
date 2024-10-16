@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2733pdw4edo1"]
+
+[ext_resource type="Script" path="res://Abilities/Ascension/Stormy Winds.gd" id="1_huunl"]
+[ext_resource type="Script" path="res://Abilities/Ascension/Stormy Wind.gd" id="2_730qe"]
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="2_rti12"]
+
+[sub_resource type="Gradient" id="Gradient_i0d87"]
+colors = PackedColorArray(0.758192, 0.758192, 0.758192, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_lf5la"]
+min_value = -1.0
+_data = [Vector2(0, -0.076923), 0.0, 0.0, 0, 0, Vector2(1, 0.120879), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_grg85"]
+radius = 8.0
+height = 49.9892
+
+[node name="StormyWinds" type="Node2D"]
+script = ExtResource("1_huunl")
+i_name = "Stormy Winds"
+tooltip = "Stormy winds fly from random directions every 5 seconds, pushing you back."
+
+[node name="Wind" type="Area2D" parent="." groups=["projectile"]]
+script = ExtResource("2_730qe")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Wind"]
+amount = 200
+randomness = 0.21
+lifetime_randomness = 0.3
+texture = ExtResource("2_rti12")
+emission_shape = 4
+emission_points = PackedVector2Array(-25, 0, -20, -3, -15, -6, -10, -6, -5, -7, 0, -7, 5, -7, 10, -6, 15, -5, 20, -3, 25, 0)
+emission_colors = PackedColorArray()
+direction = Vector2(0, 0)
+gravity = Vector2(0, 0)
+scale_amount_min = 0.01
+scale_amount_max = 0.06
+split_scale = true
+scale_curve_x = null
+scale_curve_y = null
+color = Color(0.486275, 0.486275, 0.486275, 1)
+color_ramp = SubResource("Gradient_i0d87")
+hue_variation_curve = SubResource("Curve_lf5la")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wind"]
+rotation = -1.55005
+shape = SubResource("CapsuleShape2D_grg85")

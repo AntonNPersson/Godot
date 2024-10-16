@@ -1,7 +1,7 @@
 extends Node
 var interactRange = 100.0
 var players_arr = []
-var offset = Vector2(-104, -84)
+var offset = Vector2(0, -84)
 var distance
 @export var popup_ : PackedScene
 signal call_wave_manager(value)
@@ -17,7 +17,10 @@ func _process(_delta):
 					in_range = true
 					if player not in players_arr:
 						obj._initialize()
-						_connect_signals(obj)
+						
+						if obj.has_node('list_1'):
+							_connect_signals(obj)
+
 						_create_ready_message(obj)
 						players_arr.append(player)
 					if Input.is_action_pressed('Interact'):

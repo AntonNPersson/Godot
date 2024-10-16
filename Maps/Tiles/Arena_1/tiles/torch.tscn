@@ -25,7 +25,8 @@ shape = SubResource("RectangleShape2D_4emg5")
 texture = ExtResource("2_86tod")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
-z_index = 1
+z_index = 2
+z_as_relative = false
 material = SubResource("ShaderMaterial_4pv46")
 texture = ExtResource("3_mj5tv")
 
