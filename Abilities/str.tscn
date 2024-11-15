@@ -13,20 +13,42 @@
 [node name="STR" type="Node"]
 
 [node name="Vampiric Strike" parent="." instance=ExtResource("1_kspom")]
+additional_self_target = null
 
 [node name="Blood Scream" parent="." instance=ExtResource("2_q5nx3")]
+additional_self_target = null
 
 [node name="Frost Slash" parent="." instance=ExtResource("4_i5pe1")]
 position = Vector2(820.122, 317.894)
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Frenzy" parent="." instance=ExtResource("5_bbpsj")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Cry of Desperation" parent="." instance=ExtResource("6_b1rky")]
 
 [node name="Thirst For Blood" parent="." instance=ExtResource("6_rl4ye")]
 
 [node name="Frozen Blitz" parent="." instance=ExtResource("7_sp3dw")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Ice Skin" parent="." instance=ExtResource("8_teah3")]
 
 [node name="Bloody Blitz" parent="." instance=ExtResource("9_jwbqb")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null

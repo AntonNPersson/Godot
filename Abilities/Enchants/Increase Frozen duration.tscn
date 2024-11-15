@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://jtw8352norki"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_yjed4"]
+
+[node name="IncreaseFrozenDuration" type="Node2D"]
+script = ExtResource("1_yjed4")
+i_name = "Freeze: Lasting Ice"
+tooltip = "Add Value0s flat duration increase to selected frozen ability."
+tags = Array[String](["FrozenDuration"])
+values = Array[float]([0.5])
+types = Array[int]([-1])

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://t3v5jil3evvb"]
 
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/interactable_tile.gd" id="1_o7asa"]
-[ext_resource type="Texture2D" uid="uid://b58566qk7sux0" path="res://Sprites/Grass_ground.png" id="2_txxty"]
+[ext_resource type="Texture2D" uid="uid://b2j3qinohj6hs" path="res://Sprites/Infected Cemetery/ground.png" id="2_52abi"]
 
 [node name="Spawn" type="Area2D"]
 light_mask = 3
@@ -15,4 +15,4 @@ metadata/Mob_Spawn = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
-texture = ExtResource("2_txxty")
+texture = ExtResource("2_52abi")

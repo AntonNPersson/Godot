@@ -24,7 +24,7 @@ func _start_special(players, maps):
 	cooldown = 2.0
 	speed = 300
 	tags = ["Wind"]
-	values = [150.0]
+	values = [100.0]
 	player = players
 	map = maps
 	timer = 0
@@ -37,8 +37,6 @@ func _update_special(delta):
 	if special:
 		timer += delta
 		if timer >= cooldown:
-			print(cooldown)
-			print(timer)
 			timer = 0
 			_use()
 

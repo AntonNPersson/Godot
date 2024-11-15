@@ -9,7 +9,6 @@ var timer = 0
 signal do_damage(damage, target, origin, tag)
 
 func _process(delta):
-	print('Cursed Spike')
 	global_position += direction * speed * delta
 	timer += delta
 	if timer >= 10:

@@ -20,7 +20,7 @@ var sprint_timer = 0.2
 
 var hit_enemies = []
 # Called when the node enters the scene tree for the first time.
-func _start(origin, target, rnge, speed, type, light_color, explosion, explosion_radius, _ability, pool = false):
+func _start(origin, target, rnge, speed, type, light_color, explosion, explosion_radius, _ability, pool = false, sprite_frames = null, sprite_scale = 1):
 	if target == null:
 		queue_free()
 		return
@@ -55,6 +55,14 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 		get_child(0).visible = true
 		get_child(0).get_child(0).emitting = true
 		get_child(0).get_child(0).color = light_color
+	if type == "Custom":
+		if sprite_frames != null:
+			var animated_sprite = AnimatedSprite2D.new()
+			target.get_tree().get_root().add_child(animated_sprite)
+			animated_sprite.global_position = global_position
+			animated_sprite.sprite_frames = sprite_frames
+			animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+			animated_sprite.play()
 
 
 

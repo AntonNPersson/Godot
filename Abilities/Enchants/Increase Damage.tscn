@@ -4,6 +4,8 @@
 
 [node name="IncreaseDamage" type="Node2D"]
 script = ExtResource("1_nd1p1")
-i_name = "Damage Addition"
-tooltip = "Add percentage damage increase to selected ability."
-increased_damage = 20
+i_name = "General: Onslaught"
+tooltip = "Add Value0% percentage damage increase to selected ability."
+tags = Array[String](["AbilityPercentDamage"])
+values = Array[float]([15.0])
+types = Array[int]([0, 1, 3, 6, 7])

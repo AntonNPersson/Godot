@@ -1,4 +1,4 @@
-[gd_scene load_steps=103 format=3 uid="uid://ra5y56o6peg0"]
+[gd_scene load_steps=99 format=3 uid="uid://ra5y56o6peg0"]
 
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="1_xd3l2"]
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="2_jcrl6"]
@@ -6,12 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://7ofsclymrk5m" path="res://Abilities/Basic Attacks/enemyBasicAttack.tscn" id="4_bpkmd"]
 [ext_resource type="Texture2D" uid="uid://c3r5loah8hr3u" path="res://Sprites/Goblin King/goblin archer.png" id="5_n676d"]
 [ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_5n4gj"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_c7aga"]
-[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="10_8wtat"]
+[ext_resource type="PackedScene" uid="uid://dimur0k7iqv8b" path="res://Units/Utility/UI Scripts/ui.tscn" id="7_iw50a"]
 [ext_resource type="Texture2D" uid="uid://cyitk6uyvjwt1" path="res://Units/Instance/Enemies/Sprite Sheets/Download63720.png" id="10_pdlm1"]
-[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="11_2fbms"]
-[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_7dbtg"]
-[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="12_gjowr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p1jyy"]
 shader = ExtResource("1_xd3l2")
@@ -421,7 +417,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack East",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -462,7 +458,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack North",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -503,7 +499,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack South",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -544,7 +540,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack West",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -691,7 +687,7 @@ script = ExtResource("2_jcrl6")
 u_name = "Goblin Ranger"
 experience = 25
 ascension_currency = 1
-base_speed = 80
+base_speed = 90
 base_health = 20
 base_range = 200
 base_attack_speed = 0.3
@@ -715,45 +711,12 @@ texture = ExtResource("5_n676d")
 [node name="Control" type="Node" parent="."]
 script = ExtResource("6_5n4gj")
 
-[node name="UI" type="Node2D" parent="."]
-
-[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
-z_index = 10
-offset_left = -16.0
-offset_top = -25.0
-offset_right = 18.0
-offset_bottom = -17.0
-theme = ExtResource("10_8wtat")
-texture_under = ExtResource("11_2fbms")
-texture_progress = ExtResource("12_gjowr")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("9_c7aga")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-offset_left = -28.0
-offset_top = -32.0
-offset_right = 29.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="cast_bar" type="TextureProgressBar" parent="UI"]
-visible = false
-z_index = 10
-offset_left = -16.0
-offset_top = 30.0
-offset_right = 18.0
-offset_bottom = 38.0
-theme = ExtResource("10_8wtat")
-value = 100.0
-texture_under = ExtResource("11_2fbms")
-texture_progress = ExtResource("12_gjowr")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("11_7dbtg")
+[node name="UI" parent="." instance=ExtResource("7_iw50a")]
+position = Vector2(-17, -24)
+scale = Vector2(0.2, 0.2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_uymmm")
 sprite_frames = SubResource("SpriteFrames_7l0f5")
-animation = &"Attack West"
+animation = &"Attack East"
+frame_progress = 0.101507

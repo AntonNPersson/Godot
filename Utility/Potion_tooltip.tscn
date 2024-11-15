@@ -28,7 +28,7 @@ scale = Vector2(0.7, 0.7)
 custom_minimum_size = Vector2(246, 90)
 layout_mode = 2
 mouse_filter = 1
-theme_override_colors/default_color = Color(0.490196, 0.490196, 0.490196, 1)
+theme_override_colors/default_color = Color(0.611765, 0.603922, 0.447059, 1)
 bbcode_enabled = true
 text = "[center] hi
 s

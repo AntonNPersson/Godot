@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c53pr6s6y7b7j"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_oupkv"]
+
+[node name="AddAreaPool" type="Node2D"]
+script = ExtResource("1_oupkv")
+i_name = "Area: Pool"
+tooltip = "Creates a pool after the ability has been used, dealing the same damage over 3 seconds."
+tags = Array[String](["AreaPool"])
+values = Array[float]([1.0])
+types = Array[int]([3])

@@ -6,7 +6,12 @@ func _ready():
 
 func _get_special():
 	for p in player:
-		if p.global_position.distance_to(global_position) < 100:
+		if !p.has_meta('Darkness'):
+			return
+
+		if p.global_position.distance_to(global_position) < 150:
 			p.get_node('Control').on_action.emit(0.1, p, self, 'PVELight')
-		else:
+			p.set_meta('Light', self)
+		elif p.has_meta('Light') and p.get_meta('Light') == self:
 			p.get_node('Control').on_action.emit(0.1, p, self, 'PVELightRemove')
+			p.set_meta('Light', null)

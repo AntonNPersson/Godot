@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://kui6skjvl1l3"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_vxhr6"]
+
+[node name="Add Self Target" type="Node2D"]
+script = ExtResource("1_vxhr6")
+i_name = "Target: Self"
+tooltip = "On using selected targeted ability use it on yourself as well, but reduce the values by 50%."
+tags = Array[String](["SelfTarget"])
+values = Array[float]([1.0])
+types = Array[int]([2])

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba52t7bmnnl6l"]
+
+[ext_resource type="Script" path="res://Items/Top Effects/Sanguar.gd" id="1_cbd6s"]
+
+[node name="Sanguar" type="Node2D"]
+script = ExtResource("1_cbd6s")

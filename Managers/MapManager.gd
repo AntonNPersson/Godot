@@ -280,6 +280,9 @@ func _a_star(startt, goalt, type, unit = null, excluded_tile = null):
 	var excluded = _world_to_tilemap_position(excluded_tile)
 	var current = start
 
+	if !_is_tile_walkable(goal):
+		goal = _find_last_player_tile_position()
+
 	open_set.append(start)
 	while open_set.size() > 0:
 		current = _get_lowest_f_score(open_set, start, goal)
@@ -314,6 +317,16 @@ func _find_closest_walkable_neighbor(goal, unit):
 			distance = neighbor.distance_to(unit.global_position)
 			goal = neighbor
 	return goal
+
+func _find_last_player_tile_position():
+	var control_node = players[0].get_node("Control")
+	var history_size = control_node.tile_history.size()
+
+	for i in range(history_size - 1, -1, -1):
+		var tile_position = control_node.tile_history[i]
+		if _is_tile_walkable(tile_position):
+			return tile_position
+	return Vector2.ZERO
 
 
 func _walk_from_to(path, unit, delta, goal_index, _target):
@@ -646,7 +659,7 @@ func _spawn_and_attach():
 	var arr = []
 	var random_creatures = []
 	var creature_positions = []
-	var random_increase = int(grid_size/20) + randi() % (3+sub_wave) + 2
+	var random_increase = int((int(grid_size/20) + (6+(sub_wave*4))) * creatures[0].increased_amount)
 	var spawn_time = 1.5
 	
 	for i in range(random_increase):
@@ -701,6 +714,7 @@ func _calculate_creature(size):
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		print('exiting..')
+		GameManager.save_game('user://ascension.save')
 		spawn_position.clear()
 		special_positions.clear()
 		Utility.get_node('Interactable').interactable_objects.clear()

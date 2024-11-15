@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://c8ikvo6rnmtyw"]
+[gd_scene load_steps=2 format=3 uid="uid://c8ikvo6rnmtyw"]
+
+[ext_resource type="Texture2D" uid="uid://cwdht2de2hiql" path="res://Utility/Blurry_popup.png" id="1_hngi5"]
 
 [node name="BossTitle" type="CanvasLayer"]
 
@@ -13,3 +15,14 @@ offset_bottom = 397.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 40
 text = "Goblin Chief"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -1
+anchors_preset = -1
+anchor_right = 0.163
+anchor_bottom = 0.198
+offset_left = 823.0
+offset_top = 374.0
+offset_right = 783.04
+offset_bottom = 203.16
+texture = ExtResource("1_hngi5")

@@ -4,7 +4,6 @@ extends Task
 func _ready():
 	unit = get_parent()
 	target = _get_closest_target()
-	print(target)
 	tree = self
 	animation = unit.get_node('AnimatedSprite2D')
 	cast_bar = unit.get_node('UI/cast_bar')

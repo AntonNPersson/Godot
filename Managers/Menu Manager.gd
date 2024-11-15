@@ -3,6 +3,7 @@ var start_button
 var singleplayer_button
 var transition
 var players = {}
+var store_panel
 @export var transition_time = 3
 var player_info = {"name": "Name",
 "character" : "Explorer"}
@@ -12,33 +13,84 @@ var players_loaded = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	start_button = get_child(1)
-	singleplayer_button = get_child(2)
-	start_button.pressed.connect(self._button_pressed)
-	singleplayer_button.pressed.connect(self._singleplayer)
-	multiplayer.peer_connected.connect(_on_player_connected)
-	multiplayer.connected_to_server.connect(_on_connected_ok)
-	multiplayer.connection_failed.connect(_on_connected_fail)
-	
+	store_panel = get_child(0).get_node('StorePanel')
+	GameManager.save_game('user://ascension.save')
+
 func _input(event):
 	if event.is_action_pressed("Ability_1"):
-		_quick_start()
+		print("Saving game")
+		GameManager.save_game('user://ascension.save')
 	if event.is_action_pressed("Ability_2"):
-		GameManager.load_game()
+		print(Utility.get_node('AscensionBalance')._get_balance())
+		get_node('AC').load()
+
+func _process(delta):
+	get_node('CanvasLayer/LoadButton').visible = FileAccess.file_exists("user://savegame.save")
 
 func _button_pressed():
-	start_button.visible = false
-	singleplayer_button.visible = true
+	_singleplayer()
 
 func _singleplayer():
-	singleplayer_button.disconnect("pressed", self._singleplayer)
-	Utility.get_node('Transition')._start(transition_time)
-	await get_tree().create_timer(transition_time).timeout
+	Utility.get_node('Transition')._start(2)
+	await get_tree().create_timer(0.5).timeout
 	GameManager._change_scene('res://Scenes/Cinematics/Start_cinematic.tscn', true)
 
 func _quick_start():
 	GameManager.selected_character_name = "Explorer"
 	GameManager.new_game()
+
+func _open_store():
+	if store_panel.visible:
+		store_panel.visible = false
+	else:
+		store_panel.visible = true
+		store_panel.get_node('AC_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_ascension_gain()) + "x.[/center]" 
+		store_panel.get_node('XP_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_xp_gain()) + "x.[/center]"
+		store_panel.get_node('Drop_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_drop_rate()) + "x.[/center]"
+		store_panel.get_node('AC_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_ascension_price()) + "AC.[/center]"
+		store_panel.get_node('XP_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_xp_price()) + "AC.[/center]"
+		store_panel.get_node('Drop_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_drop_rate_price()) + "AC.[/center]"
+		store_panel.get_node('RichTextLabel').text = "[center]Total Ascension Currency: " + str(Utility.get_node('AscensionBalance')._get_balance()) + "AC.[/center]"
+		get_node('AC').load()
+
+func _buy_ascension_currency():
+	if Utility.get_node('AscensionStats')._get_bonus_ascension_gain() >= 20:
+		return
+	if Utility.get_node('AscensionBalance')._get_balance() >= Utility.get_node('AscensionStats')._get_bonus_ascension_price():
+		Utility.get_node('AscensionBalance')._remove_balance(Utility.get_node('AscensionStats')._get_bonus_ascension_price())
+		Utility.get_node('AscensionStats')._add_bonus_ascension_gain(0.2)
+		Utility.get_node('AscensionStats')._set_bonus_ascension_price()
+		store_panel.get_node('AC_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_ascension_gain()) + "x.[/center]" 
+		store_panel.get_node('AC_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_ascension_price()) + "AC.[/center]"
+		store_panel.get_node('RichTextLabel').text = "[center]Total Ascension Currency: " + str(Utility.get_node('AscensionBalance')._get_balance()) + "AC.[/center]"
+		GameManager.save_game('user://ascension.save')
+
+func _buy_xp_gain():
+	if Utility.get_node('AscensionStats')._get_bonus_xp_gain() >= 20:
+		return
+	if Utility.get_node('AscensionBalance')._get_balance() >= Utility.get_node('AscensionStats')._get_bonus_xp_price():
+		Utility.get_node('AscensionBalance')._remove_balance(Utility.get_node('AscensionStats')._get_bonus_xp_price())
+		Utility.get_node('AscensionStats')._add_bonus_xp_gain(0.2)
+		Utility.get_node('AscensionStats')._set_bonus_xp_price()
+		store_panel.get_node('XP_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_xp_gain()) + "x.[/center]"
+		store_panel.get_node('XP_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_xp_price()) + "AC.[/center]"
+		store_panel.get_node('RichTextLabel').text = "[center]Total Ascension Currency: " + str(Utility.get_node('AscensionBalance')._get_balance()) + "AC.[/center]"
+		GameManager.save_game('user://ascension.save')
+
+func _buy_drop_rate():
+	if Utility.get_node('AscensionStats')._get_bonus_drop_rate() >= 30:
+		return
+	if Utility.get_node('AscensionBalance')._get_balance() >= Utility.get_node('AscensionStats')._get_bonus_drop_rate_price():
+		Utility.get_node('AscensionBalance')._remove_balance(Utility.get_node('AscensionStats')._get_bonus_drop_rate_price())
+		Utility.get_node('AscensionStats')._add_bonus_drop_rate(0.2)
+		Utility.get_node('AscensionStats')._set_bonus_drop_rate_price()
+		store_panel.get_node('Drop_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_drop_rate()) + "x.[/center]"
+		store_panel.get_node('Drop_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_drop_rate_price()) + "AC.[/center]"
+		store_panel.get_node('RichTextLabel').text = "[center]Total Ascension Currency: " + str(Utility.get_node('AscensionBalance')._get_balance()) + "AC.[/center]"
+		GameManager.save_game('user://ascension.save')
+
+func _close_store():
+	store_panel.visible = false
 
 func _create_multiplayer():
 	var peer = ENetMultiplayerPeer.new()
@@ -66,7 +118,6 @@ func _on_connected_ok():
 	GameManager._change_scene("res://Scenes/Game.tscn", false)
 	
 func _on_connected_fail():
-	print('hi')
 	multiplayer.multiplayer_peer = null
 	
 @rpc("any_peer", "reliable")
@@ -81,6 +132,9 @@ func _start_game():
 		get_child(0).visible = false
 		get_child(1).visible = false
 		_change_level.call_deferred(load("res://Scenes/Game.tscn"))
+
+func _load_game():
+	GameManager.load_game()
 		
 func _change_level(scene: PackedScene):
 	var level = $Level
@@ -88,3 +142,6 @@ func _change_level(scene: PackedScene):
 		level.remove_child(c)
 		c.queue_free()
 	level.add_child(scene.instantiate())
+
+func _exit_game():
+	get_tree().quit()

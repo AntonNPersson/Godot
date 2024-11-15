@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://1mem2o5pr21y"]
+
+[ext_resource type="Script" path="res://Abilities/Ascension/More And Merrier.gd" id="1_tyfa8"]
+
+[node name="MoreAndMerrier" type="Node2D"]
+script = ExtResource("1_tyfa8")
+i_name = "More And Merrier"
+tooltip = "Enemy amount is increased by 40%."
+increased_amount = 40

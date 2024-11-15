@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bvt6aukjm1y26"]
 
-[ext_resource type="Texture2D" uid="uid://fy66pp2eeedq" path="res://Sprites/original_floor.png" id="1_4t0v3"]
+[ext_resource type="Texture2D" uid="uid://dnmgho6w1vwkl" path="res://Sprites/Town/ground.png" id="1_cph5a"]
 
 [node name="original_floor" type="Area2D"]
 light_mask = 3
@@ -14,4 +14,4 @@ metadata/Special = false
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
 texture_filter = 1
-texture = ExtResource("1_4t0v3")
+texture = ExtResource("1_cph5a")

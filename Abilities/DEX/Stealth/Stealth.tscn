@@ -7,7 +7,7 @@
 script = ExtResource("1_wk082")
 icon = ExtResource("2_4ygyg")
 a_name = "Stealth"
-tooltip_text = "Become stealthed for a duration, casting or attacking breaks it."
+tooltip_text = "Become stealthed for Value0 second(s), casting or attacking breaks it."
 mana_cost = 40.0
 cooldown = 12.0
 projectile_type = 5
@@ -16,3 +16,4 @@ tags = Array[String](["Stealth"])
 values = Array[float]([5.0])
 increased_values = Array[float]([0.2])
 light_scale = 0.4
+additional_self_target = null

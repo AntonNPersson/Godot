@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_dmg4a"]
 [ext_resource type="PackedScene" uid="uid://n6f065x12uuq" path="res://Abilities/Creature Spells/summon_troops.tscn" id="2_l28r0"]
-[ext_resource type="PackedScene" uid="uid://cf87scvb45yp0" path="res://Abilities/Creature Spells/throw_potion.tscn" id="3_3lt1x"]
+[ext_resource type="PackedScene" uid="uid://cf87scvb45yp0" path="res://Abilities/Creature Spells/Throw potion/throw_potion.tscn" id="3_3lt1x"]
 [ext_resource type="PackedScene" uid="uid://scntmqhqk0rm" path="res://Abilities/Creature Spells/buff_summons.tscn" id="4_8wo2p"]
 [ext_resource type="PackedScene" uid="uid://3vl3fmasalk5" path="res://Abilities/Creature Spells/Melee_aoe/Massive Attack/Massive_attack.tscn" id="5_5jpcq"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="5_th56h"]

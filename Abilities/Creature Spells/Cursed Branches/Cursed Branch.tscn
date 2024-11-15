@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://cbl14xqciwldv"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Cursed Branches/Cursed Branch.gd" id="1_s5hwq"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_hby8w"]
+[ext_resource type="Texture2D" uid="uid://cyqhjmrfnpk7i" path="res://Sprites/Sprite2.png" id="3_qmal8"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_pmoql"]
+
+[sub_resource type="Gradient" id="Gradient_xwiki"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v5s3x"]
+radius = 18.5714
+
+[node name="CursedBranches" type="Area2D"]
+scale = Vector2(0.7, 0.7)
+script = ExtResource("1_s5hwq")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+z_index = 2
+z_as_relative = false
+scale = Vector2(1, 0.900391)
+color = Color(0.0666667, 0.294118, 0, 1)
+energy = 9.35
+texture = ExtResource("3_hby8w")
+offset = Vector2(0, -8)
+texture_scale = 0.4
+script = ExtResource("4_pmoql")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+scale = Vector2(0.47, 0.47)
+amount = 100
+lifetime = 0.5
+preprocess = 0.85
+speed_scale = 2.71
+randomness = 0.24
+lifetime_randomness = 0.55
+texture = ExtResource("3_qmal8")
+emission_shape = 1
+emission_sphere_radius = 25.89
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+damping_max = 24.675
+scale_amount_min = 0.02
+scale_amount_max = 0.05
+color = Color(0, 0.745098, 0.34902, 1)
+color_ramp = SubResource("Gradient_xwiki")
+hue_variation_min = -0.67
+hue_variation_max = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_v5s3x")

@@ -23,7 +23,7 @@ func _action(_delta):
 			_is_winding = false
 			return _change_state.call('casting')
 		break
-	update_sprite_direction(_get_closest_target().global_position, "Attack", false)
+	update_sprite_direction(_get_closest_target().global_position, "Attack", false, attack_timer)
 	if _unit.global_position.distance_to(_get_closest_target().global_position) > _unit.total_range + 60 and attack_timer >= (_unit.total_windup_time * 0.15):
 		return _change_state.call('chasing')
 	if _unit.total_range < 200:

@@ -18,8 +18,14 @@ func _initialize_managers():
 		load_game()
 		get_node('AbilityManager')._load_abilities(player.im_abilities)
 		get_node("AbilityManager")._load_curses()
+		get_node('AbilityManager')._load_enchants()
 		get_node('WaveManager')._load_curses(get_node('AbilityManager').loaded_curses, player)
 		player.get_node('InventoryManager').load_items()
+
+	if !GameManager.is_save_file:
+		player.item_drop_chance_multiplier += Utility.get_node('AscensionStats')._get_bonus_drop_rate()
+		player.ascension_currency_multiplier += Utility.get_node('AscensionStats')._get_bonus_ascension_gain()
+		player.experience_multiplier += Utility.get_node('AscensionStats')._get_bonus_xp_gain()
 
 	await get_tree().create_timer(0.5).timeout
 	get_node('CharacterManager').start_round_manager.emit()

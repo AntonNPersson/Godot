@@ -15,9 +15,11 @@ var target
 # Called when the node enters the scene tree for the first time.
 
 func _use():
-	print('Cursed Spike Storm')
 	origin.is_rooted = true
 	await origin.get_tree().create_timer(cast_duration).timeout
+	if _check_if_dead(origin):
+		queue_free()
+		return
 	var angle_increment = TAU / num_of_spikes
 	for i in range(num_of_spikes):
 		var angle: float = angle_increment * i
@@ -35,4 +37,15 @@ func _use():
 		spike.add_to_group('projectiles')
 		origin.get_tree().get_root().get_node('Main').add_child(spike)
 	origin.is_rooted = false
+
+func _check_if_dead(unit):
+	if !is_instance_valid(unit):
+		return true
+	if unit.is_queued_for_deletion():
+		return true
+	if unit.current_health <= 0:
+		unit.is_dead.emit(unit)
+		unit.set_meta('dying', true)
+		return true
+	return false
 

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bms63y67nmrkv"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Cursed Branches/Cursed Branches.gd" id="1_5bfy3"]
+[ext_resource type="PackedScene" uid="uid://cbl14xqciwldv" path="res://Abilities/Creature Spells/Cursed Branches/Cursed Branch.tscn" id="2_j6qhl"]
+
+[node name="CursedBranches" type="Area2D"]
+scale = Vector2(0.7, 0.7)
+script = ExtResource("1_5bfy3")
+cursed_branch_instance = ExtResource("2_j6qhl")
+speed = 100.0

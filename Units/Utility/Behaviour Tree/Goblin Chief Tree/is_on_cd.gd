@@ -6,11 +6,14 @@ class_name is_on_cd
 
 func _run(_delta):
 	self.current_index = ability_index
-
-	if timers[current_index] <= 0:
-		get_child(0)._run(_delta)
-		_running()
+	if timers.size() - 1 >= ability_index:
+		if timers[ability_index] <= 0:
+			get_child(0)._run(_delta)
+			_running()
+		else:
+			_fail()
 	else:
+		print('Ability index out of range')
 		_fail()
 		
 func _child_success():

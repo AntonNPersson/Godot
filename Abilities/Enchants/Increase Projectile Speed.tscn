@@ -4,6 +4,8 @@
 
 [node name="IncreaseProjectileSpeed" type="Node2D"]
 script = ExtResource("1_y3s3n")
-i_name = "Projectile Speed Addition"
-tooltip = "Add flat amount of speed to selected projectile ability."
-increased_speed = 100
+i_name = "Projectile: Speed"
+tooltip = "Adds Value0 flat amount of speed to selected projectile ability."
+tags = Array[String](["ProjectileSpeed"])
+values = Array[float]([50.0])
+types = Array[int]([0])

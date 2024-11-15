@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmdetae4e0oav"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_aot3g"]
+
+[node name="AddBurnExplosion" type="Node2D"]
+script = ExtResource("1_aot3g")
+i_name = "Burn: Combustion"
+tooltip = "Add an explosion to every burn, dealing burn damage to close enemies. It has a Value0s global cooldown."
+tags = Array[String](["BurnExplosion"])
+values = Array[float]([3.0])
+types = Array[int]([-1])
+extra = {
+"Cooldown": 3.0,
+"Radius": 75.0
+}

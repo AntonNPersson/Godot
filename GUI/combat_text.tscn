@@ -5,15 +5,16 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6vr33"]
 
 [node name="Combat_text" type="RichTextLabel"]
-modulate = Color(0.666667, 0.666667, 0.666667, 1)
 top_level = true
 z_index = 10
+z_as_relative = false
 material = SubResource("CanvasItemMaterial_6vr33")
 custom_minimum_size = Vector2(50, 5)
 offset_right = 20.0
 offset_bottom = 16.0
 bbcode_enabled = true
-text = "[center]50.5[/center]"
+text = "[center]50.50000[/center]"
 fit_content = true
 scroll_active = false
+autowrap_mode = 0
 script = ExtResource("2_tqdr6")

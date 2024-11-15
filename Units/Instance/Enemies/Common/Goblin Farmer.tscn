@@ -1,17 +1,12 @@
-[gd_scene load_steps=81 format=3 uid="uid://dbkbmyl0v2i8r"]
+[gd_scene load_steps=76 format=3 uid="uid://dbkbmyl0v2i8r"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_y6jol"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_m36s2"]
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_ckpgt"]
 [ext_resource type="Texture2D" uid="uid://d1sey7dhtyti0" path="res://Sprites/Goblin King/goblin fighter.png" id="5_hcy1u"]
+[ext_resource type="PackedScene" uid="uid://dimur0k7iqv8b" path="res://Units/Utility/UI Scripts/ui.tscn" id="5_jrdnp"]
 [ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_tndbw"]
-[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="7_l6cib"]
 [ext_resource type="Texture2D" uid="uid://6jiv4b2mj5cg" path="res://Units/Instance/Enemies/Sprite Sheets/Goblin Farmer.png" id="9_bw5nu"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_r383d"]
-[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="9_ybwix"]
-[ext_resource type="Texture2D" uid="uid://c6gupc2158b4i" path="res://Sprites/test2.png" id="10_8y33w"]
-[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="10_545c8"]
-[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="11_xuq3k"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
 radius = 16.1555
@@ -310,7 +305,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack East",
-"speed": 2.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -336,7 +331,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack North",
-"speed": 2.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -362,7 +357,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack South",
-"speed": 2.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -388,7 +383,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack West",
-"speed": 2.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -535,7 +530,7 @@ u_name = "Goblin Grunt"
 experience = 10
 ascension_currency = 1
 base_armor = 5
-base_speed = 95
+base_speed = 105
 base_health = 25
 base_range = 60
 base_attack_speed = 0.8
@@ -557,50 +552,15 @@ texture = ExtResource("5_hcy1u")
 [node name="Control" type="Node" parent="."]
 script = ExtResource("6_tndbw")
 
-[node name="UI" type="Node2D" parent="."]
-
-[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
-z_index = 10
-offset_left = -17.0
-offset_top = -27.0
-offset_right = 17.0
-offset_bottom = -19.0
-theme = ExtResource("9_ybwix")
-texture_under = ExtResource("7_l6cib")
-texture_progress = ExtResource("11_xuq3k")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("9_r383d")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-offset_left = -28.0
-offset_top = -32.0
-offset_right = 29.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="cast_bar" type="TextureProgressBar" parent="UI"]
-visible = false
-z_index = 20
-offset_left = -38.0
-offset_top = 33.0
-offset_right = 762.0
-offset_bottom = 633.0
-scale = Vector2(0.1, 0.015)
-theme = ExtResource("9_ybwix")
-value = 40.0
-fill_mode = 1
-texture_under = ExtResource("10_8y33w")
-texture_progress = ExtResource("11_xuq3k")
-texture_progress_offset = Vector2(-15, 35)
-script = ExtResource("10_545c8")
+[node name="UI" parent="." instance=ExtResource("5_jrdnp")]
+position = Vector2(-17, -27)
+scale = Vector2(0.2, 0.2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_2l1cy")
 position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_yljm5")
-animation = &"Attack West"
+animation = &"Attack East"
+frame_progress = 0.928356
 
 [node name="Update_timer" type="Node" parent="."]

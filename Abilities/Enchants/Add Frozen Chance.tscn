@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmnpsy8kjecpv"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/Add Frozen Chance.gd" id="1_4t5bb"]
+
+[node name="AddFrozenChance" type="Node2D"]
+script = ExtResource("1_4t5bb")
+i_name = "Freeze: Ice"
+tooltip = "Increase frozen chance by Value0% of selected ability."

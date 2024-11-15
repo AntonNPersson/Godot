@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://bffvpp7th1ny0"]
 
 [ext_resource type="Script" path="res://Abilities/STR/Cry of Desperation/cryofdesperation.gd" id="1_lomke"]
-[ext_resource type="Texture2D" uid="uid://dn8gboq041aen" path="res://Abilities/STR/Cry of Desperation/cryofdesperation_icon.png" id="2_687je"]
+[ext_resource type="Texture2D" uid="uid://1k0yhqq0fgws" path="res://Abilities/STR/Cry of Desperation/Icon18.png" id="2_vnx4n"]
 
 [node name="CryOfDesperation" type="Node2D"]
 script = ExtResource("1_lomke")
-icon = ExtResource("2_687je")
+icon = ExtResource("2_vnx4n")
 a_name = "Cry of Desperation"
-tooltip_text = "Cry in desperation, doing more damage based on percentage missing health."
+tooltip_text = "Cry in desperation dealing Value0 damage, doing more based on percentage missing health."
 mana_cost = 30.0
 cooldown = 8.0
 projectile_type = 3

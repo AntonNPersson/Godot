@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://dimur0k7iqv8b"]
+
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="1_pc3co"]
+[ext_resource type="Texture2D" uid="uid://dadbdownsdgp6" path="res://GUI/test.png" id="2_4l33g"]
+[ext_resource type="Texture2D" uid="uid://b8gsssm4e5tbm" path="res://GUI/health_bar.png" id="2_8p7sw"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="4_wsy57"]
+[ext_resource type="Texture2D" uid="uid://bves5jgiciy81" path="res://GUI/Stamina_filler.png" id="5_5du10"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="6_q8qmw"]
+
+[node name="UI" type="Node2D"]
+
+[node name="ProgressBar" type="TextureProgressBar" parent="."]
+z_index = 10
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 210.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 1.2)
+theme = ExtResource("1_pc3co")
+value = 50.0
+texture_over = ExtResource("2_4l33g")
+texture_progress = ExtResource("2_8p7sw")
+script = ExtResource("4_wsy57")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -28.0
+offset_top = -32.0
+offset_right = 29.0
+offset_bottom = -24.0
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="cast_bar" type="TextureProgressBar" parent="."]
+visible = false
+z_index = 10
+offset_top = 233.0
+offset_right = 210.0
+offset_bottom = 253.0
+scale = Vector2(0.8, 1.2)
+theme = ExtResource("1_pc3co")
+value = 50.0
+texture_over = ExtResource("2_4l33g")
+texture_progress = ExtResource("5_5du10")
+script = ExtResource("6_q8qmw")

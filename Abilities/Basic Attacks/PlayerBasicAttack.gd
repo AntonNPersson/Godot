@@ -1,5 +1,6 @@
 extends Area2D
 var unit : Node
+var original_unit : Node
 var damage
 var values = []
 @export var speed = 1300
@@ -25,9 +26,17 @@ func _process(delta):
 func _do_damage():
 	if not has_hit_target:
 		has_hit_target = true
-		var extra = {"basic_attacking": true, "critical": is_critical}
-		do_damage.emit(damage, unit, self, tag, extra)
+		var extra = {}
+		if original_unit == null:
+			original_unit = self
+
+		if original_unit.is_in_group('players'):
+			extra = {"basic_attacking": true, "critical": is_critical, "ability" : original_unit.current_attack_modifier_abilities}
+		else:
+			extra = {"basic_attacking": true, "critical": is_critical}
+
+		do_damage.emit(damage, unit, original_unit, tag, extra)
 		if tags.size() > 0:
 			for i in range(tags.size()):
-				do_damage.emit(values[i], unit, self, tags[i])
+				do_damage.emit(values[i], unit, original_unit, tags[i], extra)
 	queue_free()

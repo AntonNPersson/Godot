@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://couqttqnotrx4"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_50jgy"]
+
+[node name="IncreasedBleedDamage" type="Node2D"]
+script = ExtResource("1_50jgy")
+i_name = "Bleed: Onslaught"
+tooltip = "Add Value0% percentage bleed damage increase to selected ability."
+tags = Array[String](["BleedPercentDamage"])
+values = Array[float]([6.0])
+types = Array[int]([-1])

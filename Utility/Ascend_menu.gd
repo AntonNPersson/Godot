@@ -3,8 +3,12 @@ var player
 var first_wave_stats = {}
 var last_wave_stats = {}
 
+func _initialize(player):
+	self.player = player
+	player.added_power = _calculate_ascend_power(first_wave_stats, last_wave_stats)
+	print(player.added_power)
+
 func _on_ascend_pressed():
-	var player = get_tree().get_nodes_in_group("players")[0]
 	player.power += _calculate_ascend_power(first_wave_stats, last_wave_stats)
 	player.item_drop_chance_multiplier += 0.2
 	player.ascension_level += 1
@@ -18,7 +22,7 @@ func _calculate_ascend_power(first_wave, last_wave):
 	var ascension_armor = calculate_multiplier(first_wave['armor'], last_wave['armor'])
 	var ascension_damage = calculate_multiplier(first_wave['damage'], last_wave['damage'])
 
-	return (ascension_health + ascension_armor + ascension_damage) / 3
+	return (ascension_health + ascension_armor + ascension_damage) / 6
 
 func calculate_multiplier(first_wave_stat, last_wave_stat):
 	return last_wave_stat / first_wave_stat
@@ -28,4 +32,5 @@ func _on_ascend(first, last):
 	last_wave_stats = last
 
 func _on_return_pressed():
+	Utility.get_node('AscensionBalance')._add_balance(player.ascension_currency)
 	GameManager._change_scene('res://Scenes/Menu.tscn', true)

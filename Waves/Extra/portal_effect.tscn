@@ -1,0 +1,155 @@
+[gd_scene load_steps=10 format=3 uid="uid://wkhbpwoasb33"]
+
+[ext_resource type="Script" path="res://Waves/Extra/portal_effect.gd" id="1_rbkjb"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="2_1te6m"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="3_nubvm"]
+[ext_resource type="Texture2D" uid="uid://cyqhjmrfnpk7i" path="res://Sprites/Sprite2.png" id="4_alia3"]
+
+[sub_resource type="Animation" id="Animation_06i4n"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles2D:initial_velocity_min")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [100.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CPUParticles2D:initial_velocity_max")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [199.985]
+}
+
+[sub_resource type="Animation" id="Animation_2nky1"]
+resource_name = "portal appearing"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPUParticles2D:initial_velocity_min")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 100.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles2D:initial_velocity_max")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 199.985]
+}
+
+[sub_resource type="Animation" id="Animation_tcmfg"]
+resource_name = "portal rotating"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.95, 0.95), Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1), Vector2(0.95, 0.95), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles2D:initial_velocity_min")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [100.0, 25.0, 100.0, 175.0, 100.0, 25.0, 100.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_720od"]
+_data = {
+"RESET": SubResource("Animation_06i4n"),
+"portal appearing": SubResource("Animation_2nky1"),
+"portal rotating": SubResource("Animation_tcmfg")
+}
+
+[sub_resource type="Gradient" id="Gradient_ug0xy"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[node name="PortalEffect" type="Node2D"]
+script = ExtResource("1_rbkjb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_720od")
+}
+autoplay = "portal appearing"
+speed_scale = 1.328
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.239216, 0, 0.239216, 1)
+energy = 0.7
+texture = ExtResource("2_1te6m")
+texture_scale = 0.5
+script = ExtResource("3_nubvm")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+scale = Vector2(0.47, 0.47)
+amount = 1000
+lifetime = 0.7
+speed_scale = 0.5
+randomness = 0.49
+lifetime_randomness = 0.33
+texture = ExtResource("4_alia3")
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, -100)
+initial_velocity_min = 100.0
+initial_velocity_max = 199.985
+angular_velocity_min = 448.83
+angular_velocity_max = 448.83
+scale_amount_min = 0.05
+scale_amount_max = 0.05
+color = Color(1, 0, 1, 1)
+color_ramp = SubResource("Gradient_ug0xy")
+hue_variation_min = -0.67
+hue_variation_max = 1.0
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

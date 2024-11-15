@@ -7,7 +7,7 @@
 script = ExtResource("1_f1grw")
 icon = ExtResource("2_8naqd")
 a_name = "Fire Nova"
-tooltip_text = "Burst flames out of the ground at the targeted area, dealing damage after a delay."
+tooltip_text = "Burst flames out of the ground at the targeted area, dealing Value0 damage after a delay. and dealing Value1 burn damage."
 mana_cost = 40.0
 cooldown = 6.0
 _range = 384.0

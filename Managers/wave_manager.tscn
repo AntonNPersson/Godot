@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dbn7ie0btp67a"]
 
 [ext_resource type="Script" path="res://Managers/WaveManager.gd" id="1_lc6fs"]
-[ext_resource type="PackedScene" uid="uid://wkhbpwoasb33" path="res://Waves/portal_effect.tscn" id="2_dw4bg"]
+[ext_resource type="PackedScene" uid="uid://wkhbpwoasb33" path="res://Waves/Extra/portal_effect.tscn" id="2_dw4bg"]
 
 [sub_resource type="Animation" id="Animation_kjyko"]
 resource_name = "Ascension_anim"
@@ -103,13 +103,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -11.0
-offset_top = -149.0
-offset_right = 11.0
-offset_bottom = -118.0
+offset_left = -88.0
+offset_top = -92.0
+offset_right = 88.0
+offset_bottom = -61.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "Ascension: 1"
 fit_content = true
 autowrap_mode = 0
 

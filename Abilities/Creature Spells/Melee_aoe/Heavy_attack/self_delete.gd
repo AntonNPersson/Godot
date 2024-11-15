@@ -1,4 +1,4 @@
-extends CPUParticles2D
+extends Node
 
 func _on_finished():
 	queue_free()

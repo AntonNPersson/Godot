@@ -1,9 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://dn723wnvqorvx"]
+[gd_scene load_steps=3 format=3 uid="uid://dn723wnvqorvx"]
 
 [ext_resource type="Script" path="res://Units/Instance/character_tooltips.gd" id="1_m6kbf"]
+[ext_resource type="Texture2D" uid="uid://jt5xm2q0f8sp" path="res://GUI/Explorer.png" id="2_7ighg"]
 
 [node name="Characters" type="Node"]
 
 [node name="Explorer" type="Node" parent="."]
 script = ExtResource("1_m6kbf")
-tooltip = "Loving the thrill of exploration, the explorer gains stats of the players chosing after each wave. Explorer ability pool contains: DEX, INT, STR."
+passive_name = "Unending Curiosity"
+passive_tooltip = "When recieving a gift, chose to increase one of the main stats."
+active_name = "Dash"
+active_tooltip = "Dash towards the forward direction, becoming invurnable during its duration."
+icon = ExtResource("2_7ighg")
+type = Array[String](["DEX", "INT", "STR"])

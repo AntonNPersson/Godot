@@ -1,17 +1,13 @@
-[gd_scene load_steps=83 format=3 uid="uid://b2oh7qywydo4v"]
+[gd_scene load_steps=79 format=3 uid="uid://b2oh7qywydo4v"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_ugbp7"]
-[ext_resource type="PackedScene" uid="uid://d38lk1huh6d3m" path="res://Abilities/Creature Spells/Healing Aura/Healing Aura.tscn" id="2_ce21b"]
+[ext_resource type="PackedScene" uid="uid://bms63y67nmrkv" path="res://Abilities/Creature Spells/Cursed Branches/Cursed Branches.tscn" id="2_hl2cx"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_gmrfc"]
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_tu601"]
 [ext_resource type="Texture2D" uid="uid://d1sey7dhtyti0" path="res://Sprites/Goblin King/goblin fighter.png" id="5_tyed6"]
 [ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_tsj4x"]
-[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="8_7dwj2"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_k1l76"]
-[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="9_ls83i"]
-[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="10_3078n"]
+[ext_resource type="PackedScene" uid="uid://dimur0k7iqv8b" path="res://Units/Utility/UI Scripts/ui.tscn" id="7_ya3tj"]
 [ext_resource type="Texture2D" uid="uid://bfqiu0ggbok7g" path="res://Units/Instance/Enemies/Sprite Sheets/Download98806.png" id="10_ybklv"]
-[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_63lxb"]
 [ext_resource type="Texture2D" uid="uid://drh7e4bei7kg1" path="res://Units/Instance/Enemies/Sprite Sheets/zombified priest.png" id="12_44ece"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
@@ -319,7 +315,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack East",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -345,7 +341,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack North",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -371,7 +367,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack South",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -397,7 +393,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack West",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -538,20 +534,19 @@ animations = [{
 
 [node name="Zombified Priest" type="Area2D"]
 top_level = true
-scale = Vector2(1.3, 1.3)
 collision_layer = 2
 script = ExtResource("1_ugbp7")
 u_name = "Zombified Priest"
 experience = 75
 ascension_currency = 5
 base_armor = 50
-base_speed = 45
+base_speed = 55
 base_health = 200
-base_range = 75
+base_range = 150
 base_attack_speed = 1.0
 base_attack_damage = 4
 base_windup_time = 1.5
-abilities = Array[PackedScene]([ExtResource("2_ce21b")])
+abilities = Array[PackedScene]([ExtResource("2_hl2cx")])
 basic_attack_scene = ExtResource("3_gmrfc")
 aggro_range = 10000.0
 paused = true
@@ -570,45 +565,12 @@ texture = ExtResource("5_tyed6")
 [node name="Control" type="Node" parent="."]
 script = ExtResource("6_tsj4x")
 
-[node name="UI" type="Node2D" parent="."]
-
-[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
-z_index = 10
-offset_left = -15.0
-offset_top = -25.0
-offset_right = 19.0
-offset_bottom = -17.0
-theme = ExtResource("10_3078n")
-texture_under = ExtResource("8_7dwj2")
-texture_progress = ExtResource("9_ls83i")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("9_k1l76")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-offset_left = -28.0
-offset_top = -32.0
-offset_right = 29.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="cast_bar" type="TextureProgressBar" parent="UI"]
-visible = false
-z_index = 10
-offset_left = -16.0
-offset_top = 30.0
-offset_right = 18.0
-offset_bottom = 38.0
-theme = ExtResource("10_3078n")
-value = 100.0
-texture_under = ExtResource("8_7dwj2")
-texture_progress = ExtResource("9_ls83i")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("11_63lxb")
+[node name="UI" parent="." instance=ExtResource("7_ya3tj")]
+position = Vector2(-17, -21)
+scale = Vector2(0.2, 0.2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_2l1cy")
 sprite_frames = SubResource("SpriteFrames_yljm5")
-animation = &"Walk West"
+animation = &"Attack North"
+frame_progress = 0.779115

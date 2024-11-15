@@ -4,6 +4,7 @@ signal remove_stats(value)
 signal item_selected(item)
 var tooltip
 var unique_items = []
+var legendary_items = []
 var items : Array
 var inventory : Array
 var storage : Array
@@ -15,14 +16,18 @@ var potion_charges : Array
 var current_potion_charges = [0,0]
 var cooldown_timers : Array[float]
 var container_hud
-var abilities_hud
 var potion_hud
-var stat_hud
-var menu_hud
 var health_bar
 var barrier_bar
 var mana_bar
 var stamina_bar
+var base_stat_list
+var offensive_stat_list
+var defensive_stat_list
+var utility_stat_list
+var global_stat_list
+var character_specific_list
+var inventory_hud
 @export var simple_tooltip : PackedScene
 var hotbar
 var potion_bar_1
@@ -33,7 +38,6 @@ var selected_storage_item
 var selected_potion
 var selected_icon
 var movement
-var ability_index
 var weapon_equipped = false
 var current_weapon = null
 var PROJECTILE_TYPE = {
@@ -59,26 +63,32 @@ var potion_slots
 var storage_slots
 var statistics
 var items_
+var _dragging = false
+var _drag_offset = Vector2()
 
 func _ready():
 	unit = get_parent()
-	container_hud = get_node("CanvasLayer/PanelContainer2")
-	stat_hud = container_hud.get_node("Stats/Panel/VBoxContainer/statList")
-	abilities_hud = get_node("CanvasLayer/abilityList")
+	inventory_hud = get_node("CanvasLayer/Inventory")
+	container_hud = get_node("CanvasLayer/Inventory/PanelContainer2")
 	potion_hud = container_hud.get_node("Equipment/potionList")
-	potion_bar_1 = get_node("CanvasLayer/Potion_bag/Potion1")
-	potion_bar_2 = get_node("CanvasLayer/Potion_bag/Potion2")
-	hotbar = get_node("CanvasLayer/Hotbar")
-	health_bar = get_node('CanvasLayer/ProgressBar5')
-	barrier_bar = get_node('CanvasLayer/ProgressBar2')
-	mana_bar = get_node('CanvasLayer/ProgressBar3')
-	stamina_bar = get_node('CanvasLayer/ProgressBar4')
-	menu_hud = get_node("CanvasLayer/Panel")
+	potion_bar_1 = get_node("CanvasLayer/Bar_bag/Potion_1")
+	potion_bar_2 = get_node("CanvasLayer/Bar_bag/Potion_2")
+	hotbar = get_node("CanvasLayer/HotbarC/Hotbar")
+	health_bar = get_node('CanvasLayer/Bar_bag/ProgressBar5')
+	barrier_bar = get_node('CanvasLayer/Bar_bag/ProgressBar2')
+	mana_bar = get_node('CanvasLayer/Bar_bag/ProgressBar3')
+	stamina_bar = get_node('CanvasLayer/Bar_bag/ProgressBar4')
 	equipment_slots = container_hud.get_node("Items/Panel/VBoxContainer/Equipped")
 	potion_slots = container_hud.get_node("Items/Panel/VBoxContainer/Potion")
 	storage_slots = container_hud.get_node("Items/Panel/VBoxContainer/Storaged")	
 	statistics = container_hud.get_node("Stats")
 	items_ = container_hud.get_node("Items")
+	base_stat_list = inventory_hud.get_node('Panel/ScrollContainer/VBoxContainer/Main')
+	offensive_stat_list = inventory_hud.get_node('Panel/ScrollContainer/VBoxContainer/Offensive')
+	defensive_stat_list = inventory_hud.get_node('Panel/ScrollContainer/VBoxContainer/Defensive')
+	utility_stat_list = inventory_hud.get_node('Panel/ScrollContainer/VBoxContainer/Utility')
+	global_stat_list = inventory_hud.get_node('Panel/ScrollContainer/VBoxContainer/Global')
+	character_specific_list = inventory_hud.get_node('Panel/ScrollContainer/VBoxContainer/Extra')
 	tooltip = simple_tooltip.instantiate()
 	get_tree().get_root().add_child(tooltip)
 
@@ -87,11 +97,6 @@ func _process(delta):
 		current_weapon._use_weapon(unit, delta)
 	_update_inventory_test()
 	_update_stats()
-	hotbar.global_position.x = get_viewport().size.x / 2 - hotbar.size.x / 2
-	health_bar.global_position.x = hotbar.global_position.x - health_bar.size.x - 10
-	barrier_bar.global_position.x = hotbar.global_position.x - barrier_bar.size.x - 10
-	mana_bar.global_position.x = hotbar.global_position.x + hotbar.size.x + 10
-	stamina_bar.global_position.x = get_viewport().size.x / 2 - stamina_bar.size.x * 2.5
 	potion_bar_1._update_potion(potion_charges[0], current_potion_charges[0], potions[0].type)
 	potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], potions[1].type)
 	for i in abilities.size():
@@ -103,15 +108,26 @@ func _process(delta):
 		else:
 			hotbar.get_child(i).get_child(0).visible = true
 		abilities[i]._update_targeting(delta,abilities_targeting, abilities_targeting[i])
+	
+	_handle_level_up_visability()
+
+	if _dragging:
+		var mouse_pos = container_hud.get_global_mouse_position()
+		container_hud.global_position = mouse_pos - _drag_offset
+
 
 func _clean_up_inventory():
 	unique_items.clear()
+	legendary_items.clear()
 	for i in inventory.size():
 		for j in inventory[i].get_children():
 			if "unique" in j:
 				if !unique_items.has(j.name):
 					unique_items.append(j.name)
-					print_debug(j.name)
+			elif "legendary" in j:
+				legendary_items.append(j.name)
+
+		
 
 func _input(event):
 	if event.is_action_released("Inventory"):
@@ -189,32 +205,22 @@ func _reduce_cooldown(_ability, amount):
 func toggle_hud(hud):
 	if hud == "Inventory":
 		_update_inventory_test()
-		if container_hud.visible:
-			container_hud.visible = false
-			menu_hud.visible = false
+		if container_hud.get_parent().visible:
+			container_hud.get_parent().visible = false
 			items_.visible = false
 			statistics.visible = false
 		else:
-			container_hud.visible = true
-			menu_hud.visible = true
+			container_hud.get_parent().visible = true
 			items_.visible = true
 			statistics.visible = false
-	elif hud == "Abilities":
-		_update_abilities()
-		if abilities_hud.visible:
-			abilities_hud.visible = false
-		else:
-			abilities_hud.visible = true
 	elif hud == "Stats":
 		_update_stats()
-		if container_hud.visible:
-			container_hud.visible = false
-			menu_hud.visible = false
+		if container_hud.get_parent().visible:
+			container_hud.get_parent().visible = false
 			items_.visible = false
 			statistics.visible = false
 		else:
-			container_hud.visible = true
-			menu_hud.visible = true
+			container_hud.get_parent().visible = true
 			items_.visible = false
 			statistics.visible = true
 
@@ -304,115 +310,116 @@ func _update_inventory_test():
 
 
 func _update_stats():
-	var icons = {
-		"Total Health": preload('res://Sprites/Icons/Total_Health.png'),
-		"Total Mana": preload('res://Sprites/Icons/Total_Mana.png'),
-		"Total Stamina": preload('res://Sprites/Icons/Total_Stamina.png'),
-		"Total Barrier": preload('res://Sprites/Icons/Total_Barrier.png'),
-		"Total Health Regen": preload('res://Sprites/Icons/Total_Health_Regen.png'),
-		"Total Mana Regen": preload('res://Sprites/Icons/Total_Mana_Regen.png'),
-		"Total Stamina Regen": preload('res://Sprites/Icons/Total_Stamina_Regen.png'),
-		"Total Barrier Regen": preload('res://Sprites/Icons/Total_Barrier_Regen.png'),
-		"Total Armor": preload('res://Sprites/Icons/Total_Armor.png'),
-		"Total Evade": preload('res://Sprites/Icons/Total_Evade.png'),
-		"Total Vitality": preload('res://Sprites/Icons/Total_Vitality.png'),
-		"Total Dexterity": preload('res://Sprites/Icons/Total_Dexterity.png'),
-		"Total Strength": preload('res://Sprites/Icons/Total_Strength.png'),
-		"Total Intelligence": preload('res://Sprites/Icons/Total_Intelligence.png'),
-		"Total Attack Speed": preload('res://Sprites/Icons/Total_Attack_Speed.png'),
-		"Total Windup Time": null,
-		"Total Attack Damage": preload('res://Sprites/Icons/Total_Attack_Damage.png'),
-		"Total Attack Range": preload('res://Sprites/Icons/Total_Attack_Range.png'),
-		"Total Critical Strike Chance": preload('res://Sprites/Icons/Total_Critical_Strike_Chance.png'),
-		"Total Critical Strike Damage": preload('res://Sprites/Icons/Total_Critical_Strike_Damage.png'),
-		"Total Movement Speed": preload('res://Sprites/Icons/Total_Movement_Speed.png'),
-		"Total Cooldown Reduction": preload('res://Sprites/Icons/Total_Cooldown_Reduction.png'),
-		"Total Quick Attack Chance": preload('res://Sprites/Icons/Total_Quick_Attack_Chance.png'),
-		"Total Double Cast Chance": preload('res://Sprites/Icons/Total_Double_Cast_Chance.png'),
-		"Total Frozen Chance": null,
-		"Total Slow Resistance": null,
-		"Total Affliction Resistance": null,
-		"Total Crowd Control Resistance": null,
-		"Total Block": null
+
+	var base_stats = {
+		"Health": {"base": int(unit.base_health), "bonus": (unit.bonus_health + (unit.total_vitality * 0.5)) * (1 + unit.global_health/100)},
+		"Mana": {"base": int(unit.base_mana), "bonus": (unit.bonus_mana + (unit.total_intelligence * 2)) * (1 + unit.global_mana/100)},
+		"Stamina": {"base": int(unit.base_stamina), "bonus": (unit.bonus_stamina + (unit.total_strength/10)) * (1 + unit.global_stamina/100)},
+		"Barrier": {"base": int(unit.base_barrier), "bonus": unit.bonus_barrier * (1 + unit.global_barrier/100)},
+		"Dexterity": {"base": int(unit.base_dexterity), "bonus": unit.bonus_dexterity * (1 + unit.global_dexterity/100)},
+		"Strength": {"base": int(unit.base_strength), "bonus": unit.bonus_strength * (1 + unit.global_strength/100)},
+		"Intelligence": {"base": int(unit.base_intelligence), "bonus": unit.bonus_intelligence * (1 + unit.global_intelligence/100)}
 	}
 
-	var stats = {
-		"Total Health": {"base": int(unit.base_health), "bonus": (unit.bonus_health + (unit.total_vitality * 0.5)) * (1 + unit.global_health/100)},
-		"Total Mana": {"base": int(unit.base_mana), "bonus": (unit.bonus_mana + (unit.total_intelligence * 2)) * (1 + unit.global_mana/100)},
-		"Total Stamina": {"base": int(unit.base_stamina), "bonus": (unit.bonus_stamina + (unit.total_strength/10)) * (1 + unit.global_stamina/100)},
-		"Total Barrier": {"base": int(unit.base_barrier), "bonus": unit.bonus_barrier * (1 + unit.global_barrier/100)},
-		"Total Health Regen": {"base": round_place(unit.base_health_regen,1), "bonus": (unit.bonus_health_regen + (unit.total_vitality * 0.05)) * (1 + unit.global_health_regen/100)},
-		"Total Mana Regen": {"base": round_place(unit.base_mana_regen,1), "bonus": unit.bonus_mana_regen * (1 + unit.global_mana_regen/100)},
-		"Total Stamina Regen": {"base": round_place(unit.base_stamina_regen,1), "bonus": unit.bonus_stamina_regen * (1 + unit.global_stamina_regen/100)},
-		"Total Barrier Regen": {"base": round_place(unit.base_barrier_regen,1), "bonus": unit.bonus_barrier_regen * (1 + unit.global_barrier_regen/100)},
-		"Total Armor": {"base": int(unit.base_armor), "bonus": unit.bonus_armor * (1 + unit.global_armor/100)},
-		"Total Evade": {"base": int(unit.base_evade), "bonus": unit.bonus_evade * (1 + unit.global_evade/100)},
-		"Total Vitality": {"base": int(unit.base_vitality), "bonus": unit.bonus_vitality * (1 + unit.global_vitality/100)},
-		"Total Dexterity": {"base": int(unit.base_dexterity), "bonus": unit.bonus_dexterity * (1 + unit.global_dexterity/100)},
-		"Total Strength": {"base": int(unit.base_strength), "bonus": unit.bonus_strength * (1 + unit.global_strength/100)},
-		"Total Intelligence": {"base": int(unit.base_intelligence), "bonus": unit.bonus_intelligence * (1 + unit.global_intelligence/100)},
-		"Total Attack Speed": {"base": round_place(unit.base_attack_speed,2), "bonus": unit.bonus_attack_speed},
-		"Total Windup Time": {"base": round_place(unit.total_windup_time,2), "bonus": 0},
-		"Total Attack Damage": {"base": int(unit.base_attack_damage), "bonus": unit.bonus_attack_damage * (1 + unit.global_damage/100)},
-		"Total Attack Range": {"base": int(unit.base_range), "bonus": unit.bonus_range},
-		"Total Critical Strike Chance": {"base": round_place(unit.base_critical_chance,2), "bonus": unit.bonus_critical_chance},
-		"Total Critical Strike Damage": {"base": int(unit.base_critical_damage), "bonus": unit.bonus_critical_damage},
-		"Total Movement Speed": {"base": int(unit.base_speed), "bonus": (unit.bonus_speed + (unit.total_dexterity / 100)) * (1 + unit.global_movement_speed/100)},
-		"Total Cooldown Reduction": {"base": int(unit.base_cooldown_reduction), "bonus": unit.bonus_cooldown_reduction},
-		"Total Quick Attack Chance": {"base": round_place(unit.base_quick_attack_chance,2), "bonus": unit.bonus_quick_attack_chance},
-		"Total Double Cast Chance": {"base": round_place(unit.base_double_cast_chance,2), "bonus": unit.bonus_double_cast_chance},
-		"Total Frozen Chance": {"base": round_place(unit.base_frozen_chance,2), "bonus": unit.bonus_frozen_chance},
-		"Total Slow Resistance": {"base": round_place(unit.base_slow_resistance,2), "bonus": unit.bonus_slow_resistance},
-		"Total Affliction Resistance": {"base": round_place(unit.base_affliction_resistance,2), "bonus": unit.bonus_affliction_resistance},
-		"Total Crowd Control Resistance": {"base": round_place(unit.base_crowd_control_resistance,2), "bonus": unit.bonus_crowd_control_resistance},
-		"Total Block": {"base": round_place(unit.base_block,2), "bonus": unit.bonus_block}
-		}
+	var offensive_stats = {
+		"Attack Damage": {"base": int(unit.base_attack_damage), "bonus": unit.bonus_attack_damage * (1 + (unit.global_attack_damage/100 + unit.global_damage/100))},
+		"Attack Speed": {"base": round_place(unit.base_attack_speed,2), "bonus": unit.bonus_attack_speed},
+		"Critical Strike Chance": {"base": round_place(unit.base_critical_chance,2), "bonus": unit.bonus_critical_chance},
+		"Critical Strike Damage": {"base": int(unit.base_critical_damage), "bonus": unit.bonus_critical_damage},
+		"Cooldown Reduction": {"base": int(unit.base_cooldown_reduction), "bonus": unit.bonus_cooldown_reduction},
+		"Quick Attack Chance": {"base": round_place(unit.base_quick_attack_chance,2), "bonus": unit.bonus_quick_attack_chance},
+		"Double Cast Chance": {"base": round_place(unit.base_double_cast_chance,2), "bonus": unit.bonus_double_cast_chance}
+	}
 
-	stat_hud.clear()
-	var stat
-	for s in stats:
-		stat = stat_hud.add_item(" " + s + ": " + str(int(stats[s].base + stats[s].bonus)), icons[s], false)
-		stat_hud.set_item_tooltip(stat, 'Base: ' + str(stats[s].base) + ' Bonus: ' + str(int(stats[s].bonus)))
-	stat = stat_hud.add_item(" Global Burn Damage: " + str(unit.global_burn_damage), null, false)
-	stat_hud.set_item_tooltip(stat, 'Burn damage is always half the direct damage of a spell')
-	stat = stat_hud.add_item(' Global Bleed Damage: ' + str(unit.global_bleed_damage), null, false)
-	stat_hud.set_item_tooltip(stat, 'Bleed damage varies depending on the spell')
-	stat = stat_hud.add_item(' Global Freeze Effectiveness: ' + str(unit.global_freeze_effectiveness), null, false)
-	stat_hud.set_item_tooltip(stat, 'Freeze effectiveness increases the slow amount of a spells freeze effect')
-	stat = stat_hud.add_item(' Global Poison Effectiveness: ' + str(unit.global_poison_damage), null, false)
-	stat_hud.set_item_tooltip(stat, 'Poison effectiveness increases the damage of a spells poison effect')
-	# For some reason movement skill can't be added in ready function?
+	var defensive_stats = {
+		"Armor": {"base": int(unit.base_armor), "bonus": unit.bonus_armor * (1 + unit.global_armor/100)},
+		"Evade": {"base": int(unit.base_evade), "bonus": unit.bonus_evade * (1 + unit.global_evade/100)},
+		"Vitality": {"base": int(unit.base_vitality), "bonus": unit.bonus_vitality * (1 + unit.global_vitality/100)},
+		"Slow Resistance": {"base": round_place(unit.base_slow_resistance,2), "bonus": unit.bonus_slow_resistance},
+		"Affliction Resistance": {"base": round_place(unit.base_affliction_resistance,2), "bonus": unit.bonus_affliction_resistance},
+		"Crowd Control Resistance": {"base": round_place(unit.base_crowd_control_resistance,2), "bonus": unit.bonus_crowd_control_resistance},
+		"Block": {"base": round_place(unit.base_block,2), "bonus": unit.bonus_block}
+	}
+
+	var utility_stats = {
+		"Movement Speed": {"base": round_place(unit.base_speed,2), "bonus": unit.bonus_speed},
+		"Attack Range": {"base": round_place(unit.base_range,2), "bonus": unit.bonus_range},
+		"Frozen Chance": {"base": round_place(unit.base_frozen_chance,2), "bonus": unit.bonus_frozen_chance},
+		"Windup Time": {"base": round_place(unit.total_windup_time,2), "bonus": 0},
+		"Health Regen": {"base": round_place(unit.base_health_regen,1), "bonus": (unit.bonus_health_regen + (unit.total_vitality * 0.05)) * (1 + unit.global_health_regen/100)},
+		"Mana Regen": {"base": round_place(unit.base_mana_regen,1), "bonus": unit.bonus_mana_regen * (1 + unit.global_mana_regen/100)},
+		"Stamina Regen": {"base": round_place(unit.base_stamina_regen,1), "bonus": unit.bonus_stamina_regen * (1 + unit.global_stamina_regen/100)},
+		"Barrier Regen": {"base": round_place(unit.base_barrier_regen,1), "bonus": unit.bonus_barrier_regen * (1 + unit.global_barrier_regen/100)}
+	}
+
+	var global_stats = {
+		"Burn Damage": unit.global_burn_damage,
+		"Bleed Damage": unit.global_bleed_damage,
+		"Poison Damage": unit.global_poison_damage,
+		"Damage": unit.global_damage,
+		"Attack Damage": unit.global_attack_damage,
+		"Freeze Efficiency": unit.global_freeze_effectiveness
+	}
+
+	var character_specifics
 	if unit.movement_skill != null:
-		var chars = {
-			"Movement Ability": unit.movement_skill.name,
-			"Passive Ability" : unit.passive_name
+		character_specifics = {
+			"Movement Ability": {"base": unit.movement_skill.name, "bonus": unit.movement_skill.tooltip},
+			"Passive Ability": {"base": unit.passive_name, "bonus": unit.passive_tooltip}
 		}
-		stat = stat_hud.add_item(' Movement Ability: ' + chars["Movement Ability"], null, false)
-		stat_hud.set_item_tooltip(stat, unit.movement_skill.tooltip)
-		stat = stat_hud.add_item(' Passive Ability: ' + chars["Passive Ability"], null, false)
-		stat_hud.set_item_tooltip(stat, unit.passive_tooltip)
-	else:
-		print_debug("Why can't i instantiate this in ready function?")
 
-	get_child(0).get_child(4)._update_health(unit._calculate_percentage(unit.current_health, unit.total_health))
-	get_child(0).get_child(5)._update_barrier(unit._calculate_percentage(unit.current_barrier, unit.total_barrier))
-	get_child(0).get_child(6)._update_mana(unit._calculate_percentage(unit.current_mana, unit.total_mana))
-	get_child(0).get_child(3)._update_stamina(unit._calculate_percentage(unit.current_stamina, unit.total_stamina))
-	get_child(0).get_node('currenthp').text = str(int(unit.current_health))
-	get_child(0).get_node('current').text = str(int(unit.current_mana))
-	get_child(0).get_node('max').text = str(int(unit.total_mana))
-	get_child(0).get_node('maxhp').text = str(int(unit.total_health))
+	base_stat_list.clear()
+	offensive_stat_list.clear()
+	defensive_stat_list.clear()
+	utility_stat_list.clear()
+	global_stat_list.clear()
+	character_specific_list.clear()
+	var stat
+
+	for s in base_stats:
+		stat = base_stat_list.add_item(" " + s + ": " + str(int(base_stats[s].base + base_stats[s].bonus)), null, false)
+		base_stat_list.set_item_tooltip(stat, 'Base: ' + str(base_stats[s].base) + ' Bonus: ' + str(int(base_stats[s].bonus)))
+
+	for s in offensive_stats:
+		if "Chance" in s or "Reduction" in s:
+			stat = offensive_stat_list.add_item(" " + s + ": " + str(int(offensive_stats[s].base + offensive_stats[s].bonus)) + "%", null, false)
+			offensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(offensive_stats[s].base) + '% Bonus: ' + str(int(offensive_stats[s].bonus)) + '%')
+		else:
+			stat = offensive_stat_list.add_item(" " + s + ": " + str(int(offensive_stats[s].base + offensive_stats[s].bonus)), null, false)
+			offensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(offensive_stats[s].base) + ' Bonus: ' + str(int(offensive_stats[s].bonus)))
+
+	for s in defensive_stats:
+		if "Resistance" in s:
+			stat = defensive_stat_list.add_item(" " + s + ": " + str(int(defensive_stats[s].base + defensive_stats[s].bonus)) + "%", null, false)
+			defensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(defensive_stats[s].base) + '% Bonus: ' + str(int(defensive_stats[s].bonus)) + '%')
+		else:
+			stat = defensive_stat_list.add_item(" " + s + ": " + str(int(defensive_stats[s].base + defensive_stats[s].bonus)), null, false)
+			defensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(defensive_stats[s].base) + ' Bonus: ' + str(int(defensive_stats[s].bonus)))
+
+	for s in utility_stats:
+		if "Chance" in s:
+			stat = utility_stat_list.add_item(" " + s + ": " + str(int(utility_stats[s].base + utility_stats[s].bonus)) + "%", null, false)
+			utility_stat_list.set_item_tooltip(stat, 'Base: ' + str(utility_stats[s].base) + '% Bonus: ' + str(int(utility_stats[s].bonus)) + '%')
+		else:
+			stat = utility_stat_list.add_item(" " + s + ": " + str(int(utility_stats[s].base + utility_stats[s].bonus)), null, false)
+			utility_stat_list.set_item_tooltip(stat, 'Base: ' + str(utility_stats[s].base) + ' Bonus: ' + str(int(utility_stats[s].bonus)))
+
+	for s in global_stats:
+		stat = global_stat_list.add_item(" " + s + ": " + str(int(global_stats[s])) + "%", null, false)
+		global_stat_list.set_item_tooltip(stat, 'Value: ' + str(int(global_stats[s])) + '%')
+
+	if character_specifics != null:
+		for s in character_specifics:
+			stat = character_specific_list.add_item(" " + s + ": " + str(character_specifics[s].base), null, false)
+			character_specific_list.set_item_tooltip(stat, character_specifics[s].bonus)
+
+	health_bar._update_health(unit._calculate_percentage(unit.current_health, unit.total_health))
+	barrier_bar._update_barrier(unit._calculate_percentage(unit.current_barrier, unit.total_barrier))
+	mana_bar._update_mana(unit._calculate_percentage(unit.current_mana, unit.total_mana))
+	stamina_bar._update_stamina(unit._calculate_percentage(unit.current_stamina, unit.total_stamina))
 
 func round_place(num, places):
 	return (round(num*pow(10,places))/pow(10,places))
-
-func _update_abilities():
-	var _index = 0
-	abilities_hud.get_child(1).text = "[b][color=gold]Exp: " + str(unit.total_ability_experience) + "[/color][/b]"
-	for a in abilities:
-		abilities_hud.set_item_tooltip(_index, a.tooltip)
-		abilities_hud.set_item_icon(_index, a.icon)
-		_index += 1
 
 func _on_ability_manager_picked(_ability):
 	if abilities == null:
@@ -420,20 +427,17 @@ func _on_ability_manager_picked(_ability):
 	
 	if abilities.size() >= 3:
 		pass
-	var _index = abilities_hud.item_count
 	abilities.append(_ability)
 	cooldown_timers.append(0)
-	abilities_hud.add_item(" " + _ability.name + ":")
-	abilities_hud.set_item_tooltip(_index, _ability.tooltip)
-	abilities_hud.set_item_icon(_index, _ability.icon)
 	_ability.unit = self.get_parent()
 	_ability.is_docile = false
 	_ability._initialize()
 
-func _on_enchant_picked(enchant, index):
+func _on_enchant_picked(enchant, index, _type):
 	enchant._initialize()
 	for i in range(enchant.tags.size()):
-		abilities[index]._add_enchant(enchant.tags[i], enchant.values[i], enchant.types[i])
+		print(enchant.extra)
+		abilities[index]._add_enchant(enchant.tags[i], enchant.values[i], enchant.types[i], enchant.extra)
 
 func _add_item_effect(type, tag, value, duration, item_color, item_cooldown = 0):
 	var extra = {
@@ -442,7 +446,7 @@ func _add_item_effect(type, tag, value, duration, item_color, item_cooldown = 0)
 			"Cooldown" : item_cooldown
 		}
 
-	# I know it's reduntant but it's for the sake of readability
+	# I know it's redundant but it's for the sake of readability
 	if type == 'OnCast':
 		for a in abilities:
 			if item_cooldown == null:
@@ -455,6 +459,10 @@ func _add_item_effect(type, tag, value, duration, item_color, item_cooldown = 0)
 	elif type == 'OnFrozen':
 		unit.get_node('Control')._on_action(value, true, unit, tag, extra)
 	elif type == "OnPoison":
+		unit.get_node('Control')._on_action(value, true, unit, tag, extra)
+	elif type == "OnBleed":
+		unit.get_node('Control')._on_action(value, true, unit, tag, extra)
+	elif type == "OnEquip":
 		unit.get_node('Control')._on_action(value, true, unit, tag, extra)
 			
 
@@ -475,10 +483,15 @@ func _remove_item_effect(type, tag):
 		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
 	elif type == "OnPoison":
 		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+	elif type == "OnBleed":
+		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+	elif type == "OnEquip":
+		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
 
 func _on_item_picked_up(item):
 	var children_ = item.get_children()
 	var unique_item = null
+	var legendary_item = null
 	# Clean from unique items and check if unique item is already equipped
 	_clean_up_inventory()
 
@@ -492,7 +505,7 @@ func _on_item_picked_up(item):
 			Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
 		return
 
-	# Check if item is unique
+	# Check if item is unique or legendary
 	for i in range(2, children_.size()):
 		if "unique" in children_[i]:
 			if unique_items.find(children_[i].name) != -1:
@@ -506,6 +519,19 @@ func _on_item_picked_up(item):
 					return
 			unique_item = children_[i].name
 			unique_items.append(children_[i].name)
+
+		if "legendary" in children_[i]:
+			if legendary_items.size() > 0:
+				Utility.get_node("ErrorMessage")._create_error_message("Legendary item already equipped", self)
+				if storage.size() <= max_storage_slots:
+					storage.append(item)
+					_update_inventory_test()
+					return
+				else:
+					Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
+					return
+			legendary_items.append(children_[i].name)
+			legendary_item = children_[i].name
 	
 	# Check if item is a weapon
 	if "range" in children_[2]:
@@ -515,6 +541,8 @@ func _on_item_picked_up(item):
 					_update_inventory_test()
 					if unique_item  != null:
 						unique_items.remove_at(unique_items.find(unique_item))
+					if legendary_item != null:
+						legendary_items.remove_at(legendary_items.find(legendary_item))
 				else:
 					Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
 				return
@@ -533,13 +561,16 @@ func _on_item_picked_up(item):
 			if "epic" in children[i]:
 				if "cooldown" in children[i]:
 					_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0], children[i].cooldown)
-					continue
+					if "legendary" not in children[i]:
+						continue
 				else:
 					_add_item_effect(children[i].epic, children[i].tags[0], children[i].values[0], children[i].duration, children[i].colors[0])
-					continue
+					if "legendary" not in children[i]:
+						continue
 			var added_stats = {}
 			for j in range(children[i]._get_tags().size()):
 				added_stats[children[i]._get_tags()[j]] = children[i]._get_values()[j]
+				print(added_stats)
 			add_stats.emit(added_stats)
 	_update_stats()
 	item.remove_from_group("Items")
@@ -555,6 +586,8 @@ func _on_item_dropped(to_storage = false):
 						current_weapon = null
 					if "unique" in children[i]:
 						unique_items.remove_at(unique_items.find(children[i].name))	
+					if "legendary" in children[i]:
+						legendary_items.remove_at(legendary_items.find(children[i].name))
 					var removed_stats = {}
 					if "epic" in children[i]:
 						_remove_item_effect(children[i].epic, children[i].tags[0])
@@ -597,6 +630,10 @@ func _add_from_storage_to_inventory(it):
 		if "unique" in selected_storage_item.get_child(i):
 			if selected_storage_item.get_child(i).name in unique_items:
 				Utility.get_node("ErrorMessage")._create_error_message("Unique item already equipped", self)
+				return
+		if "legendary" in selected_storage_item.get_child(i):
+			if selected_storage_item.get_child(i).name in legendary_items:
+				Utility.get_node("ErrorMessage")._create_error_message("Legendary item already equipped", self)
 				return
 
 	# Check if item is a weapon, and if it's already equipped
@@ -685,18 +722,20 @@ func _on_potion_recharge_picked_up():
 func _on_get_item():
 	item_selected.emit(selected_item)
 
-
-func _on_ability_list_item_selected(index:int):
-	ability_index = index
-
-
-func _on_level_pressed():
+func _on_level_pressed(ability_index : int):
 	if unit.total_ability_experience >= abilities[ability_index].max_experience:
 		unit.total_ability_experience -= abilities[ability_index].max_experience
 		abilities[ability_index]._add_level()
-		_update_abilities()
 	else:
 		Utility.get_node('ErrorMessage')._create_error_message('Not enough experience', self)
+
+func _handle_level_up_visability():
+	if unit.total_ability_experience > 0:
+		for i in range(abilities.size()):
+			if unit.total_ability_experience >= abilities[i].max_experience:
+				hotbar.get_child(i).get_node('level_up').visible = true
+			else:
+				hotbar.get_child(i).get_node('level_up').visible = false
 
 func _on_inventory_mouse_entered():
 	unit.lose_camera_focus = true
@@ -806,7 +845,6 @@ func load_items():
 		var the_item_data = unit.im_storage[i]
 		var the_item = unit.item_manager._load_item(the_item_data['bot_piece'], the_item_data['second_mid_piece'], the_item_data['mid_piece'], the_item_data['top_piece'], the_item_data['second_top_piece'], the_item_data['item_name'], the_item_data['rarity'])
 		storage.append(the_item)
-
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:

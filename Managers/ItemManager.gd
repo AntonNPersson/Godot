@@ -13,6 +13,7 @@ var mid_list
 var top_list
 var second_top_list
 var unique_list
+var legendary_list
 
 # Test
 var second_mid_list_offense
@@ -57,6 +58,7 @@ func _initialize():
 	var second_top = preload('res://Items/Top Effects/top list effects.tscn').instantiate()
 	var potion_instance = preload('res://Items/Potions/potion list.tscn').instantiate()
 	var unique_instance = preload('res://Items/Unique Effects/Lists/unique list.tscn').instantiate()
+	var legendary_instance = preload('res://Items/Legendary Effects/Lists/legendary list.tscn').instantiate()
 
 	var second_mid_list_offense_scene = preload("res://Items/Low-Mid Effects/lists/low_mid_offense.tscn").instantiate()
 	var second_mid_list_defense_scene = preload("res://Items/Low-Mid Effects/lists/low_mid_defense.tscn").instantiate()
@@ -89,6 +91,7 @@ func _initialize():
 	second_top_list = second_top.get_children()
 	potion_list = potion_instance.get_children()
 	unique_list = unique_instance.get_children()
+	legendary_list = legendary_instance.get_children()
 
 	get_node('Items').add_child(second_mid_list_offense_scene)
 	get_node('Items').add_child(second_mid_list_defense_scene)
@@ -109,6 +112,7 @@ func _initialize():
 	get_node('Items').add_child(second_top)
 	get_node('Items').add_child(potion_instance)
 	get_node('Items').add_child(unique_instance)
+	get_node('Items').add_child(legendary_instance)
 	bot_instance.global_position = Vector2(-10000, -10000)
 	second_mid.global_position = Vector2(-10000, -10000)
 	mid_instance.global_position = Vector2(-10000, -10000)
@@ -132,7 +136,7 @@ func _calculate_item_rarity():
 		return
 		
 	print_debug("changed rarity")
-	var rarity = 37.2 * player.item_drop_chance_multiplier
+	var rarity = 37.5 * player.item_drop_chance_multiplier
 	if rarity < 30 * player.item_drop_chance_multiplier:
 		return ITEM_RARITY.COMMON
 	elif rarity < 35 * player.item_drop_chance_multiplier:
@@ -143,6 +147,10 @@ func _calculate_item_rarity():
 		return ITEM_RARITY.EPIC
 	elif rarity < 37.5 * player.item_drop_chance_multiplier:
 		return ITEM_RARITY.UNIQUE
+	elif rarity < 37.6 * player.item_drop_chance_multiplier:
+		return ITEM_RARITY.LEGENDARY
+	else:
+		return ITEM_RARITY.COMMON
 
 func _balance_item_drops():
 	if last_items.size() >= 3:
@@ -175,7 +183,7 @@ func _create_item(_rarity = null):
 		if new_bot_piece != null:
 			bot_piece = new_bot_piece
 		bot_piece._initialize()
-		bot_piece._ascend(player.power)
+		bot_piece._ascend(player.item_power)
 		var _item = item.instantiate()
 		_item.i_name = bot_piece.name
 		_item.player = player
@@ -217,9 +225,9 @@ func _create_item(_rarity = null):
 
 		second_mid_piece._initialize()
 		mid_piece._initialize()
-		second_mid_piece._ascend(player.power)
-		bot_piece._ascend(player.power)
-		mid_piece._ascend(player.power)
+		second_mid_piece._ascend(player.item_power)
+		bot_piece._ascend(player.item_power)
+		mid_piece._ascend(player.item_power)
 		var _item = item.instantiate()
 		_item.i_name = bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name
 		_item.player = player
@@ -273,9 +281,9 @@ func _create_item(_rarity = null):
 		second_mid_piece._initialize()
 		mid_piece._initialize()	
 		top_piece._initialize()
-		second_mid_piece._ascend(player.power)
-		bot_piece._ascend(player.power)
-		mid_piece._ascend(player.power)
+		second_mid_piece._ascend(player.item_power)
+		bot_piece._ascend(player.item_power)
+		mid_piece._ascend(player.item_power)
 		bot_piece._increase_rarity(RARE_STAT_INCREASE, 2)
 		var _item = item.instantiate()
 		_item.i_name = bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name + " and " + top_piece.name
@@ -337,9 +345,9 @@ func _create_item(_rarity = null):
 		mid_piece._initialize()
 		top_piece._initialize()
 		second_top_piece._initialize()
-		second_mid_piece._ascend(player.power)
-		bot_piece._ascend(player.power)
-		mid_piece._ascend(player.power)
+		second_mid_piece._ascend(player.item_power)
+		bot_piece._ascend(player.item_power)
+		mid_piece._ascend(player.item_power)
 		bot_piece._increase_rarity(EPIC_STAT_INCREASE, 4)
 		var _item = item.instantiate()
 		_item.i_name = second_top_piece.name + ", " + bot_piece.name + " of " + second_mid_piece.name + " " + mid_piece.name + " and " + top_piece.name
@@ -363,11 +371,13 @@ func _create_item(_rarity = null):
 	elif rarity == ITEM_RARITY.UNIQUE:
 		var unique_piece = unique_list[randi() % unique_list.size()].duplicate()
 		unique_piece._initialize()
+		unique_piece._ascend(player.item_power)
 
 		var bot_piece
 		if unique_piece.unique_type == "Weapon":
 			bot_piece = bot_list[weapon_list.pick_random()].duplicate()
 		bot_piece._initialize()
+		bot_piece._ascend(player.item_power)
 
 		var second_top_piece = second_top_list[randi() % top_list.size()].duplicate()
 		second_top_piece._initialize()
@@ -386,8 +396,28 @@ func _create_item(_rarity = null):
 		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
 		add_child(_item)
 		return _item
-	else:
-		return null
+	elif rarity == ITEM_RARITY.LEGENDARY:
+		var legendary_piece = legendary_list[randi() % legendary_list.size()].duplicate()
+		legendary_piece._initialize()
+		legendary_piece._ascend(player.item_power)
+
+		var bot_piece = bot_list[randi() % bot_list.size()].duplicate()
+		bot_piece._initialize()
+		bot_piece._ascend(player.item_power)
+
+		var _item = item.instantiate()
+		_item.i_name = legendary_piece.name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.LEGENDARY
+		_item.im = self
+		_item.add_child(bot_piece)
+		_item.add_child(legendary_piece)
+		legendary_piece.set_owner(_item)
+		bot_piece.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
+		add_child(_item)
+		return _item
 
 func _load_item(bot_piece_data, second_mid_piece_data, mid_piece_data, top_piece_data, second_top_piece_data, item_name, rarity):
 	var bot_piece

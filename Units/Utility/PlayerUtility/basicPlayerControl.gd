@@ -36,6 +36,9 @@ var movement_penalty = 1.0 # 1.0 = normal speed, 0.4 = slow speed
 var mouse_pointer_pressed = load('res://Sprites/Icons/pointer_pressed.png')
 var mouse_pointer = load('res://Sprites/Icons/pointer.png')
 
+var tile_history = []
+var current_tile = Vector2.ZERO
+
 #--------------------------#
 # Helper functions
 #--------------------------#
@@ -94,6 +97,10 @@ func _get_closest_visible_enemy_to_mouse():
 #--------------------------#		
 
 func _physics_process(delta):
+	if current_tile != stats.obstacles_info._world_to_tilemap_position(stats.global_position):
+		tile_history.append(current_tile)
+	current_tile = stats.obstacles_info._world_to_tilemap_position(stats.global_position)
+
 	if stats.paused:
 		return
 	# Called every physics frame.
@@ -226,6 +233,7 @@ func _attack(tags = null, values = null, delta = 0.0):
 		instance.tags = tags
 		instance.values = values
 		instance.unit = attack_target
+		instance.original_unit = stats
 		var crit = stats._apply_critical_damage(stats.total_attack_damage)
 		instance.damage = crit["value"]
 		if crit["critical"]:
@@ -242,10 +250,10 @@ func _attack(tags = null, values = null, delta = 0.0):
 		var new_damage = crit["value"]
 		if stats.total_attack_targets <= 1:
 			attack_sprite.scale = Vector2(0.08, 0.08)
-			var extra = {"basic_attacking": true, "critical": crit["critical"]}
+			var extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities}
 			_on_action(new_damage, attack_target, stats, "Damage", extra)
 			for i in range(tags.size()):
-				_on_action(values[i], attack_target, stats, tags[i])
+				_on_action(values[i], attack_target, stats, tags[i], extra)
 		else:
 			attack_sprite.scale = Vector2(0.08 + (0.02*stats.total_attack_targets), 0.08 + (0.02*stats.total_attack_targets))
 			var targets = get_tree().get_nodes_in_group('enemies')
@@ -255,10 +263,10 @@ func _attack(tags = null, values = null, delta = 0.0):
 					continue
 				g += 1
 				if g <= stats.total_attack_targets:
-					var extra = {"basic_attacking": true, "critical": crit["critical"]}
+					var extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities}
 					_on_action(new_damage, target, stats, "Damage", extra)
 					for i in range(tags.size()):
-						_on_action(values[i], target, stats, tags[i])
+						_on_action(values[i], target, stats, tags[i], extra)
 
 func _normal_movement(delta, current_target):
 	# Handles the normal movement behavior.
@@ -407,7 +415,20 @@ func _check_collision():
 	
 	for area in overlapping:
 		if area.is_in_group('obstacles'):
-			var collision_point = area.get_node("CollisionShape2D").global_position
+			var collision_point_1 = area.get_node("CollisionShape2D").global_position
+			var collision_point_2 = null
+			if area.get_node("CollisionShape2D2") != null:
+				collision_point_2 = area.get_node("CollisionShape2D2").global_position
+			var collision_point = null
+			if collision_point_2 != null:
+				if collision_point_1.distance_to(stats.global_position) < collision_point_2.distance_to(stats.global_position):
+					collision_point = collision_point_1
+				else:
+					collision_point = collision_point_2
+			else:
+				collision_point = collision_point_1
+			
 			collision_direction = (collision_point - stats.global_position).normalized()
 			colliding = true
 			stats.is_colliding = true
+			return

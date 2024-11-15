@@ -8,7 +8,7 @@
 script = ExtResource("1_h5or2")
 icon = ExtResource("2_8bxlx")
 a_name = "Frostbolt"
-tooltip_text = "Shoot an icicle in a straight line, damaging and freezing anything it touches; freezing has a chance to apply frozen to target."
+tooltip_text = "Shoot an icicle in a straight line dealing Value0 damage and freezing anything it touches, slowing by Value1%; freezing has a chance to apply frozen to target."
 mana_cost = 20.0
 cooldown = 4.0
 _range = 384.0

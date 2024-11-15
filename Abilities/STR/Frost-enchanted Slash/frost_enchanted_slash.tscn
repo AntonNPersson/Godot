@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://d0p7hbeolljg7"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_h8nlv"]
-[ext_resource type="Texture2D" uid="uid://d0wjs8jsnoqq" path="res://Abilities/STR/Frost-enchanted Slash/FrostMage_22.png" id="2_v5i41"]
+[ext_resource type="Texture2D" uid="uid://cdwtwve6j1brq" path="res://Abilities/STR/Frost-enchanted Slash/Icon37.png" id="2_jeoig"]
 
 [node name="Frost Slash" type="Node2D"]
 script = ExtResource("1_h8nlv")
-icon = ExtResource("2_v5i41")
+icon = ExtResource("2_jeoig")
 a_name = "Frost Slash"
-tooltip_text = "Enchant your weapon to deal increased damage and freeze, on your next hit against your target; freezing has a chance to apply frozen to target."
+tooltip_text = "Enchant your weapon to deal Value0 increased damage and freeze. slowing Value1%, on your next hit against your target; freezing has a chance to apply frozen to target."
 mana_cost = 15.0
 cooldown = 3.0
 projectile_type = 5
@@ -18,4 +18,5 @@ increased_values = Array[float]([25.0, 3.0, 0.0])
 light_color = Color(0.709804, 0.870588, 1, 1)
 light_scale = 1.0
 is_buff = true
+additional_self_target = null
 weight = 80.0

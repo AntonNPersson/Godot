@@ -40,7 +40,7 @@ func _next_area(area, value):
 		Utility.get_node('Transition')._start(2)
 		await get_tree().create_timer(0.5).timeout
 		Utility.get_node('Brightness')._set_fog_layer(-2)
-		Utility.get_node('Brightness')._set_color(Color8(78, 81, 127))
+		Utility.get_node('Brightness')._set_color(Color8(136, 158, 151))
 		GameManager.save_game()
 		start_singleplayer.emit()
 	if area == 'Combat':
@@ -103,8 +103,8 @@ func _on_ability_manager_curse_picked(curse:Variant):
 	start_singleplayer.emit()
 	_next_area('Town', null)
 
-func _on_ability_manager_enchantment_picked(enchantment:Variant, unit):
-	Utility.get_node('Transition')._start(0.3)
-	print('enchantment')
-	_next_area('Town', null)
+func _on_ability_manager_enchantment_picked(enchantment:Variant, unit, value = true):
+	if value:
+		Utility.get_node('Transition')._start(0.3)
+		_next_area('Town', null)
 	update_characters.emit()

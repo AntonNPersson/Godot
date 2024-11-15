@@ -17,10 +17,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _use_ability(delta):
 	if Input.is_action_just_pressed('Dash'):
-		get_child(0).restart()
-		get_child(0).emitting = true
 		if !is_dashing and unit.current_stamina - cost >= 0:
-			particle_effects.global_position = unit.global_position
+			get_child(0).play()
 			dash_vector = Vector2(dash_speed, 0)
 			dash_duration = 0.2
 			is_dashing = true

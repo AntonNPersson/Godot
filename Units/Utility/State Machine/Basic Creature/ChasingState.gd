@@ -2,6 +2,7 @@ extends State
 class_name ChasingState
 var MAX_SPEED = 0
 var colliding = false
+var colliding_edge = false
 var collision_direction = Vector2.ZERO
 var colliding_obstacle_position = Vector2.ZERO
 var colliding_obstacle_size = Vector2.ZERO
@@ -38,7 +39,7 @@ func _action(_delta):
 		break
 	if _unit.is_rooted or _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		return
-	if _closest_distance > _unit.total_range:
+	if _closest_distance > _unit.total_range + 10:
 		_move_towards_target(_delta)
 	else:
 		_change_state.call('attacking')
@@ -84,6 +85,7 @@ func _flockBehaviour(_delta, target):
 func _move_towards_target(_delta):
 	if current_path_index == -1 or current_path_index >= 1:
 		if _update_path() == -1:
+			print('No path found')
 			return
 	
 	if _unit.total_speed <= 0:
@@ -98,20 +100,22 @@ func _move_towards_target(_delta):
 		update_sprite_direction(_get_closest_target().global_position, "Walk", false)
 		_unit.global_position += closest_avoidance_direction * _unit.total_speed * _delta
 		if avoidance_direction_type == "Horizontal":
-			if _unit.global_position.distance_to(colliding_obstacle_position) > colliding_obstacle_size.size.x + 15:
+			if _unit.global_position.distance_to(colliding_obstacle_position) > colliding_obstacle_size.size.x + 25:
 				_update_path(colliding_obstacle_position)
-				print('Horizontal')
 				colliding = false
 				_unit.is_colliding = false
 		elif avoidance_direction_type == "Vertical":
-			if _unit.global_position.distance_to(colliding_obstacle_position) > colliding_obstacle_size.size.y + 15:
+			if _unit.global_position.distance_to(colliding_obstacle_position) > colliding_obstacle_size.size.y + 25:
 				_update_path(colliding_obstacle_position)
-				print('Vertical')
 				colliding = false
 				_unit.is_colliding = false
+	elif colliding_edge:
+		_unit.global_position -= collision_direction * _unit.total_speed * _delta
+		colliding_edge = false
+		_unit.is_colliding = false
 	else:
 		_walk_from_to(path, _unit, _delta, PATH_TILE_UPDATE_INTERVAL, _get_closest_target())
-	if _closest_distance > _unit.total_range + 15:
+	if _closest_distance > _unit.total_range:
 		var separation_vector = Vector2()
 		for enemy in get_tree().get_nodes_in_group("enemies"):
 			if enemy != _unit:
@@ -131,20 +135,8 @@ func _walk_from_to(path, unit, delta, tile_update_interval, target):
 	var distance = unit.global_position.distance_to(next_tile)
 	var direction = (next_tile - unit.global_position).normalized()
 	var _velocity = direction * unit.total_speed * smooth_factor
-	var separation_vector = Vector2()
 	
-
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if enemy != unit:
-			var enemy_position = enemy.global_position
-			var separation = unit.global_position.distance_to(enemy_position)
-			if separation < 22:
-				separation_vector += (unit.global_position - enemy_position).normalized() * (52 - separation)
-
-	if separation_vector.length() > 0:
-		_velocity += separation_vector.normalized()
-	
-	if distance > 0:
+	if distance >= 5:
 		unit.global_position += _velocity * delta
 	
 	if distance < 5:
@@ -185,8 +177,19 @@ func _check_collision():
 	var overlapping = _unit.get_overlapping_areas()
 	
 	for area in overlapping:
-		if area.is_in_group('obstacles'):
-			var collision_point = area.get_node("CollisionShape2D").global_position
+		if area.is_in_group('obstacles') and !colliding and area.get_meta('Walkable'):
+			var collision_point_1 = area.get_node("CollisionShape2D").global_position
+			var collision_point_2 = null
+			if area.has_node("CollisionShape2D2"):
+				collision_point_2 = area.get_node("CollisionShape2D2").global_position
+			var collision_point
+			if collision_point_2 != null:
+				if collision_point_1.distance_to(_unit.global_position) < collision_point_2.distance_to(_unit.global_position):
+					collision_point = collision_point_1
+				else:
+					collision_point = collision_point_2
+			else:
+				collision_point = collision_point_1
 			collision_direction = (collision_point - _unit.global_position).normalized()
 			colliding_obstacle_position = area.get_node("CollisionShape2D").global_position
 			colliding_obstacle_size = area.get_node("CollisionShape2D").get_shape().get_rect()
@@ -217,3 +220,8 @@ func _check_collision():
 					closest_avoidance_direction = avoidance
 			colliding = true
 			_unit.is_colliding = true
+
+		if area.is_in_group('obstacles') and !area.get_meta('Walkable'):
+			collision_direction = (area.global_position - _unit.global_position).normalized()
+			_unit.is_colliding = true
+			colliding_edge = true

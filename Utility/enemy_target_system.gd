@@ -51,7 +51,7 @@ func _create_circle_ability(size : float, duration : float, direction: Vector2, 
 			var effect = after_effect.instantiate()
 			hitbox.get_tree().get_root().add_child(effect)
 			effect.global_position = hitbox.global_position
-			effect.emitting = true
+			effect.scale = Vector2(size, size)
 		_check_collision(hitbox, _call)
 
 func _create_rectangle_ability(size : Vector2, duration : float, direction: Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null):
@@ -73,10 +73,11 @@ func _create_rectangle_ability(size : Vector2, duration : float, direction: Vect
 	origini.is_rooted = false
 	if after_effect:
 		_shake_camera(player)
+		print(str(after_effect.get_path()))
 		var effect = after_effect.instantiate()
 		hitbox.get_tree().get_root().add_child(effect)
 		effect.global_position = hitbox.global_position
-		effect.emitting = true
+		effect.scale = size
 	_check_collision(hitbox, _call)
 
 func _create_targeted_circle_ability(size : float, duration : float, target : Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null):
@@ -93,7 +94,7 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 	hitbox.get_node('Circle').get_node('AnimationPlayer').speed_scale = 1/duration
 	hitbox.get_node('Circle').get_node('AnimationPlayer').play('Fade_in')
 	await get_tree().create_timer(duration).timeout
-	if !is_instance_valid(origini):
+	if !is_instance_valid(origini) or !is_instance_valid(hitbox):
 		return
 	origini.is_rooted = false
 	if after_effect:
@@ -101,7 +102,7 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 		var effect = after_effect.instantiate()
 		hitbox.get_tree().get_root().add_child(effect)
 		effect.global_position = hitbox.global_position
-		effect.emitting = true
+		effect.scale = Vector2(size, size)
 	_check_collision(hitbox, _call)
 
 func _create_targeted_rectangle_ability(size : Vector2, duration : float, target : Node, origini : Node, _call : Callable, after_effect : PackedScene = null):
@@ -126,7 +127,7 @@ func _create_targeted_rectangle_ability(size : Vector2, duration : float, target
 		var effect = after_effect.instantiate()
 		hitbox.get_tree().get_root().add_child(effect)
 		effect.global_position = hitbox.global_position
-		effect.emitting = true
+		effect.scale = size
 	_check_collision(hitbox, _call)
 
 func _create_flexible_rectangle_ability(size_y : float, size_x : float, duration : float, direction: Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null, do_damage : bool = false):
@@ -153,7 +154,7 @@ func _create_flexible_rectangle_ability(size_y : float, size_x : float, duration
 		var effect = after_effect.instantiate()
 		hitbox.get_tree().get_root().add_child(effect)
 		effect.global_position = hitbox.global_position
-		effect.emitting = true
+		effect.scale = Vector2(size_x, size_y)
 	if do_damage:
 		_check_collision(hitbox, _call)
 

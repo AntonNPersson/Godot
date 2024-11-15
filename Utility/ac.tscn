@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://unnab30yeuuc"]
+
+[ext_resource type="Script" path="res://Utility/utility_saved_variables.gd" id="1_1yc18"]
+
+[node name="AC" type="Node" groups=["Persist"]]
+script = ExtResource("1_1yc18")

@@ -15,18 +15,18 @@ colors = PackedColorArray(0.412152, 0.412152, 0.412152, 1, 1, 1, 1, 1)
 
 [node name="freeze_effect" type="CPUParticles2D"]
 texture_filter = 1
-amount = 6
+amount = 10
 lifetime = 2.0
 texture = ExtResource("1_kgv8b")
 emission_shape = 3
 emission_rect_extents = Vector2(20, 20)
 direction = Vector2(0, -1)
 gravity = Vector2(0, 90)
-initial_velocity_max = 73.18
+initial_velocity_max = 20.0
 damping_min = 1.0
 damping_max = 10.0
 damping_curve = SubResource("Curve_kiopi")
-scale_amount_min = 0.05
-scale_amount_max = 0.1
+scale_amount_min = 0.02
+scale_amount_max = 0.05
 color_ramp = SubResource("Gradient_58aun")
 color_initial_ramp = SubResource("Gradient_6cshj")

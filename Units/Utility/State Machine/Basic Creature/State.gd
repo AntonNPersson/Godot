@@ -35,7 +35,6 @@ func _setup(change_state, unit):
 		var timer = pre.cooldown
 		timers.append(timer)
 		ranges.append(pre._range)
-		print(pre.name)
 		pre.queue_free()
 
 func _update(delta):
@@ -43,7 +42,7 @@ func _update(delta):
 		timers[i] -= delta
 	_update_cast_timer(delta)
 	
-func update_sprite_direction(target_position, type, idle):
+func update_sprite_direction(target_position, type, idle, extra = null):
 	var direction_vector = target_position - _unit.global_position
 	current_frame = animation.get_frame()
 	current_progress = animation.get_frame_progress()
@@ -54,31 +53,32 @@ func update_sprite_direction(target_position, type, idle):
 	if abs(direction_vector.x) > abs(direction_vector.y):
 		if direction_vector.x > 0:
 			current_sprite_direction = type + " East"
-			animation.play(current_sprite_direction)
-			animation.set_frame_and_progress(current_frame, current_progress)
 		else:
 			current_sprite_direction = type + " West"
-			animation.play(current_sprite_direction)
-			animation.set_frame_and_progress(current_frame, current_progress)
 	else:
 		if direction_vector.y > 0:
 			current_sprite_direction = type + " South"
-			animation.play(current_sprite_direction)
-			animation.set_frame_and_progress(current_frame, current_progress)
 		else:
 			current_sprite_direction = type + " North"
-			animation.play(current_sprite_direction)
-			animation.set_frame_and_progress(current_frame, current_progress)
+
+	if type != "Attack":
+		animation.set_frame_and_progress(current_frame, current_progress)
+
+	if type == "Attack":
+		if extra != null:
+
+			var duration = 0.67
+			if extra <= duration:
+				animation.play(current_sprite_direction)
+				return
+			else:
+				animation.set_frame_and_progress(0, 0)
+				return
+
+	animation.play(current_sprite_direction)
 	
 	if idle:
 		animation.play(current_sprite_direction, 0)
-	
-	if type == "Attack":
-		var base_frame_time = 1.0/2.0
-		var animation_fps = base_frame_time * animation.sprite_frames.get_frame_count(current_sprite_direction)
-		var speed_scale = animation_fps / _unit.total_windup_time
-		_unit.get_node('AnimatedSprite2D').speed_scale = speed_scale/2
-		
 
 func _action(_delta):
 	pass
@@ -110,7 +110,6 @@ func _calculate_cast_percentage(duration):
 func _is_ability_on_cooldown(index):
 	if timers[index] <= 0 and _unit.global_position.distance_to(_get_closest_target().global_position) < ranges[index] and !is_casting:
 		current_index = index
-		print(current_index)
 		return false
 	else:
 		return true

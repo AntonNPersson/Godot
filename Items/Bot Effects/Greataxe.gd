@@ -33,10 +33,12 @@ func _use_weapon(player, delta):
 		if player.global_position.distance_to(target.global_position) < range:
 			player.get_node('Control').attack_target = _get_closest_visible_enemy_to_mouse()
 			var crit = player._apply_critical_damage(player.total_attack_damage * 3)
-			var extra = {"basic_attacking": true, "critical" : crit["critical"]}
+			var extra = {"basic_attacking": true, "critical" : crit["critical"], "ability" : player.current_attack_modifier_abilities}
 			var new_damage = crit["value"]
 			GameManager._shake_camera(player, 100, 0.2)
 			player.get_node('Control')._on_action(new_damage, target, player, "Damage", extra)
+			for i in range(player.current_attack_modifier_tags.size()):
+				player.get_node('Control')._on_action(player.current_attack_modifier_values[i], target, player, player.current_attack_modifier_tags[i], extra)
 			player.get_node('Control').update_sprite_direction(player.global_position.direction_to(target.global_position), "Attack")
 			player.get_node('Extra').get_node('GreataxeEffect').emitting = false
 			

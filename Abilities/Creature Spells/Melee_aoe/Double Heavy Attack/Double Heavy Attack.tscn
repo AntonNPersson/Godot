@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cc8kj54yedwk"]
 
 [ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Double Heavy Attack/Double Heavy Attack.gd" id="1_lcmov"]
-[ext_resource type="PackedScene" uid="uid://d0v5g4jjju7sc" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/after_effect.tscn" id="2_endln"]
+[ext_resource type="PackedScene" uid="uid://d0v5g4jjju7sc" path="res://Abilities/Creature Spells/Throw potion/after_effect_smoke.tscn" id="2_endln"]
 
 [node name="Double Heavy Attack" type="Node2D"]
 script = ExtResource("1_lcmov")

@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b4hy5b34t6c3v" path="res://Sprites/Pure_violet.webp" id="1_3xkwi"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/interactable_tile.gd" id="1_g13mw"]
 [ext_resource type="PackedScene" uid="uid://dvbhbi2x5wrvp" path="res://Utility/teleporter_menu.tscn" id="2_d2w5n"]
-[ext_resource type="PackedScene" uid="uid://bc20geqg6yw2q" path="res://Waves/wave_list.tscn" id="3_yypur"]
+[ext_resource type="PackedScene" uid="uid://bc20geqg6yw2q" path="res://Waves/Extra/wave_list.tscn" id="3_yypur"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="4_q2esg"]
 [ext_resource type="Texture2D" uid="uid://bey5fpeuirq4v" path="res://Sprites/teleporter.png" id="4_yb0w8"]
 

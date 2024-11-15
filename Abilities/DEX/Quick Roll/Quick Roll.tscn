@@ -7,7 +7,7 @@
 script = ExtResource("1_74f57")
 icon = ExtResource("2_vopm2")
 a_name = "Quick Roll"
-tooltip_text = "Roll a short distance and quick attack targeted enemy, cooldown reduces by 1 each basic attack."
+tooltip_text = "Roll a short distance and quick attack Value0 time(s) the targeted enemy, cooldown reduces by 1 each basic attack."
 cooldown = 12.0
 _range = 150.0
 projectile_type = 6

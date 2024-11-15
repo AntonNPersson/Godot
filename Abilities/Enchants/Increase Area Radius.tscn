@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6dllpn4fy4fm"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/Increase Area Radius.gd" id="1_3eu2v"]
+
+[node name="IncreaseAreaRadius" type="Node2D"]
+script = ExtResource("1_3eu2v")
+i_name = "Area: Extension"
+tooltip = "Increase radius by Value0 to selected projectile ability."
+tags = Array[String](["AreaRadius"])
+values = Array[float]([25.0])
+types = Array[int]([3])

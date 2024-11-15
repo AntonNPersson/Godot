@@ -16,6 +16,7 @@ var level = 1
 var current_experience = 0.0
 var max_experience = 100.0
 var is_docile = true
+signal level_enchant(tags, projectile_type)
 			
 #-------------------#
 # Exported Variables
@@ -32,10 +33,10 @@ enum area_types {Storm, Blast, Scream}
 @export var _range : float
 @export var projectile_type : targeting_type
 @export var ability_type : String
-@export_group('Projectile Settings')
-@export_subgroup('Sprite')
+@export_group('Sprite Settings')
 @export var sprite_frames : SpriteFrames
-@export var sprite_scale : float = 1
+@export var sprite_scale : float
+@export_group('Projectile Settings')
 @export_subgroup('Collision')
 @export var collision_radius : float
 @export_subgroup('Details')
@@ -49,6 +50,10 @@ enum area_types {Storm, Blast, Scream}
 @export var duration : float
 @export var always_trigger : bool
 @export var radius : float
+@export var echo : float = 1
+@export var area_pool : bool = false
+@export var area_pool_damage : float
+@export var area_pool_radius : float
 @export_group('Movement Settings')
 @export var type : String
 @export var movement_speed : float
@@ -70,6 +75,7 @@ var summon_instance
 @export var is_buff : bool = false
 @export var buff_type : String
 @export var buff_duration : float
+@export var additional_self_target : bool = false
 @export var weight : float
 @export var weight_duration : float = 0.45
 var tooltip : String
@@ -84,13 +90,20 @@ var item_timers : Array[float]
 var item_unique : Array[bool]
 var forced_closest : bool = false
 
+var lowest_cooldown : float = 0
+var non_hit_tags : Array[String]
+var added_tags : Array[String]
+
 var enchants = {
 	"Tags" : [],
 	"Values" : [],
-	"Types" : []
+	"Types" : [],
+	"Extra" : []
 }
+var enchant_timers : Array[float]
 
 var power : float
+var extra : Dictionary
 #-------------------#
 # Helper Functions
 #-------------------#
@@ -98,6 +111,10 @@ var power : float
 func _process(delta):
 	if is_docile:
 		return
+	
+	if cooldown < lowest_cooldown:
+		cooldown = lowest_cooldown
+
 	_update_tooltip()
 	if projectile_type == targeting_type.EnemyAura or projectile_type == targeting_type.AllyAura:
 		_apply_aura()
@@ -108,6 +125,7 @@ func _process(delta):
 	for i in range(item_timers.size()):
 		if item_timers[i] >= 0:
 			item_timers[i] -= delta
+
 # Update scaling of damage
 func _apply_scaling(dmg, _type):
 	var attribute_map = {
@@ -175,15 +193,23 @@ func _update_tooltip():
 		tooltip += "\nType: " + str(ability_type)
 		return
 
-	
-	for i in range(tags.size()):
-		tooltip += tags[i] + ": " + str(values[i]) + " "
-		if tags[i] == 'Duplicate':
-			tooltip += " + " + str(amount)
-		if tags[i] == 'Damage':
-			tooltip += " + " + str(_apply_scaling(values[i], ability_type) - values[i]) + " "
-		if tags[i] == 'Stealth':
-			tooltip += "s"
+	unit._update_stats()
+
+	if added_tags.size() != 0:
+		for tag in added_tags:
+			if tag == "FreezeDuration":
+				tooltip += "FreezeDuration: " + str(enchants["Values"][enchants["Tags"].find("FreezeDuration")]) + "s\n"
+				continue
+			tooltip += tag + ": " + str(enchants["Values"][enchants["Tags"].find(tag)]) + "\n"
+			
+	if values.size() != 0:
+		for i in range(0, values.size()):
+			if tags[i] == "Damage":
+				tooltip = tooltip.replace("Value" + str(i), str(ceil(_apply_scaling(values[i], ability_type))))
+			if tags[i].find("Freeze"):
+				if enchants["Tags"].find("FreezeDuration") != -1:
+					tooltip = tooltip.replace("Value" + str(i), str(values[i] + enchants["Values"][enchants["Tags"].find("FreezeDuration")]))
+			tooltip = tooltip.replace("Value" + str(i), str(values[i]))
 
 	tooltip += "\nLevel: " + str(level)
 	tooltip += " Cost: " + str(mana_cost)
@@ -218,9 +244,28 @@ func _add_tag(tag, value, increased_value):
 		values[index] += value
 		increased_values[index] += increased_value
 		return
+	added_tags.append(tag)
 	tags.append(tag)
 	values.append(value)
 	increased_values.append(increased_value)
+
+func _has_added_tag(tag):
+	if added_tags.find(tag) != -1:
+		return true
+	return false
+
+func _remove_added_tag(tag):
+	added_tags.erase(tag)
+
+func _has_tag(tag):
+	if tags.find(tag) != -1:
+		return true
+	return false
+
+func _get_tag(tag):
+	if tags.find(tag) != -1:
+		return values[tags.find(tag)]
+	return 0
 
 func _remove_tag(tag, value, _type):
 	var index = tags.find(tag)
@@ -228,13 +273,22 @@ func _remove_tag(tag, value, _type):
 	values.remove_at(index)
 	increased_values.remove_at(index)
 
-func _add_enchant(tag, value, _type):
+func _add_enchant(tag, value, _type, extra = null):
+	# When adding enchant don't forget that it's specific per ability when adding to combat manager. So check for tag + ability name.
 	enchants["Tags"].append(tag)
 	enchants["Values"].append(value)
 	enchants["Types"].append(_type)
-	
+	enchants["Extra"].append(extra)
+
 	_add_tag(tag, value, 0)
-	unit.get_node('Control').on_action.emit(value, unit, self, tag)
+	_initialize()
+
+	print("Enchanting" + tag)
+	non_hit_tags.append(tag)
+
+func _get_enchant_extras(tag):
+	var index = enchants["Tags"].find(tag)
+	return enchants["Extra"][index]
 
 func _remove_all_enchants():
 	for i in range(enchants["Tags"].size()):
@@ -268,6 +322,9 @@ func _level_grants():
 
 	for inc in range(values.size()):
 		values[inc] += increased_values[inc]
+
+	if level % 3 == 0:
+		level_enchant.emit(tags, projectile_type, self)
 	
 	if projectile_type == targeting_type.Passive:
 		_update_passive()
@@ -275,7 +332,8 @@ func _level_grants():
 
 # Update passive abilities. If ability is passive, a new passive_ability class must be used, that inherits from this class
 func _update_passive():
-	unit.get_node('Control').on_action.emit(values[0], unit, self, tags[0], self)
+	var extra = {"ability": a_name}
+	unit.get_node('Control').on_action.emit(values[0], unit, self, tags[0], extra)
 
 # Get closest visible enemy to mouse
 func _get_closest_visible_enemy_to_mouse():
@@ -340,6 +398,8 @@ func _advanced_update():
 #-------------------#
 # Initialize ability, if needed. Some abilities might need to be initialized because of a specific value or tag
 func _initialize():
+	lowest_cooldown = cooldown * 0.3
+
 	if projectile_type == targeting_type.Summon or is_docile:
 		return
 	if projectile_type == targeting_type.Passive:
@@ -347,7 +407,7 @@ func _initialize():
 		return
 
 	for tag in tags.size():
-		if "Duplicate" in tags[tag] or "Pierce" in tags[tag] or "Explosion" in tags[tag] or "AbilityPercentDamage" in tags[tag] or "ProjectileSpeed" in tags[tag]:
+		if "Duplicate" in tags[tag] or "Pierce" in tags[tag] or tags.find("Explosion") != -1 or "Echo" in tags[tag] or "AreaPool" in tags[tag] or "SelfTarget" in tags[tag]:
 			unit.get_node('Control').on_action.emit(values[tag], unit, self, tags[tag])
 	if advanced_update:
 		ad_update = true
@@ -377,7 +437,6 @@ func _use():
 	_advanced_update()
 	if _check_weight(true):
 		unit.get_node('Control').on_action.emit(-(weight + unit.global_weight), unit, weight_duration, 'SpeedBuff')
-		
 	_on_item_use()
 
 	if projectile_type == targeting_type.Line:
@@ -396,8 +455,21 @@ func _use():
 			if !target or target.global_position.distance_to(unit.global_position) > _range:
 				Utility.get_node("ErrorMessage")._create_error_message("No target in range.", unit)
 				return false
-			if _check_weight(false):
-				unit.get_node('Control').on_action.emit(weight, unit, weight_duration, 'SpeedBuff')
+
+			if sprite_frames != null:
+				if target.has_node(a_name):
+					target.get_node(a_name).queue_free()
+				var animated_sprite = AnimatedSprite2D.new()
+				target.add_child(animated_sprite)
+				animated_sprite.name = a_name
+				animated_sprite.sprite_frames = sprite_frames
+				animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+				animated_sprite.play()
+
+			if additional_self_target and unit != target:
+				_on_hit(unit)
+				_create_light(unit)
+
 			if explosion:
 				var enemies = _get_allies_close_to_mouse()
 				for enemy in enemies:
@@ -413,6 +485,15 @@ func _use():
 				return false
 			if _check_weight(false):
 				unit.get_node('Control').on_action.emit(weight, unit, weight_duration, 'SpeedBuff')
+			if sprite_frames != null:
+				if target.has_node(a_name):
+					target.get_node(a_name).queue_free()
+				var animated_sprite = AnimatedSprite2D.new()
+				target.add_child(animated_sprite)
+				animated_sprite.name = a_name
+				animated_sprite.sprite_frames = sprite_frames
+				animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+				animated_sprite.play()
 			if explosion:
 				var enemies = _get_enemies_close_to_mouse()
 				for enemy in enemies:
@@ -424,16 +505,27 @@ func _use():
 	elif projectile_type == targeting_type.Self:
 		_on_hit(unit)
 		_create_light(unit)
+		if sprite_frames != null:
+			if target.has_node(a_name):
+				target.get_node(a_name).queue_free()
+			var animated_sprite = AnimatedSprite2D.new()
+			target.add_child(animated_sprite)
+			animated_sprite.name = a_name
+			animated_sprite.sprite_frames = sprite_frames
+			animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+			animated_sprite.play()
 	elif projectile_type == targeting_type.Area:
+		var current_values = values
 		var pos = unit.get_global_mouse_position()
-		for i in range(amount):
+		for i in range(echo):
+			if i > 0:
+				await unit.get_tree().create_timer(1.8).timeout
 			var instance = load("res://Abilities/Utility/area_projectile.tscn").instantiate()
 			instance.has_hit.connect(_on_hit)
 			unit.get_tree().get_root().add_child(instance)
 			instance.global_position = unit.global_position
-			instance._start(pos, _range, speed, unit.global_position, radius, duration, area_type, light_color, always_trigger)
-			await unit.get_tree().create_timer(0.1).timeout
-		_shake_camera()
+			instance._start(pos, _range, speed, unit.global_position, radius, duration, area_type, light_color, always_trigger, sprite_frames, sprite_scale, area_pool, area_pool_radius, i, self)
+			_shake_camera()
 	elif projectile_type == targeting_type.Movement:
 		if type == "Sprint":
 			target = unit.get_global_mouse_position()
@@ -442,7 +534,7 @@ func _use():
 		var instance = load("res://Abilities/Utility/movement_ability.tscn").instantiate()
 		instance.has_hit.connect(_on_hit)
 		unit.get_tree().get_root().add_child(instance)
-		instance._start(unit, target, _range, movement_speed, type, light_color, explosion, explosion_radius, self, pool)
+		instance._start(unit, target, _range, movement_speed, type, light_color, explosion, explosion_radius, self, pool, sprite_frames, sprite_scale)
 	elif projectile_type == targeting_type.Summon:
 		for s in range(0, summon_amount):
 			summon_instance = summon_scene.instantiate()
@@ -510,33 +602,57 @@ func _update_targeting(_delta, _targeting_array, _targeting):
 				Utility.get_node('AbilityTargetSystem')._draw_target_targeting()
 
 # Hit function, this will be called when the ability hits something, no matter the type
-func _on_hit(area):
+func _on_hit(area, extra = null):
+	if extra == null:
+		extra = {"ability": a_name}
+	else:
+		extra["ability"] = a_name
+	
+	var changed_values = []
+	for val in values.size():
+		changed_values.append(values[val])
+
+	if "Pool" in extra:
+		for v in changed_values.size():
+			changed_values[v] = changed_values[v] * extra['Pool']
+			print(changed_values[v])
+			print("Pool")
+	elif "Echo" in extra:
+		for v in changed_values.size():
+			changed_values[v] = changed_values[v] * extra['Echo']
+			print(changed_values[v])
+			print("Echo")
 
 	for val in tags.size():
+		if tags[val] in non_hit_tags:
+			continue
+
 		if "Buff" in tags[val]:
-			unit.get_node('Control').on_action.emit(values[val], area, buff_duration, tags[val])
+			unit.get_node('Control').on_action.emit(changed_values[val], area, buff_duration, tags[val], extra)
 		elif "Lifesteal" in tags[val]:
-			unit.get_node('Control').on_action.emit(values[tags.find("Damage")] * (values[val]/100), area, unit, tags[val])
+			unit.get_node('Control').on_action.emit(changed_values[tags.find("Damage")] * (values[val]/100), area, unit, tags[val])
 		elif "Burn" in tags[val]:
-			unit.get_node('Control').on_action.emit(values[tags.find("Damage")]/2, area, unit, tags[val])
+			unit.get_node('Control').on_action.emit(changed_values[tags.find("Damage")]/2, area, unit, tags[val], extra)
 		elif "Shock" in tags[val] or "Wind" in tags[val]:
-			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val])
+			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, tags[val])
 		elif "QuickAttack" in tags[val]:
 			var new_values = []
 			var new_tags = []
 			for i in range(values.size() - 2):
 				new_values.append(values[i])
 				new_tags.append(tags[i])
-			unit.get_node('Control').on_action.emit(values[val], new_values, unit, tags[val], new_tags)
-		elif "Duplicate" in tags[val] or "Pierce" in tags[val] or "Explosion" in tags[val] or "AbilityPercentDamage" in tags[val] or "ProjectileSpeed" in tags[val]:
+			unit.get_node('Control').on_action.emit(changed_values[val], new_values, unit, tags[val], new_tags)
+		elif "Duplicate" in tags[val] or "Pierce" in tags[val] or "Explosion" in tags[val]:
 			continue
 		elif "Passive" in tags[val]:
-			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val], self)
+			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, tags[val], extra)
 		elif "Damage" in tags[val]:
-			unit.get_node('Control').on_action.emit(_apply_scaling(values[val], ability_type), area, unit, tags[val])
+			unit.get_node('Control').on_action.emit(_apply_scaling(changed_values[val], ability_type), area, unit, tags[val])
+			if unit.total_life_steal > 0:
+				unit.get_node('Control').on_action.emit(_apply_scaling(changed_values[val], ability_type) * (unit.total_life_steal/100), area, unit, "Heal")
 			_shake_camera()
 		else:
-			unit.get_node('Control').on_action.emit(values[val], area, unit, tags[val])
+			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, tags[val], extra)
 
 func _on_item_use():
 	if item_tags.size() == 0:
@@ -551,7 +667,6 @@ func _on_item_use():
 						if enemy.global_position.distance_to(unit.global_position) < 130:
 							unit.get_node('Control').on_action.emit(item_values[val], enemy, unit, "Wind")
 			else:
-				print(item_tags[val])
 				unit.get_node('Control').on_action.emit(item_values[val], unit, item_duration[val], item_tags[val], self)
 
 # Set targeting to true/false

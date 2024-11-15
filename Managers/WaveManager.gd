@@ -20,6 +20,7 @@ var current_amount_of_enemies = 999
 var total_amount_of_enemies = 999
 var wave_ongoing = false
 var boss_ready = false
+var waves_amount = 0
 var completed_waves = []
 var sub_waves = 0
 var current_sub_wave = []
@@ -48,13 +49,21 @@ func _initialize():
 	canvas = get_node('CanvasLayer')
 	initialized = true
 
+func _kill_all():
+	for child in players[0].get_tree().get_nodes_in_group('enemies'):
+		child.is_dead.emit(child)
+
 func _process(_delta):
 	if !initialized:
 		return
+
+	if Input.is_action_just_pressed('Test_1'):
+		_kill_all()
+
 	if time_left > 0:
 		time_left -= get_process_delta_time()
 		canvas.get_child(2).visible = true
-		canvas.get_child(2).text = str(int(time_left))
+		canvas.get_child(2).text = "[center]" + str(int(time_left))
 	else:
 		canvas.get_child(2).visible = false
 
@@ -102,6 +111,7 @@ func _start_wave(value, last = false):
 	players[0].in_combat = false
 	
 	if current_wave.has_meta('Color'):
+		print(current_wave.get_meta('Color'))
 		Utility.get_node('Brightness')._set_color(current_wave.get_meta('Color'))
 
 	if !last:
@@ -183,8 +193,7 @@ func _stop_wave():
 		stop_wave.emit(true, current_round)
 	else:
 		stop_wave.emit(false, current_round)
-		players[0].power += 0.05
-
+		players[0].item_power += players[0].added_power / _get_total_waves()
 func _start_boss():
 	var current_boss_scene = load("res://Waves/boss/boss_" + str(current_round) +".tscn")
 	current_boss = current_boss_scene.instantiate()
@@ -230,7 +239,6 @@ func _on_round_manager_start_encounter(value, _completed_waves, player):
 	current_round = value
 	wave_counter = randi_range(2, 3)
 	current_sub_wave.erase(0)
-	print(_completed_waves)
 	completed_waves.clear()
 	completed_waves.append_array(_completed_waves)
 	players[0].in_combat = true
@@ -245,21 +253,21 @@ func _on_map_manager_used_creatures(number:Variant, arr:Variant):
 func _get_total_waves():
 	var dir = DirAccess.open('res://Waves/')
 	dir.list_dir_begin()
-	var waves_amount = 0
+	var total_waves = 0
 	while true:
 		var file = dir.get_next()
 		if file == "":
 			break
 		if file.ends_with('.tscn'):
-			waves_amount += 1
-	return waves_amount
+			total_waves += 1
+	return total_waves
 
 func _update_objectives():
 	canvas.get_node('RichTextLabel2').visible = true
 	canvas.get_node('RichTextLabel2').text = 'Waves: ' + str(current_wave_counter) + '/' + str(wave_counter)
 
 func _update_ascension_info():
-	canvas.get_node('Ascension3').get_child(0).play('Ascension_anim')
+	canvas.get_node('TextureRect/Ascension3').get_child(0).play('Ascension_anim')
 	canvas.get_node('Ascension').text = 'Ascension: ' + str(players[0].ascension_level)
 	var aggregated_tooltip = {}
 	for curse in curses:
@@ -282,7 +290,6 @@ func _on_ability_manager_curse_picked(curse:Variant):
 	_update_ascension_info()
 
 func _load_curses(cursess:Variant, player):
-	print(cursess)
 	players.append(player)
 	for i in range(cursess.size()):
 		_on_ability_manager_curse_picked(cursess[i])

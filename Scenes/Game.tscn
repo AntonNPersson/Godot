@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dtr2poygeam3r"]
+[gd_scene load_steps=18 format=3 uid="uid://dtr2poygeam3r"]
 
 [ext_resource type="PackedScene" uid="uid://dbn7ie0btp67a" path="res://Managers/wave_manager.tscn" id="1_6yxuh"]
 [ext_resource type="Script" path="res://Scenes/Game_init.gd" id="1_osw0d"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dwvx2fyx0esdi" path="res://Managers/map_manager.tscn" id="5_rckfc"]
 [ext_resource type="PackedScene" uid="uid://slvbxmwh715i" path="res://Managers/combat_manager.tscn" id="6_cvaja"]
 [ext_resource type="PackedScene" uid="uid://dp5x3sacbjiw3" path="res://Managers/interaction_manager.tscn" id="7_nglgl"]
+[ext_resource type="PackedScene" uid="uid://d1kqyjpf6ntbw" path="res://Abilities/Utility/explosion.tscn" id="8_x8nt6"]
 [ext_resource type="PackedScene" uid="uid://ccxvywf5fenkh" path="res://Managers/item_manager.tscn" id="11_r5jx1"]
 [ext_resource type="Shader" path="res://Shaders/fog_shader.gdshader" id="22_0mhy5"]
 [ext_resource type="Script" path="res://Managers/CinematicManager.gd" id="22_beavb"]
@@ -58,6 +59,7 @@ item_manager = NodePath("../ItemManager")
 im = NodePath("../ItemManager")
 
 [node name="CombatManager" parent="CanvasModulate" node_paths=PackedStringArray("map_manager", "ability_manager") instance=ExtResource("6_cvaja")]
+explosion_effect = ExtResource("8_x8nt6")
 map_manager = NodePath("../MapManager")
 ability_manager = NodePath("../AbilityManager")
 
@@ -83,11 +85,10 @@ motion_mirroring = Vector2(1920, 1080)
 
 [node name="ColorRect" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
 material = SubResource("ShaderMaterial_cxvlt")
+custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -100,12 +101,23 @@ motion_mirroring = Vector2(1920, 1080)
 
 [node name="ColorRect2" type="ColorRect" parent="Background/ParallaxLayer"]
 z_as_relative = false
-offset_right = 1920.0
-offset_bottom = 1080.0
+custom_minimum_size = Vector2(1920, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Objects" type="Node" parent="."]
+
+[node name="Combat Layer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
 [connection signal="get_units" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_get_units"]
 [connection signal="next_sub_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_start_sub_wave"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ca8q5vyujjc6p"]
 
-[ext_resource type="Texture2D" uid="uid://b58566qk7sux0" path="res://Sprites/Grass_ground.png" id="1_8u5uf"]
+[ext_resource type="Texture2D" uid="uid://b2j3qinohj6hs" path="res://Sprites/Infected Cemetery/ground.png" id="1_jf8j8"]
 
 [node name="Floor" type="Area2D"]
 metadata/Walkable = true
@@ -8,4 +8,4 @@ metadata/Interactable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
-texture = ExtResource("1_8u5uf")
+texture = ExtResource("1_jf8j8")

@@ -1,12 +1,106 @@
-[gd_scene load_steps=6 format=3 uid="uid://jmhaufyqgrdr"]
+[gd_scene load_steps=21 format=3 uid="uid://jmhaufyqgrdr"]
 
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_2/lantern_special.gd" id="1_v7cjw"]
-[ext_resource type="Texture2D" uid="uid://butj03dep76b7" path="res://Sprites/cemetery_lantern.png" id="2_0pfnq"]
+[ext_resource type="Texture2D" uid="uid://b2j3qinohj6hs" path="res://Sprites/Infected Cemetery/ground.png" id="2_pvbed"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_ic60d"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_5u502"]
+[ext_resource type="Texture2D" uid="uid://basou0bhl2gqq" path="res://Sprites/Infected Cemetery/tiles/lantern.png" id="5_f7rsp"]
+[ext_resource type="Texture2D" uid="uid://cnqapynkvxh3" path="res://Sprites/Infected Cemetery/tiles/light insects-fx.png" id="6_0wdpo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwpgw"]
-radius = 20.2237
+radius = 13.074
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20u55"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(0, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c18y7"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(58, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86g4a"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(116, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pk8bj"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(174, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1i4hh"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(232, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oypni"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(290, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bv0kv"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(348, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjjeq"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(406, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xoqiq"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(464, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ktfo3"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(522, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jx1x1"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(580, 0, 58, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4q06r"]
+atlas = ExtResource("6_0wdpo")
+region = Rect2(638, 0, 58, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s2hld"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20u55")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c18y7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86g4a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pk8bj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1i4hh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oypni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bv0kv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tjjeq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xoqiq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ktfo3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jx1x1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4q06r")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="Teleporter" type="Area2D" groups=["obstacles"]]
 script = ExtResource("1_v7cjw")
@@ -15,16 +109,33 @@ metadata/Interactable = false
 metadata/Special = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -7)
-scale = Vector2(1, 1.68)
+position = Vector2(6, 33)
+scale = Vector2(1, 0.72)
 shape = SubResource("CircleShape2D_mwpgw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
-texture = ExtResource("2_0pfnq")
+texture = ExtResource("2_pvbed")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-color = Color(0.584314, 1, 0.815686, 1)
+position = Vector2(-21, -7)
+scale = Vector2(0.664063, 0.445313)
+color = Color(0.2, 0.870588, 0.698039, 1)
+energy = 2.53
 shadow_enabled = true
 texture = ExtResource("3_ic60d")
+texture_scale = 1.6
 script = ExtResource("4_5u502")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+z_index = 1
+z_as_relative = false
+position = Vector2(0, -12)
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("5_f7rsp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-40, -18)
+sprite_frames = SubResource("SpriteFrames_s2hld")
+autoplay = "default"
+frame_progress = 0.909584

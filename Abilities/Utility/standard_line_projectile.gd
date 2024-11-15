@@ -67,7 +67,8 @@ func _check_collision():
 				_explosion.has_hit.connect(origin._on_hit)
 				_explosion.hit_enemies.append_array(hit_enemies)
 				get_parent().add_child(_explosion)
-			if not pierce:
+			if !pierce:
+				print('hit')
 				queue_free()
 
 func _on_has_hit(unit):

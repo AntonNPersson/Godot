@@ -16,25 +16,55 @@
 
 [node name="Frozen Flash" parent="." instance=ExtResource("1_oktd4")]
 position = Vector2(240.176, -84.2922)
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Healing Grace" parent="." instance=ExtResource("3_7ms2t")]
+additional_self_target = null
 
 [node name="Frostbolt" parent="." instance=ExtResource("3_q2o0l")]
+additional_self_target = null
 
 [node name="Fireball" parent="." instance=ExtResource("1_vlnpx")]
+additional_self_target = null
 
 [node name="Arcane Enchantment" parent="." instance=ExtResource("4_tck2m")]
 
 [node name="Fire Nova" parent="." instance=ExtResource("5_u454j")]
+additional_self_target = null
 
 [node name="Lightningball" parent="." instance=ExtResource("6_fglum")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Shocked Darnation" parent="." instance=ExtResource("8_ryd6a")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Blood Storm" parent="." instance=ExtResource("8_7g0ly")]
+additional_self_target = null
 
 [node name="Flaming Flash" parent="." instance=ExtResource("10_oqlo0")]
 position = Vector2(268, 383)
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Summon Goblins" parent="." instance=ExtResource("11_d4kjh")]
 position = Vector2(2.91632, 84.8627)
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null

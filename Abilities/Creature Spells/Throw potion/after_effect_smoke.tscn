@@ -1,0 +1,113 @@
+[gd_scene load_steps=17 format=3 uid="uid://d0v5g4jjju7sc"]
+
+[ext_resource type="Texture2D" uid="uid://dqacyx8p3y5pi" path="res://Units/Instance/Enemies/Elite/Smoke VFX 2.png" id="1_0ex76"]
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/self_delete.gd" id="2_rf48p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov4ne"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_duksj"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ng803"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dch8s"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1goub"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7te3m"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4t38v"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b5pie"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vih2k"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uf284"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bo8yh"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0gak"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(1408, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_07m6a"]
+atlas = ExtResource("1_0ex76")
+region = Rect2(1536, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8tvc7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ov4ne")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_duksj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ng803")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dch8s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1goub")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7te3m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4t38v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b5pie")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vih2k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uf284")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bo8yh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0gak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_07m6a")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="AfterEffect" type="AnimatedSprite2D"]
+modulate = Color(1, 1, 1, 0.694118)
+sprite_frames = SubResource("SpriteFrames_8tvc7")
+autoplay = "default"
+frame = 12
+frame_progress = 1.0
+script = ExtResource("2_rf48p")
+
+[connection signal="animation_finished" from="." to="." method="_on_finished"]

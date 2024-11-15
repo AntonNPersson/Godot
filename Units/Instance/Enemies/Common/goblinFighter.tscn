@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://cevf2javmbcgc"]
+[gd_scene load_steps=73 format=3 uid="uid://cevf2javmbcgc"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_7kwcb"]
 [ext_resource type="PackedScene" uid="uid://dt0bsvtga0rnc" path="res://Abilities/Creature Spells/rampage_movement.tscn" id="2_5vejn"]
@@ -6,14 +6,9 @@
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_vevd6"]
 [ext_resource type="Texture2D" uid="uid://d1sey7dhtyti0" path="res://Sprites/Goblin King/goblin fighter.png" id="5_r7xmv"]
 [ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_kdd8w"]
-[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="8_3ra1y"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_6nit2"]
-[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="10_jcro5"]
+[ext_resource type="PackedScene" uid="uid://dimur0k7iqv8b" path="res://Units/Utility/UI Scripts/ui.tscn" id="7_qnhpy"]
 [ext_resource type="Texture2D" uid="uid://vaougrq7n6q8" path="res://Units/Instance/Enemies/Sprite Sheets/Download84514.png" id="10_yol60"]
-[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_4homm"]
-[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="12_4a2yi"]
 [ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="13_6bpv3"]
-[ext_resource type="Shader" path="res://Shaders/glow.gdshader" id="13_d6sb7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
 radius = 2.85228
@@ -342,7 +337,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack West",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -481,15 +476,6 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5e3dp"]
-shader = ExtResource("13_d6sb7")
-shader_parameter/color1 = Color(1, 0, 0, 1)
-shader_parameter/color2 = Color(1, 0, 0, 1)
-shader_parameter/threshold = 1.0
-shader_parameter/intensity = 1.0
-shader_parameter/opacity = 100.0
-shader_parameter/glow_color = Color(1, 0, 0, 1)
-
 [sub_resource type="Curve" id="Curve_2ajcw"]
 max_value = 100.0
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.612903, 100), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
@@ -528,55 +514,21 @@ texture = ExtResource("5_r7xmv")
 [node name="Control" type="Node" parent="."]
 script = ExtResource("6_kdd8w")
 
-[node name="UI" type="Node2D" parent="."]
-
-[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
-z_index = 10
-offset_left = -17.0
-offset_top = -24.0
-offset_right = 17.0
-offset_bottom = -16.0
-theme = ExtResource("10_jcro5")
-texture_under = ExtResource("8_3ra1y")
-texture_progress = ExtResource("12_4a2yi")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("9_6nit2")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-offset_left = -28.0
-offset_top = -32.0
-offset_right = 29.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="cast_bar" type="TextureProgressBar" parent="UI"]
-visible = false
-z_index = 10
-offset_left = -16.0
-offset_top = 30.0
-offset_right = 18.0
-offset_bottom = 38.0
-theme = ExtResource("10_jcro5")
-value = 100.0
-texture_under = ExtResource("8_3ra1y")
-texture_progress = ExtResource("12_4a2yi")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("11_4homm")
+[node name="UI" parent="." instance=ExtResource("7_qnhpy")]
+position = Vector2(-19, -20)
+scale = Vector2(0.2, 0.2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_2l1cy")
 sprite_frames = SubResource("SpriteFrames_yljm5")
 animation = &"Attack West"
+frame_progress = 0.194352
 
 [node name="Update_timer" type="Node" parent="."]
 
 [node name="Extra" type="Node2D" parent="."]
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Extra"]
-material = SubResource("ShaderMaterial_5e3dp")
 emitting = false
 amount = 12
 speed_scale = 0.7

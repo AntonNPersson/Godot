@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bg0m4lqesjegg"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_okrma"]
-[ext_resource type="Texture2D" uid="uid://j0hn0h457bxr" path="res://Abilities/DEX/Throwing Daggers/BloodMage_7.png" id="2_2pmq7"]
+[ext_resource type="Texture2D" uid="uid://qfclbnp1eokw" path="res://Abilities/DEX/Throwing Daggers/Icon39.png" id="2_gh7a2"]
 [ext_resource type="Texture2D" uid="uid://dtkowfmdx5k47" path="res://Sprites/throwing_dagger.png" id="2_t1ldn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_noya2"]
@@ -21,9 +21,9 @@ animations = [{
 
 [node name="Throwing Daggers" type="Node2D"]
 script = ExtResource("1_okrma")
-icon = ExtResource("2_2pmq7")
+icon = ExtResource("2_gh7a2")
 a_name = "Throwing Daggers"
-tooltip_text = "Throw three daggers in targeted direction, inflicting bleed on each hit."
+tooltip_text = "Throw three daggers in targeted direction, dealing Value0 damage and inflicting Value1 bleed damage per hit."
 mana_cost = 25.0
 cooldown = 4.0
 _range = 256.0
@@ -32,6 +32,7 @@ sprite_frames = SubResource("SpriteFrames_djxlc")
 collision_radius = 32.0
 speed = 800.0
 amount = 3.0
+line_pierce = true
 radius = 64.0
 tags = Array[String](["Damage", "Bleed", "Pierce"])
 values = Array[float]([2.0, 1.0, 1.0])

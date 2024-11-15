@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://byw4a8a3dv7hp"]
 
-[ext_resource type="Script" path="res://Abilities/Utility/explosion.gd" id="1_dn7n7"]
+[ext_resource type="Script" path="res://Abilities/Utility/pool.gd" id="1_seqaf"]
 [ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="2_su6ho"]
 [ext_resource type="Texture2D" uid="uid://djxlgjir4cj8x" path="res://Sprites/Sprite-0002.png" id="3_x3vc6"]
 
@@ -26,7 +26,7 @@ radius = 66.1891
 scale = Vector2(0.5, 0.5)
 collision_layer = 3
 collision_mask = 3
-script = ExtResource("1_dn7n7")
+script = ExtResource("1_seqaf")
 
 [node name="particle" type="CPUParticles2D" parent="."]
 z_index = 1

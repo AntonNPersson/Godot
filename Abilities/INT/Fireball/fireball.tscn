@@ -8,12 +8,13 @@
 script = ExtResource("1_hdq3s")
 icon = ExtResource("2_4r2fx")
 a_name = "Fireball"
-tooltip_text = "Shoot a ball of fire in a straight line, dealing damage and burning anything it touches."
+tooltip_text = "Shoot a ball of fire in a straight line, dealing Value0 damage and Value1 damage burning anything it touches."
 mana_cost = 25.0
 cooldown = 4.0
 _range = 384.0
 ability_type = "INT"
 sprite_frames = ExtResource("2_teeyx")
+sprite_scale = 1.0
 collision_radius = 24.0
 speed = 250.0
 tags = Array[String](["Damage", "Burn", "Explosion"])

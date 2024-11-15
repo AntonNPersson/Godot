@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://celfpy0b00dbu"]
+[gd_scene load_steps=7 format=3 uid="uid://celfpy0b00dbu"]
 
 [ext_resource type="Script" path="res://Managers/Game Manager.gd" id="1_m182s"]
 [ext_resource type="Texture2D" uid="uid://tclrdrtqdwng" path="res://Sprites/menu.jpg" id="2_0wtr2"]
 [ext_resource type="Script" path="res://Managers/Menu Manager.gd" id="2_dltqq"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="3_kempm"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="4_pew4u"]
+[ext_resource type="PackedScene" uid="uid://unnab30yeuuc" path="res://Utility/ac.tscn" id="6_uq4ba"]
 
 [node name="Menu Manager" type="Node"]
 script = ExtResource("2_dltqq")
@@ -12,11 +14,33 @@ script = ExtResource("2_dltqq")
 follow_viewport_enabled = true
 
 [node name="Background" type="Sprite2D" parent="CanvasLayer"]
+z_index = -3
 position = Vector2(971, 570)
 scale = Vector2(1.1806, 0.562577)
 texture = ExtResource("2_0wtr2")
 
-[node name="StartButton" type="Button" parent="." node_paths=PackedStringArray("shortcut_context")]
+[node name="LoadButton" type="Button" parent="CanvasLayer" node_paths=PackedStringArray("shortcut_context")]
+visible = false
+modulate = Color(1, 1, 1, 0.784314)
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -6.0
+offset_right = 106.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+shortcut_context = NodePath("../..")
+theme_override_fonts/font = ExtResource("3_kempm")
+text = "Load"
+
+[node name="StartButton" type="Button" parent="CanvasLayer" node_paths=PackedStringArray("shortcut_context")]
+modulate = Color(1, 1, 1, 0.784314)
+z_as_relative = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -28,26 +52,205 @@ offset_right = 106.0
 offset_bottom = 137.0
 grow_horizontal = 2
 grow_vertical = 2
-shortcut_context = NodePath("..")
+shortcut_context = NodePath("../..")
 theme_override_fonts/font = ExtResource("3_kempm")
 text = "Start"
 
-[node name="SinglePlayerButton" type="Button" parent="." node_paths=PackedStringArray("shortcut_context")]
-visible = false
+[node name="StoreButton" type="Button" parent="CanvasLayer" node_paths=PackedStringArray("shortcut_context")]
+modulate = Color(1, 1, 1, 0.784314)
+z_as_relative = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -105.0
-offset_top = 73.0
-offset_right = 106.0
-offset_bottom = 137.0
+offset_left = -104.0
+offset_top = 156.0
+offset_right = 107.0
+offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
-shortcut_context = NodePath("..")
+shortcut_context = NodePath("../..")
 theme_override_fonts/font = ExtResource("3_kempm")
-text = "Singleplayer"
+text = "Store"
+
+[node name="ExitButton" type="Button" parent="CanvasLayer" node_paths=PackedStringArray("shortcut_context")]
+modulate = Color(1, 1, 1, 0.784314)
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 244.0
+offset_right = 107.0
+offset_bottom = 308.0
+grow_horizontal = 2
+grow_vertical = 2
+shortcut_context = NodePath("../..")
+theme_override_fonts/font = ExtResource("3_kempm")
+text = "Exit"
+
+[node name="StorePanel" type="Panel" parent="CanvasLayer"]
+visible = false
+modulate = Color(1, 1, 1, 0.784314)
+z_index = 4
+z_as_relative = false
+custom_minimum_size = Vector2(300, 100)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_pew4u")
+
+[node name="AC" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 22.0
+offset_right = 102.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]AC Multiplier"
+autowrap_mode = 0
+
+[node name="XP" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+layout_mode = 0
+offset_left = 102.0
+offset_top = 22.0
+offset_right = 198.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]XP Multiplier"
+autowrap_mode = 0
+
+[node name="Drop" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+layout_mode = 0
+offset_left = 198.0
+offset_top = 22.0
+offset_right = 294.0
+offset_bottom = 40.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]Drop Multiplier"
+autowrap_mode = 0
+
+[node name="AC_Current" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+modulate = Color(0.513726, 0.513726, 0.513726, 1)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 38.0
+offset_right = 102.0
+offset_bottom = 56.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]Current: 0"
+autowrap_mode = 0
+
+[node name="XP_Current" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+modulate = Color(0.513726, 0.513726, 0.513726, 1)
+layout_mode = 0
+offset_left = 102.0
+offset_top = 38.0
+offset_right = 198.0
+offset_bottom = 56.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]Current: 0"
+autowrap_mode = 0
+
+[node name="Drop_Current" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+modulate = Color(0.513726, 0.513726, 0.513726, 1)
+layout_mode = 0
+offset_left = 198.0
+offset_top = 38.0
+offset_right = 294.0
+offset_bottom = 56.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]Current: 0"
+autowrap_mode = 0
+
+[node name="AC_Cost" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+modulate = Color(0.513726, 0.513726, 0.513726, 1)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 54.0
+offset_right = 102.0
+offset_bottom = 72.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]Cost: 0"
+autowrap_mode = 0
+
+[node name="XP_Cost" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+modulate = Color(0.513726, 0.513726, 0.513726, 1)
+layout_mode = 0
+offset_left = 102.0
+offset_top = 54.0
+offset_right = 198.0
+offset_bottom = 72.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]Cost: 0"
+autowrap_mode = 0
+
+[node name="Drop_Cost" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+modulate = Color(0.513726, 0.513726, 0.513726, 1)
+layout_mode = 0
+offset_left = 198.0
+offset_top = 54.0
+offset_right = 294.0
+offset_bottom = 72.0
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center]Cost: 0"
+autowrap_mode = 0
+
+[node name="AC_Buy" type="Button" parent="CanvasLayer/StorePanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 70.0
+offset_right = 70.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 10
+text = "Buy"
+
+[node name="XP_Buy" type="Button" parent="CanvasLayer/StorePanel"]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 70.0
+offset_right = 166.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 10
+text = "Buy"
+
+[node name="Drop_Buy" type="Button" parent="CanvasLayer/StorePanel"]
+layout_mode = 0
+offset_left = 222.0
+offset_top = 70.0
+offset_right = 262.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 10
+text = "Buy"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/StorePanel"]
+layout_mode = 0
+offset_top = 6.0
+offset_right = 302.0
+offset_bottom = 22.0
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "[center]Total Ascension Currency:"
 
 [node name="Game Manager" type="Node2D" parent="."]
 script = ExtResource("1_m182s")
@@ -58,3 +261,13 @@ script = ExtResource("1_m182s")
 _spawnable_scenes = PackedStringArray("res://Scenes/Game.tscn")
 spawn_path = NodePath("../Level")
 spawn_limit = 1
+
+[node name="AC" parent="." instance=ExtResource("6_uq4ba")]
+
+[connection signal="pressed" from="CanvasLayer/LoadButton" to="." method="_load_game"]
+[connection signal="pressed" from="CanvasLayer/StartButton" to="." method="_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/StoreButton" to="." method="_open_store"]
+[connection signal="pressed" from="CanvasLayer/ExitButton" to="." method="_exit_game"]
+[connection signal="pressed" from="CanvasLayer/StorePanel/AC_Buy" to="." method="_buy_ascension_currency"]
+[connection signal="pressed" from="CanvasLayer/StorePanel/XP_Buy" to="." method="_buy_xp_gain"]
+[connection signal="pressed" from="CanvasLayer/StorePanel/Drop_Buy" to="." method="_buy_drop_rate"]

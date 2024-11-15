@@ -104,6 +104,7 @@ var total_affliction_resistance : float
 var total_crowd_control_resistance : float
 var total_slow_resistance : float
 var total_block : float
+var total_life_steal : float
 
 # Exported variables for base stats
 @export_group("Base Stats")
@@ -139,6 +140,7 @@ var total_block : float
 @export var base_crowd_control_resistance = 0
 @export var base_slow_resistance = 0
 @export var base_block = 0
+@export var base_life_steal = 0
 
 # Bonus variables
 var bonus_armor = 0.0
@@ -170,6 +172,7 @@ var bonus_affliction_resistance = 0.0
 var bonus_crowd_control_resistance = 0.0
 var bonus_slow_resistance = 0.0
 var bonus_block = 0.0
+var bonus_life_steal = 0.0
 
 var item_drop_chance_multiplier = 1.0
 var ascension_currency_multiplier = 1.0
@@ -180,17 +183,20 @@ var current_barrier = 0
 var current_health = 100
 var current_mana = 100
 var current_stamina = 100
-var current_player_experience = 0
+var current_player_experience = 1000
 
 # Current attack modifier tags and values
 var current_attack_modifier_tags = []
 var current_attack_modifier_values = []
+var current_attack_modifier_abilities = []
 
 var regen_timer = 0
 
 # Saved variables
-var completed_waves = [0, 1, 2, 3]
+var completed_waves = []
 var power = 1
+var item_power = 1
+var added_power = 0
 var ascension_level = 0
 var ascension_currency = 0
 var rerolls = 99
@@ -299,7 +305,7 @@ func _update_totals():
 	total_evade = (base_evade + bonus_evade) * (1 + global_evade/100)
 	total_range = base_range + bonus_range 
 	total_attack_speed = base_attack_speed * (1 + bonus_attack_speed/100)
-	total_attack_damage = (base_attack_damage + bonus_attack_damage) * (1 + global_attack_damage/100)
+	total_attack_damage = (base_attack_damage + bonus_attack_damage) * (1 + (global_attack_damage/100 + global_damage/100))
 	total_windup_time = base_windup_time/(total_attack_speed)
 	total_health_regen = (base_health_regen + bonus_health_regen + (total_vitality * 0.05)) * (1 + global_health_regen/100)
 	total_mana_regen = (base_mana_regen + bonus_mana_regen) * (1 + global_mana_regen/100)
@@ -317,6 +323,7 @@ func _update_totals():
 	total_crowd_control_resistance = (base_crowd_control_resistance + bonus_crowd_control_resistance)
 	total_slow_resistance = base_slow_resistance + bonus_slow_resistance
 	total_block = (base_block + bonus_block) * (1 + global_block/100)
+	total_life_steal = base_life_steal + bonus_life_steal
 
 	
 # Called when the node is ready
@@ -327,6 +334,10 @@ func _ready():
 	current_mana = total_mana
 	current_stamina = total_stamina
 	current_barrier = total_barrier
+	if !GameManager.is_save_file:
+		experience_multiplier += Utility.get_node('AscensionStats')._get_bonus_xp_gain()
+		ascension_currency_multiplier += Utility.get_node('AscensionStats')._get_bonus_drop_rate()
+		item_drop_chance_multiplier += Utility.get_node('AscensionStats')._get_bonus_drop_rate()
 
 # Process function called every frame
 func _process(delta):
@@ -337,7 +348,7 @@ func _process(delta):
 		print_debug('Movement_skill added at runtime for some reason?')
 		movement_skill = movement_skill_scene.instantiate()
 		movement_skill.unit = self
-		add_child(movement_skill)
+		get_tree().get_root().add_child(movement_skill)
 	_check_player_level_up()
 	health_bar._update_health(_calculate_percentage(current_health, total_health))
 	barrier_bar._update_barrier(_calculate_percentage(current_barrier, total_barrier))
@@ -354,8 +365,10 @@ func _process(delta):
 		is_dead.emit(self)
 		for ab in get_node('InventoryManager').abilities:
 			ab._remove_all_enchants()
-
-		Utility.get_node("Transition")._start_death(2, ascension_currency, ascension_level)
+		Utility.get_node('AscensionBalance')._add_balance(ascension_currency/2)
+		print(Utility.get_node('AscensionBalance')._get_balance())
+		Utility.get_node("Transition")._start_death(2, ascension_currency/2, ascension_level)
+		GameManager.delete_saved_game()
 		paused = true
 	if current_stamina < 0:
 		current_stamina = 0
@@ -373,10 +386,22 @@ func _reset_completed_waves():
 	completed_waves.clear()
 
 func _is_all_waves_completed():
-	if completed_waves.size() >= get_tree().get_root().get_node('Main').get_child(0).get_node("WaveManager")._get_total_waves():
+	if completed_waves.size()>= _get_total_waves():
 		return true
 	else:
 		return false
+
+func _get_total_waves():
+	var dir = DirAccess.open('res://Waves/')
+	dir.list_dir_begin()
+	var total_waves = 0
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		if file.ends_with('.tscn'):
+			total_waves += 1
+	return total_waves
 
 func _apply_cooldown_reduction(value):
 	value = value * (1 - total_cooldown_reduction/100)
@@ -563,6 +588,8 @@ func _on_add_stats(value):
 		experience_multiplier += value.increased_experience
 	if "increased_attack_damage" in value:
 		global_attack_damage += value.increased_attack_damage
+	if "increased_life_steal" in value:
+		bonus_life_steal += value.increased_life_steal
 	_update_stats()
 
 # Called when stats are removed
@@ -677,7 +704,9 @@ func _on_remove_stats(value):
 	if "increased_experience" in value:
 		experience_multiplier -= value.increased_experience
 	if "increased_attack_damage" in value:
-		global_damage -= value.increased_attack_damage
+		global_attack_damage -= value.increased_attack_damage
+	if "increased_life_steal" in value:
+		bonus_life_steal -= value.increased_life_steal
 	_update_stats()
 
 func save():
@@ -820,6 +849,7 @@ func save():
 			"bonus_crowd_control_resistance" : bonus_crowd_control_resistance,
 			"bonus_slow_resistance" : bonus_slow_resistance,
 			"bonus_block" : bonus_block,
+			"bonus_life_steal" : bonus_life_steal,
 			"current_barrier" : current_barrier,
 			"current_health" : current_health,
 			"current_mana" : current_mana,

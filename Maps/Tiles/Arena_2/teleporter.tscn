@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/interactable_tile.gd" id="1_5gw75"]
 [ext_resource type="PackedScene" uid="uid://dvbhbi2x5wrvp" path="res://Utility/teleporter_menu.tscn" id="2_kfaff"]
-[ext_resource type="PackedScene" uid="uid://bc20geqg6yw2q" path="res://Waves/wave_list.tscn" id="3_hemmn"]
+[ext_resource type="PackedScene" uid="uid://bc20geqg6yw2q" path="res://Waves/Extra/wave_list.tscn" id="3_hemmn"]
 [ext_resource type="Texture2D" uid="uid://b58566qk7sux0" path="res://Sprites/Grass_ground.png" id="4_s80lw"]
 [ext_resource type="Texture2D" uid="uid://b4hy5b34t6c3v" path="res://Sprites/Pure_violet.webp" id="5_djcfk"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="6_utr2d"]

@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://q4suldfhkkpm"]
+
+[ext_resource type="PackedScene" uid="uid://ctxsqniv12jfk" path="res://Items/Legendary Effects/The Convergance.tscn" id="1_ovfgr"]
+[ext_resource type="PackedScene" uid="uid://by7k7ncgacv2c" path="res://Items/Legendary Effects/The Last Stand.tscn" id="2_7ugun"]
+[ext_resource type="PackedScene" uid="uid://bgksy18acncvb" path="res://Items/Legendary Effects/The Survival.tscn" id="3_m3ca6"]
+[ext_resource type="PackedScene" uid="uid://bov52sy2drs72" path="res://Items/Legendary Effects/The Dread Warden.tscn" id="4_qo2p8"]
+
+[node name="LegendaryList" type="Node2D"]
+
+[node name="The Convergance" parent="." instance=ExtResource("1_ovfgr")]
+
+[node name="The Last Stand" parent="." instance=ExtResource("2_7ugun")]
+
+[node name="The Survival" parent="." instance=ExtResource("3_m3ca6")]
+
+[node name="The Dread Warden" parent="." instance=ExtResource("4_qo2p8")]

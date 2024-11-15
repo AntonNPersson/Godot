@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://Items/Bot Effects/Bow.gd" id="1_6na1i"]
 
 [node name="Bow" type="Node2D"]
+position = Vector2(1, 0)
 script = ExtResource("1_6na1i")

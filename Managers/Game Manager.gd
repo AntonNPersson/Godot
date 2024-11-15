@@ -40,8 +40,8 @@ func save():
 	}
 	return save_dict
 
-func save_game():
-	var save_file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+func save_game(filename = "user://savegame.save"):
+	var save_file = FileAccess.open(filename, FileAccess.WRITE)
 	var save_nodes = get_tree().get_nodes_in_group("Persist")
 	for node in save_nodes:
 		# Check the node is an instanced scene so it can be instanced again during load.
@@ -62,17 +62,24 @@ func save_game():
 
 		# Store the save dictionary as a new line in the save file.
 		save_file.store_line(json_string)
+		print("Saved node '%s'" % node.name)
+
+func delete_saved_game():
+	var dir = DirAccess.open("user://")
+	dir.remove("savegame.save")
 
 func new_game():
 	is_singleplayer = true
 	is_save_file = false
 	_change_scene("res://Scenes/Game.tscn", true)
 
-
 func load_game():
 	is_singleplayer = true
 	is_save_file = true
 	_change_scene("res://Scenes/Game.tscn", true)
+
+func has_saved_game():
+	return FileAccess.file_exists("user://savegame.save")
 
 func load_menu():
 	_change_scene("res://Scenes/Menu.tscn", false)

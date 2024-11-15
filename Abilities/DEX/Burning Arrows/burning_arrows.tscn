@@ -7,7 +7,7 @@
 script = ExtResource("1_6vnmq")
 icon = ExtResource("2_wqosg")
 a_name = "Burning Arrows"
-tooltip_text = "Equip a set of fire coated arrows, making your basic attacks deal extra damage and burn targets."
+tooltip_text = "Equip a set of fire coated arrows, making your basic attacks deal Value0 extra damage and burn target(s) for Value1 damage."
 mana_cost = 30.0
 cooldown = 10.0
 projectile_type = 5

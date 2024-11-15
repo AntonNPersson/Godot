@@ -1,15 +1,15 @@
 [gd_scene load_steps=5 format=3 uid="uid://dga2d1af05bay"]
 
-[ext_resource type="Script" path="res://Waves/cemetery_special.gd" id="1_t7jvk"]
+[ext_resource type="Script" path="res://Waves/Extra/cemetery_special.gd" id="1_ob68i"]
 [ext_resource type="PackedScene" uid="uid://d21m7id8xep68" path="res://Units/Instance/Enemies/Common/Infected Zombie.tscn" id="2_ip3k1"]
 [ext_resource type="PackedScene" uid="uid://d21vyae5jdwmk" path="res://Units/Instance/Enemies/Common/Cursed Totem.tscn" id="3_vm28x"]
 [ext_resource type="PackedScene" uid="uid://b2oh7qywydo4v" path="res://Units/Instance/Enemies/Common/Zombified Priest.tscn" id="4_mo6to"]
 
 [node name="Wave2" type="Node2D"]
 visible = false
-script = ExtResource("1_t7jvk")
+script = ExtResource("1_ob68i")
 metadata/Special = true
-metadata/Color = Color(0.141176, 0.141176, 0.141176, 1)
+metadata/Color = Color(0.309804, 0.294118, 0.462745, 1)
 
 [node name="basicMeleeCreature" parent="." instance=ExtResource("2_ip3k1")]
 position = Vector2(48.119, -49.2413)

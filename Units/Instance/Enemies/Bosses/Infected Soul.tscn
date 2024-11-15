@@ -206,6 +206,12 @@ ability_index = 0
 [node name="Cursed Light Beams" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?2"]
 script = ExtResource("9_mbt4v")
 
+[node name="isOnCd?3" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("17_ofwva")
+
+[node name="Summon Zombies" type="Node" parent="Infected Soul Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?3"]
+script = ExtResource("11_phvvc")
+
 [node name="Summons" type="Node2D" parent="."]
 
 [node name="UI" type="Node2D" parent="."]

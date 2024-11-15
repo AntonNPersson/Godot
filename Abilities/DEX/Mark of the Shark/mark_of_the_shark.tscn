@@ -7,7 +7,7 @@
 script = ExtResource("1_go23f")
 icon = ExtResource("2_xpw0h")
 a_name = "Mark of the Shark"
-tooltip_text = "Mark a target, reducing their armor by a percentage. Killing a marked target grants one bounty."
+tooltip_text = "Mark a target, reducing their armor by Value0. Killing a marked target grants one bounty."
 mana_cost = 10.0
 cooldown = 2.0
 _range = 512.0

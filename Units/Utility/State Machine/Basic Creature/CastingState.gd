@@ -5,7 +5,6 @@ class_name CastingState
 func _action(_delta):
 	if _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		_interrupt_cast_timer()
-		print('Stunned')
 		return
 	if _unit.abilities.size() - 1 >= 0:
 		var ability_ = _unit.abilities[current_index].instantiate()

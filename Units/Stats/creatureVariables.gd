@@ -9,7 +9,7 @@ class_name creature_variables
 # - target: The target of the action.
 # - unit: The unit performing the action.
 # - tag: The tag associated with the action.
-signal do_action(value, target, unit, tag)
+signal do_action(value, target, unit, tag, extra)
 
 # Signal emitted when the unit is dead.
 # Parameters:
@@ -109,6 +109,8 @@ var is_colliding = false
 
 var _target = null
 
+var increased_amount = 1.0
+
 func _ready():
 	# Update the totals and set the current health.
 	_ascend()
@@ -132,7 +134,7 @@ func _is_dead(unit):
 		for child in get_children():
 			child.queue_free()
 		do_action.emit(current_base_experience, unit, unit, 'Experience')
-		do_action.emit(ascension_currency * get_tree().get_nodes_in_group("players")[0].ascension_currency_multiplier, unit, unit, 'Ascension')
+		do_action.emit(int(ascension_currency * get_tree().get_nodes_in_group("players")[0].ascension_currency_multiplier), unit, unit, 'Ascension')
 		if !unit.is_in_group('summon'):
 			drop_info._drop_item(unit.global_position)
 
@@ -161,19 +163,21 @@ func _ascend():
 
 func _add_stats(curse):
 	if "increased_armor" in curse:
-		current_base_armor = current_base_armor + (current_base_armor * (curse.increased_armor/100))
+		current_base_armor = current_base_armor + (current_base_armor * (curse.increased_armor/100.0))
 	if "increased_evade" in curse:
-		current_base_evade = current_base_evade + (current_base_evade * (curse.increased_evade/100))
+		current_base_evade = current_base_evade + (current_base_evade * (curse.increased_evade/100.0))
 	if "increased_speed" in curse:
-		current_base_speed = current_base_speed + (current_base_speed * (curse.increased_speed/100))
+		current_base_speed = current_base_speed + (current_base_speed * (curse.increased_speed/100.0))
 	if "increased_health" in curse:
-		current_base_health = current_base_health + (current_base_health * (curse.increased_health/100))
+		current_base_health = current_base_health + (current_base_health * (curse.increased_health/100.0))
 	if "increased_range" in curse:
-		current_base_range = current_base_range + (current_base_range * (curse.increased_range/100))
+		current_base_range = current_base_range + (current_base_range * (curse.increased_range/100.0))
 	if "increased_attack_speed" in curse:
-		current_base_attack_speed = current_base_attack_speed + (current_base_attack_speed * (curse.increased_attack_speed/100))
+		current_base_attack_speed = current_base_attack_speed + (current_base_attack_speed * (curse.increased_attack_speed/100.0))
 	if "increased_attack_damage" in curse:
-		current_base_attack_damage = current_base_attack_damage + (current_base_attack_damage * (curse.increased_attack_damage/100))
+		current_base_attack_damage = current_base_attack_damage + (current_base_attack_damage * (curse.increased_attack_damage/100.0))
+	if "increased_amount" in curse:
+		increased_amount = increased_amount + (curse.increased_amount/100.0)
 	
 func _update_totals():
 	# Update the total values based on the base values and bonuses.
@@ -208,7 +212,7 @@ func _process(_delta):
 		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_color", Color.RED)
 		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_intensity", 0.0)
 		
-func _on_do_action(value, target, duration, tag):
+func _on_do_action(value, target, duration, tag, extra = null):
 	# Emit the do_action signal with the provided parameters.
 	_target = target
 	do_action.emit(value * get_tree().get_nodes_in_group("players")[0].power, target, duration, tag)

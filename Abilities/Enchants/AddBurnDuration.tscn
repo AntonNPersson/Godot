@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtftv47x7nkhv"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_pyokq"]
+
+[node name="AddBurnDuration" type="Node2D"]
+script = ExtResource("1_pyokq")
+i_name = "Burn: Lasting"
+tooltip = "Add Value0s flat duration increase to selected burn ability."
+tags = Array[String](["BurnDuration"])
+values = Array[float]([0.5])
+types = Array[int]([-1])

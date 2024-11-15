@@ -84,10 +84,9 @@ script = ExtResource("2_irwds")
 
 [node name="Circle" type="Area2D" parent="HitBox"]
 visible = false
-self_modulate = Color(1, 1, 1, 0.709804)
+modulate = Color(1, 1, 1, 0.188235)
 
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/Circle"]
-modulate = Color(0.921569, 0.109804, 0.14902, 0.392157)
 material = SubResource("CanvasItemMaterial_vfekf")
 position = Vector2(-2.5, -0.499996)
 scale = Vector2(1.14844, 1.19531)
@@ -102,16 +101,15 @@ libraries = {
 }
 
 [node name="Sprite2D2" type="Sprite2D" parent="HitBox/Circle"]
-modulate = Color(0.921569, 0.109804, 0.14902, 0.392157)
 material = SubResource("CanvasItemMaterial_vfekf")
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("4_ajjaw")
 
 [node name="Rectangle" type="Area2D" parent="HitBox"]
 visible = false
+modulate = Color(1, 1, 1, 0.188235)
 
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/Rectangle"]
-modulate = Color(1, 0, 0, 0.392157)
 position = Vector2(0.5, 0.5)
 scale = Vector2(0.99, 0.99)
 texture = ExtResource("5_ivvmq")
@@ -125,7 +123,6 @@ libraries = {
 }
 
 [node name="Sprite2D2" type="Sprite2D" parent="HitBox/Rectangle"]
-modulate = Color(1, 1, 1, 0.392157)
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("6_8rv30")
 

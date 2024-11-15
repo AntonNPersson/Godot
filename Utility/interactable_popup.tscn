@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtbp7mjj6sxej"]
+[gd_scene load_steps=4 format=3 uid="uid://dtbp7mjj6sxej"]
 
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="1_ner1q"]
+[ext_resource type="Texture2D" uid="uid://cwdht2de2hiql" path="res://Utility/Blurry_popup.png" id="2_t2mwd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_16p7l"]
 
 [node name="PanelContainer" type="PanelContainer"]
+z_index = 5
+z_as_relative = false
 anchors_preset = -1
 anchor_left = 0.026
 anchor_right = 0.026
@@ -10,9 +15,15 @@ offset_left = -49.92
 offset_right = 150.08
 offset_bottom = 30.0
 scale = Vector2(0.5, 0.5)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_16p7l")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("1_ner1q")
 text = "Press 'E' to interact"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -1
+layout_mode = 2
+texture = ExtResource("2_t2mwd")

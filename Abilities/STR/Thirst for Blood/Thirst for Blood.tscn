@@ -7,7 +7,7 @@
 script = ExtResource("1_tqpyr")
 icon = ExtResource("2_l8gep")
 a_name = "Thirst for Blood"
-tooltip_text = "Your thirst for blood is so strong you charge towards targeted enemy dealing damage, reduce cd by 50% if target is bleeding, else bleed the target."
+tooltip_text = "Your thirst for blood is so strong you charge towards targeted enemy dealing Value0 damage, reduce cd by 50% if target is bleeding, else deal Value1 bleed damage to the target."
 mana_cost = 30.0
 cooldown = 12.0
 _range = 250.0

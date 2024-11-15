@@ -7,7 +7,7 @@
 script = ExtResource("1_rvmfh")
 icon = ExtResource("2_ic5sg")
 a_name = "Frozen Flash"
-tooltip_text = "Blink to chosen targeted enemy, upon arriving deal a small amount of damage and freeze in an area; freezing has a chance to apply frozen to target."
+tooltip_text = "Blink to chosen targeted enemy, upon arriving deal Value0 damage and freeze in an area. slowing by Value1%; freezing has a chance to apply frozen to target."
 mana_cost = 30.0
 cooldown = 8.0
 _range = 400.0
@@ -19,4 +19,5 @@ values = Array[float]([5.0, 40.0, 1.0])
 increased_values = Array[float]([4.0, 5.0, 0.1])
 light_color = Color(0, 0.858824, 0.905882, 1)
 light_scale = 0.4
+additional_self_target = null
 weight = 50.0

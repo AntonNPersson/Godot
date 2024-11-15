@@ -1,13 +1,14 @@
 extends Area2D
-signal has_hit(unit)
+signal has_hit(unit, extra)
 var hit_enemies = []
 var tags = {}
 var hit_timer = 0
+var lifetime = 0.3
+var extra = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	extra['Pool'] = lifetime
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -22,7 +23,7 @@ func _check_collision():
 	for area in overlapping:
 		if area.is_in_group('enemies') and area not in hit_enemies:
 			hit_enemies.append(area)
-			has_hit.emit(area)
+			has_hit.emit(area, extra)
 
 
 func _on_particle_finished():

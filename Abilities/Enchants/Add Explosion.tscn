@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnri4co1q6j5o"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_0jpyc"]
+
+[node name="AddExplosion" type="Node2D"]
+script = ExtResource("1_0jpyc")
+i_name = "General: Explosion"
+tooltip = "Add an explosion to selected ability, doing its values in an area around the target."
+tags = Array[String](["Explosion"])
+values = Array[float]([75.0])
+types = Array[int]([0, 1, 2])

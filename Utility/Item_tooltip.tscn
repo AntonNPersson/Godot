@@ -37,7 +37,7 @@ anchor_bottom = 0.5
 offset_left = -970.0
 offset_top = -540.0
 offset_right = -669.0
-offset_bottom = -271.0
+offset_bottom = -195.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_cxmy1")
@@ -66,7 +66,7 @@ fit_content = true
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme = SubResource("Theme_yy6oc")
-theme_override_colors/default_color = Color(0.854902, 0.854902, 0.854902, 1)
+theme_override_colors/default_color = Color(0.611765, 0.603922, 0.447059, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_aygnw")
 theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
@@ -89,11 +89,13 @@ theme = SubResource("Theme_ur17p")
 theme_override_styles/panel = SubResource("StyleBoxFlat_vkckk")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer2"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 7.0
-offset_top = 10.0
-offset_right = 320.0
-offset_bottom = 194.0
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_scroll_mode = 0
 
 [node name="Description" type="RichTextLabel" parent="VSplitContainer2/ScrollContainer"]
@@ -101,7 +103,7 @@ custom_minimum_size = Vector2(310, 125)
 layout_mode = 2
 mouse_force_pass_scroll_events = false
 theme = SubResource("Theme_yy6oc")
-theme_override_colors/default_color = Color(0.854902, 0.854902, 0.854902, 1)
+theme_override_colors/default_color = Color(0.611765, 0.603922, 0.447059, 1)
 theme_override_constants/line_separation = 8
 bbcode_enabled = true
 text = "[color=purple]✦"

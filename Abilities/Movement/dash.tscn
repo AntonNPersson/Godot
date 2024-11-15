@@ -1,33 +1,93 @@
-[gd_scene load_steps=4 format=3 uid="uid://l8llk23jqkt6"]
+[gd_scene load_steps=14 format=3 uid="uid://l8llk23jqkt6"]
 
 [ext_resource type="Script" path="res://Abilities/Movement/dash.gd" id="1_3ikdr"]
-[ext_resource type="Texture2D" uid="uid://dmfhvtnr8g22x" path="res://Sprites/Lightningball1.png" id="2_ckb15"]
+[ext_resource type="Texture2D" uid="uid://bwtr7opcqkrim" path="res://Abilities/Movement/Smoke VFX3.png" id="2_ygbod"]
 
-[sub_resource type="Gradient" id="Gradient_5bbf6"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.0784314)
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5mmn"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(0, 0, 32, 16)
 
-[node name="Dash" type="Node2D" node_paths=PackedStringArray("particle_effects")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_dodlp"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3viub"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yq5gi"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l3a4u"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(128, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6c6o8"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(160, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5uvcd"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(192, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mx4mi"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(224, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yv5ox"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(256, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_673xm"]
+atlas = ExtResource("2_ygbod")
+region = Rect2(288, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_svv1p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5mmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dodlp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3viub")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yq5gi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l3a4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6c6o8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5uvcd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mx4mi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yv5ox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_673xm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Dash" type="Node2D"]
 script = ExtResource("1_3ikdr")
-particle_effects = NodePath("CPUParticles2D")
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-z_index = -1
-emitting = false
-amount = 20
-one_shot = true
-explosiveness = 1.0
-randomness = 0.59
-texture = ExtResource("2_ckb15")
-emission_shape = 1
-emission_sphere_radius = 29.67
-direction = Vector2(0, 0)
-spread = 180.0
-gravity = Vector2(0, -100)
-initial_velocity_min = 20.0
-initial_velocity_max = 20.0
-scale_amount_min = 0.02
-scale_amount_max = 0.06
-color = Color(0.2, 0.619608, 0, 1)
-color_ramp = SubResource("Gradient_5bbf6")
-hue_variation_min = 1.0
-hue_variation_max = 1.0
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -1.19209e-06)
+scale = Vector2(1.4, 1.4)
+sprite_frames = SubResource("SpriteFrames_svv1p")
+frame = 9
+frame_progress = 1.0
+offset = Vector2(0, -5)

@@ -7,7 +7,7 @@
 script = ExtResource("1_n4qs1")
 icon = ExtResource("2_lcjsw")
 a_name = "Poison Bomb"
-tooltip_text = "Throw a bomb, poisoning enemies hit, and dealing damage over time."
+tooltip_text = "Throw a bomb, poisoning enemies hit, dealing Value0 damage over time."
 mana_cost = 35.0
 cooldown = 6.0
 _range = 300.0
@@ -21,4 +21,5 @@ values = Array[float]([60.0])
 increased_values = Array[float]([40.0])
 light_color = Color(0, 0.470588, 0, 1)
 light_scale = 0.4
+additional_self_target = null
 weight = 100.0

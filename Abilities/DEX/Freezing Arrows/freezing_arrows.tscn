@@ -7,7 +7,7 @@
 script = ExtResource("1_abe8t")
 icon = ExtResource("2_xyva8")
 a_name = "Freezing Arrows"
-tooltip_text = "Equip a set of frost coated arrows, making your basic attacks deal extra damage and freeze targets; freezing has a chance to apply frozen to target."
+tooltip_text = "Equip a set of frost coated arrows, making your basic attacks deal Value0 extra damage and freeze targets by slowing Value1%; freezing has a chance to apply frozen to target."
 mana_cost = 30.0
 cooldown = 10.0
 projectile_type = 5

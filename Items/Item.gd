@@ -25,7 +25,7 @@ var tooltip_weapon_effect = ""
 
 var scroll_panel
 var json_string
-var rarity_color = Color.MISTY_ROSE
+var rarity_color = Color.WHITE
 
 var t_v = {}
 
@@ -53,8 +53,8 @@ func _initialize():
 
 	tooltip_name.text = i_name
 	if rarity == ITEM_RARITY.COMMON:
-		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center][color=Mistyrose]' + get_child(2).name + '[/color][/center]'
-		rarity_color = Color.MISTY_ROSE
+		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[center][color=Wheat]' + get_child(2).name + '[/color][/center]'
+		rarity_color = Color.WHITE
 	elif rarity == ITEM_RARITY.UNCOMMON:
 		get_child(0).get_child(1).get_child(0).get_child(0).get_child(0).text = '[color=Limegreen]' + get_child(2).name + '[/color]'
 		rarity_color = Color.LIME_GREEN
@@ -78,21 +78,21 @@ func _initialize():
 
 
 	t_v = _create_tooltip(2)
-	if rarity >= ITEM_RARITY.UNCOMMON and rarity != ITEM_RARITY.UNIQUE:
+	if rarity >= ITEM_RARITY.UNCOMMON and rarity != ITEM_RARITY.UNIQUE and rarity != ITEM_RARITY.LEGENDARY:
 		t_v = _merge_dicts(t_v, _create_tooltip(3))
 		t_v = _merge_dicts(t_v, _create_tooltip(4))
-	if rarity >= ITEM_RARITY.RARE and rarity != ITEM_RARITY.UNIQUE:
+	if rarity >= ITEM_RARITY.RARE and rarity != ITEM_RARITY.UNIQUE and rarity != ITEM_RARITY.LEGENDARY:
 		t_v = _merge_dicts(t_v, _create_tooltip(5))
-	if rarity == ITEM_RARITY.UNIQUE:
+	if rarity == ITEM_RARITY.UNIQUE or rarity == ITEM_RARITY.LEGENDARY:
 		t_v = _merge_dicts(t_v, _create_tooltip(3))
 
 	for key in t_v.keys():
 		if key.find('Range') != -1:
 			continue
 		if key.find('Increased') != -1 or key.find('Attack Speed') != -1 or key.find('Cooldown Reduction') != -1 or key.find('Chance') != -1:
-			tooltip += "[color=Mistyrose]✦ " + key + ": " + str(t_v[key]) + "%\n"
+			tooltip += "[color=Wheat]✦ " + key + ": " + str(t_v[key]) + "%\n"
 		else:
-			tooltip += "[color=Mistyrose]✦ " + key + ": " + str(t_v[key]) + "\n"
+			tooltip += "[color=Wheat]✦ " + key + ": " + str(t_v[key]) + "\n"
 	
 	if rarity >= ITEM_RARITY.EPIC:
 		tooltip += _create_tooltip(6)
@@ -137,7 +137,10 @@ func _create_tooltip(valu):
 	var tag_values = {}
 	if valu == 6:
 		toolt += "\n"
-		toolt += "[color=Mediumorchid]✦ [/color]" + get_child(get_children().size()-1)._get_tooltip()
+		if rarity == ITEM_RARITY.LEGENDARY:
+			toolt += "[color=Coral]✦ [/color]" + get_child(get_children().size()-1)._get_tooltip()
+		else:
+			toolt += "[color=Mediumorchid]✦ [/color]" + get_child(get_children().size()-1)._get_tooltip()
 		return toolt
 	for i in range(get_child(valu)._get_tags().size()):
 		var tag = get_child(valu)._get_tags()[i]
@@ -146,7 +149,7 @@ func _create_tooltip(valu):
 		if valu == 2:
 			if "Armor" in tag or "Barrier" in tag or "Attack Damage" in tag or "Evade" in tag:
 				print(value)
-				tooltip_main_desc.text = "[color=Mistyrose]" + tag + ": " + str(value) + "\n"
+				tooltip_main_desc.text = "[color=Wheat]" + tag + ": " + str(value) + "\n"
 				tooltip_weapon_effect = get_child(valu).weapon_tooltip
 				continue
 
@@ -253,7 +256,7 @@ func _on_panel_2_mouse_exited():
 	player.lose_camera_focus = false
 
 func _show_tooltip_at_mouse():
-	get_child(0).get_child(0).global_position = get_viewport().get_mouse_position() - Vector2(get_child(0).get_child(0).size.x/2, get_child(0).get_child(0).size.y + 10)
+	get_child(0).get_child(0).global_position = get_viewport().get_mouse_position() - Vector2(get_child(0).get_child(0).size.x/2, -10)
 	get_child(0).get_child(0).modulate.a = 1
 
 	var viewport_size = get_viewport().size

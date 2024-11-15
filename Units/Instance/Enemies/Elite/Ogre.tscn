@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://bb2rcvgybikqf"]
+[gd_scene load_steps=68 format=3 uid="uid://bb2rcvgybikqf"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_tr8uq"]
 [ext_resource type="PackedScene" uid="uid://b2ti2a542aylv" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/Heavy_attack.tscn" id="2_atokn"]
@@ -6,12 +6,8 @@
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_uw8sp"]
 [ext_resource type="Texture2D" uid="uid://d1sey7dhtyti0" path="res://Sprites/Goblin King/goblin fighter.png" id="5_q58oc"]
 [ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_yyiqk"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_8sv8w"]
+[ext_resource type="PackedScene" uid="uid://dimur0k7iqv8b" path="res://Units/Utility/UI Scripts/ui.tscn" id="7_yifx5"]
 [ext_resource type="Texture2D" uid="uid://ddsp4ddwph1r0" path="res://Units/Instance/Enemies/Elite/ogre.png" id="10_6g0in"]
-[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="10_iuklv"]
-[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_ivkkq"]
-[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="11_k5ipu"]
-[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="12_kq07e"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
 radius = 2.85228
@@ -269,7 +265,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack East",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -289,7 +285,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack North",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -306,7 +302,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack South",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -323,7 +319,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack West",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -475,7 +471,7 @@ u_name = "Captured Ogre"
 experience = 35
 ascension_currency = 3
 base_armor = 30
-base_speed = 65
+base_speed = 75
 base_health = 150
 base_range = 0
 base_attack_speed = 0.0
@@ -498,48 +494,14 @@ texture = ExtResource("5_q58oc")
 [node name="Control" type="Node" parent="."]
 script = ExtResource("6_yyiqk")
 
-[node name="UI" type="Node2D" parent="."]
-
-[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
-z_index = 10
-offset_left = -18.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = -16.0
-theme = ExtResource("10_iuklv")
-texture_under = ExtResource("11_k5ipu")
-texture_progress = ExtResource("12_kq07e")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("9_8sv8w")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-offset_left = -28.0
-offset_top = -32.0
-offset_right = 29.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="cast_bar" type="TextureProgressBar" parent="UI"]
-visible = false
-z_index = 10
-offset_left = -18.0
-offset_top = 44.6667
-offset_right = 16.0
-offset_bottom = 52.6667
-theme = ExtResource("10_iuklv")
-value = 100.0
-texture_under = ExtResource("11_k5ipu")
-texture_progress = ExtResource("12_kq07e")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("11_ivkkq")
+[node name="UI" parent="." instance=ExtResource("7_yifx5")]
+position = Vector2(-18.6667, -22)
+scale = Vector2(0.2, 0.2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_2l1cy")
 sprite_frames = SubResource("SpriteFrames_yljm5")
-animation = &"Attack West"
-frame_progress = 0.335895
+animation = &"Attack East"
+frame_progress = 0.509802
 
 [node name="Update_timer" type="Node" parent="."]

@@ -7,7 +7,7 @@
 script = ExtResource("1_atkkm")
 icon = ExtResource("2_n3rrk")
 a_name = "Blood Scream"
-tooltip_text = "A scream of bloodlust in battle, dealing damage and inflicting bleed to nearby enemies."
+tooltip_text = "A scream of bloodlust in battle, dealing Value0 damage and inflicting Value1 bleed damage to nearby enemies."
 mana_cost = 30.0
 cooldown = 8.0
 projectile_type = 3
@@ -15,7 +15,7 @@ ability_type = "STR"
 area_type = 2
 duration = 0.3
 radius = 128.0
-tags = Array[String](["Damage", "Bleed"])
+tags = Array[String](["Damag e", "Bleed"])
 values = Array[float]([20.0, 4.0])
 increased_values = Array[float]([15.0, 2.0])
 light_color = Color(1, 0, 0, 1)

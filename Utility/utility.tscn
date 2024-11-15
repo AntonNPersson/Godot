@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b0f5f4y5a5wgm"]
+[gd_scene load_steps=18 format=3 uid="uid://b0f5f4y5a5wgm"]
 
 [ext_resource type="Texture2D" uid="uid://bc8xpsv4uuehc" path="res://Sprites/black.png" id="1_7im54"]
 [ext_resource type="Script" path="res://Utility/transition_screen.gd" id="2_j7k88"]
@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://d1cqhoae01102" path="res://Utility/error_message.tscn" id="9_nrlui"]
 [ext_resource type="Script" path="res://Utility/error_message.gd" id="9_vggnd"]
 [ext_resource type="PackedScene" uid="uid://d0fx2kx4donnu" path="res://Utility/Enemy_target_system.tscn" id="11_nokq7"]
+[ext_resource type="Script" path="res://Utility/AscensionBalance.gd" id="12_6e37g"]
+[ext_resource type="Script" path="res://Utility/AscensionStats.gd" id="13_18lm6"]
 
 [sub_resource type="Animation" id="Animation_wk6cn"]
 length = 0.001
@@ -275,5 +277,11 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(75, 20)
 text = "Main Menu"
+
+[node name="AscensionBalance" type="Node" parent="."]
+script = ExtResource("12_6e37g")
+
+[node name="AscensionStats" type="Node" parent="."]
+script = ExtResource("13_18lm6")
 
 [connection signal="pressed" from="Button" to="Transition" method="_on_button_pressed"]

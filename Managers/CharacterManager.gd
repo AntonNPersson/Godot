@@ -7,7 +7,6 @@ signal character_selected(unit)
 var selected_character_name : String
 
 func _initialize():
-	print('Character Manager Initialized')
 	if selected_character_name.is_empty():
 		selected_character_name = GameManager.selected_character_name
 	
@@ -28,5 +27,4 @@ func save():
 		"parent" : get_parent().get_name(),
 		"selected_character_name": selected_character_name
 	}
-	print(save_dict)
 	return save_dict

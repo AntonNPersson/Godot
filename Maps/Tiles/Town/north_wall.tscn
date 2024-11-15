@@ -1,10 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dd7yxbtrbh8hd"]
+[gd_scene load_steps=6 format=3 uid="uid://dd7yxbtrbh8hd"]
 
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/interactable_tile.gd" id="1_ux71w"]
-[ext_resource type="Texture2D" uid="uid://c2aobj2qfhfbp" path="res://Sprites/original_wall.png" id="2_oa0s5"]
+[ext_resource type="Texture2D" uid="uid://duidnfskps77n" path="res://Sprites/Town/top.png" id="2_12kt7"]
+[ext_resource type="Texture2D" uid="uid://dnmgho6w1vwkl" path="res://Sprites/Town/ground.png" id="3_a64xd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_60cqp"]
-size = Vector2(127, 129)
+size = Vector2(127, 37)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2pr53"]
 polygon = PackedVector2Array(64, 64, -64, 64, -64, -64, 64, -64)
@@ -20,15 +21,19 @@ metadata/Walkable = false
 metadata/Interactable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_as_relative = false
 texture_filter = 1
-texture = ExtResource("2_oa0s5")
+texture = ExtResource("2_12kt7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 light_mask = 3
 visibility_layer = 3
-position = Vector2(-0.499997, -0.500002)
+position = Vector2(-0.499997, -46.5)
 shape = SubResource("RectangleShape2D_60cqp")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_2pr53")
 sdf_collision = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture = ExtResource("3_a64xd")

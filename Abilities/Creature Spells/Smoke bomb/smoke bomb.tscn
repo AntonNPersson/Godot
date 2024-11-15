@@ -1,55 +1,112 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddeenr4waq1as"]
+[gd_scene load_steps=17 format=3 uid="uid://ddeenr4waq1as"]
 
 [ext_resource type="Script" path="res://Abilities/Creature Spells/Smoke bomb/smoke bomb.gd" id="1_d6y7c"]
-[ext_resource type="Texture2D" uid="uid://dht0c1wl6kfti" path="res://Sprites/smoke_particle.png" id="2_6lwjj"]
+[ext_resource type="Texture2D" uid="uid://dqacyx8p3y5pi" path="res://Units/Instance/Enemies/Elite/Smoke VFX 2.png" id="2_5xng7"]
 
-[sub_resource type="Curve" id="Curve_u5mi6"]
-min_value = -200.0
-max_value = 200.0
-_data = [Vector2(0.0298507, 28.5714), 0.0, 0.0, 0, 0, Vector2(1, 2.19781), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="AtlasTexture" id="AtlasTexture_2805i"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(0, 0, 128, 128)
 
-[sub_resource type="Curve" id="Curve_32vrn"]
-max_value = 100.0
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.716418, 100), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="AtlasTexture" id="AtlasTexture_8maad"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(128, 0, 128, 128)
 
-[sub_resource type="Gradient" id="Gradient_4t7bq"]
-offsets = PackedFloat32Array(0, 0.839623, 1)
-colors = PackedColorArray(0.301961, 0.301961, 0.301961, 1, 0.205117, 0.205117, 0.205117, 1, 1, 1, 1, 0)
+[sub_resource type="AtlasTexture" id="AtlasTexture_kyeyq"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6oode"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ardec"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrmtf"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_26yeq"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gp0s"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pep2m"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5n3t"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnbca"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_plqmg"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(1408, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8x37s"]
+atlas = ExtResource("2_5xng7")
+region = Rect2(1536, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2wsfm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2805i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8maad")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kyeyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6oode")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ardec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrmtf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_26yeq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gp0s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pep2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5n3t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnbca")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_plqmg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8x37s")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
 
 [node name="SmokeBomb" type="Node2D" groups=["projectiles"]]
 scale = Vector2(0.7, 0.7)
 script = ExtResource("1_d6y7c")
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-z_index = -1
-position = Vector2(0, 20)
-amount = 1000
-preprocess = 1.0
-explosiveness = 1.0
-randomness = 0.4
-lifetime_randomness = 0.3
-fract_delta = false
-local_coords = true
-draw_order = 1
-texture = ExtResource("2_6lwjj")
-direction = Vector2(0, -1)
-spread = 180.0
-gravity = Vector2(0, -30)
-initial_velocity_min = 25.0
-initial_velocity_max = 50.0
-linear_accel_min = 100.0
-linear_accel_max = 100.0
-linear_accel_curve = SubResource("Curve_u5mi6")
-damping_min = 100.0
-damping_max = 100.0
-damping_curve = SubResource("Curve_32vrn")
-angle_min = -720.0
-angle_max = 720.0
-scale_amount_min = 0.01
-scale_amount_max = 0.3
-color = Color(0.607843, 0, 1, 1)
-color_ramp = SubResource("Gradient_4t7bq")
-hue_variation_min = -1.0
-hue_variation_max = 1.0
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_2wsfm")
+frame_progress = 0.689304

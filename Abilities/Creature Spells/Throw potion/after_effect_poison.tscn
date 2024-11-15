@@ -1,0 +1,121 @@
+[gd_scene load_steps=18 format=3 uid="uid://ctef8cfmhrneh"]
+
+[ext_resource type="Texture2D" uid="uid://dhlsg0h2r6k3o" path="res://Abilities/Utility/Spell 1-Sheet.png" id="1_igtv4"]
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/self_delete.gd" id="2_08qi6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8homr"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(0, 0, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_btnis"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(128, 0, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_41en5"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(256, 0, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dtugd"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(384, 0, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gapkq"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(512, 0, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ib5w"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(640, 0, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i603p"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(768, 0, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4buk"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(0, 144, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjjdp"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(128, 144, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ams4u"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(256, 144, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjth5"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(384, 144, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vg17v"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(512, 144, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kqftf"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(640, 144, 128, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhw8l"]
+atlas = ExtResource("1_igtv4")
+region = Rect2(768, 144, 128, 144)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lts51"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8homr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btnis")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_41en5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dtugd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gapkq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ib5w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i603p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4buk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fjjdp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ams4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xjth5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vg17v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kqftf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yhw8l")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="AfterEffect" type="AnimatedSprite2D"]
+modulate = Color(1, 1, 1, 0.694118)
+sprite_frames = SubResource("SpriteFrames_lts51")
+autoplay = "default"
+frame = 13
+frame_progress = 1.0
+offset = Vector2(0, -30)
+script = ExtResource("2_08qi6")
+
+[connection signal="animation_finished" from="." to="." method="_on_finished"]

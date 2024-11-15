@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://d21m7id8xep68"]
+[gd_scene load_steps=70 format=3 uid="uid://d21m7id8xep68"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_jp05j"]
 [ext_resource type="PackedScene" uid="uid://c6f7mhfne3rxf" path="res://Abilities/Creature Spells/infected_touch.tscn" id="2_sj5p5"]
@@ -6,12 +6,8 @@
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_pd04g"]
 [ext_resource type="Texture2D" uid="uid://d1sey7dhtyti0" path="res://Sprites/Goblin King/goblin fighter.png" id="5_p66yq"]
 [ext_resource type="Script" path="res://Units/Utility/State Machine/Basic Creature/CreatureControl.gd" id="6_mncac"]
-[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="8_oph4b"]
-[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_2s0ba"]
-[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="10_ii6lx"]
+[ext_resource type="PackedScene" uid="uid://dimur0k7iqv8b" path="res://Units/Utility/UI Scripts/ui.tscn" id="7_twb3t"]
 [ext_resource type="Texture2D" uid="uid://bfqiu0ggbok7g" path="res://Units/Instance/Enemies/Sprite Sheets/Download98806.png" id="10_iibav"]
-[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="11_6khsa"]
-[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="12_vsmbu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
 radius = 2.85228
@@ -280,7 +276,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack East",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -300,7 +296,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack North",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -320,7 +316,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack South",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -340,7 +336,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Attack West",
-"speed": 1.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -487,7 +483,7 @@ u_name = "Infected Zombie"
 experience = 50
 ascension_currency = 2
 base_armor = 20
-base_speed = 85
+base_speed = 105
 base_range = 60
 base_attack_speed = 1.0
 base_attack_damage = 5
@@ -511,45 +507,12 @@ texture = ExtResource("5_p66yq")
 [node name="Control" type="Node" parent="."]
 script = ExtResource("6_mncac")
 
-[node name="UI" type="Node2D" parent="."]
-
-[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
-z_index = 10
-offset_left = -15.0
-offset_top = -26.0
-offset_right = 19.0
-offset_bottom = -18.0
-theme = ExtResource("10_ii6lx")
-texture_under = ExtResource("8_oph4b")
-texture_progress = ExtResource("12_vsmbu")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("9_2s0ba")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-offset_left = -28.0
-offset_top = -32.0
-offset_right = 29.0
-offset_bottom = -24.0
-theme_override_font_sizes/font_size = 8
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="cast_bar" type="TextureProgressBar" parent="UI"]
-visible = false
-z_index = 10
-offset_left = -16.0
-offset_top = 30.0
-offset_right = 18.0
-offset_bottom = 38.0
-theme = ExtResource("10_ii6lx")
-value = 100.0
-texture_under = ExtResource("8_oph4b")
-texture_progress = ExtResource("12_vsmbu")
-texture_progress_offset = Vector2(2, 2)
-script = ExtResource("11_6khsa")
+[node name="UI" parent="." instance=ExtResource("7_twb3t")]
+position = Vector2(-18, -20)
+scale = Vector2(0.2, 0.2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_2l1cy")
 sprite_frames = SubResource("SpriteFrames_yljm5")
-animation = &"Death"
+animation = &"Attack West"
+frame_progress = 0.14628

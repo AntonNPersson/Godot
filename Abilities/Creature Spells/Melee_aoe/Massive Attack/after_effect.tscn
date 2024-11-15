@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2t26u4y55rd3"]
+[gd_scene load_steps=7 format=3 uid="uid://bkrusj7ic1s6n"]
 
 [ext_resource type="Texture2D" uid="uid://bcpcpicdwbcik" path="res://Sprites/wall.png" id="1_qehgh"]
 [ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/self_delete.gd" id="2_37r5k"]

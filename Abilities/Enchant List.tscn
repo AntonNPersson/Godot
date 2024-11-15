@@ -1,13 +1,65 @@
-[gd_scene load_steps=4 format=3 uid="uid://jg40w51mf1ji"]
+[gd_scene load_steps=18 format=3 uid="uid://jg40w51mf1ji"]
 
 [ext_resource type="PackedScene" uid="uid://b0qsdrcgkrr5w" path="res://Abilities/Enchants/Increase Damage.tscn" id="1_kkwiw"]
 [ext_resource type="PackedScene" uid="uid://dieybv3pe5a4x" path="res://Abilities/Enchants/Increase Projectile Amount.tscn" id="2_u337b"]
 [ext_resource type="PackedScene" uid="uid://bn5612yhr2td3" path="res://Abilities/Enchants/Increase Projectile Speed.tscn" id="3_ipjjw"]
+[ext_resource type="PackedScene" uid="uid://gt5dr2fhms6w" path="res://Abilities/Enchants/Increase Burn Damage.tscn" id="4_a0dim"]
+[ext_resource type="PackedScene" uid="uid://bmdetae4e0oav" path="res://Abilities/Enchants/Add Burn Explosion.tscn" id="5_s0qjo"]
+[ext_resource type="PackedScene" uid="uid://dtftv47x7nkhv" path="res://Abilities/Enchants/AddBurnDuration.tscn" id="6_h7gpa"]
+[ext_resource type="PackedScene" uid="uid://db4nf3c0hgous" path="res://Abilities/Enchants/ReduceCooldown.tscn" id="7_sakpq"]
+[ext_resource type="PackedScene" uid="uid://b6dllpn4fy4fm" path="res://Abilities/Enchants/Increase Area Radius.tscn" id="8_7qy8m"]
+[ext_resource type="PackedScene" uid="uid://cmnpsy8kjecpv" path="res://Abilities/Enchants/Add Frozen Chance.tscn" id="9_v1xh5"]
+[ext_resource type="PackedScene" uid="uid://dcs2blvyd2l5n" path="res://Abilities/Enchants/AddFreezeSlow.tscn" id="10_x2lfs"]
+[ext_resource type="PackedScene" uid="uid://jtw8352norki" path="res://Abilities/Enchants/Increase Frozen duration.tscn" id="11_gbc4l"]
+[ext_resource type="PackedScene" uid="uid://couqttqnotrx4" path="res://Abilities/Enchants/Increased Bleed Damage.tscn" id="12_s4g27"]
+[ext_resource type="PackedScene" uid="uid://25tpn4sram2u" path="res://Abilities/Enchants/Increased Bleed Duration.tscn" id="13_s5hfc"]
+[ext_resource type="PackedScene" uid="uid://dt3sj2yh0eun2" path="res://Abilities/Enchants/Add Area Echo.tscn" id="14_b1436"]
+[ext_resource type="PackedScene" uid="uid://c53pr6s6y7b7j" path="res://Abilities/Enchants/Add Area Pool.tscn" id="15_yqng5"]
+[ext_resource type="PackedScene" uid="uid://bnri4co1q6j5o" path="res://Abilities/Enchants/Add Explosion.tscn" id="16_hoer8"]
+[ext_resource type="PackedScene" uid="uid://kui6skjvl1l3" path="res://Abilities/Enchants/Add Self Target.tscn" id="17_e6dg4"]
 
 [node name="EnchantList" type="Node2D"]
 
-[node name="IncreaseDamage" parent="." instance=ExtResource("1_kkwiw")]
+[node name="Increase Damage" parent="." instance=ExtResource("1_kkwiw")]
+tooltip = "Increase damage by Value0% to selected ability."
 
-[node name="IncreaseProjectileAmount" parent="." instance=ExtResource("2_u337b")]
+[node name="Increase Projectile Amount" parent="." instance=ExtResource("2_u337b")]
 
-[node name="IncreaseProjectileSpeed" parent="." instance=ExtResource("3_ipjjw")]
+[node name="Increase Projectile Speed" parent="." instance=ExtResource("3_ipjjw")]
+i_name = "Projectile: Haste"
+
+[node name="Increase Burn Damage" parent="." instance=ExtResource("4_a0dim")]
+tooltip = "Increase burn damage by Value0%  to selected ability."
+
+[node name="Add Burn Explosion" parent="." instance=ExtResource("5_s0qjo")]
+tooltip = "Add an explosion to selected ability's burn, dealing burn damage to close enemies, but it has a Value0s global cooldown."
+
+[node name="Add Burn Duration" parent="." instance=ExtResource("6_h7gpa")]
+tooltip = "Add Value0s flat duration increase to selected ability's burn effects."
+
+[node name="Reduce Cooldown" parent="." instance=ExtResource("7_sakpq")]
+
+[node name="Increase Area Radius" parent="." instance=ExtResource("8_7qy8m")]
+
+[node name="Add Frozen Chance" parent="." instance=ExtResource("9_v1xh5")]
+tags = Array[String](["FrozenChance"])
+values = Array[float]([3.0])
+types = Array[int]([-1])
+
+[node name="Add Freeze Slow" parent="." instance=ExtResource("10_x2lfs")]
+tooltip = "Increase the amount slowed when freezing targets by Value0% of the selected ability."
+values = Array[float]([6.0])
+
+[node name="Increase Frozen Duration" parent="." instance=ExtResource("11_gbc4l")]
+
+[node name="Increased Bleed Damage" parent="." instance=ExtResource("12_s4g27")]
+
+[node name="Increased Bleed Duration" parent="." instance=ExtResource("13_s5hfc")]
+
+[node name="Add Area Echo" parent="." instance=ExtResource("14_b1436")]
+
+[node name="Add Area Pool" parent="." instance=ExtResource("15_yqng5")]
+
+[node name="Add Explosion" parent="." instance=ExtResource("16_hoer8")]
+
+[node name="Add Self Target" parent="." instance=ExtResource("17_e6dg4")]

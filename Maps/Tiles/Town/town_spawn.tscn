@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://05rtqgkgc1h1"]
 
-[ext_resource type="Texture2D" uid="uid://fy66pp2eeedq" path="res://Sprites/original_floor.png" id="1_y62vs"]
+[ext_resource type="Texture2D" uid="uid://dnmgho6w1vwkl" path="res://Sprites/Town/ground.png" id="1_cjf5u"]
 
 [node name="Spawn" type="Area2D"]
 light_mask = 3
@@ -13,4 +13,4 @@ metadata/Player_Spawn = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
-texture = ExtResource("1_y62vs")
+texture = ExtResource("1_cjf5u")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c8chwfwce6kgm"]
+[gd_scene load_steps=13 format=3 uid="uid://c8chwfwce6kgm"]
 
 [ext_resource type="PackedScene" uid="uid://debopt64df75q" path="res://Abilities/Ascension/Increased Armor.tscn" id="1_k3hag"]
 [ext_resource type="PackedScene" uid="uid://b6enmgpmwnrii" path="res://Abilities/Ascension/Increased Health.tscn" id="2_jcfxr"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://uajkdeeqd0vo" path="res://Sprites/Curses/Meteor Shower.jpg" id="8_wilp8"]
 [ext_resource type="PackedScene" uid="uid://b2733pdw4edo1" path="res://Abilities/Ascension/Stormy Winds.tscn" id="9_ql4gh"]
 [ext_resource type="Texture2D" uid="uid://bcmeccowv071h" path="res://Sprites/Curses/stormy winds.jpg" id="10_kl7dx"]
+[ext_resource type="PackedScene" uid="uid://1mem2o5pr21y" path="res://Abilities/Ascension/More And Merrier.tscn" id="11_2ef3h"]
+[ext_resource type="Texture2D" uid="uid://dhto3goimmrjt" path="res://Sprites/Curses/moreandmerrier.jpg" id="12_2e8dx"]
 
 [node name="AscensionDebuffs" type="Node2D"]
 
@@ -27,3 +29,6 @@ icon = ExtResource("8_wilp8")
 
 [node name="StormyWinds" parent="." instance=ExtResource("9_ql4gh")]
 icon = ExtResource("10_kl7dx")
+
+[node name="MoreAndMerrier" parent="." instance=ExtResource("11_2ef3h")]
+icon = ExtResource("12_2e8dx")

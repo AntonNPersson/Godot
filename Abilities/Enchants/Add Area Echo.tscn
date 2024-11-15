@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dt3sj2yh0eun2"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_u8ycv"]
+
+[node name="Add Area Echo" type="Node2D"]
+script = ExtResource("1_u8ycv")
+i_name = "Area: Echo"
+tooltip = "Your area of effect spell echoes, using the same spell after a delay with 70% reduced values."
+tags = Array[String](["Echo"])
+values = Array[float]([1.0])
+types = Array[int]([3])

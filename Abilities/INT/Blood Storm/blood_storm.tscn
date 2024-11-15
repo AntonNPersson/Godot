@@ -4,10 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://lhch3fxnkit2" path="res://Abilities/INT/Blood Storm/BloodMage_6.png" id="2_qd55t"]
 
 [node name="Blood Storm" type="Node2D"]
+position = Vector2(1, 1)
 script = ExtResource("1_l0e7s")
 icon = ExtResource("2_qd55t")
 a_name = "Blood Storm"
-tooltip_text = "Conjure a storm of blood, bleeding enemies hit."
+tooltip_text = "Conjure a storm of blood dealing Value0 damage and causing Value1 bleeding damage per hit."
 mana_cost = 40.0
 cooldown = 10.0
 _range = 512.0

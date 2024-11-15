@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://bm3gbpb1x4bit"]
+[gd_scene load_steps=85 format=3 uid="uid://bm3gbpb1x4bit"]
 
 [ext_resource type="Script" path="res://Units/Stats/Explorer_stats.gd" id="1_i84bd"]
 [ext_resource type="PackedScene" uid="uid://bq7ge7ih4sx00" path="res://Units/Instance/Characters/Explorer/level_up_menu.tscn" id="2_vi8p1"]
@@ -11,12 +11,14 @@
 [ext_resource type="Texture2D" uid="uid://rro3f2f6jcys" path="res://Sprites/Download27871.png" id="9_chh1c"]
 [ext_resource type="Texture2D" uid="uid://dav7eb37hfoma" path="res://Sprites/Download29633.png" id="10_x6k2c"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="11_fm3vu"]
-[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="12_y5u22"]
-[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="13_lwa3l"]
+[ext_resource type="Texture2D" uid="uid://dadbdownsdgp6" path="res://GUI/test.png" id="12_0j273"]
+[ext_resource type="Texture2D" uid="uid://b8gsssm4e5tbm" path="res://GUI/health_bar.png" id="12_fq4fs"]
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="14_ob5c0"]
+[ext_resource type="Texture2D" uid="uid://cxcluhcq4l5b2" path="res://GUI/barrier_bar.png" id="15_1q2ag"]
 [ext_resource type="PackedScene" uid="uid://dbafe401smj6k" path="res://Utility/target_marker.tscn" id="15_7wxsg"]
 [ext_resource type="PackedScene" uid="uid://fchpkn11m8fx" path="res://Abilities/Basic Attacks/meleebasicattack.tscn" id="16_06yuj"]
 [ext_resource type="PackedScene" uid="uid://pkk5ydt3lqld" path="res://Units/Instance/Characters/addons/level_up_effect.tscn" id="17_mrnto"]
+[ext_resource type="Texture2D" uid="uid://bves5jgiciy81" path="res://GUI/Stamina_filler.png" id="17_qps6g"]
 [ext_resource type="Texture2D" uid="uid://dmfhvtnr8g22x" path="res://Sprites/Lightningball1.png" id="18_clyco"]
 [ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="19_bqsbi"]
 [ext_resource type="Script" path="res://Units/Instance/Characters/Explorer/BowEffect.gd" id="20_oi66i"]
@@ -472,21 +474,24 @@ collision_mask = 3
 script = ExtResource("1_i84bd")
 level_up_menu = ExtResource("2_vi8p1")
 passive_name = "Unending Curiosity"
-passive_tooltip = "Hi"
+passive_tooltip = "After gaining a gift, chose between increasing one of your basic stats."
 passive_increase = 20
+active_name = "Dash"
+active_tooltip = "Dash towards the facing direction, becoming invurnable for a short time."
 basic_attack_scene = ExtResource("3_8knno")
 movement_skill_scene = ExtResource("4_m6dbq")
-type = Array[String](["DEX"])
+type = Array[String](["DEX", "INT", "STR"])
 c_name = "Explorer"
 tooltip = "Loving the thrill of exploration, the explorer gains stats of the players chosing after each wave. Explorer ability pool contains: DEX, INT, STR."
 base_speed = 115
 base_barrier = 50
-base_health = 80
+base_health = 8000
 base_range = 50
 base_attack_speed = 0.7
 base_attack_damage = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 4)
 scale = Vector2(5.36, 9.16)
 shape = SubResource("CircleShape2D_3jws1")
 
@@ -521,8 +526,7 @@ replication_config = SubResource("SceneReplicationConfig_cualu")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_qiveg")
 sprite_frames = SubResource("SpriteFrames_cd88l")
-animation = &"Attack West"
-frame_progress = 0.248356
+animation = &"Walk South"
 
 [node name="UI" type="Node2D" parent="."]
 z_index = 12
@@ -530,29 +534,28 @@ scale = Vector2(0.345, 0.345)
 
 [node name="ProgressBar" type="TextureProgressBar" parent="UI"]
 z_index = 10
-offset_left = -52.1739
-offset_top = -75.3623
-offset_right = -18.1739
-offset_bottom = -67.3623
-scale = Vector2(3, 3)
+offset_left = -46.3768
+offset_top = -63.7681
+offset_right = 163.623
+offset_bottom = -43.7681
+scale = Vector2(0.45, 0.75)
 theme = ExtResource("11_fm3vu")
 value = 100.0
-texture_under = ExtResource("12_y5u22")
-texture_progress = ExtResource("13_lwa3l")
-texture_progress_offset = Vector2(2, 2)
+texture_over = ExtResource("12_0j273")
+texture_progress = ExtResource("12_fq4fs")
 script = ExtResource("14_ob5c0")
 
 [node name="ProgressBar2" type="TextureProgressBar" parent="UI"]
-modulate = Color(0, 1, 1, 1)
+modulate = Color(1, 1, 1, 0.407843)
 z_index = 10
-offset_left = -52.1739
-offset_top = -72.4638
-offset_right = -18.1739
-offset_bottom = -64.4638
-scale = Vector2(3, 3)
+offset_left = -46.3768
+offset_top = -63.7681
+offset_right = 163.623
+offset_bottom = -43.7681
+scale = Vector2(0.45, 0.75)
 theme = ExtResource("11_fm3vu")
-texture_progress = ExtResource("13_lwa3l")
-texture_progress_offset = Vector2(2, 1)
+value = 20.0
+texture_progress = ExtResource("15_1q2ag")
 script = ExtResource("14_ob5c0")
 
 [node name="TargetMarker" parent="UI" instance=ExtResource("15_7wxsg")]
@@ -564,16 +567,15 @@ scale = Vector2(0.990133, -1.13225)
 [node name="attackBar" type="TextureProgressBar" parent="UI"]
 visible = false
 z_index = 10
-offset_left = -52.1739
-offset_top = 95.6522
-offset_right = -18.1739
-offset_bottom = 103.652
-scale = Vector2(3, 3)
+offset_left = -46.3768
+offset_top = 92.7536
+offset_right = 163.623
+offset_bottom = 112.754
+scale = Vector2(0.45, 0.75)
 theme = ExtResource("11_fm3vu")
 value = 100.0
-texture_under = ExtResource("12_y5u22")
-texture_progress = ExtResource("13_lwa3l")
-texture_progress_offset = Vector2(2, 2)
+texture_over = ExtResource("12_0j273")
+texture_progress = ExtResource("17_qps6g")
 
 [node name="Meleebasicattack" parent="." instance=ExtResource("16_06yuj")]
 position = Vector2(0, -40)

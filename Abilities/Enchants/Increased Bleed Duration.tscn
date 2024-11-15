@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://25tpn4sram2u"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_70jrk"]
+
+[node name="IncreasedBleedDuration" type="Node2D"]
+script = ExtResource("1_70jrk")
+i_name = "Bleed: Lasting"
+tooltip = "Add Value0s flat bleed duration increase to selected ability."
+tags = Array[String](["BleedDuration"])
+values = Array[float]([0.3])
+types = Array[int]([-1])

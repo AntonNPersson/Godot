@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://c6nvjhyersa53"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_1ip2i"]
-[ext_resource type="Texture2D" uid="uid://dp8xumx5r68bw" path="res://Abilities/INT/Healing Grace/FrostMage_4.png" id="2_tx2w4"]
+[ext_resource type="Texture2D" uid="uid://b5785243aynbr" path="res://Abilities/INT/Healing Grace/Icon20.png" id="2_appsp"]
 
 [node name="Healing Grace" type="Node2D"]
 script = ExtResource("1_1ip2i")
-icon = ExtResource("2_tx2w4")
+icon = ExtResource("2_appsp")
 a_name = "Healing Grace"
-tooltip_text = "Heal the closest targeted ally and speed them up."
+tooltip_text = "Heal the closest targeted ally by Value0 and speed them up by Value1%."
 mana_cost = 35.0
 cooldown = 4.0
 _range = 512.0

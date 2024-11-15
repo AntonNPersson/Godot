@@ -3,47 +3,52 @@ extends Node
 func _update_health(percentage):
 	self.visible = true
 	self.value = percentage
-	if not self.get_parent().is_in_group('UI'):
-		self.get_parent().global_rotation = 0
 	if percentage <= 0:
 		self.visible = false
-	elif percentage < 30:
-		self.modulate = Color.CRIMSON
-	elif percentage < 70:
-		self.modulate = Color.ORANGE
-	else:
-		self.modulate = Color.WEB_GREEN
 		
 func _update_stamina(percentage):
-	self.modulate = Color.YELLOW
 	self.visible = true
 	self.value = percentage
 
 func _update_mana(percentage):
-	self.modulate = Color.BLUE
 	self.visible = true
 	self.value = percentage
 	
 func _update_barrier(percentage):
-	self.modulate = Color.LIGHT_CYAN
-	self.modulate.a = 0.3
 	self.visible = true
 	self.value = percentage
 
 func _update_potion(total_charge, current_charge, type):
-	self.value = current_charge
-	self.max_value = total_charge
 	self.visible = true
 
 	if type == "Health":
-		self.texture_progress = load("res://Sprites/health_potion.png")
+		if current_charge == 0:
+			self.texture = load("res://GUI/potions0 x2.png")
+		if current_charge == total_charge/2:
+			self.texture = load("res://GUI/potions2 x2.png")
+		if current_charge == total_charge:
+			self.texture = load("res://GUI/potions1 x2.png")
 	elif type == "Stamina":
-		self.modulate = Color.YELLOW
+		if current_charge == 0:
+			self.texture = load("res://GUI/potions0 x2.png")
+		if current_charge == total_charge/2:
+			self.texture = load("res://GUI/stamina_potion_1.png")
+		if current_charge == total_charge:
+			self.texture = load("res://GUI/stamina_potion_2.png")
 	elif type == "Mana":
-		self.texture_progress = load("res://Sprites/mana_potion.png")
+		if current_charge == 0:
+			self.texture = load("res://GUI/potions0 x2.png")
+		if current_charge == total_charge/2:
+			self.texture = load("res://GUI/mana_potion_1.png")
+		if current_charge == total_charge:
+			self.texture = load("res://GUI/mana_potion_2.png")
 	elif type == "Barrier":
-		self.modulate = Color.LIGHT_CYAN
-		self.modulate.a = 0.5
+		if current_charge == 0:
+			self.texture = load("res://GUI/potions0 x2.png")
+		if current_charge == total_charge/2:
+			self.texture = load("res://GUI/barrier_potion_1.png")
+		if current_charge == total_charge:
+			self.texture = load("res://GUI/barrier_potion_2.png")
 
 func _update_name(_name):
 	self.get_parent().get_node('Label').text = _name

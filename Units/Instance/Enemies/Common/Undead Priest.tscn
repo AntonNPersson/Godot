@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://frqvdargg7bq"]
+[gd_scene load_steps=74 format=3 uid="uid://ddbyav0qoglvm"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_5s146"]
 [ext_resource type="PackedScene" uid="uid://c6f7mhfne3rxf" path="res://Abilities/Creature Spells/infected_touch.tscn" id="2_yb7od"]

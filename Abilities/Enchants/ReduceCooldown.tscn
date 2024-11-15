@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://db4nf3c0hgous"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/ReduceCooldown.gd" id="1_n1rbg"]
+
+[node name="ReduceCooldown" type="Node2D"]
+script = ExtResource("1_n1rbg")
+i_name = "General: Reduce Cooldown"
+tooltip = "Reduce the cooldown of selected ability by Value0%"
+tags = Array[String](["AbilityPercentCooldownReduction"])
+values = Array[float]([10.0])
+types = Array[int]([0, 1, 3, 6, 7])

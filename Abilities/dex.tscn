@@ -16,16 +16,21 @@
 [node name="DEX" type="Node"]
 
 [node name="Throwing Daggers" parent="." instance=ExtResource("1_g5psk")]
+additional_self_target = null
 
 [node name="Freezing Arrows" parent="." instance=ExtResource("2_rt4oq")]
 position = Vector2(379, 295)
+additional_self_target = null
 
 [node name="Burning Arrows" parent="." instance=ExtResource("3_kjmsk")]
+additional_self_target = null
 
 [node name="Flurry Of Arrows" parent="." instance=ExtResource("4_awjux")]
+additional_self_target = null
 
 [node name="Mark Of The Shark" parent="." instance=ExtResource("5_1k2j5")]
 position = Vector2(242, 159)
+additional_self_target = null
 
 [node name="Wind Enchantment" parent="." instance=ExtResource("6_m3de7")]
 
@@ -35,15 +40,40 @@ _range = 50.0
 [node name="Shuriken Throw" parent="." instance=ExtResource("9_mxhi2")]
 _range = 200.0
 sprite_scale = 0.2
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
 light_scale = 1.0
+additional_self_target = null
 
 [node name="Poison Bomb" parent="." instance=ExtResource("10_3ad47")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Stealth" parent="." instance=ExtResource("11_ha077")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
 is_buff = true
 buff_duration = 5.0
+additional_self_target = null
 
 [node name="Aura Of Wind" parent="." instance=ExtResource("12_k88gb")]
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null
 
 [node name="Hawkeye" parent="." instance=ExtResource("8_00vvo")]
 position = Vector2(1, 0)
+echo = 1.0
+area_pool = false
+area_pool_damage = 0.0
+area_pool_radius = 0.0
+additional_self_target = null

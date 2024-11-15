@@ -8,7 +8,7 @@
 script = ExtResource("1_d0wpu")
 icon = ExtResource("2_rqqxp")
 a_name = "Lightningball"
-tooltip_text = "Shoot a ball of lightning towards target direction, dealing damage and shocking anything it touches."
+tooltip_text = "Shoot a ball of lightning towards target direction, dealing Value0 damage and afflicting Value1 shock to anything it touches."
 mana_cost = 30.0
 cooldown = 6.0
 _range = 250.0
@@ -23,4 +23,5 @@ values = Array[float]([15.0, 2.0, 1.0])
 increased_values = Array[float]([15.0, 0.0, 0.0])
 light_color = Color(0.411765, 0.321569, 1, 1)
 light_scale = 2.5
+additional_self_target = null
 weight = 80.0

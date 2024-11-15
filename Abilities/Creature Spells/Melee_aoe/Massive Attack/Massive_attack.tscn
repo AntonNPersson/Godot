@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://3vl3fmasalk5"]
 
 [ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/melee_aoe.gd" id="1_6fq21"]
-[ext_resource type="PackedScene" uid="uid://d0v5g4jjju7sc" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/after_effect.tscn" id="2_fxc8c"]
+[ext_resource type="PackedScene" uid="uid://d0v5g4jjju7sc" path="res://Abilities/Creature Spells/Throw potion/after_effect_smoke.tscn" id="2_vbm2n"]
 
 [node name="HeavyAttack" type="Node2D"]
 script = ExtResource("1_6fq21")
@@ -10,4 +10,4 @@ cooldown = 2.5
 _range = 75.0
 size = 1.5
 values = [30.0]
-after_effect = ExtResource("2_fxc8c")
+after_effect = ExtResource("2_vbm2n")

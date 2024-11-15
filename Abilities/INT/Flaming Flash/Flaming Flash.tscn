@@ -7,7 +7,7 @@
 script = ExtResource("1_dox6m")
 icon = ExtResource("2_jqben")
 a_name = "Flaming Flash"
-tooltip_text = "Blink to chosen targeted enemy, upon arriving deal damage and burn in an area."
+tooltip_text = "Blink to chosen targeted enemy, upon arriving deal Value0 damage and Value1 burn damage in an area."
 mana_cost = 40.0
 cooldown = 8.0
 _range = 400.0
@@ -19,4 +19,5 @@ values = Array[float]([15.0, 7.5, 1.0])
 increased_values = Array[float]([7.5, 3.5, 0.1])
 light_color = Color(1, 0.321569, 0.117647, 1)
 light_scale = 0.4
+additional_self_target = null
 weight = 50.0

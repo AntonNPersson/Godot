@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://vbb0pmq2aasg"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_bsgy8"]
-[ext_resource type="Texture2D" uid="uid://b4dw5p55ek2jv" path="res://Abilities/STR/Vampiric Strike/BloodMage_11.png" id="2_21kjk"]
+[ext_resource type="Texture2D" uid="uid://b5641vxp1c8rn" path="res://Abilities/STR/Vampiric Strike/Icon44.png" id="2_r3als"]
 
 [node name="Vampiric Strike" type="Node2D"]
 script = ExtResource("1_bsgy8")
-icon = ExtResource("2_21kjk")
+icon = ExtResource("2_r3als")
 a_name = "Vampiric Strike"
-tooltip_text = "Strike your opponent with your weapon, draining their blood for yourself."
+tooltip_text = "Strike your opponent with your weapon, dealing Value0 extra damage and draining their blood increasing lifesteal by Value1%."
 mana_cost = 15.0
 cooldown = 4.0
 _range = 128.0

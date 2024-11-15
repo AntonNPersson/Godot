@@ -1,9 +1,11 @@
 extends player_variables
 # Private Variables
 @export var level_up_menu : PackedScene
-@export var passive_name : String
-@export var passive_tooltip : String
+@export_multiline var passive_name : String
+@export_multiline var passive_tooltip : String
 @export var passive_increase : int
+@export_multiline var active_name : String
+@export_multiline var active_tooltip : String
 # Private Methods
 func _ready():
 	HEALTH_LEVEL_UP_AMOUNT = 10

@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://cv63eiqc43ybs"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_vnxb5"]
-[ext_resource type="Texture2D" uid="uid://be07lan1pha2q" path="res://Abilities/DEX/Aura of wind/Monk_13.png" id="2_lbrww"]
+[ext_resource type="Texture2D" uid="uid://b0gthw84t2nh2" path="res://Abilities/DEX/Aura of wind/Icon48.png" id="2_cviyg"]
 
 [node name="Aura Of Wind" type="Node2D"]
 script = ExtResource("1_vnxb5")
-icon = ExtResource("2_lbrww")
+icon = ExtResource("2_cviyg")
 a_name = "Aura of Wind"
-tooltip_text = "Create a magical wind around you and your allies, increasing movement speed and attack speed."
+tooltip_text = "Create a magical wind around you and your allies, increasing movement speed by Value1 and attack speed Value0."
 _range = 200.0
 projectile_type = 8
 ability_type = "DEX"
@@ -16,3 +16,4 @@ values = Array[float]([15.0, 5.0])
 increased_values = Array[float]([5.0, 3.0])
 light_color = Color(0.713726, 1, 0.690196, 1)
 light_scale = 0.4
+additional_self_target = null

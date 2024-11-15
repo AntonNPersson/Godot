@@ -40,8 +40,6 @@ func _update_special(delta):
 	if special:
 		timer += delta
 		if timer >= cooldown:
-			print(cooldown)
-			print(timer)
 			timer = 0
 			_use()
 

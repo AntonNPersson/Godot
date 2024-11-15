@@ -35,6 +35,11 @@ var enchant_scene
 var enchant_list
 var enchant_instance
 var enchant_index
+var enchant_mode = true
+var chosen_enchant_ability = null
+var removed_enchants = []
+var loaded_enchants = []
+var chosen_enchants = []
 
 var target
 
@@ -69,7 +74,9 @@ func _initialize():
 func _process(delta):
 	if !initialized:
 		return
-	get_node("UI/CanvasLayer/Panel/Reroll_amount").text = str(target.rerolls) + "x"
+	get_node("UI/CanvasLayer/Ability/Reroll_amount").text = str(target.rerolls) + "x"
+	get_node("UI/CanvasLayer/Enchant/Reroll_amount").text = str(target.rerolls) + "x"
+	get_node("UI/CanvasLayer/Curse/Reroll_amount").text = str(target.rerolls) + "x"
 
 func _input(event):
 	if event.is_action_pressed("test"):
@@ -77,11 +84,20 @@ func _input(event):
 
 func _choose_ability_choices(list):
 	var choices = []
-	randomize()
-	for i in range(3):
-		choices.append(list.pick_random())
-	if len(choices) < 3 or choices[0] == choices[1] or choices[0] == choices[2] or choices[1] == choices[2] or choices[0] in chosen_ability_choices or choices[1] in chosen_ability_choices or choices[2] in chosen_ability_choices:
-		_choose_ability_choices(list)
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var shuffled_list = list.duplicate()
+	shuffled_list.shuffle()
+
+	for i in shuffled_list:
+		if choices.size() >= 3:
+			break
+		if choices.find(i) == -1:
+			choices.append(i)
+
+	# If we couldn't find enough unique choices, reroll
+	if len(choices) < 3:
+		return _choose_ability_choices(list)
 	else:
 		current_ability_choices = choices
 		return choices
@@ -95,9 +111,9 @@ func _show_enchant_choices():
 	enchant_popup.get_node('Choice_2').get_node('Icon').texture = current_ability_choices[1].icon
 	enchant_popup.get_node('Choice_3').get_node('Icon').texture = current_ability_choices[2].icon
 
-	enchant_popup.get_node('Choice_1').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[0].tooltip
-	enchant_popup.get_node('Choice_2').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[1].tooltip
-	enchant_popup.get_node('Choice_3').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[2].tooltip
+	enchant_popup.get_node('Choice_1').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[0]._get_tooltip()
+	enchant_popup.get_node('Choice_2').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[1]._get_tooltip()
+	enchant_popup.get_node('Choice_3').get_node('ScrollContainer').get_node('Tooltip').text = "[center]" + current_ability_choices[2]._get_tooltip()
 	enchant_popup.visible = true
 
 	enchant_popup.get_node('Select_1').get_node('Ability_select').visible = false
@@ -140,7 +156,7 @@ func _on_next_choice(unit):
 	current_ability_round += 1
 	var ability_list = []
 	target = unit
-	if unit.get_node("InventoryManager").abilities.size() <= 3:
+	if unit.get_node("InventoryManager").abilities.size() < 3:
 		if unit.type.has("INT"):
 			ability_list.append_array(int_list)
 		if unit.type.has("DEX"):
@@ -154,6 +170,7 @@ func _on_next_choice(unit):
 
 func _on_next_enchant():
 	target.paused = true
+	enchant_mode = true
 	_choose_ability_choices(enchant_list)
 	_show_enchant_choices()
 
@@ -207,9 +224,12 @@ func _on_enchant_1_pressed(event, index):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if target.get_node("InventoryManager").abilities.size() > index:
-				enchant_picked.emit(current_ability_choices[enchant_index], index)
+				enchant_picked.emit(current_ability_choices[enchant_index], index, enchant_mode)
+				chosen_enchants.append(ability.name)
+				if "unique" in current_ability_choices[enchant_index]:
+					removed_enchants.append(current_ability_choices[enchant_index].name)
+					enchant_list.erase(current_ability_choices[enchant_index])
 				enchant_popup.visible = false
-				target.paused = false
 
 func _use_ability_based_on_name(name):
 	var all_lists = []
@@ -224,6 +244,70 @@ func _use_ability_based_on_name(name):
 			created_ability.forced_closest = true
 			created_ability._use()
 			return
+
+func _choose_enchants_specific(tags, projectile_type, ability):
+	enchant_mode = false
+	chosen_enchant_ability = ability
+	while true:
+		# Reset choices at the start of each attempt
+		var choices = []
+		
+		# Go through each enchant in the enchant list
+		for i in enchant_list:
+			# Check if it matches any tag
+			for j in tags:
+				if has_common_substring(j, i.tags[0]):
+					choices.append(i)
+			
+			# Check if it matches the projectile type
+			if i.types.find(projectile_type) != -1:
+				choices.append(i)
+
+		# Remove duplicates manually
+		var unique_choices = []
+		for choice in choices:
+			if unique_choices.find(choice) == -1:
+				unique_choices.append(choice)
+
+		# Check for at least 3 unique enchants
+		if len(unique_choices) >= 3:
+			unique_choices.shuffle()
+			current_ability_choices = unique_choices.slice(0, 3)  # Take the first three unique choices
+			break  # Exit the loop once valid choices are found
+
+	# Set the selected enchants and show them
+	_show_enchant_choices()
+	
+func split_tag(tag: String) -> Array:
+	var substrings = []
+	var current_word = ""
+	
+	for i in range(tag.length()):
+		var char = tag[i]
+		if char == char.to_upper() and current_word != "":
+			substrings.append(current_word)
+			current_word = char
+		else:
+			current_word += char
+	
+	if current_word != "":
+		substrings.append(current_word)
+	
+	return substrings
+
+func has_common_substring(tag1: String, tag2: String) -> bool:
+	var split1 = split_tag(tag1)
+	var split2 = split_tag(tag2)
+	
+	# Check for any common substring by iterating through one array and checking the other
+	for substring in split1:
+		if substring in split2 and substring != "Damage":
+			return true
+	# Exceptions:
+		if substring == "Freeze" and "Frozen" in split2:
+			return true
+			
+	return false
 
 # This function is used to use an ability based on the type of the ability.
 # Types: 0 = line, 1 = enemy target, 2 = ally target, 3 = area, 4 = passive, 5 = self, 6 = movement, 7 = enemy aura, 8 = ally aura, 9 = summon, 10 = none
@@ -244,33 +328,58 @@ func _use_ability_based_on_type(type):
 
 func _open_enchant_ability_select(index):
 	enchant_index = index
+	# Check if the enchant is for a specific leveled up ability
+	if !enchant_mode:
+		var ind = target.get_node("InventoryManager").abilities.find(chosen_enchant_ability)
+		enchant_picked.emit(current_ability_choices[enchant_index], ind, enchant_mode)
+		enchant_popup.visible = false
+		return
+
 	if index == 0:
 		if enchant_popup.get_node('Select_1').get_node('Ability_select').visible:
 			enchant_popup.get_node('Select_1').get_node('Ability_select').visible = false
 			enchant_popup.get_node('Select_1').get_node('Ability_select').get_node('GridContainer').get_node('Ability_1').texture = null
+			enchant_popup.get_node('Select_1').get_node('Ability_select').get_node('GridContainer').get_node('Ability_2').texture = null
+			enchant_popup.get_node('Select_1').get_node('Ability_select').get_node('GridContainer').get_node('Ability_3').texture = null
 		else:
 			enchant_popup.get_node('Select_1').get_node('Ability_select').visible = true
 			for a in range(target.get_node("InventoryManager").abilities.size()):
+				for b in current_ability_choices[enchant_index].tags:
+					if has_common_substring(b, target.get_node("InventoryManager").abilities[a].tags[0]):
+						enchant_popup.get_node('Select_1').get_node('Ability_select').get_node('GridContainer').get_child(a).texture = target.get_node("InventoryManager").abilities[a].icon
 				if target.get_node("InventoryManager").abilities[a].projectile_type in current_ability_choices[enchant_index].types:
 					enchant_popup.get_node('Select_1').get_node('Ability_select').get_node('GridContainer').get_child(a).texture = target.get_node("InventoryManager").abilities[a].icon
 	elif index == 1:
 		if enchant_popup.get_node('Select_2').get_node('Ability_select').visible:
 			enchant_popup.get_node('Select_2').get_node('Ability_select').visible = false
+			enchant_popup.get_node('Select_2').get_node('Ability_select').get_node('GridContainer').get_node('Ability_1').texture = null
+			enchant_popup.get_node('Select_2').get_node('Ability_select').get_node('GridContainer').get_node('Ability_2').texture = null
+			enchant_popup.get_node('Select_2').get_node('Ability_select').get_node('GridContainer').get_node('Ability_3').texture = null
 		else:
 			enchant_popup.get_node('Select_2').get_node('Ability_select').visible = true
 			for a in range(target.get_node("InventoryManager").abilities.size()):
+				for b in current_ability_choices[enchant_index].tags:
+					if has_common_substring(b, target.get_node("InventoryManager").abilities[a].tags[0]):
+						enchant_popup.get_node('Select_2').get_node('Ability_select').get_node('GridContainer').get_child(a).texture = target.get_node("InventoryManager").abilities[a].icon
 				if target.get_node("InventoryManager").abilities[a].projectile_type in current_ability_choices[enchant_index].types:
 					enchant_popup.get_node('Select_2').get_node('Ability_select').get_node('GridContainer').get_child(a).texture = target.get_node("InventoryManager").abilities[a].icon
 	elif index == 2:
 		if enchant_popup.get_node('Select_3').get_node('Ability_select').visible:
 			enchant_popup.get_node('Select_3').get_node('Ability_select').visible = false
+			enchant_popup.get_node('Select_3').get_node('Ability_select').get_node('GridContainer').get_node('Ability_1').texture = null
+			enchant_popup.get_node('Select_3').get_node('Ability_select').get_node('GridContainer').get_node('Ability_2').texture = null
+			enchant_popup.get_node('Select_3').get_node('Ability_select').get_node('GridContainer').get_node('Ability_3').texture = null
 		else:
 			enchant_popup.get_node('Select_3').get_node('Ability_select').visible = true
 			for a in range(target.get_node("InventoryManager").abilities.size()):
+				for b in current_ability_choices[enchant_index].tags:
+					if has_common_substring(b, target.get_node("InventoryManager").abilities[a].tags[0]):
+						enchant_popup.get_node('Select_3').get_node('Ability_select').get_node('GridContainer').get_child(a).texture = target.get_node("InventoryManager").abilities[a].icon
 				if target.get_node("InventoryManager").abilities[a].projectile_type in current_ability_choices[enchant_index].types:
 					enchant_popup.get_node('Select_3').get_node('Ability_select').get_node('GridContainer').get_child(a).texture = target.get_node("InventoryManager").abilities[a].icon
 
 func _on_select_1_pressed(index):
+	current_ability_choices[index].level_enchant.connect(_choose_enchants_specific)
 	picked.emit(current_ability_choices[index])
 	chosen_ability_choices.append(current_ability_choices[index])
 
@@ -289,13 +398,21 @@ func _on_reroll_pressed():
 		target.rerolls -= 1
 		var ability_list = []
 		if target.type.has("INT"):
-			ability_list = int_list
+			ability_list.append_array(int_list)
 		if target.type.has("DEX"):
-			ability_list = dex_List
+			ability_list.append_array(dex_List)
 		if target.type.has("STR"):
-			ability_list = str_List
+			ability_list.append_array(str_List)
 		_choose_ability_choices(ability_list)
 		_show_ability_choices()
+	else:
+		Utility.get_node("ErrorMessage")._create_error_message("You have no rerolls left", target)
+	
+func _on_reroll_enchants_pressed():
+	if target.rerolls > 0:
+		target.rerolls -= 1
+		print("Rerolling enchants")
+		_choose_enchants_specific(chosen_enchant_ability.tags, chosen_enchant_ability.projectile_type, chosen_enchant_ability)
 	else:
 		Utility.get_node("ErrorMessage")._create_error_message("You have no rerolls left", target)
 
@@ -329,6 +446,19 @@ func _load_curses():
 			for j in curse_list:
 				if j.name == i:
 					curse_list.erase(j)
+
+func _load_enchants():
+	if chosen_enchants.size() > 0:
+		for i in chosen_enchants:
+			for j in enchant_list:
+				if j.name == i:
+					loaded_enchants.append(j)
+
+	if removed_enchants.size() > 0:
+		for i in removed_enchants:
+			for j in enchant_list:
+				if j.name == i:
+					enchant_list.erase(j)
 	
 func save():
 	var save_dict = {
@@ -338,6 +468,8 @@ func save():
 		"chosen_ability_choices": chosen_ability_choices,
 		"current_ability_round": current_ability_round,
 		"chosen_curses": chosen_curses,
-		"removed_curses": removed_curses
+		"removed_curses": removed_curses,
+		"chosen_enchants": chosen_enchants,
+		"removed_enchants": removed_enchants
 	}
 	return save_dict

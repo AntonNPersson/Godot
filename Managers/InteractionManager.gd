@@ -32,6 +32,7 @@ func _process(_delta):
 					obj.get_node('label').visible = false
 			if !in_range and obj.has_node('list_1'):
 				obj._use(false)
+				
 	for obj in Utility.get_node('Interactable').special_objects:
 		if obj and is_instance_valid(obj):
 			obj._get_special()

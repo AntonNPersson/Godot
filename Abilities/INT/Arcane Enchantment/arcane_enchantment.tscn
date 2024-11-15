@@ -7,7 +7,7 @@
 script = ExtResource("1_ndo36")
 icon = ExtResource("2_t7n4k")
 a_name = "Arcane Enchantment"
-tooltip_text = "Enchant your body to increase your basic attack damage by a percentage of your intelligence."
+tooltip_text = "Enchant your body to increase your basic attack damage by Value0% of your intelligence."
 projectile_type = 4
 ability_type = "INT"
 tags = Array[String](["AttackDamagePassive"])
