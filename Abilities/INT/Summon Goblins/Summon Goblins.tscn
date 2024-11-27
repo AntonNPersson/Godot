@@ -14,4 +14,3 @@ ability_type = "INT"
 summon_scene = ExtResource("2_jx3ad")
 summon_amount = 2
 summon_scaling = 0.3
-additional_self_target = null

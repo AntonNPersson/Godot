@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://rdq7k84cbdmy"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_wkxpn"]
+[ext_resource type="Texture2D" uid="uid://gov2i6gewwu7" path="res://Abilities/Enchants/icons/2PurpleAbility_17.png" id="2_xgvx1"]
+
+[node name="Add Spell Vamp Passive" type="Node2D"]
+script = ExtResource("1_wkxpn")
+i_name = "Passive: Spell Vamp"
+tooltip = "Add value0% spell vamp to your selected passive ability."
+icon = ExtResource("2_xgvx1")
+tags = Array[String](["SpellVampPassive"])
+values = Array[float]([5.0])
+types = Array[int]([4])

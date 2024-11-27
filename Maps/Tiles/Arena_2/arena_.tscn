@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://dddrbp70lpbp4"]
+[gd_scene load_steps=89 format=3 uid="uid://dddrbp70lpbp4"]
 
 [ext_resource type="PackedScene" uid="uid://ca8q5vyujjc6p" path="res://Maps/Tiles/Arena_2/floor.tscn" id="1_ehgyv"]
 [ext_resource type="PackedScene" uid="uid://gj6rcrc1s6qd" path="res://Maps/Tiles/Arena_2/wall.tscn" id="2_cl4qu"]
@@ -30,6 +30,8 @@
 [ext_resource type="Texture2D" uid="uid://cv4i3t2x3xtuj" path="res://Sprites/Infected Cemetery/tiles/crypt details - vase 2.png" id="27_egiw6"]
 [ext_resource type="Texture2D" uid="uid://bbahbg56kpbcp" path="res://Sprites/Infected Cemetery/tiles/bridge-on grass-center entrance.png" id="27_oooew"]
 [ext_resource type="Texture2D" uid="uid://cnc48eh8erilw" path="res://Sprites/Infected Cemetery/tiles/candle-fire-only.png" id="28_sk8rg"]
+[ext_resource type="Texture2D" uid="uid://cm158llnylt6x" path="res://Sprites/Infected Cemetery/tiles/top_double_corner.png" id="31_m5axx"]
+[ext_resource type="Texture2D" uid="uid://dcdc6hpexpce4" path="res://Sprites/Infected Cemetery/tiles/bot_double_corner.png" id="32_mdmum"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uodl8"]
 size = Vector2(20, 128)
@@ -378,7 +380,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmbvv"]
-size = Vector2(104.5, 15)
+size = Vector2(104.5, 9.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tgyo8"]
 size = Vector2(178, 47)
@@ -449,7 +451,8 @@ position = Vector2(-8, -68.5)
 shape = SubResource("RectangleShape2D_pdovb")
 
 [node name="@Area2D@168" parent="." groups=["obstacles"] instance=ExtResource("1_ehgyv")]
-position = Vector2(-224, 286)
+z_index = 1
+position = Vector2(1452, 606)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@168"]
 texture = ExtResource("11_llvcq")
@@ -502,6 +505,7 @@ position = Vector2(-54.5, -28.5)
 shape = SubResource("RectangleShape2D_nagn6")
 
 [node name="@Area2D@172" parent="." groups=["obstacles"] instance=ExtResource("1_ehgyv")]
+z_index = 1
 position = Vector2(-71, 407)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@172"]
@@ -751,7 +755,7 @@ scale = Vector2(1.4, 1.4)
 texture = ExtResource("25_ytmbl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_179"]
-position = Vector2(48, 46)
+position = Vector2(48, 59.25)
 shape = SubResource("RectangleShape2D_wmbvv")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_179"]
@@ -812,19 +816,34 @@ shape = SubResource("RectangleShape2D_wmbvv")
 position = Vector2(-31, -68.5)
 shape = SubResource("RectangleShape2D_wmbvv")
 
-[node name="_Area2D_105" parent="." instance=ExtResource("9_64x0h")]
-z_index = -1
-position = Vector2(1621, 477)
+[node name="Floor2" parent="." instance=ExtResource("1_ehgyv")]
+position = Vector2(-246, -82)
 
-[node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_105"]
+[node name="Obstacle_Sprite" type="Sprite2D" parent="Floor2"]
 position = Vector2(8, 23)
 scale = Vector2(1.4, 1.4)
 texture = ExtResource("27_oooew")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_105"]
-position = Vector2(8, 60.5)
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Floor2"]
+position = Vector2(8, 62)
 shape = SubResource("RectangleShape2D_tgyo8")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="_Area2D_105"]
-position = Vector2(6.5, -65)
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Floor2"]
+position = Vector2(7, -63)
 shape = SubResource("RectangleShape2D_v7uyp")
+
+[node name="_Area2D_105" parent="." instance=ExtResource("9_64x0h")]
+z_index = -1
+position = Vector2(779, -33)
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_105"]
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("31_m5axx")
+
+[node name="_Area2D_106" parent="." instance=ExtResource("9_64x0h")]
+z_index = -1
+position = Vector2(779, 98)
+
+[node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_106"]
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("32_mdmum")

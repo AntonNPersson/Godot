@@ -110,6 +110,7 @@ func _move_towards_target(_delta):
 				colliding = false
 				_unit.is_colliding = false
 	elif colliding_edge:
+		update_sprite_direction(_get_closest_target().global_position, "Walk", false)
 		_unit.global_position -= collision_direction * _unit.total_speed * _delta
 		colliding_edge = false
 		_unit.is_colliding = false

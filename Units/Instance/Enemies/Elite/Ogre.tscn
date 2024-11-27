@@ -461,7 +461,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Ogre" type="Area2D" groups=["special"]]
+[node name="Ogre" type="Area2D" groups=["elite", "special"]]
 top_level = true
 position = Vector2(2, 0)
 scale = Vector2(1.5, 1.5)

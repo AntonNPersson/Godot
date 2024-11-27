@@ -38,10 +38,11 @@ func _use_weapon(player, delta):
 		if hit_targets.find(enemy) == -1 and player.global_position.distance_to(enemy.global_position) < 50:
 			var crit = player._apply_critical_damage(player.total_attack_damage)
 			var new_damage = crit["value"]
-			var extra = {"basic_attacking": true, "critical" : crit["critical"], "ability" : player.current_attack_modifier_abilities}
+			var extra = {"basic_attacking": true, "critical" : crit["critical"], "ability" : null}
 			GameManager._shake_camera(player, 50, 0.2)
 			player.get_node('Control')._on_action(new_damage, enemy, player, "Damage", extra)
 			for i in range(player.current_attack_modifier_tags.size()):
+				extra = {"basic_attacking": true, "critical" : crit["critical"], "ability" : player.current_attack_modifier_abilities[i]}	
 				player.get_node('Control')._on_action(player.current_attack_modifier_values[i], enemy, player, player.current_attack_modifier_tags[i], extra)
 			hit_targets.append(enemy)
 

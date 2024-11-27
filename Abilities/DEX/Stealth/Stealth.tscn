@@ -16,4 +16,3 @@ tags = Array[String](["Stealth"])
 values = Array[float]([5.0])
 increased_values = Array[float]([0.2])
 light_scale = 0.4
-additional_self_target = null

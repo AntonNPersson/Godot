@@ -226,7 +226,7 @@ func _on_enchant_1_pressed(event, index):
 			if target.get_node("InventoryManager").abilities.size() > index:
 				enchant_picked.emit(current_ability_choices[enchant_index], index, enchant_mode)
 				chosen_enchants.append(ability.name)
-				if "unique" in current_ability_choices[enchant_index]:
+				if current_ability_choices[enchant_index].unique:
 					removed_enchants.append(current_ability_choices[enchant_index].name)
 					enchant_list.erase(current_ability_choices[enchant_index])
 				enchant_popup.visible = false
@@ -254,14 +254,21 @@ func _choose_enchants_specific(tags, projectile_type, ability):
 		
 		# Go through each enchant in the enchant list
 		for i in enchant_list:
-			# Check if it matches any tag
+			# Check if it matches any tag and if it's a projectile type
 			for j in tags:
 				if has_common_substring(j, i.tags[0]):
-					choices.append(i)
-			
+					if i.types.find(projectile_type) != -1:
+						choices.append(i)
+					if -1 in i.types:
+						choices.append(i)
+					print(j + " " + i.tags[0])
+
 			# Check if it matches the projectile type
-			if i.types.find(projectile_type) != -1:
-				choices.append(i)
+				if i.types.find(projectile_type) != -1:
+					choices.append(i)
+					
+
+	
 
 		# Remove duplicates manually
 		var unique_choices = []
@@ -333,6 +340,9 @@ func _open_enchant_ability_select(index):
 		var ind = target.get_node("InventoryManager").abilities.find(chosen_enchant_ability)
 		enchant_picked.emit(current_ability_choices[enchant_index], ind, enchant_mode)
 		enchant_popup.visible = false
+		if current_ability_choices[enchant_index].unique:
+			removed_enchants.append(current_ability_choices[enchant_index].name)
+			enchant_list.erase(current_ability_choices[enchant_index])
 		return
 
 	if index == 0:

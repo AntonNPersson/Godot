@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dfyiirtehug8c" path="res://Sprites/Goblin King/tiles/invis_wall.png" id="1_orbyp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f5yhk"]
-size = Vector2(129, 128)
+size = Vector2(128, 128)
 
 [node name="Floor" type="Area2D" groups=["obstacles"]]
 light_mask = 3

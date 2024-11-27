@@ -19,5 +19,4 @@ radius = 10000.0
 tags = Array[String](["Damage"])
 values = Array[float]([1.0])
 light_color = Color(0.823529, 0.823529, 0, 0.827451)
-additional_self_target = null
 weight = 100.0

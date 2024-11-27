@@ -1,54 +1,50 @@
-[gd_scene load_steps=10 format=3 uid="uid://biy6h4xtj237j"]
+[gd_scene load_steps=19 format=3 uid="uid://biy6h4xtj237j"]
 
 [ext_resource type="PackedScene" uid="uid://vbb0pmq2aasg" path="res://Abilities/STR/Vampiric Strike/Vampiric_strike.tscn" id="1_kspom"]
+[ext_resource type="Texture2D" uid="uid://c3c0s7pokrwty" path="res://Abilities/icons/dark spell_71.png" id="2_5iubh"]
 [ext_resource type="PackedScene" uid="uid://dteqp55jebovs" path="res://Abilities/STR/Blood Scream/blood_scream.tscn" id="2_q5nx3"]
 [ext_resource type="PackedScene" uid="uid://d0p7hbeolljg7" path="res://Abilities/STR/Frost-enchanted Slash/frost_enchanted_slash.tscn" id="4_i5pe1"]
+[ext_resource type="Texture2D" uid="uid://4adbk5mn25c6" path="res://Abilities/icons/dark spell_52.png" id="4_u1guf"]
 [ext_resource type="PackedScene" uid="uid://csft2sbcoshrm" path="res://Abilities/STR/Frenzy/frenzy.tscn" id="5_bbpsj"]
 [ext_resource type="PackedScene" uid="uid://bffvpp7th1ny0" path="res://Abilities/STR/Cry of Desperation/cry_of_desperation.tscn" id="6_b1rky"]
+[ext_resource type="Texture2D" uid="uid://ddians5whhjof" path="res://Abilities/icons/Ice Spells81.png" id="6_byvbs"]
 [ext_resource type="PackedScene" uid="uid://6oybqfl38sko" path="res://Abilities/STR/Thirst for Blood/Thirst for Blood.tscn" id="6_rl4ye"]
 [ext_resource type="PackedScene" uid="uid://d2qrbdy3b5ifg" path="res://Abilities/STR/Frozen Blitz/Frozen Blitz.tscn" id="7_sp3dw"]
+[ext_resource type="Texture2D" uid="uid://dcxvpvhg4lfxs" path="res://Abilities/icons/dark spell_64.png" id="8_6q5rv"]
 [ext_resource type="PackedScene" uid="uid://d140ply3usbjm" path="res://Abilities/STR/Ice Skin/Ice Skin.tscn" id="8_teah3"]
 [ext_resource type="PackedScene" uid="uid://5mmxg5gx87tr" path="res://Abilities/STR/Bloody Blitz/Bloody Blitz.tscn" id="9_jwbqb"]
+[ext_resource type="Texture2D" uid="uid://3jhoc5xyk6y7" path="res://Abilities/icons/dark spell_73.png" id="10_6xw6d"]
+[ext_resource type="Texture2D" uid="uid://y7qhneriygnb" path="res://Abilities/icons/dark spell_34.png" id="12_nux6a"]
+[ext_resource type="Texture2D" uid="uid://cf8pfxip8570w" path="res://Abilities/icons/Ice Spells75.png" id="14_wv45b"]
+[ext_resource type="Texture2D" uid="uid://c4w74fn3wv6es" path="res://Abilities/icons/Ice Spells25.png" id="16_aegew"]
+[ext_resource type="Texture2D" uid="uid://bug2xvltgwbh8" path="res://Abilities/icons/Red Ability_15.png" id="18_j1fgx"]
 
 [node name="STR" type="Node"]
 
 [node name="Vampiric Strike" parent="." instance=ExtResource("1_kspom")]
-additional_self_target = null
+icon = ExtResource("2_5iubh")
 
 [node name="Blood Scream" parent="." instance=ExtResource("2_q5nx3")]
-additional_self_target = null
+icon = ExtResource("4_u1guf")
 
 [node name="Frost Slash" parent="." instance=ExtResource("4_i5pe1")]
 position = Vector2(820.122, 317.894)
-echo = 1.0
-area_pool = false
-area_pool_damage = 0.0
-area_pool_radius = 0.0
-additional_self_target = null
+icon = ExtResource("6_byvbs")
 
 [node name="Frenzy" parent="." instance=ExtResource("5_bbpsj")]
-echo = 1.0
-area_pool = false
-area_pool_damage = 0.0
-area_pool_radius = 0.0
-additional_self_target = null
+icon = ExtResource("8_6q5rv")
 
 [node name="Cry of Desperation" parent="." instance=ExtResource("6_b1rky")]
+icon = ExtResource("10_6xw6d")
 
 [node name="Thirst For Blood" parent="." instance=ExtResource("6_rl4ye")]
+icon = ExtResource("12_nux6a")
 
 [node name="Frozen Blitz" parent="." instance=ExtResource("7_sp3dw")]
-echo = 1.0
-area_pool = false
-area_pool_damage = 0.0
-area_pool_radius = 0.0
-additional_self_target = null
+icon = ExtResource("14_wv45b")
 
 [node name="Ice Skin" parent="." instance=ExtResource("8_teah3")]
+icon = ExtResource("16_aegew")
 
 [node name="Bloody Blitz" parent="." instance=ExtResource("9_jwbqb")]
-echo = 1.0
-area_pool = false
-area_pool_damage = 0.0
-area_pool_radius = 0.0
-additional_self_target = null
+icon = ExtResource("18_j1fgx")

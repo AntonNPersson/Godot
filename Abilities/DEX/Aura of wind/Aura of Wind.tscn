@@ -16,4 +16,3 @@ values = Array[float]([15.0, 5.0])
 increased_values = Array[float]([5.0, 3.0])
 light_color = Color(0.713726, 1, 0.690196, 1)
 light_scale = 0.4
-additional_self_target = null

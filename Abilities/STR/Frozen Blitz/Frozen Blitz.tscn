@@ -20,5 +20,4 @@ values = Array[float]([70.0])
 increased_values = Array[float]([3.0])
 light_color = Color(0.137255, 1, 1, 1)
 light_scale = 0.4
-additional_self_target = null
 weight = 10.0

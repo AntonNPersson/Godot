@@ -131,26 +131,114 @@ func _initialize():
 
 func _calculate_item_rarity():
 	randomize()
-	var _randi = randi() % 100
-	if _randi < 60:
-		return
-		
-	print_debug("changed rarity")
-	var rarity = 37.5 * player.item_drop_chance_multiplier
-	if rarity < 30 * player.item_drop_chance_multiplier:
-		return ITEM_RARITY.COMMON
-	elif rarity < 35 * player.item_drop_chance_multiplier:
-		return ITEM_RARITY.UNCOMMON
-	elif rarity < 37 * player.item_drop_chance_multiplier:
-		return ITEM_RARITY.RARE
-	elif rarity < 37.3 * player.item_drop_chance_multiplier:
-		return ITEM_RARITY.EPIC
-	elif rarity < 37.5 * player.item_drop_chance_multiplier:
-		return ITEM_RARITY.UNIQUE
-	elif rarity < 37.6 * player.item_drop_chance_multiplier:
-		return ITEM_RARITY.LEGENDARY
-	else:
-		return ITEM_RARITY.COMMON
+	var roll = randi() % 100
+	
+	# Check if an item will drop (70% chance of no drop)
+	if roll > 30:
+		return null  # No item drop
+
+	# Define base rarity chances
+	var base_rarity_chances = {
+		ITEM_RARITY.COMMON: 60.0,
+		ITEM_RARITY.UNCOMMON: 29.25,
+		ITEM_RARITY.RARE: 10,
+		ITEM_RARITY.EPIC: 1.0,
+		ITEM_RARITY.UNIQUE: 0.5,
+		ITEM_RARITY.LEGENDARY: 0.25
+	}
+
+	var adjusted_rarity_chances = {}
+	var redistribution_pool = 0.0
+
+	adjusted_rarity_chances[ITEM_RARITY.COMMON] = base_rarity_chances[ITEM_RARITY.COMMON]
+	adjusted_rarity_chances[ITEM_RARITY.UNCOMMON] = base_rarity_chances[ITEM_RARITY.UNCOMMON]
+	adjusted_rarity_chances[ITEM_RARITY.RARE] = base_rarity_chances[ITEM_RARITY.RARE]
+	adjusted_rarity_chances[ITEM_RARITY.EPIC] = base_rarity_chances[ITEM_RARITY.EPIC]
+	adjusted_rarity_chances[ITEM_RARITY.UNIQUE] = base_rarity_chances[ITEM_RARITY.UNIQUE]
+	adjusted_rarity_chances[ITEM_RARITY.LEGENDARY] = base_rarity_chances[ITEM_RARITY.LEGENDARY]
+
+	# Start with Common and Uncommon being the first to reduce
+
+	var reduced_common_chance = base_rarity_chances[ITEM_RARITY.COMMON] - (player.item_drop_chance_multiplier - 1.0) * base_rarity_chances[ITEM_RARITY.COMMON]
+	adjusted_rarity_chances[ITEM_RARITY.COMMON] = max(0.0, reduced_common_chance)
+	redistribution_pool += max(0.0, -reduced_common_chance)
+
+	if player.item_drop_chance_multiplier >= 2.0:
+		# Uncommon chance is reduced to 0 at 2x multiplier
+		var reduced_uncommon_chance = base_rarity_chances[ITEM_RARITY.UNCOMMON] - (player.item_drop_chance_multiplier - 1.0) * base_rarity_chances[ITEM_RARITY.UNCOMMON]
+		adjusted_rarity_chances[ITEM_RARITY.UNCOMMON] = max(0.0, reduced_uncommon_chance)
+		redistribution_pool += max(0.0, -reduced_uncommon_chance)
+
+	# Continue adjusting the chances based on the multiplier
+	if player.item_drop_chance_multiplier > 2.0:
+		# Rare chance is reduced at higher multipliers
+		var reduced_rare_chance = base_rarity_chances[ITEM_RARITY.RARE] - (player.item_drop_chance_multiplier - 2.0) * base_rarity_chances[ITEM_RARITY.RARE]
+		adjusted_rarity_chances[ITEM_RARITY.RARE] = max(0.0, reduced_rare_chance)
+		redistribution_pool += max(0.0, -reduced_rare_chance)
+
+	if player.item_drop_chance_multiplier > 3.0:
+		# Continue reducing Rare, distributing excess to the remaining rarities
+		var reduced_epic_chance = base_rarity_chances[ITEM_RARITY.EPIC] - (player.item_drop_chance_multiplier - 3.0) * base_rarity_chances[ITEM_RARITY.EPIC]
+		adjusted_rarity_chances[ITEM_RARITY.EPIC] = max(0.0, reduced_epic_chance)
+		redistribution_pool += max(0.0, -reduced_epic_chance)
+
+	# At this point, we need to redistribute the removed chances to the higher rarities
+	# First, we calculate the total base chances of the remaining rarities
+	var remaining_rarities = []
+	for rarity in adjusted_rarity_chances.keys():
+		if adjusted_rarity_chances[rarity] > 0:
+			remaining_rarities.append(rarity)
+
+	# Calculate total base chance of remaining rarities
+	var total_remaining_base_chance = 0.0
+	for rarity in remaining_rarities:
+		total_remaining_base_chance += base_rarity_chances[rarity]
+
+	# Redistribute the excess pool proportionally to the remaining rarities
+	for rarity in remaining_rarities:
+		var base_chance = base_rarity_chances[rarity]
+		adjusted_rarity_chances[rarity] += (base_chance / total_remaining_base_chance) * redistribution_pool
+
+	# Ensure total chances add up to 100%
+	var total_chance = 0.0
+	for chance in adjusted_rarity_chances.values():
+		total_chance += chance
+
+	if total_chance != 100.0:
+		var correction = 100.0 - total_chance
+		var correction_per_rarity = correction / remaining_rarities.size()
+		for rarity in remaining_rarities:
+			adjusted_rarity_chances[rarity] += correction_per_rarity
+
+	# Use the same roll to determine rarity
+	roll = randi() % 100
+	print("Roll: " + str(roll))
+	print("Adjusted chances: " + str(adjusted_rarity_chances))
+	for rarity in adjusted_rarity_chances.keys():
+		if roll < adjusted_rarity_chances[rarity]:
+			print("Rarity: " + str(adjusted_rarity_chances[rarity]))
+			return rarity
+		roll -= adjusted_rarity_chances[rarity]
+	
+
+	# Fallback (should not reach this point)
+	return ITEM_RARITY.COMMON
+
+
+
+func _get_previous_rarity(current_rarity):
+	var rarity_order = [
+        ITEM_RARITY.COMMON,
+        ITEM_RARITY.UNCOMMON,
+        ITEM_RARITY.RARE,
+        ITEM_RARITY.EPIC,
+        ITEM_RARITY.UNIQUE,
+        ITEM_RARITY.LEGENDARY
+    ]
+	var index = rarity_order.find(current_rarity)
+	if index > 0:
+		return rarity_order[index - 1]
+	return null
 
 func _balance_item_drops():
 	if last_items.size() >= 3:

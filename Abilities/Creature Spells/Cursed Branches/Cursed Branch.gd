@@ -1,6 +1,6 @@
 extends Area2D
 var duration
-var speed = 50
+var speed = 20
 var origin
 var target
 var tag = null
@@ -10,11 +10,12 @@ var _range = 500
 
 func _process(delta):
 	var direction = (target.global_position - global_position).normalized()
+	var angle_to_target = direction.angle()
+	global_rotation = lerp_angle(global_rotation, angle_to_target, 0.05)
 
-	var current_direction = global_transform.basis_xform(Vector2.RIGHT).normalized()
-	var new_direction = current_direction.lerp(direction, 0.01)
+	var forward = Vector2(cos(rotation), sin(rotation))
+	global_position += forward * speed * delta
 
-	global_position += new_direction * speed * delta
 	_check_collision()
 
 func _check_collision():

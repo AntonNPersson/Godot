@@ -532,7 +532,7 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="Zombified Priest" type="Area2D"]
+[node name="Zombified Priest" type="Area2D" groups=["elite", "special"]]
 top_level = true
 collision_layer = 2
 script = ExtResource("1_ugbp7")

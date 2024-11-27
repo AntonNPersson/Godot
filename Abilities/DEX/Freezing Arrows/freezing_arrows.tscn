@@ -1,7 +1,163 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfh0ujjha1hn6"]
+[gd_scene load_steps=26 format=3 uid="uid://cfh0ujjha1hn6"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_abe8t"]
 [ext_resource type="Texture2D" uid="uid://cecwm1shmni54" path="res://Abilities/DEX/Freezing Arrows/FrostMage_5.png" id="2_xyva8"]
+[ext_resource type="Texture2D" uid="uid://coc2un2xcgtqc" path="res://Abilities/DEX/Freezing Arrows/Buff n Debuff P07 01.png" id="3_lrj68"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v24ar"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ucfj"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdq26"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fryws"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g44k5"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kb3ws"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kjros"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4f8jj"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hgbrc"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqgml"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gsc2n"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_27c5r"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smbf6"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vd63n"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d45qe"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(896, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1d3le"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(960, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0pl32"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(1024, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpk3j"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(1088, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cyvk0"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(1152, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sj8ke"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(1216, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2tp3"]
+atlas = ExtResource("3_lrj68")
+region = Rect2(1280, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8r0p4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v24ar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ucfj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sdq26")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fryws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g44k5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kb3ws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kjros")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4f8jj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hgbrc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqgml")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gsc2n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_27c5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smbf6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vd63n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d45qe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1d3le")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0pl32")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gpk3j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cyvk0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sj8ke")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2tp3")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="Freezing Arrows" type="Node2D"]
 script = ExtResource("1_abe8t")
@@ -12,6 +168,7 @@ mana_cost = 30.0
 cooldown = 10.0
 projectile_type = 5
 ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_8r0p4")
 tags = Array[String](["AttackDamageBuff", "AttackFreezeBuff"])
 values = Array[float]([10.0, 40.0])
 increased_values = Array[float]([7.5, 5.0])

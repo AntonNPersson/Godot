@@ -1,3 +1,4 @@
 [gd_scene format=3 uid="uid://cw81x052cwxk7"]
 
 [node name="AbilitySprite" type="AnimatedSprite2D"]
+z_index = 1

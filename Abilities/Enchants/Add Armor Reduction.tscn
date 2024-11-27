@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsp8rlsmfo1r6"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_3dwmd"]
+[ext_resource type="Texture2D" uid="uid://c5n347rjdogfs" path="res://Abilities/Enchants/icons/2BrownAbility_20.png" id="2_hcjn1"]
+
+[node name="Add Armor Reduction" type="Node2D"]
+script = ExtResource("1_3dwmd")
+i_name = "Target: Sunder"
+tooltip = "Add Value0% armor reduction to targeted spell that lasts 3 seconds."
+icon = ExtResource("2_hcjn1")
+tags = Array[String](["PercentArmorDebuff"])
+values = Array[float]([30.0])
+types = Array[int]([1])
+extra = {
+"Duration": 3,
+"Hit": true
+}
+unique = true

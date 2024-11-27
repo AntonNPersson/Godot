@@ -75,7 +75,7 @@ func _process(_delta):
 		if boss_ready:
 			var portal_effect = portal_effect.instantiate()
 			portal_effect.modulate = Color.GREEN
-			get_tree().get_root().add_child(portal_effect)
+			get_tree().get_root().get_node('Main').get_node('Objects').add_child(portal_effect)
 			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
 			portal_effect.global_position = players[0].global_position
 			portal_effect.enter_portal.connect(_enter_portal_exit)
@@ -115,7 +115,7 @@ func _start_wave(value, last = false):
 		Utility.get_node('Brightness')._set_color(current_wave.get_meta('Color'))
 
 	if !last:
-		wave_counter = randi_range(2, 3)
+		wave_counter = 2
 		start_wave.emit(current_wave, value)
 		canvas.get_child(2).visible = true
 		time_left = START_COUNTDOWN_TIME
@@ -123,7 +123,7 @@ func _start_wave(value, last = false):
 		canvas.get_child(2).visible = false
 		players[0].in_combat = true
 	else:
-		wave_counter = randi_range(2, 3)
+		wave_counter = 2
 		next_sub_wave.emit(chosen_sub_wave, value)
 		time_left = START_COUNTDOWN_TIME
 		await get_tree().create_timer(START_COUNTDOWN_TIME).timeout
@@ -152,7 +152,7 @@ func _unit_dead(_unit):
 			next_map = maps.ROOM
 			current_wave_counter = 1
 			var portal_effect = portal_effect.instantiate()
-			get_tree().get_root().add_child(portal_effect)
+			get_tree().get_root().get_node('Main').get_node('Objects').add_child(portal_effect)
 			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
 			portal_effect.global_position = _unit.global_position
 			portal_effect.enter_portal.connect(_enter_portal)
@@ -160,7 +160,7 @@ func _unit_dead(_unit):
 			next_map = maps.BOSS
 			var portal_effect = portal_effect.instantiate()
 			portal_effect.modulate = Color.RED
-			get_tree().get_root().add_child(portal_effect)
+			get_tree().get_root().get_node('Main').get_node('Objects').add_child(portal_effect)
 			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
 			portal_effect.global_position = _unit.global_position
 			portal_effect.enter_portal.connect(_enter_portal_boss)

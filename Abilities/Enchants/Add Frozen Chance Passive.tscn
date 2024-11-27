@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://boi128ajrel81"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_5flsy"]
+[ext_resource type="Texture2D" uid="uid://bl4cnc5o847wk" path="res://Abilities/Enchants/icons/2BlueAbility_23.png" id="2_y7apx"]
+
+[node name="Add Frozen Chance Passive" type="Node2D"]
+script = ExtResource("1_5flsy")
+i_name = "Passive: Frozen Chance"
+tooltip = "Add value0% frozen chance to your selected passive ability."
+icon = ExtResource("2_y7apx")
+tags = Array[String](["FrozenChancePassive"])
+values = Array[float]([2.0])
+types = Array[int]([4])

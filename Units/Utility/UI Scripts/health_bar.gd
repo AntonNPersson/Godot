@@ -5,6 +5,9 @@ func _update_health(percentage):
 	self.value = percentage
 	if percentage <= 0:
 		self.visible = false
+	
+	if get_parent().get_parent().is_in_group('elite'):
+		get_parent().get_node('Sprite2D').visible = true
 		
 func _update_stamina(percentage):
 	self.visible = true
@@ -15,6 +18,10 @@ func _update_mana(percentage):
 	self.value = percentage
 	
 func _update_barrier(percentage):
+	self.visible = true
+	self.value = percentage
+
+func _update_exp(percentage):
 	self.visible = true
 	self.value = percentage
 
@@ -49,6 +56,5 @@ func _update_potion(total_charge, current_charge, type):
 			self.texture = load("res://GUI/barrier_potion_1.png")
 		if current_charge == total_charge:
 			self.texture = load("res://GUI/barrier_potion_2.png")
-
 func _update_name(_name):
 	self.get_parent().get_node('Label').text = _name

@@ -22,5 +22,4 @@ light_scale = 0.4
 is_buff = true
 buff_type = "Percentage"
 buff_duration = 3.0
-additional_self_target = null
 weight = 100.0

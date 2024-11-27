@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvfwpqva6jwdl"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_nsxne"]
+[ext_resource type="Texture2D" uid="uid://4ckn8mhreodw" path="res://Abilities/Enchants/icons/Green Ability_9.png" id="2_ep6x3"]
+
+[node name="Add Evade To Target" type="Node2D"]
+script = ExtResource("1_nsxne")
+i_name = "Target: Reflex"
+tooltip = "Add Value0 evade to selected target for 3 seconds."
+icon = ExtResource("2_ep6x3")
+tags = Array[String](["FlatEvadeBuff"])
+values = Array[float]([200.0])
+types = Array[int]([2])
+extra = {
+"Hit": true
+}

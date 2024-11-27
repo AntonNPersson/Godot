@@ -1,7 +1,128 @@
-[gd_scene load_steps=3 format=3 uid="uid://kjyeod4t0cu0"]
+[gd_scene load_steps=21 format=3 uid="uid://kjyeod4t0cu0"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_go23f"]
 [ext_resource type="Texture2D" uid="uid://baqt46s4ab7rb" path="res://Abilities/DEX/Mark of the Shark/Hunter_4.png" id="2_xpw0h"]
+[ext_resource type="Texture2D" uid="uid://bin3nhin2gqlu" path="res://Abilities/DEX/Mark of the Shark/Buff n Debuff P5 01.png" id="3_qvxb7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cp8f6"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjv3i"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrh7g"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2yso4"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_akw1x"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lpxh"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aj1mw"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pqhc"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5j2a"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dlk77"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_42dh5"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_33q0w"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8sm8t"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q456l"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajql8"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(896, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sbwx"]
+atlas = ExtResource("3_qvxb7")
+region = Rect2(960, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jfylr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cp8f6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mjv3i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrh7g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2yso4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_akw1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3lpxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aj1mw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5pqhc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5j2a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dlk77")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_42dh5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_33q0w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8sm8t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q456l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajql8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sbwx")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="Mark Of The Shark" type="Node2D"]
 script = ExtResource("1_go23f")
@@ -13,6 +134,8 @@ cooldown = 2.0
 _range = 512.0
 projectile_type = 1
 ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_jfylr")
+sprite_scale = 1.0
 tags = Array[String](["PercentArmorBuff"])
 values = Array[float]([-20.0])
 increased_values = Array[float]([-5.0])

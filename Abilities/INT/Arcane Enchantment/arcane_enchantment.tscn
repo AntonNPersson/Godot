@@ -1,15 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://skewnj2yv5vd"]
 
-[ext_resource type="Script" path="res://Abilities/INT/Arcane Enchantment/arcane_enchantment.gd" id="1_ndo36"]
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_hdl6x"]
 [ext_resource type="Texture2D" uid="uid://dvwg02i75e5gu" path="res://Abilities/INT/Arcane Enchantment/arcane_enchantment_icon.png" id="2_t7n4k"]
 
 [node name="ArcaneEnchantment" type="Node2D"]
-script = ExtResource("1_ndo36")
+script = ExtResource("1_hdl6x")
 icon = ExtResource("2_t7n4k")
 a_name = "Arcane Enchantment"
-tooltip_text = "Enchant your body to increase your basic attack damage by Value0% of your intelligence."
+tooltip_text = "Enchant your body with the arcane, increasing attack damage by Value0% of your intelligence."
 projectile_type = 4
 ability_type = "INT"
-tags = Array[String](["AttackDamagePassive"])
+tags = Array[String](["ArcaneDamagePassive"])
 values = Array[float]([10.0])
-increased_values = Array[float]([3.0])
+increased_values = Array[float]([5.0])

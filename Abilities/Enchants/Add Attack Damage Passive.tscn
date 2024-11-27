@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsm37gbrbg5ql"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_avkho"]
+
+[node name="Add Attack Damage Passive" type="Node2D"]
+script = ExtResource("1_avkho")
+i_name = "Passive: Attack Damage"
+tooltip = "Add value0 flat damage to your selected passive ability."
+tags = Array[String](["AttackDamagePassive"])
+values = Array[float]([20.0])
+types = Array[int]([4])

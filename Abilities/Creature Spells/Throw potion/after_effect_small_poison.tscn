@@ -120,7 +120,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"new_animation",
-"speed": 20.0
+"speed": 12.0
 }]
 
 [node name="AfterEffect" type="AnimatedSprite2D"]

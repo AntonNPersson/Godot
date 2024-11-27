@@ -15,6 +15,7 @@ var abilities_targeting = [false,false,false,false]
 var potion_charges : Array
 var current_potion_charges = [0,0]
 var cooldown_timers : Array[float]
+var ability_charges : Array[float]
 var container_hud
 var potion_hud
 var health_bar
@@ -32,6 +33,7 @@ var inventory_hud
 var hotbar
 var potion_bar_1
 var potion_bar_2
+var level_bar
 var unit
 var selected_item
 var selected_storage_item
@@ -73,6 +75,7 @@ func _ready():
 	potion_hud = container_hud.get_node("Equipment/potionList")
 	potion_bar_1 = get_node("CanvasLayer/Bar_bag/Potion_1")
 	potion_bar_2 = get_node("CanvasLayer/Bar_bag/Potion_2")
+	level_bar = get_node('CanvasLayer/Bar_bag/level_bar')
 	hotbar = get_node("CanvasLayer/HotbarC/Hotbar")
 	health_bar = get_node('CanvasLayer/Bar_bag/ProgressBar5')
 	barrier_bar = get_node('CanvasLayer/Bar_bag/ProgressBar2')
@@ -99,15 +102,29 @@ func _process(delta):
 	_update_stats()
 	potion_bar_1._update_potion(potion_charges[0], current_potion_charges[0], potions[0].type)
 	potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], potions[1].type)
+	level_bar.get_node('level').text = '[center]' + str(unit.player_level)
 	for i in abilities.size():
 		cooldown_timers[i] -= 1 * delta
 		hotbar.get_child(i).texture = abilities[i].icon
-		hotbar.get_child(i).get_child(0).text = str(int(cooldown_timers[i]))
+		hotbar.get_child(i).get_child(0).text ="[center][color=wheat]" + str(int(cooldown_timers[i]))
+		if abilities[i].charges > 1:
+			hotbar.get_child(i).get_child(2).text = "[center][color=wheat]" + str(int(ability_charges[i]))
 		if cooldown_timers[i] <= 0:
 			hotbar.get_child(i).get_child(0).visible = false
+			if ability_charges[i] < abilities[i].charges:
+				ability_charges[i] += 1
+				if ability_charges[i] < abilities[i].charges:
+					cooldown_timers[i] = abilities[i].cooldown
 		else:
 			hotbar.get_child(i).get_child(0).visible = true
 		abilities[i]._update_targeting(delta,abilities_targeting, abilities_targeting[i])
+	hotbar.get_node('TextureRect4').texture = unit.active_icon
+
+	hotbar.get_node('TextureRect9').texture = unit.passive_icon
+
+	if !hotbar.get_node('TextureRect8').is_connected('mouse_entered', _on_hotbar_character_mouse_entered):
+		hotbar.get_node('TextureRect8').mouse_entered.connect(_on_hotbar_character_mouse_entered.bind(0))
+		hotbar.get_node('TextureRect10').mouse_entered.connect(_on_hotbar_character_mouse_entered.bind(1))
 	
 	_handle_level_up_visability()
 
@@ -240,7 +257,7 @@ func activate_ability(index):
 			Utility.get_node('ErrorMessage')._create_error_message('Not enough mana', self)
 			return
 
-		if cooldown_timers[index] > 0 and abilities[index].projectile_type != PROJECTILE_TYPE.Passive:
+		if cooldown_timers[index] > 0 and abilities[index].projectile_type != PROJECTILE_TYPE.Passive and ability_charges[index] < 1:
 			Utility.get_node('ErrorMessage')._create_error_message('Ability on cooldown', self)
 			return
 	
@@ -251,9 +268,12 @@ func activate_ability(index):
 				await get_tree().create_timer(0.1).timeout
 				abilities[index]._use()
 			cooldown_timers[index] = unit._apply_cooldown_reduction(abilities[index].cooldown)
+			ability_charges[index] -= 1
 
 func handle_targeting_input(event, ab, index):
 	if event.is_action_pressed("Attack"):
+		if ab.projectile_type == PROJECTILE_TYPE.Self or ab.projectile_type == PROJECTILE_TYPE.Summon:
+			return
 		ab.unit = unit
 		var in_range
 		if ab.projectile_type == PROJECTILE_TYPE.EnemyTarget or ab.projectile_type == PROJECTILE_TYPE.AllyTarget:
@@ -267,6 +287,7 @@ func handle_targeting_input(event, ab, index):
 
 		if in_range:
 			cooldown_timers[index] = unit._apply_cooldown_reduction(ab.cooldown)
+			ability_charges[index] -= 1
 		abilities_targeting[index] = false
 		Utility.get_node('AbilityTargetSystem')._erase_targeting()
 	elif event.is_action_pressed("Move"):
@@ -312,53 +333,61 @@ func _update_inventory_test():
 func _update_stats():
 
 	var base_stats = {
-		"Health": {"base": int(unit.base_health), "bonus": (unit.bonus_health + (unit.total_vitality * 0.5)) * (1 + unit.global_health/100)},
-		"Mana": {"base": int(unit.base_mana), "bonus": (unit.bonus_mana + (unit.total_intelligence * 2)) * (1 + unit.global_mana/100)},
-		"Stamina": {"base": int(unit.base_stamina), "bonus": (unit.bonus_stamina + (unit.total_strength/10)) * (1 + unit.global_stamina/100)},
-		"Barrier": {"base": int(unit.base_barrier), "bonus": unit.bonus_barrier * (1 + unit.global_barrier/100)},
-		"Dexterity": {"base": int(unit.base_dexterity), "bonus": unit.bonus_dexterity * (1 + unit.global_dexterity/100)},
-		"Strength": {"base": int(unit.base_strength), "bonus": unit.bonus_strength * (1 + unit.global_strength/100)},
-		"Intelligence": {"base": int(unit.base_intelligence), "bonus": unit.bonus_intelligence * (1 + unit.global_intelligence/100)}
+		"Health": {"base": int(unit.base_health), "bonus": (unit.bonus_health + (unit.total_vitality * 0.5)) * (1 + unit.global_health/100), "tooltip" : "Health is the amount of damage a unit can take before dying."},
+		"Mana": {"base": int(unit.base_mana), "bonus": (unit.bonus_mana + (unit.total_intelligence * 2)) * (1 + unit.global_mana/100), "tooltip" : "Mana is the resource used to cast most abilities."},
+		"Stamina": {"base": int(unit.base_stamina), "bonus": (unit.bonus_stamina + (unit.total_strength/10)) * (1 + unit.global_stamina/100), "tooltip" : "Stamina is the resource used to perform each units unique active ability."},
+		"Barrier": {"base": int(unit.base_barrier), "bonus": unit.bonus_barrier * (1 + unit.global_barrier/100), "tooltip" : "Barrier is a temporary shield that absorbs damage before health."},
+		"Dexterity": {"base": int(unit.base_dexterity), "bonus": unit.bonus_dexterity * (1 + unit.global_dexterity/100), "tooltip" : "Dexterity increases the damage of dex based spells, as well as increasing total movement speed."},
+		"Strength": {"base": int(unit.base_strength), "bonus": unit.bonus_strength * (1 + unit.global_strength/100), "tooltip" : "Strength increases the damage of str based spells, as well as increasing total stamina."},
+		"Intelligence": {"base": int(unit.base_intelligence), "bonus": unit.bonus_intelligence * (1 + unit.global_intelligence/100), "tooltip" : "Intelligence increases the damage of int based spells, as well as increasing total mana."},
 	}
 
 	var offensive_stats = {
-		"Attack Damage": {"base": int(unit.base_attack_damage), "bonus": unit.bonus_attack_damage * (1 + (unit.global_attack_damage/100 + unit.global_damage/100))},
-		"Attack Speed": {"base": round_place(unit.base_attack_speed,2), "bonus": unit.bonus_attack_speed},
-		"Critical Strike Chance": {"base": round_place(unit.base_critical_chance,2), "bonus": unit.bonus_critical_chance},
-		"Critical Strike Damage": {"base": int(unit.base_critical_damage), "bonus": unit.bonus_critical_damage},
-		"Cooldown Reduction": {"base": int(unit.base_cooldown_reduction), "bonus": unit.bonus_cooldown_reduction},
-		"Quick Attack Chance": {"base": round_place(unit.base_quick_attack_chance,2), "bonus": unit.bonus_quick_attack_chance},
-		"Double Cast Chance": {"base": round_place(unit.base_double_cast_chance,2), "bonus": unit.bonus_double_cast_chance}
+		"Attack Damage": {"base": int(unit.base_attack_damage), "bonus": unit.bonus_attack_damage * (1 + (unit.global_attack_damage/100 + unit.global_damage/100)), "tooltip" : "Attack Damage increases the damage of auto attacks, and certain spells."},
+		"Attack Speed": {"base": round_place(unit.base_attack_speed,2), "bonus": unit.bonus_attack_speed, "tooltip" : "Attack Speed increases the rate at which a unit can auto attack, reducing total windup time."},
+		"Critical Strike Chance": {"base": round_place(unit.base_critical_chance,2), "bonus": unit.bonus_critical_chance, "tooltip" : "Critical Strike Chance increases the chance of landing a critical strike."},
+		"Critical Strike Damage": {"base": int(unit.base_critical_damage), "bonus": unit.bonus_critical_damage, "tooltip" : "Critical Strike Damage increases the damage of critical strikes."},
+		"Cooldown Reduction": {"base": int(unit.base_cooldown_reduction), "bonus": unit.bonus_cooldown_reduction, "tooltip" : "Cooldown Reduction decreases the cooldown of abilities."},
+		"Quick Attack Chance": {"base": round_place(unit.base_quick_attack_chance,2), "bonus": unit.bonus_quick_attack_chance, "tooltip" : "Quick Attack Chance increases the chance of auto attacking twice, everytime values exceed the 100% mark theres a chance for an additional attack."},
+		"Double Cast Chance": {"base": round_place(unit.base_double_cast_chance,2), "bonus": unit.bonus_double_cast_chance, "tooltip" : "Double Cast Chance increases the chance of casting an ability twice, everytime values exceed the 100% mark theres a chance for an additional cast."},
 	}
 
 	var defensive_stats = {
-		"Armor": {"base": int(unit.base_armor), "bonus": unit.bonus_armor * (1 + unit.global_armor/100)},
-		"Evade": {"base": int(unit.base_evade), "bonus": unit.bonus_evade * (1 + unit.global_evade/100)},
-		"Vitality": {"base": int(unit.base_vitality), "bonus": unit.bonus_vitality * (1 + unit.global_vitality/100)},
-		"Slow Resistance": {"base": round_place(unit.base_slow_resistance,2), "bonus": unit.bonus_slow_resistance},
-		"Affliction Resistance": {"base": round_place(unit.base_affliction_resistance,2), "bonus": unit.bonus_affliction_resistance},
-		"Crowd Control Resistance": {"base": round_place(unit.base_crowd_control_resistance,2), "bonus": unit.bonus_crowd_control_resistance},
-		"Block": {"base": round_place(unit.base_block,2), "bonus": unit.bonus_block}
+		"Armor": {"base": int(unit.base_armor), "bonus": unit.bonus_armor * (1 + unit.global_armor/100), "tooltip" : "Armor reduces a percentage of the amount of direct damage taken."},
+		"Evade": {"base": int(unit.base_evade), "bonus": unit.bonus_evade * (1 + unit.global_evade/100), "tooltip" : "Evade increases the chance of dodging an attack, nullifying the damage - works on all direct damage sources."},
+		"Vitality": {"base": int(unit.base_vitality), "bonus": unit.bonus_vitality * (1 + unit.global_vitality/100), "tooltip" : "Vitality increases the total health and health regen of a unit."},
+		"Slow Resistance": {"base": round_place(unit.base_slow_resistance,2), "bonus": unit.bonus_slow_resistance, "tooltip" : "Slow Resistance decreases the duration of slow effects."},
+		"Affliction Resistance": {"base": round_place(unit.base_affliction_resistance,2), "bonus": unit.bonus_affliction_resistance, "tooltip" : "Affliction Resistance decreases the duration of DOT effects."},
+		"Crowd Control Resistance": {"base": round_place(unit.base_crowd_control_resistance,2), "bonus": unit.bonus_crowd_control_resistance, "tooltip": "Crowd Control Resistance decreases the duration of CC effects."},
+		"Block": {"base": round_place(unit.base_block,2), "bonus": unit.bonus_block, "tooltip" : "Block reduces a flat amount of direct damage taken."},
+		"Lifesteal": {"base": round_place(unit.base_life_steal,2), "bonus": unit.bonus_life_steal, "tooltip" : "Lifesteal heals the unit for a percentage of the auto attack damage dealt."},
+		"Spell Vamp": {"base": round_place(unit.base_spell_vamp,2), "bonus": unit.bonus_spell_vamp, "tooltip" : "Spell Vamp heals the unit for a percentage of the spell damage dealt."},
 	}
 
 	var utility_stats = {
-		"Movement Speed": {"base": round_place(unit.base_speed,2), "bonus": unit.bonus_speed},
-		"Attack Range": {"base": round_place(unit.base_range,2), "bonus": unit.bonus_range},
-		"Frozen Chance": {"base": round_place(unit.base_frozen_chance,2), "bonus": unit.bonus_frozen_chance},
-		"Windup Time": {"base": round_place(unit.total_windup_time,2), "bonus": 0},
-		"Health Regen": {"base": round_place(unit.base_health_regen,1), "bonus": (unit.bonus_health_regen + (unit.total_vitality * 0.05)) * (1 + unit.global_health_regen/100)},
-		"Mana Regen": {"base": round_place(unit.base_mana_regen,1), "bonus": unit.bonus_mana_regen * (1 + unit.global_mana_regen/100)},
-		"Stamina Regen": {"base": round_place(unit.base_stamina_regen,1), "bonus": unit.bonus_stamina_regen * (1 + unit.global_stamina_regen/100)},
-		"Barrier Regen": {"base": round_place(unit.base_barrier_regen,1), "bonus": unit.bonus_barrier_regen * (1 + unit.global_barrier_regen/100)}
+		"Movement Speed": {"base": round_place(unit.base_speed,2), "bonus": unit.bonus_speed, "tooltip" : "Movement Speed increases the rate at which a unit can move."},
+		"Attack Range": {"base": round_place(unit.base_range,2), "bonus": unit.bonus_range, "tooltip" : "Attack Range increases the distance at which a unit can auto attack, less than 60 is considered melee."},
+		"Frozen Chance": {"base": round_place(unit.base_frozen_chance,2), "bonus": unit.bonus_frozen_chance, "tooltip" : "Frozen Chance increases the chance of causing frozen effect."},
+		"Windup Time": {"base": round_place(unit.total_windup_time,2), "bonus": 0, "tooltip" : "Windup Time increases the time it takes to perform an auto attack, reduced by attack speed."},
+		"Health Regen": {"base": round_place(unit.base_health_regen,1), "bonus": (unit.bonus_health_regen + (unit.total_vitality * 0.05)) * (1 + unit.global_health_regen/100), "tooltip" : "Health Regen increases the amount of health regenerated per second."},
+		"Mana Regen": {"base": round_place(unit.base_mana_regen,1), "bonus": unit.bonus_mana_regen * (1 + unit.global_mana_regen/100), "tooltip" : "Mana Regen increases the amount of mana regenerated per second."},
+		"Stamina Regen": {"base": round_place(unit.base_stamina_regen,1), "bonus": unit.bonus_stamina_regen * (1 + unit.global_stamina_regen/100), "tooltip" : "Stamina Regen increases the amount of stamina regenerated per second."},
+		"Barrier Regen": {"base": round_place(unit.base_barrier_regen,1), "bonus": unit.bonus_barrier_regen * (1 + unit.global_barrier_regen/100), "tooltip" : "Barrier Regen increases the amount of barrier regenerated per second."},
+		"Item Drop Chance": {"base": (unit.item_drop_chance_multiplier - 1) * 100, "bonus": 0, "tooltip" : "Item Drop Chance increases the chance of dropping items."},
+		"Ascension Currency Multiplier": {"base": (unit.ascension_currency_multiplier - 1) * 100, "bonus": 0, "tooltip" : "Ascension Currency Multiplier increases the amount of ascension currency dropped."},
+		"Experience Multiplier": {"base": (unit.experience_multiplier - 1) * 100, "bonus": 0, "tooltip" : "Experience Multiplier increases the amount of experience gained."},
+		"Ascension Level": {"base": unit.ascension_level, "bonus": 0, "tooltip" : "Ascension Level increases the difficulty of the game, and the amount of ascension currency dropped."},
+		"Ascension Currency": {"base": unit.ascension_currency, "bonus": 0, "tooltip" : "Ascension Currency is used to purchase different upgrades."},
+		"Rerolls": {"base": unit.rerolls, "bonus": 0, "tooltip" : "Rerolls are used to reroll spells, enchants and curses."},
 	}
 
 	var global_stats = {
-		"Burn Damage": unit.global_burn_damage,
-		"Bleed Damage": unit.global_bleed_damage,
-		"Poison Damage": unit.global_poison_damage,
-		"Damage": unit.global_damage,
-		"Attack Damage": unit.global_attack_damage,
-		"Freeze Efficiency": unit.global_freeze_effectiveness
+		"Burn Damage": {"base": unit.global_burn_damage, "tooltip" : "Burn Damage increases the damage of burns by a percentage - burn has a base duration of 5 seconds with a 1 second tick rate. \n\nBurn effects apply seperately and can't stack."},
+		"Bleed Damage": {"base": unit.global_bleed_damage, "tooltip" : "Bleed Damage increases the damage of bleeds by a percentage - bleed has a duration of 2 seconds with a 0.5 second tick rate. \n\nIf new sources of bleed are applied the duration only refreshes if the new source has a higher damage, else it adds a stack increasing the damage by 20%."},
+		"Poison Damage": {"base": unit.global_poison_damage, "tooltip" : "Poison Damage increases the damage of poisons by a percentage, poison has a duration of 5 seconds and a base damage of 5, with a 1 second tick rate. \n\nPoison effects only apply stacks, each stack doing the base damage."},
+		"Damage": {"base": unit.global_damage, "tooltip" : "Damage increases the damage of everything by a percentage."},
+		"Attack Damage": {"base": unit.global_attack_damage, "tooltip" : "Attack Damage increases the damage of auto attacks, and certain spells by a percentage."},
+		"Freeze Efficiency": {"base": unit.global_freeze_effectiveness, "tooltip" : "Freeze Efficiency increases the amount slowed by frozen effects by a percentage."},
 	}
 
 	var character_specifics
@@ -378,35 +407,35 @@ func _update_stats():
 
 	for s in base_stats:
 		stat = base_stat_list.add_item(" " + s + ": " + str(int(base_stats[s].base + base_stats[s].bonus)), null, false)
-		base_stat_list.set_item_tooltip(stat, 'Base: ' + str(base_stats[s].base) + ' Bonus: ' + str(int(base_stats[s].bonus)))
+		base_stat_list.set_item_tooltip(stat, 'Base: ' + str(base_stats[s].base) + ' Bonus: ' + str(int(base_stats[s].bonus)) + '\n\n' + str(base_stats[s].tooltip))
 
 	for s in offensive_stats:
 		if "Chance" in s or "Reduction" in s:
 			stat = offensive_stat_list.add_item(" " + s + ": " + str(int(offensive_stats[s].base + offensive_stats[s].bonus)) + "%", null, false)
-			offensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(offensive_stats[s].base) + '% Bonus: ' + str(int(offensive_stats[s].bonus)) + '%')
+			offensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(offensive_stats[s].base) + '% Bonus: ' + str(int(offensive_stats[s].bonus)) + '%' + '\n\n' + str(offensive_stats[s].tooltip))
 		else:
 			stat = offensive_stat_list.add_item(" " + s + ": " + str(int(offensive_stats[s].base + offensive_stats[s].bonus)), null, false)
-			offensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(offensive_stats[s].base) + ' Bonus: ' + str(int(offensive_stats[s].bonus)))
+			offensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(offensive_stats[s].base) + ' Bonus: ' + str(int(offensive_stats[s].bonus)) + '\n\n' + str(offensive_stats[s].tooltip))
 
 	for s in defensive_stats:
 		if "Resistance" in s:
 			stat = defensive_stat_list.add_item(" " + s + ": " + str(int(defensive_stats[s].base + defensive_stats[s].bonus)) + "%", null, false)
-			defensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(defensive_stats[s].base) + '% Bonus: ' + str(int(defensive_stats[s].bonus)) + '%')
+			defensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(defensive_stats[s].base) + '% Bonus: ' + str(int(defensive_stats[s].bonus)) + '%' + '\n\n' + str(defensive_stats[s].tooltip))
 		else:
 			stat = defensive_stat_list.add_item(" " + s + ": " + str(int(defensive_stats[s].base + defensive_stats[s].bonus)), null, false)
-			defensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(defensive_stats[s].base) + ' Bonus: ' + str(int(defensive_stats[s].bonus)))
+			defensive_stat_list.set_item_tooltip(stat, 'Base: ' + str(defensive_stats[s].base) + ' Bonus: ' + str(int(defensive_stats[s].bonus)) + '\n\n' + str(defensive_stats[s].tooltip))
 
 	for s in utility_stats:
-		if "Chance" in s:
+		if "Chance" in s or "Multiplier" in s:
 			stat = utility_stat_list.add_item(" " + s + ": " + str(int(utility_stats[s].base + utility_stats[s].bonus)) + "%", null, false)
-			utility_stat_list.set_item_tooltip(stat, 'Base: ' + str(utility_stats[s].base) + '% Bonus: ' + str(int(utility_stats[s].bonus)) + '%')
+			utility_stat_list.set_item_tooltip(stat, 'Base: ' + str(utility_stats[s].base) + '% Bonus: ' + str(int(utility_stats[s].bonus)) + '%' + '\n\n' + str(utility_stats[s].tooltip))
 		else:
 			stat = utility_stat_list.add_item(" " + s + ": " + str(int(utility_stats[s].base + utility_stats[s].bonus)), null, false)
-			utility_stat_list.set_item_tooltip(stat, 'Base: ' + str(utility_stats[s].base) + ' Bonus: ' + str(int(utility_stats[s].bonus)))
+			utility_stat_list.set_item_tooltip(stat, 'Base: ' + str(utility_stats[s].base) + ' Bonus: ' + str(int(utility_stats[s].bonus)) + '\n\n' + str(utility_stats[s].tooltip))
 
 	for s in global_stats:
-		stat = global_stat_list.add_item(" " + s + ": " + str(int(global_stats[s])) + "%", null, false)
-		global_stat_list.set_item_tooltip(stat, 'Value: ' + str(int(global_stats[s])) + '%')
+		stat = global_stat_list.add_item(" " + s + ": " + str(int(global_stats[s].base)) + "%", null, false)
+		global_stat_list.set_item_tooltip(stat, str(global_stats[s].tooltip))
 
 	if character_specifics != null:
 		for s in character_specifics:
@@ -414,9 +443,13 @@ func _update_stats():
 			character_specific_list.set_item_tooltip(stat, character_specifics[s].bonus)
 
 	health_bar._update_health(unit._calculate_percentage(unit.current_health, unit.total_health))
+	health_bar.get_child(0).text = "[center][color=Wheat]" + str(int(unit.current_health)) + "/" + str(int(unit.total_health))
 	barrier_bar._update_barrier(unit._calculate_percentage(unit.current_barrier, unit.total_barrier))
 	mana_bar._update_mana(unit._calculate_percentage(unit.current_mana, unit.total_mana))
+	mana_bar.get_child(0).text = "[center][color=Wheat]" + str(int(unit.current_mana)) + "/" + str(int(unit.total_mana))
 	stamina_bar._update_stamina(unit._calculate_percentage(unit.current_stamina, unit.total_stamina))
+	stamina_bar.get_child(0).text = "[center][color=Wheat]" + str(int(unit.current_stamina)) + "/" + str(int(unit.total_stamina))
+	level_bar._update_exp(unit._calculate_percentage(unit.current_player_experience, unit.total_player_experience))
 
 func round_place(num, places):
 	return (round(num*pow(10,places))/pow(10,places))
@@ -429,6 +462,8 @@ func _on_ability_manager_picked(_ability):
 		pass
 	abilities.append(_ability)
 	cooldown_timers.append(0)
+	ability_charges.append(_ability.charges)
+
 	_ability.unit = self.get_parent()
 	_ability.is_docile = false
 	_ability._initialize()
@@ -437,7 +472,7 @@ func _on_enchant_picked(enchant, index, _type):
 	enchant._initialize()
 	for i in range(enchant.tags.size()):
 		print(enchant.extra)
-		abilities[index]._add_enchant(enchant.tags[i], enchant.values[i], enchant.types[i], enchant.extra)
+		abilities[index]._add_enchant(enchant.tags[i], enchant.values[i], enchant.types, enchant.extra, enchant)
 
 func _add_item_effect(type, tag, value, duration, item_color, item_cooldown = 0):
 	var extra = {
@@ -466,7 +501,7 @@ func _add_item_effect(type, tag, value, duration, item_color, item_cooldown = 0)
 		unit.get_node('Control')._on_action(value, true, unit, tag, extra)
 			
 
-func _remove_item_effect(type, tag):
+func _remove_item_effect(type, tag, value):
 	var extra = {
 		"Duration" : 0,
 		"Color" : Color(0,0,0,0),
@@ -476,17 +511,17 @@ func _remove_item_effect(type, tag):
 		for a in abilities:
 			a._remove_item_tag(tag)
 	elif type == 'OnHit':
-		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+		unit.get_node('Control')._on_action(-value, false, unit, tag, extra)
 	elif type == 'OnBurn':
-		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+		unit.get_node('Control')._on_action(-value, false, unit, tag, extra)
 	elif type == 'OnFrozen':
-		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+		unit.get_node('Control')._on_action(-value, false, unit, tag, extra)
 	elif type == "OnPoison":
-		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+		unit.get_node('Control')._on_action(-value, false, unit, tag, extra)
 	elif type == "OnBleed":
-		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+		unit.get_node('Control')._on_action(-value, false, unit, tag, extra)
 	elif type == "OnEquip":
-		unit.get_node('Control')._on_action(-1, false, unit, tag, extra)
+		unit.get_node('Control')._on_action(-value, false, unit, tag, extra)
 
 func _on_item_picked_up(item):
 	var children_ = item.get_children()
@@ -590,7 +625,7 @@ func _on_item_dropped(to_storage = false):
 						legendary_items.remove_at(legendary_items.find(children[i].name))
 					var removed_stats = {}
 					if "epic" in children[i]:
-						_remove_item_effect(children[i].epic, children[i].tags[0])
+						_remove_item_effect(children[i].epic, children[i].tags[0], children[i].values[0])
 					for j in range(children[i]._get_tags().size()):
 						removed_stats[children[i]._get_tags()[j]] = children[i]._get_values()[j]
 					remove_stats.emit(removed_stats)
@@ -664,7 +699,7 @@ func _remove_item_stats_from_inventory():
 		if children.size() > 2:
 			for j in range(2, children.size()):
 				if "epic" in children[j]:
-					_remove_item_effect(children[j].epic, children[j].tags[0])
+					_remove_item_effect(children[j].epic, children[j].tags[0], children[j].values[0])
 					continue
 
 				if "range" in children[j]:
@@ -730,7 +765,6 @@ func _on_level_pressed(ability_index : int):
 		Utility.get_node('ErrorMessage')._create_error_message('Not enough experience', self)
 
 func _handle_level_up_visability():
-	if unit.total_ability_experience > 0:
 		for i in range(abilities.size()):
 			if unit.total_ability_experience >= abilities[i].max_experience:
 				hotbar.get_child(i).get_node('level_up').visible = true
@@ -796,7 +830,8 @@ func _potions_mouse_entered(index):
 		return
 	
 	tooltip.get_node('Panel/Name').text = "[center]" + potions[index].i_name
-	tooltip.get_node('Panel/ScrollContainer/Description').text = "[center]" + potions[index].tooltip
+	tooltip.get_node('Panel/PanelContainer/ScrollContainer/Description').text = "[center]" + potions[index].tooltip
+	tooltip.get_node('Panel/PanelContainer2/ScrollContainer/Description').text = ""
 
 	tooltip.get_child(0).global_position = get_viewport().get_mouse_position() + Vector2(-tooltip.get_child(0).size.x/2, -tooltip.get_child(0).size.y - 10)
 	tooltip.visible = true
@@ -822,14 +857,28 @@ func _on_hotbar_ability_mouse_entered(index):
 		return
 	unit.lose_camera_focus = true
 	tooltip.get_node('Panel/Name').text = "[center]" + abilities[index].name
-	tooltip.get_node('Panel/ScrollContainer/Description').text = "[center]" + abilities[index].tooltip
+	tooltip.get_node('Panel/PanelContainer/ScrollContainer/Description').text = "\n[center]" + abilities[index].tooltip
+	tooltip.get_node('Panel/PanelContainer2/ScrollContainer/Description').text = "\n[center]" + abilities[index].secondary_tooltip
 	tooltip.get_child(0).global_position = hotbar.get_child(index).global_position + Vector2((-tooltip.get_child(0).size.x/2) + (hotbar.get_child(index).size.x/2),-tooltip.get_child(0).size.y - 10)
 	tooltip.visible = true
 
+func _on_hotbar_character_mouse_entered(index):
+	if index == 0:
+		unit.lose_camera_focus = true
+		tooltip.get_node('Panel/Name').text = "[center]" + unit.active_name
+		tooltip.get_node('Panel/PanelContainer/ScrollContainer/Description').text = "\n[center]" + unit.active_tooltip
+		tooltip.get_node('Panel/PanelContainer2/ScrollContainer/Description').text = "\n[center]" + unit.active_tooltip2
+		tooltip.get_child(0).global_position = hotbar.get_node('TextureRect4').global_position + Vector2((-tooltip.get_child(0).size.x/2) + (hotbar.get_child(index).size.x/2),-tooltip.get_child(0).size.y - 10)
+		tooltip.visible = true
+	elif index == 1:
+		unit.lose_camera_focus = true
+		tooltip.get_node('Panel/Name').text = "[center]" + unit.passive_name
+		tooltip.get_node('Panel/PanelContainer/ScrollContainer/Description').text = "\n[center]" + unit.passive_tooltip
+		tooltip.get_node('Panel/PanelContainer2/ScrollContainer/Description').text = "\n[center]" + unit.passive_tooltip2
+		tooltip.get_child(0).global_position = hotbar.get_node('TextureRect9').global_position + Vector2((-tooltip.get_child(0).size.x/2) + (hotbar.get_child(index).size.x/2),-tooltip.get_child(0).size.y - 10)
+		tooltip.visible = true
+
 func _on_hotbar_ability_mouse_exited(index):
-	if abilities.size() <= index:
-		return
-	
 	tooltip.visible = false
 	unit.lose_camera_focus = false
 
@@ -851,6 +900,6 @@ func _unhandled_input(event):
 		if tooltip.visible == false:
 			return
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			tooltip.get_node('Panel/ScrollContainer').scroll_vertical -= 3
+			tooltip.get_node('Panel/PanelContainer/ScrollContainer').scroll_vertical -= 3
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			tooltip.get_node('Panel/ScrollContainer').scroll_vertical += 3
+			tooltip.get_node('Panel/PanelContainer/ScrollContainer').scroll_vertical += 3

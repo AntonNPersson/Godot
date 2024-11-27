@@ -40,10 +40,11 @@ func _check_collision():
 		if area.is_in_group('enemies') and area not in hit_enemies:
 			hit_enemies.append(area)
 			var crit = player._apply_critical_damage(player.total_attack_damage)
-			var extra = {"basic_attacking": true, "critical" : crit["critical"], "ability" : player.current_attack_modifier_abilities}
+			var extra = {"basic_attacking": true, "critical" : crit["critical"], "ability" : null}
 			var new_damage = crit["value"]
 			player.get_node('Control')._on_action(new_damage, area, player, "Damage", extra)
 			for i in range(player.current_attack_modifier_tags.size()):
+				extra = {"basic_attacking": true, "critical" : crit["critical"], "ability" : player.current_attack_modifier_values[i]}
 				player.get_node('Control')._on_action(player.current_attack_modifier_values[i], area, player, player.current_attack_modifier_tags[i], extra)
 			GameManager._shake_camera(player, 50, 0.2)
 			player.get_node('Control')._on_action(45, area, player, "Wind")

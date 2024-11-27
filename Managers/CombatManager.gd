@@ -175,6 +175,9 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"Duplicate":
 			_handle_duplicate_action(user, value)
 			return
+		"Multistrike":
+			_handle_multistrike_action(target, value, user)
+			return
 		"Echo":
 			_handle_echo_action(user, value)
 			return
@@ -205,6 +208,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"MovementPenalty":
 			_handle_movement_penalty_action(target, value, user)
 			return
+		"MovementCharges":
+			_handle_movement_charges_action(value, user)
 		"Pierce":
 			_handle_pierce_action(user)
 			return
@@ -253,6 +258,12 @@ func _on_do_action(value, target, user, tag, extra = null):
 	var damage = _calculate_reduced_damage(value, target.total_armor)
 
 	match tag:
+		"AfflictionBuff":
+			_handle_affliction_buff_action(target, value, extra)
+		"ArcaneDamagePassive":
+			_handle_arcane_damage_passive(target, value, extra['ability'])
+		"WindSpeedPassive":
+			_handle_wind_speed_passive(target, value, extra['ability'])
 		"AttackBurnBuff":
 			_handle_attack_buff_action(target, value, user, "Burn", extra)
 		"AttackDamageBuff":
@@ -276,27 +287,41 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_burn_action(target, value, user, extra)
 		"CriticalChanceBuff":
 			_handle_crit_chance_buff_action(target, value, user, "CriticalChanceBuff", extra['ability'])
+		"CriticalChancePassive":
+			_handle_critical_chance_passive(target, value, extra['ability'])
 		"Damage":
 			if _calculate_evade_chance(target.total_evade):
 				_trigger_combat_text(target, 0, 'Springgreen')
 				return
 			_handle_damage_action(target, damage, tag, user, extra)
+		"DoubleCastPassive":
+			_handle_double_cast_passive(target, value, extra['ability'])
+		"FlatEvadeBuff":
+			_handle_evade_buff_action(target, value, extra)
 		"Freeze":
 			_handle_freeze_action(target, value, user, extra)
+		"FrozenChancePassive":
+			_handle_frozen_chance_passive(target, value, extra['ability'])
 		"FrenzyBuff":
 			_handle_frenzy_buff_action(target, value, user)
+		"FlatArmorBuff":
+			_handle_flat_armor_buff_action(target, value, extra)
 		"Heal":
 			_handle_heal_action(target, value, tag)
 		"Infected":
 			_handle_infected_action(target)
 		"Lifesteal":
 			_handle_lifesteal_action(user, damage, tag)
+		"LifeStealPassive":
+			_handle_life_steal_passive(target, value, extra['ability'])
 		"Mark":
 			_handle_mark_action(target, value, user)
 		"MovementSpeedPassive":
 			_handle_movement_speed_passive(target, value, extra['ability'])
 		"PercentArmorBuff":
-			_handle_percent_armor_buff_action(target, value, user)
+			_handle_percent_armor_buff_action(target, value, user, extra)
+		"PercentArmorDebuff":
+			_handle_percent_armor_debuff_action(target, value, user, extra)
 		"PercentAttackDamageBuff":
 			_handle_percent_attack_buff_action(target, value, user)
 		"PercentSpeedBuff":
@@ -311,6 +336,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_pve_light_action(target, value, 1, user)
 		"PVELightRemove":
 			_handle_pve_light_action(target, value, 0, user)
+		"QuickAttackPassive":
+			_handle_quick_attack_passive(target, value, extra['ability'])
 		"RefundMana":
 			_handle_refund_mana_action(target, value, extra)
 		"Root":
@@ -323,6 +350,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_speed_buff_action(target, value, user)
 		"Stealth":
 			_handle_stealth_action(target, value)
+		"SpellVampPassive":
+			_handle_spell_vamp_passive(target, value, extra['ability'])
 		"Wind":
 			_handle_wind_action(target, value, user)
 	_update_boss_health_bar(target, user)
@@ -393,10 +422,55 @@ func _handle_movement_penalty_action(target, value, unit):
 		unit.bonus_speed += value
 		if unit.is_in_group('players'):
 			unit._update_stats()
+			
+
+func _handle_movement_charges_action(value, unit):
+	unit.charges += value
 
 func _handle_ability_percent_cooldown_reduction_action(unit, value):
 		unit.cooldown = unit.cooldown * (1 - value/100.0)
-			
+
+func _handle_wind_speed_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_WindSpeed"
+	var new_value = target.total_speed * (value/100.0)
+	if target.has_meta('WindSpeedPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('WindSpeedPassive'):
+		target.set_meta('WindSpeedPassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('WindSpeedPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('WindSpeedPassive', target.get_meta('WindSpeedPassive') - old_passive)
+		target.set_meta('WindSpeedPassive', target.get_meta('WindSpeedPassive') + new_value)
+		target.bonus_attack_damage -= old_passive
+	
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_range += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_arcane_damage_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_ArcaneDamage"
+	var new_value = target.total_intelligence * (value/100.0)
+	if target.has_meta('ArcaneDamagePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('ArcaneDamagePassive'):
+		target.set_meta('ArcaneDamagePassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('ArcaneDamagePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('ArcaneDamagePassive', target.get_meta('ArcaneDamagePassive') - old_passive)
+		target.set_meta('ArcaneDamagePassive', target.get_meta('ArcaneDamagePassive') + new_value)
+		target.bonus_attack_damage -= old_passive
+	
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_attack_damage += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
 
 func _handle_freeze_amount_action(target, value, unit):
 	if target:
@@ -441,7 +515,7 @@ func _handle_survival_action(unit, target, value):
 		timer2.start()
 	else:
 		extra_effect_values.erase("Survival")
-		unit.bonus_life_steal -= value
+		unit.bonus_life_steal += value
 
 func _handle_chronos_blessing_action(target, value, unit):
 	if target:
@@ -466,6 +540,25 @@ func _handle_chronos_blessing_action(target, value, unit):
 func _handle_self_target_action(unit, user):
 	if unit.is_in_group('players'):
 		user.additional_self_target = true
+
+func _handle_flat_armor_buff_action(target, value, extra):
+	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "FlatArmor"))
+	timer.start()
+	target.bonus_armor += value
+
+func _handle_affliction_buff_action(target, value, extra):
+	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "Affliction"))
+	timer.start()
+	target.bonus_affliction_resistance += value
+
+func _handle_evade_buff_action(target, value, extra):
+	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "Evade"))
+	timer.start()
+	target.bonus_evade += value
+
 
 func _handle_converganace_action(unit, value, target):
 	var reduced_amount
@@ -770,6 +863,9 @@ func _handle_duplicate_action(user, value):
 		return
 	user.amount += value
 
+func _handle_multistrike_action(target, value, user):
+	user.additional_targets += value
+
 func _handle_area_pool_action(user, value, extra):
 	user.area_pool = true
 	user.area_pool_radius = value
@@ -823,13 +919,13 @@ func _handle_damage_action(target, damage, tag, user, extra = {"basic_attacking"
 	if rest_damage == 0:
 		return
 	target.current_health -= rest_damage
-	if extra["basic_attacking"]:
+	if extra.has("basic_attacking") and extra["basic_attacking"]:
 		if extra_effect_values.has("VampiricalHeal"):
 			_on_do_action(float(player.total_attack_damage * (extra_effect_values["VampiricalHeal"]/100.0)), player, player, "Heal")
-	if !extra["critical"]:
-		_trigger_effects(target, rest_damage, 'Wheat', tag)
-	else:
+	if extra.has('critical') and extra["critical"]:
 		_trigger_effects(target, rest_damage, 'yellow', tag)
+	else:
+		_trigger_effects(target, rest_damage, 'Wheat', tag)
 	if target.has_node('Shock_timer'):
 		await get_tree().create_timer(0.1).timeout
 		if _check_if_dead(target):
@@ -860,6 +956,86 @@ func _handle_attack_range_passive(target, value, ability):
 	if target.is_in_group('players'):
 		target._update_stats()
 
+func _handle_spell_vamp_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_SpellVamp"
+	if target.has_meta('SpellVampPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('SpellVampPassive'):
+		target.set_meta('SpellVampPassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('SpellVampPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('SpellVampPassive', target.get_meta('SpellVampPassive') - old_passive)
+		target.set_meta('SpellVampPassive', target.get_meta('SpellVampPassive') + value)
+		target.bonus_spell_vamp -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_spell_vamp += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_life_steal_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_LifeSteal"
+	if target.has_meta('LifeStealPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('LifeStealPassive'):
+		target.set_meta('LifeStealPassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('LifeStealPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('LifeStealPassive', target.get_meta('LifeStealPassive') - old_passive)
+		target.set_meta('LifeStealPassive', target.get_meta('LifeStealPassive') + value)
+		target.bonus_life_steal -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_life_steal += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_critical_chance_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_CriticalChance"
+	if target.has_meta('CriticalChancePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('CriticalChancePassive'):
+		target.set_meta('CriticalChancePassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('CriticalChancePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('CriticalChancePassive', target.get_meta('CriticalChancePassive') - old_passive)
+		target.set_meta('CriticalChancePassive', target.get_meta('CriticalChancePassive') + value)
+		target.bonus_critical_chance -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_critical_chance += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_frozen_chance_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_FrozenChance"
+	if target.has_meta('FrozenChancePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('FrozenChancePassive'):
+		target.set_meta('FrozenChancePassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('FrozenChancePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('FrozenChancePassive', target.get_meta('FrozenChancePassive') - old_passive)
+		target.set_meta('FrozenChancePassive', target.get_meta('FrozenChancePassive') + value)
+		target.bonus_frozen_chance -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_frozen_chance += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
 # Handles the movement speed passive on the target.
 # Parameters:
 # - target: The target of the action.
@@ -881,6 +1057,46 @@ func _handle_movement_speed_passive(target, value, ability):
 
 	target.set_meta(ability_name_clean, value)
 	target.bonus_speed += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_double_cast_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_DoubleCast"
+	if target.has_meta('DoubleCastPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('DoubleCastPassive'):
+		target.set_meta('DoubleCastPassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('DoubleCastPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('DoubleCastPassive', target.get_meta('DoubleCastPassive') - old_passive)
+		target.set_meta('DoubleCastPassive', target.get_meta('DoubleCastPassive') + value)
+		target.bonus_double_cast_chance -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_double_cast_chance += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_quick_attack_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_QuickAttack"
+	if target.has_meta('QuickAttackPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('QuickAttackPassive'):
+		target.set_meta('QuickAttackPassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('QuickAttackPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('QuickAttackPassive', target.get_meta('QuickAttackPassive') - old_passive)
+		target.set_meta('QuickAttackPassive', target.get_meta('QuickAttackPassive') + value)
+		target.bonus_quick_attack_chance -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_quick_attack_chance += target.get_meta(ability_name_clean)
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -965,19 +1181,13 @@ func _handle_poison_action(target, value, user):
 	if !target.has_node('Poison_timer'):
 		target.set_meta('Poison_count', 0)
 		target.set_meta('Poison_stacks', stacks)
-		var timer_name = "Poison_timer" + str(target.get_meta('Poison_count'))
+		var timer_name = "Poison_timer"
 		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', timer_name))
 		timer.name = timer_name
 		target.add_child(timer)
 		timer.start()
 	else:
-		target.get_node('Poison_timer').queue_free()
 		target.set_meta('Poison_stacks', target.get_meta('Poison_stacks') + value)
-		var timer_name = "Poison_timer" + str(target.get_meta('Poison_count'))
-		timer.name = timer_name
-		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', timer_name))
-		target.add_child(timer)
-		timer.start()
 
 # Handles the frenzy buff action on the target.
 # Parameters:
@@ -1014,12 +1224,30 @@ func _handle_frenzy_buff_action(target, value, user):
 # - target: The target of the action.
 # - value: The value of the armor buff.
 # - user: The user of the action.
-func _handle_percent_armor_buff_action(target, value, user):
-	target.total_armor += (value/100.0) * target.total_armor
+func _handle_percent_armor_buff_action(target, value, user, extra):
+	target.bonus_armor += (value/100.0) * target.total_armor
+	target.set_meta('ArmorBuff', (value/100.0) * target.total_armor)
 	if target.is_in_group('players'):
 		target._update_stats()
-	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-	timer.timeout.connect(_deapply_buff.bind(target, value, "Armor"))
+	var timer
+	if typeof(user) == TYPE_INT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, target.get_meta('Armorbuff'), "Armor"))
+	timer.start()
+
+func _handle_percent_armor_debuff_action(target, value, user, extra):
+	target.bonus_armor -= (value/100.0) * target.total_armor
+	target.set_meta('ArmorDebuff', (value/100.0) * target.total_armor)
+	if target.is_in_group('players'):
+		target._update_stats()
+	var timer
+	if typeof(user) == TYPE_INT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, -target.get_meta('ArmorDebuff'), "Armor"))
 	timer.start()
 
 # Handles the percent speed buff action on the target.
@@ -1147,12 +1375,11 @@ func _handle_burn_action(target, value, user, extra):
 	var damage_per_tick = value / total_ticks
 
 	var ability_name = extra["ability"].replace(" ", "_")
-	if !target.has_node('Burn_timer' + ability_name):
-		print(ability_name)
+	if !target.has_node('Burn_timer_' + ability_name):
 		var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
-		target.set_meta('Burn_count_' + ability_name, 0)
-		target.set_meta('Burn_damage_' + ability_name, damage_per_tick)
-		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'orange', 'Burn', "Burn_timer_" + ability_name))
+		target.set_meta('Burn_count' + ability_name, 0)
+		target.set_meta('Burn_damage' + ability_name, damage_per_tick)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'orange', 'Burn', ability_name))
 		timer.name = "Burn_timer_" + ability_name
 
 		var burning = burn_effect.instantiate()
@@ -1161,12 +1388,12 @@ func _handle_burn_action(target, value, user, extra):
 		timer.start()
 	else:
 		var echo = 1
-		while target.has_node('Burn_timer' + ability_name + str(echo)):
+		while target.has_node('Burn_timer_' + ability_name + str(echo)):
 			echo += 1
-		target.set_meta('Burn_count_' + ability_name + str(echo), 0)
-		target.set_meta('Burn_damage_' + ability_name + str(echo), damage_per_tick)
+		target.set_meta('Burn_count' + ability_name + str(echo), 0)
+		target.set_meta('Burn_damage' + ability_name + str(echo), damage_per_tick)
 		var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
-		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'orange', 'Burn', "Burn_timer_" + ability_name + str(echo)))
+		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'orange', 'Burn', ability_name + str(echo)))
 		timer.name = "Burn_timer_" + ability_name + str(echo)
 		target.add_child(timer)
 		timer.start()
@@ -1499,6 +1726,12 @@ func _deapply_buff(target, value, tag):
 		target.bonus_mana_regen -= value
 	if tag == "Root":
 		target.is_rooted = false
+	if tag == "FlatArmor":
+		target.bonus_armor -= value
+	if tag == "Affliction":
+		target.bonus_affliction_resistance -= value
+	if tag == "Evade":
+		target.bonus_evade -= value
 	
 	if target.is_in_group('players'):
 		target._update_stats()
@@ -1514,7 +1747,6 @@ func _deapply_buff(target, value, tag):
 func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, type, timer_name = null):
 	if target in invincible_units or _check_if_dead(target) or get_tree().get_nodes_in_group("players")[0].paused:
 		return
-
 	var damage
 	if type == "Bleed":
 		damage = _calculate_reduced_damage(damage_per_tick * (1 + target.get_meta('Bleed_stacks')/10), target.total_armor)
@@ -1530,20 +1762,20 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 			if user == player:
 				_on_do_action(damage * (burn_effect_values['BurnHeal']/100.0), user, target, "Heal")
 
-		for e in user.get_node('InventoryManager').abilities:
+		for e in player.get_node('InventoryManager').abilities:
 			if e._has_tag('BurnExplosion'):
 				if !timers.has('BurnExplosion'):
 					timers['BurnExplosion'] = e._get_enchant_extras('BurnExplosion')['Cooldown']
 
-				for enemy in get_tree().get_nodes_in_group('enemies'):
-					if timers['BurnExplosion'] <= 0:
-						timers['BurnExplosion'] = e._get_enchant_extras('BurnExplosion')['Cooldown']
-						var new_explosion = explosion_effect.instantiate()
-						new_explosion.global_position = enemy.global_position
-						new_explosion.get_child(0).color = Color.ORANGE
-						new_explosion.get_child(0).initial_velocity_min = e._get_enchant_extras('BurnExplosion')['Radius']
-						get_tree().get_root().add_child(new_explosion)
-						new_explosion.get_child(0).emitting = true
+				if timers['BurnExplosion'] <= 0:
+					timers['BurnExplosion'] = e._get_enchant_extras('BurnExplosion')['Cooldown']
+					var new_explosion = explosion_effect.instantiate()
+					new_explosion.global_position = target.global_position
+					new_explosion.get_child(0).color = Color.ORANGE
+					new_explosion.get_child(0).scale = Vector2(e._get_enchant_extras('BurnExplosion')['Radius']/100, e._get_enchant_extras('BurnExplosion')['Radius']/100)
+					get_tree().get_root().add_child(new_explosion)
+					new_explosion.get_child(0).emitting = true
+					for enemy in get_tree().get_nodes_in_group('enemies'):
 						if enemy.global_position.distance_to(new_explosion.global_position) < e._get_enchant_extras('BurnExplosion')['Radius']:
 							_on_do_action(damage * 3, enemy, user, "Damage")
 						break
@@ -1567,16 +1799,18 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 			return
 		if type == "Burn" and target.has_node("Burn_effect") and !_check_if_dead(target):
 			target.get_node("Burn_effect").queue_free()
-			return
 		if type == "Poison" and !_check_if_dead(target):
-			target.get_node(str(timer_name)).queue_free()
+			if target.has_node("Poison_effect"):
+				target.get_node("Poison_effect").queue_free()
 			target.set_meta(str(timer_name), 0)
 			poisoned_targets.erase(target)
+			if target.has_node("Poison_timer"):
+				target.get_node("Poison_timer").queue_free()
 			return
 		if target.has_node(type + "_timer") and !_check_if_dead(target):
 			target.get_node(type + "_timer").queue_free()
-		if timer_name != null and !_check_if_dead(target) and target.has_node(timer_name):
-			target.get_node(timer_name).queue_free()
+		if timer_name != null and !_check_if_dead(target) and target.has_node(type + "_timer_" + timer_name):
+			target.get_node(type + "_timer_" + timer_name).queue_free()
 	_update_boss_health_bar(target, user)
 	_trigger_hit_effect(target, type)
 	if _check_if_dead(target):
@@ -1635,7 +1869,7 @@ func _trigger_hit_effect(target, tag):
 	sprite.material = new_material
 	if target.is_in_group('enemies') and tag == "Damage":
 		if !target.is_in_group('boss') or !target.is_in_group('special'):
-			target.do_action.emit(5, target, player, "Wind")
+			target.do_action.emit(15, target, player, "Wind")
 		if !target.has_node('HitEffect'):
 			var instance = hit_effect.instantiate()
 			target.add_child(instance)

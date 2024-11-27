@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://mvapbjluavwi"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_031n8"]
+[ext_resource type="Texture2D" uid="uid://60v1kk4qq6o8" path="res://Abilities/Enchants/icons/2BrownAbility_2.png" id="2_rl2wn"]
+
+[node name="Add Resistances To Target" type="Node2D"]
+script = ExtResource("1_031n8")
+i_name = "Target: Resistance"
+tooltip = "Add Value0 armor, and Value1% affliction resistance to selected ally target for 3 seconds."
+icon = ExtResource("2_rl2wn")
+tags = Array[String](["FlatArmorBuff", "AfflictionBuff"])
+values = Array[float]([40.0, 20.0])
+types = Array[int]([2])
+extra = {
+"Hit": true
+}
+unique = true

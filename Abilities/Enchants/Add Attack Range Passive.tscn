@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1m2ap8x4dbhf"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_u2c4k"]
+
+[node name="Add Attack Range Passive" type="Node2D"]
+script = ExtResource("1_u2c4k")
+i_name = "Passive: Attack Range"
+tooltip = "Add Value0 flat range to your basic attacks on selected ability."
+tags = Array[String](["AttackRangePassive"])
+values = Array[float]([10.0])
+types = Array[int]([4])

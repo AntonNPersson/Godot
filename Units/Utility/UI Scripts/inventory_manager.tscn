@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dlpkjnesre3k2"]
+[gd_scene load_steps=25 format=3 uid="uid://dlpkjnesre3k2"]
 
 [ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="1_rdvac"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_qob8h"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cneqlbtcwx1sd" path="res://GUI/32x32 Item holder.png" id="5_c4sts"]
 [ext_resource type="Texture2D" uid="uid://cyapl8nbqc187" path="res://Sprites/Icons/Item_border.png" id="6_kswhx"]
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="7_0f38t"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/Custom_tooltip.gd" id="8_74xt6"]
 [ext_resource type="Texture2D" uid="uid://cil81eu46xxqv" path="res://GUI/Scalable txt screen x1.png" id="9_sdr2b"]
 [ext_resource type="Texture2D" uid="uid://dadbdownsdgp6" path="res://GUI/test.png" id="10_2a5c7"]
 [ext_resource type="Texture2D" uid="uid://bves5jgiciy81" path="res://GUI/Stamina_filler.png" id="11_ogwdn"]
@@ -14,7 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://b8gsssm4e5tbm" path="res://GUI/health_bar.png" id="14_43qvp"]
 [ext_resource type="Texture2D" uid="uid://dxb0430ut0wwm" path="res://GUI/mana_bar.png" id="15_2s7ba"]
 [ext_resource type="Texture2D" uid="uid://d2syqp1iwpmbx" path="res://GUI/potions0 x2.png" id="15_itbpl"]
-[ext_resource type="Texture2D" uid="uid://dsjpu5ph3jr4a" path="res://GUI/Pattern01 x1.png" id="22_85j2r"]
+[ext_resource type="Texture2D" uid="uid://cwuivcmsn1yi" path="res://GUI/Level.png" id="17_uyls1"]
+[ext_resource type="Texture2D" uid="uid://cvsjvrgxgkm2w" path="res://GUI/Level_progress.png" id="18_0as54"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="23_6j2bt"]
 
 [sub_resource type="FontVariation" id="FontVariation_q5uqw"]
@@ -28,6 +30,11 @@ texture = ExtResource("5_c4sts")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i51cf"]
 
+[sub_resource type="Curve" id="Curve_ikea4"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.584, 100), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t34xo"]
 
 [node name="InventoryManager" type="Node"]
@@ -39,8 +46,8 @@ simple_tooltip = ExtResource("2_v1ogu")
 [node name="Inventory" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -184.0
-offset_right = -144.0
+offset_left = -12.0
+offset_right = 28.0
 offset_bottom = 40.0
 
 [node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/Inventory"]
@@ -1026,18 +1033,6 @@ theme_override_font_sizes/font_size = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_i51cf")
 allow_search = false
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Inventory"]
-z_index = 10
-layout_mode = 0
-offset_left = 1664.0
-offset_top = 640.0
-offset_right = 1728.0
-offset_bottom = 652.0
-scale = Vector2(2, 2)
-size_flags_horizontal = 4
-size_flags_vertical = 0
-texture = ExtResource("22_85j2r")
-
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Inventory"]
 visible = false
 z_index = -1
@@ -1113,6 +1108,7 @@ auto_height = true
 item_count = 2
 item_0/text = "Total Health: 100"
 item_1/text = "Total Mana: 100"
+script = ExtResource("8_74xt6")
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/Inventory/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -1128,6 +1124,7 @@ auto_height = true
 item_count = 2
 item_0/text = "Total Health: 100"
 item_1/text = "Total Mana: 100"
+script = ExtResource("8_74xt6")
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer/Inventory/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -1143,6 +1140,7 @@ auto_height = true
 item_count = 2
 item_0/text = "Total Health: 100"
 item_1/text = "Total Mana: 100"
+script = ExtResource("8_74xt6")
 
 [node name="RichTextLabel4" type="RichTextLabel" parent="CanvasLayer/Inventory/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -1158,6 +1156,7 @@ auto_height = true
 item_count = 2
 item_0/text = "Total Health: 100"
 item_1/text = "Total Mana: 100"
+script = ExtResource("8_74xt6")
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer/Inventory/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -1173,6 +1172,7 @@ auto_height = true
 item_count = 2
 item_0/text = "Total Health: 100"
 item_1/text = "Total Mana: 100"
+script = ExtResource("8_74xt6")
 
 [node name="RichTextLabel6" type="RichTextLabel" parent="CanvasLayer/Inventory/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -1188,44 +1188,55 @@ auto_height = true
 item_count = 2
 item_0/text = "Total Health: 100"
 item_1/text = "Total Mana: 100"
+script = ExtResource("8_74xt6")
 
 [node name="HotbarC" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Hotbar" type="Panel" parent="CanvasLayer/HotbarC"]
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 787.0
-offset_top = 938.0
-offset_right = 1093.0
-offset_bottom = 1040.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="Hotbar" type="Panel" parent="CanvasLayer/HotbarC"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -245.0
+offset_top = -66.5
+offset_right = 245.0
+offset_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("2_y27wo")
 
 [node name="TextureRect1" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
 layout_mode = 0
-offset_left = 49.0
-offset_top = 30.0
-offset_right = 99.0
-offset_bottom = 79.0
+offset_left = 38.0
+offset_top = -26.0
+offset_right = 88.0
+offset_bottom = 23.0
+scale = Vector2(1.2, 1.2)
 expand_mode = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/HotbarC/Hotbar/TextureRect1"]
 visible = false
 layout_mode = 0
-offset_left = 15.0
-offset_top = 13.0
-offset_right = 32.0
-offset_bottom = 39.0
+offset_left = 17.0
+offset_top = 51.0001
+offset_right = 34.0
+offset_bottom = 77.0001
+theme_override_colors/default_color = Color(0.709804, 0.619608, 0.407843, 1)
 theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
 tab_size = 10
@@ -1235,17 +1246,41 @@ visible = false
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 0
 offset_left = 13.0
-offset_top = -27.0
+offset_top = -35.0
 offset_right = 33.0
-offset_bottom = -7.0
+offset_bottom = -15.0
 text = "+"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="CanvasLayer/HotbarC/Hotbar/TextureRect1/level_up"]
+position = Vector2(10, 9)
+amount = 20
+lifetime = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(10, 10)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+damping_min = 0.425
+damping_max = 0.425
+damping_curve = SubResource("Curve_ikea4")
+color = Color(1, 1, 0, 1)
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/HotbarC/Hotbar/TextureRect1"]
+visible = false
+layout_mode = 0
+offset_top = 18.0
+offset_right = 50.0
+offset_bottom = 49.0
+bbcode_enabled = true
+text = "[center]1"
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
 layout_mode = 0
-offset_left = 129.0
-offset_top = 30.0
-offset_right = 179.0
-offset_bottom = 79.0
+offset_left = 128.0
+offset_top = -26.0
+offset_right = 178.0
+offset_bottom = 23.0
+scale = Vector2(1.2, 1.2)
 theme = ExtResource("2_y27wo")
 expand_mode = 1
 
@@ -1253,10 +1288,12 @@ expand_mode = 1
 visible = false
 layout_mode = 0
 offset_left = 17.0
-offset_top = 12.0
+offset_top = 51.0
 offset_right = 34.0
-offset_bottom = 38.0
+offset_bottom = 77.0
+theme_override_colors/default_color = Color(0.709804, 0.619608, 0.407843, 1)
 theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
 tab_size = 10
@@ -1264,28 +1301,55 @@ tab_size = 10
 [node name="level_up" type="Button" parent="CanvasLayer/HotbarC/Hotbar/TextureRect2"]
 visible = false
 custom_minimum_size = Vector2(20, 20)
-offset_left = 13.0
-offset_top = -27.0
-offset_right = 33.0
-offset_bottom = -7.0
+layout_mode = 0
+offset_left = 12.0
+offset_top = -36.0
+offset_right = 32.0
+offset_bottom = -16.0
 text = "+"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="CanvasLayer/HotbarC/Hotbar/TextureRect2/level_up"]
+position = Vector2(10, 9)
+amount = 20
+lifetime = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(10, 10)
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+damping_min = 0.425
+damping_max = 0.425
+damping_curve = SubResource("Curve_ikea4")
+color = Color(1, 1, 0, 1)
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/HotbarC/Hotbar/TextureRect2"]
+visible = false
+layout_mode = 0
+offset_top = 18.0
+offset_right = 50.0
+offset_bottom = 49.0
+bbcode_enabled = true
+text = "[center]1"
 
 [node name="TextureRect3" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
 layout_mode = 0
-offset_left = 205.0
-offset_top = 30.0
-offset_right = 255.0
-offset_bottom = 79.0
+offset_left = 215.0
+offset_top = -26.0
+offset_right = 265.0
+offset_bottom = 23.0
+scale = Vector2(1.2, 1.2)
 expand_mode = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/HotbarC/Hotbar/TextureRect3"]
 visible = false
 layout_mode = 0
 offset_left = 16.0
-offset_top = 13.0
+offset_top = 51.0
 offset_right = 33.0
-offset_bottom = 39.0
+offset_bottom = 77.0
+theme_override_colors/default_color = Color(0.709804, 0.619608, 0.407843, 1)
 theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
 tab_size = 10
@@ -1293,67 +1357,162 @@ tab_size = 10
 [node name="level_up" type="Button" parent="CanvasLayer/HotbarC/Hotbar/TextureRect3"]
 visible = false
 custom_minimum_size = Vector2(20, 20)
+layout_mode = 0
 offset_left = 13.0
 offset_top = -27.0
 offset_right = 33.0
 offset_bottom = -7.0
 text = "+"
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="CanvasLayer/HotbarC/Hotbar/TextureRect3/level_up"]
+position = Vector2(10, 9)
+lifetime = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(10, 10)
+gravity = Vector2(0, -40)
+damping_min = 0.425
+damping_max = 0.425
+damping_curve = SubResource("Curve_ikea4")
+color = Color(1, 1, 0, 1)
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/HotbarC/Hotbar/TextureRect3"]
+visible = false
+layout_mode = 0
+offset_top = 18.0
+offset_right = 50.0
+offset_bottom = 49.0
+bbcode_enabled = true
+text = "[center]1"
+
 [node name="TextureRect5" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
 z_index = 2
+custom_minimum_size = Vector2(50, 49)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 45.0
-offset_top = 26.0
-offset_right = -203.0
-offset_bottom = -19.0
+offset_left = 38.0
+offset_top = -26.0
+offset_right = -402.0
+offset_bottom = -44.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("9_sdr2b")
 
 [node name="TextureRect6" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
 z_index = 2
+custom_minimum_size = Vector2(50, 49)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 125.0
-offset_top = 26.0
-offset_right = -123.0
-offset_bottom = -19.0
+offset_left = 128.0
+offset_top = -26.0
+offset_right = -312.0
+offset_bottom = -44.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("9_sdr2b")
 expand_mode = 1
 
 [node name="TextureRect7" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
 z_index = 2
+custom_minimum_size = Vector2(50, 49)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 201.0
-offset_top = 26.0
-offset_right = -47.0
-offset_bottom = -19.0
+offset_left = 215.0
+offset_top = -26.0
+offset_right = -225.0
+offset_bottom = -44.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("9_sdr2b")
 expand_mode = 1
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
-z_index = 23
+[node name="TextureRect4" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
 layout_mode = 0
-offset_left = 91.0
-offset_top = 83.0
-offset_right = 155.0
-offset_bottom = 95.0
-scale = Vector2(2, 2)
-size_flags_horizontal = 4
-size_flags_vertical = 0
-texture = ExtResource("22_85j2r")
+offset_left = 303.0
+offset_top = -26.0
+offset_right = 353.0
+offset_bottom = 23.0
+scale = Vector2(1.2, 1.2)
+expand_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/HotbarC/Hotbar/TextureRect4"]
+visible = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 51.0
+offset_right = 33.0
+offset_bottom = 77.0
+theme_override_colors/default_color = Color(0.709804, 0.619608, 0.407843, 1)
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 0
+tab_size = 10
+
+[node name="TextureRect8" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
+z_index = 2
+custom_minimum_size = Vector2(50, 49)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 303.0
+offset_top = -26.0
+offset_right = -137.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("9_sdr2b")
+expand_mode = 1
+
+[node name="TextureRect9" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
+layout_mode = 0
+offset_left = 392.0
+offset_top = -27.0
+offset_right = 442.0
+offset_bottom = 23.0
+scale = Vector2(1.2, 1.2)
+expand_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/HotbarC/Hotbar/TextureRect9"]
+visible = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 51.0
+offset_right = 33.0
+offset_bottom = 77.0
+theme_override_colors/default_color = Color(0.709804, 0.619608, 0.407843, 1)
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 0
+tab_size = 10
+
+[node name="TextureRect10" type="TextureRect" parent="CanvasLayer/HotbarC/Hotbar"]
+z_index = 2
+custom_minimum_size = Vector2(50, 49)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 392.0
+offset_top = -26.0
+offset_right = -48.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("9_sdr2b")
+expand_mode = 1
 
 [node name="Bar_bag" type="Panel" parent="CanvasLayer"]
 anchors_preset = 7
@@ -1376,18 +1535,26 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 726.0
-offset_top = -74.0
-offset_right = 936.0
-offset_bottom = -54.0
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 220.0
+offset_bottom = 28.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.1, 1)
+scale = Vector2(1.5, 1)
 theme = ExtResource("2_y27wo")
 value = 100.0
 texture_over = ExtResource("10_2a5c7")
 texture_progress = ExtResource("11_ogwdn")
 script = ExtResource("7_0f38t")
+
+[node name="values" type="RichTextLabel" parent="CanvasLayer/Bar_bag/ProgressBar4"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 19.0
+bbcode_enabled = true
+text = "[center] 150/150"
 
 [node name="ProgressBar2" type="TextureProgressBar" parent="CanvasLayer/Bar_bag"]
 modulate = Color(1, 1, 1, 0.407843)
@@ -1399,13 +1566,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 454.0
-offset_top = 30.0
-offset_right = 664.0
-offset_bottom = 50.0
+offset_left = 10.0
+offset_top = -47.0
+offset_right = 220.0
+offset_bottom = -27.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.1, 1)
+scale = Vector2(1.5, 1)
 theme = ExtResource("2_y27wo")
 value = 30.0
 texture_over = ExtResource("10_2a5c7")
@@ -1420,18 +1587,26 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 454.0
-offset_top = 29.0
-offset_right = 664.0
-offset_bottom = 49.0
+offset_left = 10.0
+offset_top = -48.0
+offset_right = 220.0
+offset_bottom = -28.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.1, 1)
+scale = Vector2(1.5, 1)
 theme = ExtResource("2_y27wo")
 value = 100.0
 texture_under = ExtResource("10_2a5c7")
 texture_progress = ExtResource("14_43qvp")
 script = ExtResource("7_0f38t")
+
+[node name="values" type="RichTextLabel" parent="CanvasLayer/Bar_bag/ProgressBar5"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 19.0
+bbcode_enabled = true
+text = "[center] 150/150"
 
 [node name="ProgressBar3" type="TextureProgressBar" parent="CanvasLayer/Bar_bag"]
 layout_mode = 1
@@ -1440,38 +1615,75 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 996.0
-offset_top = 29.0
-offset_right = 1206.0
-offset_bottom = 49.0
+offset_left = 10.0
+offset_top = -20.0
+offset_right = 220.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.1, 1)
+scale = Vector2(1.5, 1)
 theme = ExtResource("2_y27wo")
 value = 50.0
 texture_over = ExtResource("10_2a5c7")
 texture_progress = ExtResource("15_2s7ba")
 script = ExtResource("7_0f38t")
 
+[node name="values" type="RichTextLabel" parent="CanvasLayer/Bar_bag/ProgressBar3"]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 19.0
+bbcode_enabled = true
+text = "[center] 150/150"
+
 [node name="Potion_1" type="TextureRect" parent="CanvasLayer/Bar_bag"]
 layout_mode = 0
-offset_left = 711.0
-offset_top = 29.0
-offset_right = 751.0
-offset_bottom = 69.0
+offset_left = 128.0
+offset_top = -49.0
+offset_right = 168.0
+offset_bottom = -9.0
 scale = Vector2(1.4, 1.4)
 texture = ExtResource("15_itbpl")
 script = ExtResource("7_0f38t")
 
 [node name="Potion_2" type="TextureRect" parent="CanvasLayer/Bar_bag"]
 layout_mode = 0
-offset_left = 756.0
-offset_top = 29.0
-offset_right = 796.0
-offset_bottom = 69.0
+offset_left = 186.0
+offset_top = -49.0
+offset_right = 226.0
+offset_bottom = -9.0
 scale = Vector2(1.4, 1.4)
 texture = ExtResource("15_itbpl")
 script = ExtResource("7_0f38t")
+
+[node name="level_bar" type="TextureProgressBar" parent="CanvasLayer/Bar_bag"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = -31.0
+offset_right = 96.0
+offset_bottom = 43.0
+scale = Vector2(1.5, 1.5)
+fill_mode = 3
+texture_over = ExtResource("17_uyls1")
+texture_progress = ExtResource("18_0as54")
+script = ExtResource("7_0f38t")
+
+[node name="level" type="RichTextLabel" parent="CanvasLayer/Bar_bag/level_bar"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -15.5
+offset_right = 20.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "[center]1"
 
 [node name="Items" type="Node" parent="."]
 
@@ -1576,3 +1788,10 @@ script = ExtResource("7_0f38t")
 [connection signal="mouse_exited" from="CanvasLayer/HotbarC/Hotbar/TextureRect6" to="." method="_on_hotbar_ability_mouse_exited" binds= [1]]
 [connection signal="mouse_entered" from="CanvasLayer/HotbarC/Hotbar/TextureRect7" to="." method="_on_hotbar_ability_mouse_entered" binds= [2]]
 [connection signal="mouse_exited" from="CanvasLayer/HotbarC/Hotbar/TextureRect7" to="." method="_on_hotbar_ability_mouse_exited" binds= [2]]
+[connection signal="mouse_entered" from="CanvasLayer/HotbarC/Hotbar/TextureRect4" to="." method="_on_hotbar_character_mouse_entered" binds= [0]]
+[connection signal="mouse_exited" from="CanvasLayer/HotbarC/Hotbar/TextureRect4" to="." method="_on_hotbar_ability_mouse_exited" binds= [2]]
+[connection signal="mouse_entered" from="CanvasLayer/HotbarC/Hotbar/TextureRect8" to="." method="_on_hotbar_ability_mouse_entered" binds= [2]]
+[connection signal="mouse_exited" from="CanvasLayer/HotbarC/Hotbar/TextureRect8" to="." method="_on_hotbar_ability_mouse_exited" binds= [2]]
+[connection signal="mouse_entered" from="CanvasLayer/HotbarC/Hotbar/TextureRect9" to="." method="_on_hotbar_ability_mouse_entered" binds= [1]]
+[connection signal="mouse_exited" from="CanvasLayer/HotbarC/Hotbar/TextureRect9" to="." method="_on_hotbar_ability_mouse_exited" binds= [2]]
+[connection signal="mouse_exited" from="CanvasLayer/HotbarC/Hotbar/TextureRect10" to="." method="_on_hotbar_ability_mouse_exited" binds= [2]]

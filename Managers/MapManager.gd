@@ -191,6 +191,7 @@ func _loadTileMap(file, tiles):
 		cumulative_position = Vector2.ZERO
 		tile_positions = []
 		walkable_tiles = []
+		
 		for y in range(tilemap_data.size()):
 			var line = tilemap_data[y]
 			var row = []
@@ -659,7 +660,7 @@ func _spawn_and_attach():
 	var arr = []
 	var random_creatures = []
 	var creature_positions = []
-	var random_increase = int((int(grid_size/20) + (6+(sub_wave*4))) * creatures[0].increased_amount)
+	var random_increase = int((int(grid_size/20) + ((sub_wave*4))) * creatures[0].increased_amount)
 	var spawn_time = 1.5
 	
 	for i in range(random_increase):

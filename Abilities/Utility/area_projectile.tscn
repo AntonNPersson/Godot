@@ -88,7 +88,7 @@ shape = SubResource("CircleShape2D_3rywr")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(1, 0.900391)
-energy = 1.1
+energy = 9.72
 shadow_enabled = true
 texture = ExtResource("3_18h1l")
 offset = Vector2(0, -8)
@@ -149,3 +149,6 @@ color_initial_ramp = SubResource("Gradient_exb8l")
 hue_variation_min = -0.03
 hue_variation_max = 0.02
 hue_variation_curve = SubResource("Curve_2hb72")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+offset = Vector2(0, -15)

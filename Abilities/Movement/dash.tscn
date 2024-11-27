@@ -78,13 +78,15 @@ animations = [{
 }],
 "loop": false,
 "name": &"default",
-"speed": 20.0
+"speed": 15.0
 }]
 
 [node name="Dash" type="Node2D"]
 script = ExtResource("1_3ikdr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+z_as_relative = false
 position = Vector2(0, -1.19209e-06)
 scale = Vector2(1.4, 1.4)
 sprite_frames = SubResource("SpriteFrames_svv1p")

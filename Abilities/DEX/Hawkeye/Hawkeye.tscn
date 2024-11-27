@@ -13,4 +13,3 @@ ability_type = "DEX"
 tags = Array[String](["AttackRangePassive"])
 values = Array[float]([40.0])
 increased_values = Array[float]([5.0])
-additional_self_target = null

@@ -1,25 +1,182 @@
-[gd_scene load_steps=3 format=3 uid="uid://c4rlpgmietfsb"]
+[gd_scene load_steps=26 format=3 uid="uid://c4rlpgmietfsb"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_n4qs1"]
 [ext_resource type="Texture2D" uid="uid://do0vop3d18j5f" path="res://Abilities/DEX/Poison Bomb/Engineer_8.png" id="2_lcjsw"]
+[ext_resource type="Texture2D" uid="uid://cjnhfkxljjhfm" path="res://Abilities/DEX/Poison Bomb/Spell 5-Sheet.png" id="3_k0a4m"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ju6l"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(0, 0, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_824s3"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(160, 0, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clmwf"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(320, 0, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqw6e"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(480, 0, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8wtg"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(640, 0, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ta2as"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(800, 0, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ali1w"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(960, 0, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvcbf"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(0, 166, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ds2xy"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(160, 166, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6yphy"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(320, 166, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fb1lv"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(480, 166, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jakxp"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(640, 166, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5phd"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(800, 166, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6q7pi"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(960, 166, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dx77y"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(0, 332, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tycu1"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(160, 332, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eoykx"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(320, 332, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbpmp"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(480, 332, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_omdg4"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(640, 332, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_re0gf"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(800, 332, 160, 166)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_irvyy"]
+atlas = ExtResource("3_k0a4m")
+region = Rect2(960, 332, 160, 166)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_chf6q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ju6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_824s3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_clmwf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rqw6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q8wtg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ta2as")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ali1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvcbf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ds2xy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6yphy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fb1lv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jakxp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5phd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6q7pi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dx77y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tycu1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eoykx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbpmp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_omdg4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_re0gf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_irvyy")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="Poison Bomb" type="Node2D"]
 script = ExtResource("1_n4qs1")
 icon = ExtResource("2_lcjsw")
 a_name = "Poison Bomb"
-tooltip_text = "Throw a bomb, poisoning enemies hit, dealing Value0 damage over time."
+tooltip_text = "Throw a bomb, applying Value0 stacks of poison on enemies hit."
 mana_cost = 35.0
 cooldown = 6.0
 _range = 300.0
 projectile_type = 3
 ability_type = "DEX"
-area_type = 1
+sprite_frames = SubResource("SpriteFrames_chf6q")
+sprite_scale = 0.8
+area_type = 3
 duration = 0.4
 radius = 100.0
 tags = Array[String](["Poison"])
-values = Array[float]([60.0])
-increased_values = Array[float]([40.0])
+values = Array[float]([5.0])
+increased_values = Array[float]([2.5])
 light_color = Color(0, 0.470588, 0, 1)
 light_scale = 0.4
-additional_self_target = null
 weight = 100.0

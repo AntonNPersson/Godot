@@ -1,7 +1,128 @@
-[gd_scene load_steps=3 format=3 uid="uid://ugpgkpshufsy"]
+[gd_scene load_steps=21 format=3 uid="uid://ugpgkpshufsy"]
 
 [ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_6vnmq"]
 [ext_resource type="Texture2D" uid="uid://45iiu6qn3no2" path="res://Abilities/DEX/Burning Arrows/FireMage_20.png" id="2_wqosg"]
+[ext_resource type="Texture2D" uid="uid://8jjpsmiap5yu" path="res://Abilities/DEX/Burning Arrows/Buff n Debuff P07 03.png" id="3_e5nwx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwcvb"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wdiav"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a41kd"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1b7cj"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l7ua3"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iq7ar"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tlxv7"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yuogc"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iub26"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qkjt"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_anh25"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j72bn"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmwe3"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j2g3q"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pg6ig"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(896, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gr7rl"]
+atlas = ExtResource("3_e5nwx")
+region = Rect2(960, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aasn7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwcvb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wdiav")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a41kd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1b7cj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l7ua3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iq7ar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tlxv7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yuogc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iub26")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8qkjt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_anh25")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j72bn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hmwe3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j2g3q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pg6ig")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gr7rl")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="Burning Arrows" type="Node2D"]
 script = ExtResource("1_6vnmq")
@@ -12,6 +133,8 @@ mana_cost = 30.0
 cooldown = 10.0
 projectile_type = 5
 ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_aasn7")
+sprite_scale = 1.0
 tags = Array[String](["AttackDamageBuff", "AttackBurnBuff"])
 values = Array[float]([5.0, 15.0])
 increased_values = Array[float]([5.0, 10.0])

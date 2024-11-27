@@ -66,12 +66,10 @@ func _start(vector, distance, velocity, unit, radius, duration, type, color = Co
 		current_type = get_child(4)
 	if type == 3:
 		if sprite_frames != null:
-			var animated_sprite = AnimatedSprite2D.new()
-			unit.get_tree().get_root().add_child(animated_sprite)
-			animated_sprite.global_position = global_position
-			animated_sprite.sprite_frames = sprite_frames
-			animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-			animated_sprite.play()
+			get_child(5).sprite_frames = sprite_frames
+			get_child(5).scale = Vector2(sprite_scale, sprite_scale)
+			get_child(5).play()
+			current_type = get_child(5)
 	get_child(1).shape.radius = radius * 0.8
 	_cast_area()
 
@@ -81,8 +79,9 @@ func _process(_delta):
 
 func _cast_area():
 	current_type.visible = true
-	current_type.restart()
-	current_type.emitting = true
+	if current_type != get_child(5):
+		current_type.restart()
+		current_type.emitting = true
 	var timer = Timer.new()
 	timer.set_wait_time(_duration)
 	timer.set_one_shot(true)
@@ -92,7 +91,8 @@ func _cast_area():
 
 func _remove_area():
 	current_type.visible = false
-	current_type.emitting = false
+	if current_type != get_child(5):
+		current_type.emitting = false
 	get_child(2).texture_scale = _radius/100
 	if area_pool:
 		var __explosion = pool_effect.instantiate()

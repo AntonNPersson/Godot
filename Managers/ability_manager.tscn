@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://ogcxhkkfsmdi"]
+[gd_scene load_steps=10 format=3 uid="uid://ogcxhkkfsmdi"]
 
 [ext_resource type="Script" path="res://Managers/AbilityManager.gd" id="1_033sp"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_dib7m"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="3_goub6"]
 [ext_resource type="Texture2D" uid="uid://cil81eu46xxqv" path="res://GUI/Scalable txt screen x1.png" id="4_i7qnj"]
 [ext_resource type="Shader" path="res://Shaders/glow.gdshader" id="4_k31hf"]
-[ext_resource type="Texture2D" uid="uid://bc1fms2evss1v" path="res://GUI/Pattern03 x1.png" id="5_v54jj"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="7_hjc1x"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jsed8"]
@@ -425,18 +424,6 @@ offset_right = 564.0
 offset_bottom = 415.0
 texture = ExtResource("7_hjc1x")
 
-[node name="TextureRect2" type="TextureRect" parent="UI/CanvasLayer/Ability"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -76.0
-offset_top = -24.0
-offset_right = 76.0
-offset_bottom = 16.0
-grow_horizontal = 2
-texture = ExtResource("5_v54jj")
-
 [node name="Curse" type="Panel" parent="UI/CanvasLayer"]
 visible = false
 custom_minimum_size = Vector2(600, 400)
@@ -801,18 +788,6 @@ offset_top = 375.0
 offset_right = 564.0
 offset_bottom = 415.0
 texture = ExtResource("7_hjc1x")
-
-[node name="TextureRect2" type="TextureRect" parent="UI/CanvasLayer/Curse"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -76.0
-offset_top = -21.0
-offset_right = 76.0
-offset_bottom = 19.0
-grow_horizontal = 2
-texture = ExtResource("5_v54jj")
 
 [node name="Enchant" type="Panel" parent="UI/CanvasLayer"]
 visible = false
@@ -1251,18 +1226,6 @@ offset_top = 375.0
 offset_right = 564.0
 offset_bottom = 415.0
 texture = ExtResource("7_hjc1x")
-
-[node name="TextureRect2" type="TextureRect" parent="UI/CanvasLayer/Enchant"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -76.0
-offset_top = -21.0
-offset_right = 76.0
-offset_bottom = 19.0
-grow_horizontal = 2
-texture = ExtResource("5_v54jj")
 
 [connection signal="item_clicked" from="UI/CanvasLayer/choiceList" to="." method="_on_choice_list_item_clicked"]
 [connection signal="pressed" from="UI/CanvasLayer/showButton" to="." method="_on_button_pressed"]

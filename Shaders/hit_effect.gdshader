@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform vec4 hit_effect_color : source_color = vec4(1.0, 0.0, 0.0, 1.0);
+uniform vec4 hit_effect_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float hit_effect_intensity : hint_range(0.0, 1.0) = 0.0;
 uniform float outline_intensity : hint_range(0.0, 1.0) = 0.0;
 uniform float outline_size : hint_range(0.0, 0.1) = 0.05;

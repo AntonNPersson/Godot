@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://t4y1myyng7rl"]
+
+[node name="Tooltip" type="Control"]
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(250, 100)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+custom_minimum_size = Vector2(250, 95)
+layout_mode = 0
+offset_top = 6.0
+offset_right = 250.0
+offset_bottom = 101.0
+theme_override_colors/default_color = Color(0.611765, 0.603922, 0.447059, 1)
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true

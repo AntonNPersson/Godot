@@ -105,6 +105,7 @@ var total_crowd_control_resistance : float
 var total_slow_resistance : float
 var total_block : float
 var total_life_steal : float
+var total_spell_vamp : float
 
 # Exported variables for base stats
 @export_group("Base Stats")
@@ -141,6 +142,7 @@ var total_life_steal : float
 @export var base_slow_resistance = 0
 @export var base_block = 0
 @export var base_life_steal = 0
+@export var base_spell_vamp = 0
 
 # Bonus variables
 var bonus_armor = 0.0
@@ -173,7 +175,7 @@ var bonus_crowd_control_resistance = 0.0
 var bonus_slow_resistance = 0.0
 var bonus_block = 0.0
 var bonus_life_steal = 0.0
-
+var bonus_spell_vamp = 0.0
 var item_drop_chance_multiplier = 1.0
 var ascension_currency_multiplier = 1.0
 var experience_multiplier = 1.0
@@ -183,7 +185,7 @@ var current_barrier = 0
 var current_health = 100
 var current_mana = 100
 var current_stamina = 100
-var current_player_experience = 1000
+var current_player_experience = 0
 
 # Current attack modifier tags and values
 var current_attack_modifier_tags = []
@@ -210,6 +212,7 @@ var STAMINA_LEVEL_UP_AMOUNT = 0
 var STRENGTH_LEVEL_UP_AMOUNT = 0
 var DEXTERITY_LEVEL_UP_AMOUNT = 0
 var INTELLIGENCE_LEVEL_UP_AMOUNT = 0
+var player_level = 1
 
 # Saved inventory manager variables.
 var im_inventory = null
@@ -324,6 +327,7 @@ func _update_totals():
 	total_slow_resistance = base_slow_resistance + bonus_slow_resistance
 	total_block = (base_block + bonus_block) * (1 + global_block/100)
 	total_life_steal = base_life_steal + bonus_life_steal
+	total_spell_vamp = base_spell_vamp + bonus_spell_vamp
 
 	
 # Called when the node is ready
@@ -365,6 +369,7 @@ func _process(delta):
 		is_dead.emit(self)
 		for ab in get_node('InventoryManager').abilities:
 			ab._remove_all_enchants()
+			ab._reset_ability()
 		Utility.get_node('AscensionBalance')._add_balance(ascension_currency/2)
 		print(Utility.get_node('AscensionBalance')._get_balance())
 		Utility.get_node("Transition")._start_death(2, ascension_currency/2, ascension_level)
@@ -459,6 +464,7 @@ func _on_player_level_up():
 	total_player_experience = 100 + (total_player_experience * PLAYER_LEVEL_UP_SCALING)
 	current_player_experience = 0
 	level_up_effect.get_child(0).emitting = true
+	player_level += 1
 	_on_add_stats({
 		"health" : HEALTH_LEVEL_UP_AMOUNT,
 		"mana" : MANA_LEVEL_UP_AMOUNT,

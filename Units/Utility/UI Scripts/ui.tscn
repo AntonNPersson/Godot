@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dimur0k7iqv8b"]
+[gd_scene load_steps=8 format=3 uid="uid://dimur0k7iqv8b"]
 
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="1_pc3co"]
 [ext_resource type="Texture2D" uid="uid://dadbdownsdgp6" path="res://GUI/test.png" id="2_4l33g"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="4_wsy57"]
 [ext_resource type="Texture2D" uid="uid://bves5jgiciy81" path="res://GUI/Stamina_filler.png" id="5_5du10"]
 [ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="6_q8qmw"]
+[ext_resource type="Texture2D" uid="uid://y5i85j0sh8u7" path="res://GUI/Pattern02 x1.png" id="7_l766s"]
 
 [node name="UI" type="Node2D"]
 
@@ -49,3 +50,10 @@ value = 50.0
 texture_over = ExtResource("2_4l33g")
 texture_progress = ExtResource("5_5du10")
 script = ExtResource("6_q8qmw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+z_index = 11
+position = Vector2(84, -12)
+scale = Vector2(2.89655, 3)
+texture = ExtResource("7_l766s")

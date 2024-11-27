@@ -6,7 +6,7 @@ visible = false
 [node name="Panel" type="Panel" parent="."]
 custom_minimum_size = Vector2(150, 100)
 offset_right = 185.0
-offset_bottom = 100.0
+offset_bottom = 223.0
 
 [node name="Name" type="RichTextLabel" parent="Panel"]
 layout_mode = 2
@@ -16,26 +16,48 @@ offset_bottom = 22.0
 bbcode_enabled = true
 text = "[center]Weak Healing Potion"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+[node name="PanelContainer" type="PanelContainer" parent="Panel"]
 layout_mode = 0
-offset_left = 7.0
+offset_left = 13.0
 offset_top = 27.0
-offset_right = 260.0
-offset_bottom = 116.0
-scale = Vector2(0.7, 0.7)
+offset_right = 176.0
+offset_bottom = 135.0
 
-[node name="Description" type="RichTextLabel" parent="Panel/ScrollContainer"]
-custom_minimum_size = Vector2(246, 90)
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/PanelContainer"]
+layout_mode = 2
+
+[node name="Description" type="RichTextLabel" parent="Panel/PanelContainer/ScrollContainer"]
+custom_minimum_size = Vector2(159, 88)
 layout_mode = 2
 mouse_filter = 1
 theme_override_colors/default_color = Color(0.611765, 0.603922, 0.447059, 1)
+theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[center] hi
 s
 s
 s
-s
-s
-s
 s"
+fit_content = true
+
+[node name="PanelContainer2" type="PanelContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 142.0
+offset_right = 176.0
+offset_bottom = 209.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/PanelContainer2"]
+layout_mode = 2
+
+[node name="Description" type="RichTextLabel" parent="Panel/PanelContainer2/ScrollContainer"]
+custom_minimum_size = Vector2(159, 60)
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/default_color = Color(0.611765, 0.603922, 0.447059, 1)
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center] hi
+s
+"
 fit_content = true

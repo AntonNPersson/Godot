@@ -30,13 +30,30 @@ func random_position_in_radius(center: Vector2, radius: float) -> Vector2:
 
 func _use():
 	await get_tree().create_timer(cast_duration).timeout
-	direction = _calculate_new_direction()
+	direction = (target.get_tree().get_nodes_in_group("players")[0].global_position - global_position).normalized()
+	rotation = direction.angle() + PI/2
+	if !get_child(3).animation_finished.is_connected(_start_finish):
+		get_child(3).animation_finished.connect(_start_finish)
+		get_child(3).play('start')
+
+func _start_finish():
+	get_child(3).play('ongoing')
+	get_child(3).animation_finished.disconnect(_start_finish)
+
+func _on_end_finish():
+	queue_free()
+
+func _end():
+	get_child(3).play('end')
+	if !get_child(3).animation_finished.is_connected(_on_end_finish):
+		get_child(3).animation_finished.connect(_on_end_finish)
 
 func _process(delta):
 	if origin == null or !is_instance_valid(origin):
-		queue_free()
+		_end()
 		return
 	global_position += direction * speed * delta
+	rotation = direction.angle() + PI/2
 
 	if hit_enemies.size() > 0:
 		reset_timer += delta
@@ -45,9 +62,12 @@ func _process(delta):
 			reset_timer = 0.0
 
 	if origin.current_health <= 0:
-		queue_free()
+		_end()
 
 func _on_area_entered(area:Area2D):
+	if current_bounce >= MAX_BOUNCES:
+		_end()
+
 	if area.is_in_group('players') and area not in hit_enemies:
 		hit_enemies.append(area)
 		do_damage.emit(damage, area, self, tag)
@@ -60,3 +80,5 @@ func _on_area_entered(area:Area2D):
 			direction.x = -direction.x
 		else:
 			direction.y = -direction.y
+		current_bounce += 1
+	

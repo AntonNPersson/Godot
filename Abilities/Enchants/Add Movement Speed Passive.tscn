@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://pxmyy3ptc5xa"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_bpn5r"]
+[ext_resource type="Texture2D" uid="uid://5pgb452uk56r" path="res://Abilities/Enchants/icons/Green Ability_14.png" id="2_gup1r"]
+
+[node name="Add Movement Speed Passive" type="Node2D"]
+script = ExtResource("1_bpn5r")
+i_name = "Passive: Movement Speed"
+tooltip = "Add value0 flat movement speed to your selected passive ability."
+icon = ExtResource("2_gup1r")
+tags = Array[String](["MovementSpeedPassive"])
+values = Array[float]([10.0])
+types = Array[int]([4])

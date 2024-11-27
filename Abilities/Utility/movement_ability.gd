@@ -20,10 +20,11 @@ var sprint_timer = 0.2
 
 var hit_enemies = []
 # Called when the node enters the scene tree for the first time.
-func _start(origin, target, rnge, speed, type, light_color, explosion, explosion_radius, _ability, pool = false, sprite_frames = null, sprite_scale = 1):
+func _start(origin, target, rnge, speed, type, light_color, explosion, explosion_radius, _ability, pool = false, sprite_frames = null, sprite_scale = 1, custom_movement = false):
 	if target == null:
 		queue_free()
 		return
+	print('hi')
 	start_position = origin.global_position
 	self.origin = origin
 	self.target = target
@@ -43,28 +44,34 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 	explosion_effect = load("res://Abilities/Utility/explosion.tscn")
 	pool_effect = load("res://Abilities/Utility/pool.tscn")
 	self.move = true
-	if type == "Charge":
+	if type == "Charge" and !custom_movement:
 		get_child(0).visible = true
 		get_child(0).get_child(0).emitting = true
 		get_child(0).get_child(0).color = light_color
-	if type == "Blink":
+	if type == "Blink" and !custom_movement:
 		get_child(1).visible = true
 		get_child(1).get_child(0).emitting = true
 		get_child(1).get_child(0).color = light_color
-	if type == "Sprint":
+	if type == "Sprint" and !custom_movement:
 		get_child(0).visible = true
 		get_child(0).get_child(0).emitting = true
 		get_child(0).get_child(0).color = light_color
-	if type == "Custom":
+	if custom_movement:
 		if sprite_frames != null:
 			var animated_sprite = AnimatedSprite2D.new()
-			target.get_tree().get_root().add_child(animated_sprite)
+			add_child(animated_sprite)
+			animated_sprite.name = _ability.name
 			animated_sprite.global_position = global_position
 			animated_sprite.sprite_frames = sprite_frames
 			animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+			animated_sprite.modulate = light_color
+			animated_sprite.animation_finished.connect(_remove_sprite)
 			animated_sprite.play()
+			print(animated_sprite.name)
 
-
+func _remove_sprite():
+	if has_node(_ability.name):
+		get_node(_ability.name).queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

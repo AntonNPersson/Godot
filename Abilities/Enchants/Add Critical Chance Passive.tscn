@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkmykyjywm5b6"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_0vkkd"]
+[ext_resource type="Texture2D" uid="uid://db8b2dtwoy3cl" path="res://Abilities/Enchants/icons/2AbilityPack_20.png" id="2_gi53j"]
+
+[node name="Add Critical Chance Passive" type="Node2D"]
+script = ExtResource("1_0vkkd")
+i_name = "Passive: Critical Chance"
+tooltip = "Add value0% critical chance to your selected passive ability."
+icon = ExtResource("2_gi53j")
+tags = Array[String](["CriticalChancePassive"])
+values = Array[float]([5.0])
+types = Array[int]([4])

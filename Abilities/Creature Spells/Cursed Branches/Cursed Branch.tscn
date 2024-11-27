@@ -1,9 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbl14xqciwldv"]
+[gd_scene load_steps=9 format=3 uid="uid://cbl14xqciwldv"]
 
 [ext_resource type="Script" path="res://Abilities/Creature Spells/Cursed Branches/Cursed Branch.gd" id="1_s5hwq"]
+[ext_resource type="Shader" path="res://Abilities/Creature Spells/Cursed Light/Light.gdshader" id="1_st4du"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_hby8w"]
 [ext_resource type="Texture2D" uid="uid://cyqhjmrfnpk7i" path="res://Sprites/Sprite2.png" id="3_qmal8"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="4_pmoql"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_450f7"]
+shader = ExtResource("1_st4du")
 
 [sub_resource type="Gradient" id="Gradient_xwiki"]
 colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
@@ -12,6 +16,7 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
 radius = 18.5714
 
 [node name="CursedBranches" type="Area2D"]
+material = SubResource("ShaderMaterial_450f7")
 scale = Vector2(0.7, 0.7)
 script = ExtResource("1_s5hwq")
 

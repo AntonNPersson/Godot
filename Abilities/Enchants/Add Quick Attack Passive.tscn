@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvmiv6aaagf6s"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_d2r4n"]
+[ext_resource type="Texture2D" uid="uid://cg4mp5ffhrj66" path="res://Abilities/Enchants/icons/2GreenAbility_19.png" id="2_d2sr1"]
+
+[node name="Add Quick Attack Passive" type="Node2D"]
+script = ExtResource("1_d2r4n")
+i_name = "Passive: Quick Attack Chance"
+tooltip = "Add value0% quick attack chance to your selected passive ability."
+icon = ExtResource("2_d2sr1")
+tags = Array[String](["QuickAttackPassive"])
+values = Array[float]([5.0])
+types = Array[int]([4])

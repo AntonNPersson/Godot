@@ -10,6 +10,7 @@
 radius = 18.2483
 
 [node name="projectile" type="Area2D"]
+z_index = 1
 texture_filter = 1
 rotation = -3.14159
 collision_mask = 2
@@ -19,6 +20,7 @@ script = ExtResource("1_nc4x0")
 shape = SubResource("CircleShape2D_2takf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 texture_filter = 1
 sprite_frames = ExtResource("2_8lj3s")
 autoplay = "default"

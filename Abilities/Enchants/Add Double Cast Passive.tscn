@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cg537qalfmp0d"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_26mbv"]
+[ext_resource type="Texture2D" uid="uid://c0njmj5n8h4io" path="res://Abilities/Enchants/icons/Purple Ability_19.png" id="2_ynof2"]
+
+[node name="Add Double Cast Passive" type="Node2D"]
+script = ExtResource("1_26mbv")
+i_name = "Passive: Double Cast Chance"
+tooltip = "Add value0% double cast chance to your selected passive ability."
+icon = ExtResource("2_ynof2")
+tags = Array[String](["DoubleCastPassive"])
+values = Array[float]([5.0])
+types = Array[int]([4])

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm4dqmm68ueyi"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_mb4go"]
+[ext_resource type="Texture2D" uid="uid://bt4k42tcj27tx" path="res://Abilities/Enchants/icons/Red Ability_21.png" id="2_h3vuh"]
+
+[node name="Add Life Steal Passive" type="Node2D"]
+script = ExtResource("1_mb4go")
+i_name = "Passive: Lifesteal"
+tooltip = "Add value0% lifesteal to your selected passive ability."
+icon = ExtResource("2_h3vuh")
+tags = Array[String](["LifeStealPassive"])
+values = Array[float]([5.0])
+types = Array[int]([4])

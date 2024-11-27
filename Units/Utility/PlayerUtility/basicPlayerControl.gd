@@ -139,8 +139,8 @@ func _on_action(value, target, user, tag, extra = null):
 
 func _shake_camera():
 	if GameManager.settings['screen_shake']:
-		stats.get_node('Camera').shake_intensity = 2.5
-		stats.get_node('Camera').shake_duration = 0.25
+		stats.get_node('Camera').shake_intensity = 5.5
+		stats.get_node('Camera').shake_duration = 0.15
 		stats.get_node('Camera').is_shaking = true
 
 func _attack_movement(delta, closest_target):
@@ -248,11 +248,13 @@ func _attack(tags = null, values = null, delta = 0.0):
 		#get_tree().get_root().add_child(attack_sprite)
 		var crit = stats._apply_critical_damage(stats.total_attack_damage)
 		var new_damage = crit["value"]
+		var extra = {}
 		if stats.total_attack_targets <= 1:
 			attack_sprite.scale = Vector2(0.08, 0.08)
-			var extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities}
+			extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : null}
 			_on_action(new_damage, attack_target, stats, "Damage", extra)
 			for i in range(tags.size()):
+				extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities[i]}
 				_on_action(values[i], attack_target, stats, tags[i], extra)
 		else:
 			attack_sprite.scale = Vector2(0.08 + (0.02*stats.total_attack_targets), 0.08 + (0.02*stats.total_attack_targets))
@@ -263,9 +265,10 @@ func _attack(tags = null, values = null, delta = 0.0):
 					continue
 				g += 1
 				if g <= stats.total_attack_targets:
-					var extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities}
+					extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : null}
 					_on_action(new_damage, target, stats, "Damage", extra)
 					for i in range(tags.size()):
+						extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities[i]}
 						_on_action(values[i], target, stats, tags[i], extra)
 
 func _normal_movement(delta, current_target):

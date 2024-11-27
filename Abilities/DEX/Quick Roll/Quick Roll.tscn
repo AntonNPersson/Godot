@@ -1,7 +1,86 @@
-[gd_scene load_steps=3 format=3 uid="uid://ce0fb536yw8k"]
+[gd_scene load_steps=15 format=3 uid="uid://ce0fb536yw8k"]
 
 [ext_resource type="Script" path="res://Abilities/DEX/Quick Roll/quick_roll.gd" id="1_74f57"]
 [ext_resource type="Texture2D" uid="uid://b0k05biiapejf" path="res://Abilities/DEX/Quick Roll/Hunter_17.png" id="2_vopm2"]
+[ext_resource type="Texture2D" uid="uid://bwtr7opcqkrim" path="res://Abilities/Movement/Smoke VFX3.png" id="3_6mnaj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5mmn"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dodlp"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3viub"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yq5gi"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l3a4u"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(128, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6c6o8"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(160, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5uvcd"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(192, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mx4mi"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(224, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yv5ox"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(256, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_673xm"]
+atlas = ExtResource("3_6mnaj")
+region = Rect2(288, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_64blf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5mmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dodlp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3viub")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yq5gi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l3a4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6c6o8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5uvcd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mx4mi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yv5ox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_673xm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 15.0
+}]
 
 [node name="Quick Roll" type="Node2D"]
 script = ExtResource("1_74f57")
@@ -12,8 +91,10 @@ cooldown = 12.0
 _range = 150.0
 projectile_type = 6
 ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_64blf")
+sprite_scale = 1.0
 type = "Sprint"
-movement_speed = 400.0
+movement_speed = 200.0
 tags = Array[String](["QuickAttack"])
 values = Array[float]([1.0])
 increased_values = Array[float]([0.0])

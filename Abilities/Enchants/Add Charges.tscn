@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://f662eyi3bmpv"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_t7d0a"]
+[ext_resource type="Texture2D" uid="uid://juv4qsr0gdac" path="res://Abilities/Enchants/icons/Brown Spell_16.png" id="2_8tu3a"]
+
+[node name="Add Charges" type="Node2D"]
+script = ExtResource("1_t7d0a")
+i_name = "Self Target: Charges"
+tooltip = "Add a charge to your selected ability."
+icon = ExtResource("2_8tu3a")
+tags = Array[String](["MovementCharges"])
+values = Array[float]([1.0])
+types = Array[int]([5])

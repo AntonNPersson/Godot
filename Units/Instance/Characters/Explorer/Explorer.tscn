@@ -1,8 +1,10 @@
-[gd_scene load_steps=85 format=3 uid="uid://bm3gbpb1x4bit"]
+[gd_scene load_steps=87 format=3 uid="uid://bm3gbpb1x4bit"]
 
 [ext_resource type="Script" path="res://Units/Stats/Explorer_stats.gd" id="1_i84bd"]
 [ext_resource type="PackedScene" uid="uid://bq7ge7ih4sx00" path="res://Units/Instance/Characters/Explorer/level_up_menu.tscn" id="2_vi8p1"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_8knno"]
+[ext_resource type="Texture2D" uid="uid://8mxt8rmhmc71" path="res://Units/Instance/Characters/Explorer/Green Ability_10.png" id="3_dd3qj"]
+[ext_resource type="Texture2D" uid="uid://bfe2rl6u2rvsi" path="res://Units/Instance/Characters/Explorer/2GreenAbility_21.png" id="4_al246"]
 [ext_resource type="PackedScene" uid="uid://l8llk23jqkt6" path="res://Abilities/Movement/dash.tscn" id="4_m6dbq"]
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="5_4wjc6"]
 [ext_resource type="Script" path="res://Units/Utility/PlayerUtility/basicPlayerControl.gd" id="6_i6g6i"]
@@ -475,9 +477,15 @@ script = ExtResource("1_i84bd")
 level_up_menu = ExtResource("2_vi8p1")
 passive_name = "Unending Curiosity"
 passive_tooltip = "After gaining a gift, chose between increasing one of your basic stats."
+passive_tooltip2 = "Cost: 0 Range: 0
+Increases a stat by 20."
+passive_icon = ExtResource("3_dd3qj")
 passive_increase = 20
 active_name = "Dash"
 active_tooltip = "Dash towards the facing direction, becoming invurnable for a short time."
+active_tooltip2 = "Cost: 35 Stamina Range: 150
+Invurnable for 0.5 seconds."
+active_icon = ExtResource("4_al246")
 basic_attack_scene = ExtResource("3_8knno")
 movement_skill_scene = ExtResource("4_m6dbq")
 type = Array[String](["DEX", "INT", "STR"])
