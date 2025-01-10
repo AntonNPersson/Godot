@@ -92,7 +92,6 @@ _range = 150.0
 projectile_type = 6
 ability_type = "DEX"
 sprite_frames = SubResource("SpriteFrames_64blf")
-sprite_scale = 1.0
 type = "Sprint"
 movement_speed = 200.0
 tags = Array[String](["QuickAttack"])

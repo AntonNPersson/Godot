@@ -214,8 +214,12 @@ func _process(_delta):
 		
 func _on_do_action(value, target, duration, tag, extra = null):
 	# Emit the do_action signal with the provided parameters.
+	if get_tree() == null:
+		return
+
 	_target = target
-	do_action.emit(value * get_tree().get_nodes_in_group("players")[0].power, target, duration, tag)
+	if get_tree().get_nodes_in_group("players").size() > 0:
+		do_action.emit(value * get_tree().get_nodes_in_group("players")[0].power, target, self, tag, extra)
 
 func _level_grants():
 	total_attack_damage += 5

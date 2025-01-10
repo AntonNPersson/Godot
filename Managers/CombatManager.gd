@@ -7,6 +7,7 @@ extends Node
 @export var infected_effect : PackedScene
 @export var combat_text : PackedScene
 @export var explosion_effect : PackedScene
+@export var heal_effect : PackedScene
 
 @export var map_manager : Node
 @export var ability_manager : Node
@@ -110,20 +111,29 @@ func _process(delta):
 
 	if knockback_units.size() > 0:
 		for unit in knockback_units:
-			if _check_if_dead(unit):
+			if _check_if_dead(unit) or !unit.has_meta('Knockback_origin'):
 				knockback_units.erase(unit)
-				return
+				continue
 
 			if unit.is_colliding:
 				unit.is_rooted = false
+				unit.global_position -= unit.get_meta('Knockback_direction').normalized() * 10
 				knockback_units.erase(unit)
-				return
+				continue
 
-			unit.is_rooted = true
-			unit.global_position += unit.get_meta('Knockback_direction') * 200 * delta
-			if unit.global_position.distance_to(unit.get_meta('Knockback_origin')) > unit.get_meta('Knockback_distance'):
+			var origin = unit.get_meta('Knockback_origin')
+			var direction = unit.get_meta('Knockback_direction').normalized()
+			var max_distance = unit.get_meta('Knockback_distance')
+			var current_distance = unit.global_position.distance_to(origin)
+			if current_distance >= max_distance - 5:
 				unit.is_rooted = false
 				knockback_units.erase(unit)
+				unit.remove_meta('Knockback_origin')
+				continue
+			
+			var speed = lerp(200, 25, current_distance / max_distance)
+			unit.global_position += direction * speed * delta
+			unit.is_rooted = true
 	
 		
 	
@@ -174,6 +184,9 @@ func _on_do_action(value, target, user, tag, extra = null):
 			return
 		"Duplicate":
 			_handle_duplicate_action(user, value)
+			return
+		"DyingBreath":
+			_handle_dying_breath_action(target, value, extra['ability'])
 			return
 		"Multistrike":
 			_handle_multistrike_action(target, value, user)
@@ -278,15 +291,21 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"AttackRangePassive":
 			_handle_attack_range_passive(target, value, extra['ability'])
 		"AttackSpeedBuff":
-			_handle_attack_buff_action(target, value, user, "Speed", extra)
+			_handle_attack_speed_buff_action(target, value, extra)
 		"AttackSpeedPassive":
 			_handle_attack_speed_passive(target, value, extra['ability'])
+		"AttackTargetPassive":
+			_handle_attack_target_passive(target, value, extra['ability'])
 		"Bleed":
 			_handle_bleed_action(target, value, user, extra)
 		"Burn":
 			_handle_burn_action(target, value, user, extra)
+		"CrimsonReckoning": # Toggle Passive
+			_handle_crimson_reckoning_action(user, value, extra)
+		"CrimsonSalvation": # Toggle Passive
+			_handle_crimson_salvation_action(user, value, extra)
 		"CriticalChanceBuff":
-			_handle_crit_chance_buff_action(target, value, user, "CriticalChanceBuff", extra['ability'])
+			_handle_crit_chance_buff_action(target, value, extra)
 		"CriticalChancePassive":
 			_handle_critical_chance_passive(target, value, extra['ability'])
 		"Damage":
@@ -308,6 +327,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_flat_armor_buff_action(target, value, extra)
 		"Heal":
 			_handle_heal_action(target, value, tag)
+		"PercentHeal":
+			_handle_heal_action(target, target.total_health * (value/100.0), tag)
 		"Infected":
 			_handle_infected_action(target)
 		"Lifesteal":
@@ -352,6 +373,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_stealth_action(target, value)
 		"SpellVampPassive":
 			_handle_spell_vamp_passive(target, value, extra['ability'])
+		"StrengthToVitalityPassive":
+			_handle_strength_to_vitality_passive(target, value, extra['ability'])
 		"Wind":
 			_handle_wind_action(target, value, user)
 	_update_boss_health_bar(target, user)
@@ -396,6 +419,18 @@ func _on_basic_attack(target):
 	if player.total_life_steal > 0:
 		_on_do_action(player.total_attack_damage * (player.total_life_steal/100.0), player, player, "Heal")
 
+	
+	if extra_effect_values.has("CrimsonReckoning"):
+		extra_effect_values["CrimsonReckoningCurrent"] += 1
+		if extra_effect_values["CrimsonReckoningCurrent"] >= extra_effect_values["CrimsonReckoningInterval"]:
+			extra_effect_values["CrimsonReckoningCurrent"] = 0
+			_on_do_action(player.total_health * (extra_effect_values["CrimsonReckoning"]/100), target, player, "Damage")
+			_on_do_action(player.total_health * (extra_effect_values["CrimsonReckoning"]/100), player, player, "Damage")
+	if extra_effect_values.has("CrimsonSalvation"):
+		extra_effect_values["CrimsonSalvationCurrent"] += 1
+		if extra_effect_values["CrimsonSalvationCurrent"] >= extra_effect_values["CrimsonSalvationInterval"]:
+			extra_effect_values["CrimsonSalvationCurrent"] = 0
+			_on_do_action((player.total_health * 0.05) + extra_effect_values["CrimsonSalvationCurrent"], player, player, "Heal")
 	if poison_effect_values.has("PoisonAttack"):
 		if _chance_calculator(poison_effect_values["PoisonAttack"]):
 			_on_do_action(_spell_scaling(player, poison_effect_values["PoisonAttack"]), target, player, "Poison")
@@ -403,9 +438,11 @@ func _on_basic_attack(target):
 		if _chance_calculator(bleed_effect_values["BleedAttack"]):
 			_on_do_action(_spell_scaling(player, bleed_effect_values["BleedAttack"]/3), target, player, "Bleed")
 	if poison_effect_values.has("LuckyPoison") and poisoned_targets.has(player.get_node('Control').attack_target):
-			_on_do_action(poison_effect_values["LuckyPoison"], player, player, "CriticalChanceBuff", poison_effect_values["LuckyPoisonDuration"])
+			var extra = {"Duration": poison_effect_values["LuckyPoisonDuration"]}
+			_on_do_action(poison_effect_values["LuckyPoison"], player, player, "CriticalChanceBuff", extra)
 	if bleed_effect_values.has("LuckyBleed") and bleed_targets.has(player.get_node('Control').attack_target):
-		_on_do_action(bleed_effect_values["LuckyBleed"], player, player, "CriticalChanceBuff", bleed_effect_values["LuckyBleedDuration"])
+		var extra = {"Duration": bleed_effect_values["LuckyBleedDuration"]}
+		_on_do_action(bleed_effect_values["LuckyBleed"], player, player, "CriticalChanceBuff", extra)
 	if extra_effect_values.has("ChaosMagic"):
 		if timers.has("ChaosMagic") and timers["ChaosMagic"] >= 0:
 			return
@@ -447,7 +484,7 @@ func _handle_wind_speed_passive(target, value, ability):
 		target.bonus_attack_damage -= old_passive
 	
 	target.set_meta(ability_name_clean, new_value)
-	target.bonus_range += target.get_meta(ability_name_clean)
+	target.bonus_attack_damage += target.get_meta(ability_name_clean)
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -540,6 +577,12 @@ func _handle_chronos_blessing_action(target, value, unit):
 func _handle_self_target_action(unit, user):
 	if unit.is_in_group('players'):
 		user.additional_self_target = true
+
+func _handle_attack_speed_buff_action(target, value, extra):
+	var timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "AttackSpeed"))
+	timer.start()
+	target.bonus_attack_speed += value
 
 func _handle_flat_armor_buff_action(target, value, extra):
 	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
@@ -634,6 +677,28 @@ func _handle_vampirical_heal_action(target, value):
 		extra_effect_values["VampiricalHeal"] -= value
 		if extra_effect_values["VampiricalHeal"] <= 0:
 			extra_effect_values.erase("VampiricalHeal")
+
+func _handle_crimson_reckoning_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["CrimsonReckoning"] = value
+		extra_effect_values["CrimsonReckoningInterval"] = extra['interval']
+		if !extra_effect_values.has("CrimsonReckoningCurrent"):
+			extra_effect_values["CrimsonReckoningCurrent"] = 0
+	else:
+		extra_effect_values.erase("CrimsonReckoning")
+		extra_effect_values.erase("CrimsonReckoningInterval")
+		extra_effect_values.erase("CrimsonReckoningCurrent")
+
+func _handle_crimson_salvation_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["CrimsonSalvation"] = value
+		extra_effect_values["CrimsonSalvationInterval"] = extra['interval']
+		if !extra_effect_values.has("CrimsonSalvationCurrent"):
+			extra_effect_values["CrimsonSalvationCurrent"] = 0
+	else:
+		extra_effect_values.erase("CrimsonSalvation")
+		extra_effect_values.erase("CrimsonSalvationInterval")
+		extra_effect_values.erase("CrimsonSalvationCurrent")
 
 func _handle_burn_heal_action(target, value):
 	if target:
@@ -809,12 +874,12 @@ func _spell_scaling(user, value):
 	if user.type.find("DEX") != -1:
 		return (0.3*user.total_dexterity) * value
 
-func _handle_crit_chance_buff_action(target, value, user, tag, duration):
-	if user.is_in_group('players'):
-		user.bonus_critical_chance += value
-		user._update_stats()
-		var timer = Utility.get_node('TimerCreator')._create_timer(duration, true, user)
-		timer.timeout.connect(_deapply_buff.bind(user, value, "CriticalChance"))
+func _handle_crit_chance_buff_action(target, value, extra):
+	if target.is_in_group('players'):
+		target.bonus_critical_chance += value
+		target._update_stats()
+		var timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+		timer.timeout.connect(_deapply_buff.bind(target, value, "CriticalChance"))
 		timer.start()
 
 
@@ -889,11 +954,12 @@ func _handle_ability_percent_damage_action(user, value):
 # - user: The user of the action.
 # - target: The target of the action.
 func _handle_modifier_action(user, target, extra = null):
-	var modifiers = user.current_attack_modifier_tags
-	var values = user.current_attack_modifier_values
-	user.get_node('Control').basic_attacking.emit(target)
-	for i in range(modifiers.size()):
-		_on_do_action(values[i], target, user, modifiers[i], extra)
+	if user.is_in_group('players'):
+		var modifiers = user.current_attack_modifier_tags
+		var values = user.current_attack_modifier_values
+		user.get_node('Control').basic_attacking.emit(target)
+		for i in range(modifiers.size()):
+			_on_do_action(values[i], target, user, modifiers[i], extra)
 # Handles the damage action on the target.
 # Parameters:
 # - target: The target of the action.
@@ -973,6 +1039,47 @@ func _handle_spell_vamp_passive(target, value, ability):
 
 	target.set_meta(ability_name_clean, value)
 	target.bonus_spell_vamp += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_strength_to_vitality_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_StrengthToVitality"
+	var new_value = target.total_strength * (value/100.0)
+	if target.has_meta('StrengthToVitalityPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('StrengthToVitalityPassive'):
+		target.set_meta('StrengthToVitalityPassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('StrengthToVitalityPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('StrengthToVitalityPassive', target.get_meta('StrengthToVitalityPassive') - old_passive)
+		target.set_meta('StrengthToVitalityPassive', target.get_meta('StrengthToVitalityPassive') + new_value)
+		target.bonus_vitality -= old_passive
+
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_vitality += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_dying_breath_action(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean = "_DyingBreath"
+	if target.has_meta('DyingBreathPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('DyingBreathPassive'):
+		target.set_meta('DyingBreathPassive', value)
+	
+	if target.has_meta(ability_name_clean) and target.has_meta('DyingBreathPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('DyingBreathPassive', target.get_meta('DyingBreathPassive') - old_passive)
+		target.set_meta('DyingBreathPassive', target.get_meta('DyingBreathPassive') + value)
+		target.global_damage -= old_passive
+	
+	target.set_meta(ability_name_clean, value)
+	target.global_damage += target.get_meta(ability_name_clean)
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -1124,6 +1231,27 @@ func _handle_attack_speed_passive(target, value, ability):
 	if target.is_in_group('players'):
 		target._update_stats()
 
+func _handle_attack_target_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_AttackTarget"
+	value = floor(value)
+	if target.has_meta('AttackTargetPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('AttackTargetPassive'):
+		target.set_meta('AttackTargetPassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('AttackTargetPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('AttackTargetPassive', target.get_meta('AttackTargetPassive') - old_passive)
+		target.set_meta('AttackTargetPassive', target.get_meta('AttackTargetPassive') + value)
+		target.bonus_attack_targets -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_attack_targets += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
 func _handle_protection_passive_action(target, value, tag, ability):
 	var ability_name_clean = ability.replace(" ", "_")
 	ability_name_clean += "_Protection"
@@ -1260,9 +1388,11 @@ func _handle_percent_speed_buff_action(target, value, user):
 	target.bonus_speed += percent
 	if target.is_in_group('players'):
 		target._update_stats()
-	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-	timer.timeout.connect(_deapply_buff.bind(target, percent, "Speed"))
-	timer.start()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+		timer.timeout.connect(_deapply_buff.bind(target, percent, "Speed"))
+		timer.start()
 
 # Handles the percent attack buff action on the target.
 # Parameters:
@@ -1274,9 +1404,11 @@ func _handle_percent_attack_buff_action(target, value, user):
 	target.bonus_attack_damage += percent
 	if target.is_in_group('players'):
 		target._update_stats()
-	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-	timer.timeout.connect(_deapply_buff.bind(target, percent, "Damage"))
-	timer.start()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+		timer.timeout.connect(_deapply_buff.bind(target, percent, "Damage"))
+		timer.start()
 
 # Handles the attack buff action on the target.
 # Parameters:
@@ -1291,10 +1423,12 @@ func _handle_attack_buff_action(target, value, user, tag, extra):
 	target.current_attack_modifier_tags.append(tag)
 	target.current_attack_modifier_values.append(value)
 
-	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-	timer.name = tag + "_attack_timer"
-	timer.timeout.connect(_deapply_attack_buff.bind(target, value, tag))
-	timer.start()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+		timer.name = tag + "_attack_timer"
+		timer.timeout.connect(_deapply_attack_buff.bind(target, value, tag))
+		timer.start()
 
 # Handles the attack damage passive on the target.
 # Parameters:
@@ -1329,13 +1463,15 @@ func _handle_speed_buff_action(target, value, user):
 	if target.is_in_group('players'):
 		if value < 0:
 			value += ((target.total_slow_resistance/100) * value)
-
+	print("target" + str(user))
 	target.bonus_speed += value
 	if target.is_in_group('players'):
 		target._update_stats()
-	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-	timer.timeout.connect(_deapply_buff.bind(target, value, "Speed"))
-	timer.start()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+		timer.timeout.connect(_deapply_buff.bind(target, value, "Speed"))
+		timer.start()
 
 # Handles the self invincible action on the user.
 # Parameters:
@@ -1354,7 +1490,7 @@ func _handle_self_invincible_action(user, value):
 # - value: The amount of damage per tick.
 # - user: The user of the action.
 func _handle_burn_action(target, value, user, extra):
-	if target in invincible_units or _check_if_dead(target):
+	if target in invincible_units or _check_if_dead(target) or extra["ability"] == null:
 		return
 	var duration = 5
 	if target.is_in_group('players'):
@@ -1422,6 +1558,8 @@ func _handle_shock_action(target, value):
 # - target: The target of the action.
 # - value: The percentage of speed reduction.
 func _handle_freeze_action(target, value, user, extra):
+	if target in invincible_units or _check_if_dead(target) or extra == null:
+		return
 	var duration = 3.0
 	var value_to_percent = (value/100.0)
 	var new_speed = target.total_speed * value_to_percent
@@ -1476,6 +1614,9 @@ func _handle_freeze_action(target, value, user, extra):
 func _handle_heal_action(target, value, tag):
 	target.current_health += value
 	_trigger_effects(target, value, 'green', tag)
+	var effect = heal_effect.instantiate()
+	effect.name = "Heal_effect"
+	target.add_child(effect)
 
 # Handles the wind action on the target.
 # Parameters:
@@ -1552,7 +1693,7 @@ func _handle_infected_action(target):
 	var old_weight
 	if !target.has_node('Infected_timer'):
 		old_weight = target.global_weight
-		var timer = Utility.get_node('TimerCreator')._create_timer(duration, true, target)
+		var timer = Utility.get_node('TimerCreator')._create_timer(duration, false, target)
 		timer.timeout.connect(_deapply_infected.bind(target, old_weight))
 		timer.name = "Infected_timer"
 		target.set_meta('Infected_stacks', 1)
@@ -1653,6 +1794,7 @@ func _deapply_infected(target, old_weight):
 	target.set_meta('Infected_stacks', 0)
 	if target.has_node('Infected_timer'):
 		target.get_node('Infected_timer').queue_free()
+		target.get_node('Infected_effect').queue_free()
 
 # This function deapplies an attack buff from a target.
 # Parameters:
@@ -1687,11 +1829,10 @@ func _deapply_invincibility(user):
 #   - original_speed: The original speed value of the target.
 #   - target: The target from which to deapply the freeze effect.
 func _deapply_freeze(original_speed, target):
-	if !target.has_node('Freeze_effect'):
-		return
 	target.bonus_speed += original_speed
 	target.get_node('Freeze_timer').queue_free()
-	target.get_node('Freeze_effect').queue_free()
+	if target.has_node('Freeze_effect'):
+		target.get_node('Freeze_effect').queue_free()
 
 # This function deapplies the stealth effect from a user.
 # Parameters:
@@ -1869,7 +2010,7 @@ func _trigger_hit_effect(target, tag):
 	sprite.material = new_material
 	if target.is_in_group('enemies') and tag == "Damage":
 		if !target.is_in_group('boss') or !target.is_in_group('special'):
-			target.do_action.emit(15, target, player, "Wind")
+			target.do_action.emit(10, target, player, "Wind")
 		if !target.has_node('HitEffect'):
 			var instance = hit_effect.instantiate()
 			target.add_child(instance)

@@ -134,7 +134,6 @@ cooldown = 10.0
 projectile_type = 5
 ability_type = "DEX"
 sprite_frames = SubResource("SpriteFrames_aasn7")
-sprite_scale = 1.0
 tags = Array[String](["AttackDamageBuff", "AttackBurnBuff"])
 values = Array[float]([5.0, 15.0])
 increased_values = Array[float]([5.0, 10.0])

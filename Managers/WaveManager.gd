@@ -2,6 +2,7 @@ extends Node
 signal respawn_creatures(value)
 signal next_sub_wave(subwave, wave)
 signal stop_wave(completed, wave)
+signal stop_sub_wave()
 signal start_boss(value, wave)
 signal start_wave(value, wave)
 signal get_units(unit)
@@ -76,7 +77,7 @@ func _process(_delta):
 			var portal_effect = portal_effect.instantiate()
 			portal_effect.modulate = Color.GREEN
 			get_tree().get_root().get_node('Main').get_node('Objects').add_child(portal_effect)
-			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
+			Utility.get_node('Interactable').interactable_objects_hold.append(portal_effect)
 			portal_effect.global_position = players[0].global_position
 			portal_effect.enter_portal.connect(_enter_portal_exit)
 			boss_ready = false
@@ -111,7 +112,6 @@ func _start_wave(value, last = false):
 	players[0].in_combat = false
 	
 	if current_wave.has_meta('Color'):
-		print(current_wave.get_meta('Color'))
 		Utility.get_node('Brightness')._set_color(current_wave.get_meta('Color'))
 
 	if !last:
@@ -153,17 +153,19 @@ func _unit_dead(_unit):
 			current_wave_counter = 1
 			var portal_effect = portal_effect.instantiate()
 			get_tree().get_root().get_node('Main').get_node('Objects').add_child(portal_effect)
-			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
+			Utility.get_node('Interactable').interactable_objects_hold.append(portal_effect)
 			portal_effect.global_position = _unit.global_position
 			portal_effect.enter_portal.connect(_enter_portal)
+			stop_sub_wave.emit()
 		else:
 			next_map = maps.BOSS
 			var portal_effect = portal_effect.instantiate()
 			portal_effect.modulate = Color.RED
 			get_tree().get_root().get_node('Main').get_node('Objects').add_child(portal_effect)
-			Utility.get_node('Interactable').interactable_objects.append(portal_effect)
+			Utility.get_node('Interactable').interactable_objects_hold.append(portal_effect)
 			portal_effect.global_position = _unit.global_position
 			portal_effect.enter_portal.connect(_enter_portal_boss)
+			stop_sub_wave.emit()
 
 func _enter_portal():
 	_start_wave(current_round, true)
@@ -194,6 +196,7 @@ func _stop_wave():
 	else:
 		stop_wave.emit(false, current_round)
 		players[0].item_power += players[0].added_power / _get_total_waves()
+
 func _start_boss():
 	var current_boss_scene = load("res://Waves/boss/boss_" + str(current_round) +".tscn")
 	current_boss = current_boss_scene.instantiate()
@@ -210,7 +213,6 @@ func _start_boss():
 		for curse in curses:
 			child._add_stats(curse)
 		child.is_dead.connect(_unit_dead)
-		waves.add_child(current_boss)
 	
 	start_boss.emit(current_boss, current_round)
 	wave_ongoing = true
@@ -267,7 +269,7 @@ func _update_objectives():
 	canvas.get_node('RichTextLabel2').text = 'Waves: ' + str(current_wave_counter) + '/' + str(wave_counter)
 
 func _update_ascension_info():
-	canvas.get_node('TextureRect/Ascension3').get_child(0).play('Ascension_anim')
+	canvas.get_node('Ascension3').get_child(0).play('Ascension_anim')
 	canvas.get_node('Ascension').text = 'Ascension: ' + str(players[0].ascension_level)
 	var aggregated_tooltip = {}
 	for curse in curses:

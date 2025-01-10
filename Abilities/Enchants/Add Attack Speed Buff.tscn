@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://i1yswhb86rcw"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_40r8f"]
+[ext_resource type="Texture2D" uid="uid://u6rrk3lrlpnh" path="res://Abilities/Enchants/icons/2GreenAbility_5.png" id="2_b6dtn"]
+
+[node name="Add Attack Speed Buff" type="Node2D"]
+script = ExtResource("1_40r8f")
+i_name = "Target: Attack Speed"
+tooltip = "Add Value0% attack speed buff to target for 2 seconds."
+icon = ExtResource("2_b6dtn")
+tags = Array[String](["AttackSpeedBuff"])
+values = Array[float]([30.0])
+types = Array[int]([2])
+extra = {
+"Duration": 2
+}
+rarity = 1

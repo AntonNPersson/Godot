@@ -33,4 +33,5 @@ func _on_ascend(first, last):
 
 func _on_return_pressed():
 	Utility.get_node('AscensionBalance')._add_balance(player.ascension_currency)
+	GameManager.save_ac()
 	GameManager._change_scene('res://Scenes/Menu.tscn', true)

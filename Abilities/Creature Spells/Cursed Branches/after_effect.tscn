@@ -1,0 +1,87 @@
+[gd_scene load_steps=13 format=3 uid="uid://5sv7hed8caxx"]
+
+[ext_resource type="Texture2D" uid="uid://cmwe6am04ywsp" path="res://Abilities/Creature Spells/Cursed Branches/Spell6_Smoke2-Sheet.png" id="1_ktlby"]
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/self_delete.gd" id="2_263bt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jfo7b"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(0, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsi0b"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(228, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jsn2s"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(456, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uoq3a"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(684, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3h7fp"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(912, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ff31i"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(1140, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y7qt3"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(1368, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rxvq5"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(1596, 0, 228, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gh6vd"]
+atlas = ExtResource("1_ktlby")
+region = Rect2(1824, 0, 228, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o0s2w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jfo7b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsi0b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jsn2s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uoq3a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3h7fp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ff31i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y7qt3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rxvq5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gh6vd")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="AfterEffect" type="AnimatedSprite2D"]
+position = Vector2(43, 0)
+rotation = 1.5708
+scale = Vector2(0.6, 1.2)
+sprite_frames = SubResource("SpriteFrames_o0s2w")
+autoplay = "default"
+frame = 8
+frame_progress = 1.0
+script = ExtResource("2_263bt")
+
+[connection signal="animation_finished" from="." to="." method="_on_finished"]

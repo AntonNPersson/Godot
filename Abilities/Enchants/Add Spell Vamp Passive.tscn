@@ -11,3 +11,4 @@ icon = ExtResource("2_xgvx1")
 tags = Array[String](["SpellVampPassive"])
 values = Array[float]([5.0])
 types = Array[int]([4])
+rarity = 1

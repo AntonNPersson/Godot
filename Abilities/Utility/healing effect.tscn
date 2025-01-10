@@ -1,0 +1,119 @@
+[gd_scene load_steps=18 format=3 uid="uid://1tn876srpmrd"]
+
+[ext_resource type="Texture2D" uid="uid://bedtw3llcoe6y" path="res://Abilities/Utility/Heal Effect Sprite Sheet.png" id="1_ysmt4"]
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Massive Attack/self_delete.gd" id="2_l4etv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gubtr"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6w0b"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjc77"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(0, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bm4e1"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jcynx"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_226ik"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohf6p"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(128, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xfaa"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yakbw"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cuy3o"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(256, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajwjs"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(256, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hi0l"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8ryw"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5b0px"]
+atlas = ExtResource("1_ysmt4")
+region = Rect2(384, 256, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tmf60"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gubtr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6w0b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mjc77")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bm4e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jcynx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_226ik")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohf6p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xfaa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yakbw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cuy3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajwjs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hi0l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8ryw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5b0px")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="HealingEffect" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_tmf60")
+autoplay = "default"
+frame = 13
+frame_progress = 1.0
+script = ExtResource("2_l4etv")
+
+[connection signal="animation_finished" from="." to="." method="_on_finished"]

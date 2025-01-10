@@ -108,7 +108,10 @@ func _process(delta):
 		hotbar.get_child(i).texture = abilities[i].icon
 		hotbar.get_child(i).get_child(0).text ="[center][color=wheat]" + str(int(cooldown_timers[i]))
 		if abilities[i].charges > 1:
+			hotbar.get_child(i).get_child(2).visible = true
 			hotbar.get_child(i).get_child(2).text = "[center][color=wheat]" + str(int(ability_charges[i]))
+		else:
+			hotbar.get_child(i).get_child(2).visible = false
 		if cooldown_timers[i] <= 0:
 			hotbar.get_child(i).get_child(0).visible = false
 			if ability_charges[i] < abilities[i].charges:
@@ -153,6 +156,7 @@ func _input(event):
 		toggle_hud('Stats')
 	elif event.is_action_released('Abilities'):
 		toggle_hud('Abilities')
+
 	if GameManager.settings['roguelike_controls']:
 		if event.is_action_pressed("Ability_1") and !event.is_echo():
 			activate_ability(0)
@@ -160,6 +164,14 @@ func _input(event):
 			activate_ability(1)
 		elif event.is_action_pressed('Ability_3') and !event.is_echo():
 			activate_ability(2)
+
+		if event.is_action_pressed('Level_up_1') and !event.is_echo():
+			_on_level_pressed(0)
+		elif event.is_action_pressed('Level_up_2') and !event.is_echo():
+			_on_level_pressed(1)
+		elif event.is_action_pressed('Level_up_3') and !event.is_echo():
+			_on_level_pressed(2)
+
 		if event.is_action_pressed('Ability_Q') and !event.is_echo():
 			if potions.size() > 0:
 				if current_potion_charges[0] <= 0:
@@ -176,12 +188,14 @@ func _input(event):
 					potions[1]._use()
 					current_potion_charges[1] -= 1
 					_update_inventory_test()
+
 		if event.is_action_released("Move"):
 			if current_weapon != null and !unit.lose_camera_focus:
 				current_weapon._initialize_weapon(unit)
 		if event.is_action_pressed("Move"):
 			if current_weapon != null and !unit.lose_camera_focus:
 				current_weapon._pre_initialize_weapon(unit)
+
 	elif GameManager.settings['moba_controls']:
 		if event.is_action_pressed("Ability_Q") and !event.is_echo():
 			activate_ability(0)
@@ -189,6 +203,7 @@ func _input(event):
 			activate_ability(1)
 		elif event.is_action_pressed('Ability_E') and !event.is_echo():
 			activate_ability(2)
+
 		if event.is_action_pressed('potion_1') and !event.is_echo():
 			if potions.size() > 0:
 				if current_potion_charges[0] <= 0:
@@ -260,15 +275,20 @@ func activate_ability(index):
 		if cooldown_timers[index] > 0 and abilities[index].projectile_type != PROJECTILE_TYPE.Passive and ability_charges[index] < 1:
 			Utility.get_node('ErrorMessage')._create_error_message('Ability on cooldown', self)
 			return
-	
-		abilities_targeting[index] = true
-		if abilities[index].projectile_type == PROJECTILE_TYPE.Self or abilities[index].projectile_type == PROJECTILE_TYPE.Summon:
+
+		if abilities[index].projectile_type == PROJECTILE_TYPE.Passive:
+			abilities[index]._use()
+			return
+
+		if abilities[index].projectile_type == PROJECTILE_TYPE.Self or abilities[index].projectile_type == PROJECTILE_TYPE.Summon or GameManager.settings['smart_cast']:
 			abilities[index]._use()
 			if unit._apply_double_cast_chance():
 				await get_tree().create_timer(0.1).timeout
 				abilities[index]._use()
 			cooldown_timers[index] = unit._apply_cooldown_reduction(abilities[index].cooldown)
 			ability_charges[index] -= 1
+		else:
+			abilities_targeting[index] = true
 
 func handle_targeting_input(event, ab, index):
 	if event.is_action_pressed("Attack"):
@@ -454,7 +474,7 @@ func _update_stats():
 func round_place(num, places):
 	return (round(num*pow(10,places))/pow(10,places))
 
-func _on_ability_manager_picked(_ability):
+func _on_ability_manager_picked(_ability, subwave):
 	if abilities == null:
 		abilities = Array()
 	
@@ -762,7 +782,7 @@ func _on_level_pressed(ability_index : int):
 		unit.total_ability_experience -= abilities[ability_index].max_experience
 		abilities[ability_index]._add_level()
 	else:
-		Utility.get_node('ErrorMessage')._create_error_message('Not enough experience', self)
+		Utility.get_node('ErrorMessage')._create_error_message('Not enough experience to level' + str(abilities[ability_index].a_name), self)
 
 func _handle_level_up_visability():
 		for i in range(abilities.size()):

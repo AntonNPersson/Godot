@@ -13,6 +13,7 @@ cooldown = 8.0
 _range = 400.0
 projectile_type = 6
 ability_type = "INT"
+sprite_scale = 0.0
 type = "Blink"
 tags = Array[String](["Damage", "Burn", "Explosion"])
 values = Array[float]([15.0, 7.5, 1.0])

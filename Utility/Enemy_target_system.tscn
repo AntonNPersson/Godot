@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d0fx2kx4donnu"]
+[gd_scene load_steps=31 format=3 uid="uid://d0fx2kx4donnu"]
 
 [ext_resource type="Script" path="res://Utility/enemy_target_system.gd" id="1_dv1ql"]
 [ext_resource type="Script" path="res://Utility/HitBox.gd" id="2_irwds"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://7hkek2koxa0r" path="res://Sprites/hitbox.png" id="4_ajjaw"]
 [ext_resource type="Texture2D" uid="uid://cl11f2lob87cq" path="res://Sprites/rectangle_hitbox.png" id="5_ivvmq"]
 [ext_resource type="Texture2D" uid="uid://bdhq2nrvjrx3o" path="res://Sprites/rectangle_hitbox_!.png" id="6_8rv30"]
+[ext_resource type="Texture2D" uid="uid://din37rhn8vjb" path="res://Utility/cone.png" id="7_ai22d"]
 [ext_resource type="Script" path="res://Utility/ProjectileMarker.gd" id="7_e4q4q"]
+[ext_resource type="Texture2D" uid="uid://dley5sc63rg3k" path="res://Utility/cone2.png" id="8_bcnow"]
 [ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="8_r3dob"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="9_iocah"]
 
@@ -16,8 +18,8 @@ light_mode = 1
 [sub_resource type="CircleShape2D" id="CircleShape2D_dxwh3"]
 radius = 63.0
 
-[sub_resource type="Animation" id="Animation_fp38x"]
-resource_name = "Fade_in"
+[sub_resource type="Animation" id="Animation_fieyr"]
+resource_name = "Fade_in_circle"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -28,7 +30,73 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1e-05, 1e-05), Vector2(0.95, 0.95)]
+"values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_roi04"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t4k0v"]
+_data = {
+"Fade_in_circle": SubResource("Animation_fieyr"),
+"RESET": SubResource("Animation_roi04")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fx3rw"]
+size = Vector2(100, 100)
+
+[sub_resource type="Animation" id="Animation_fp38x"]
+resource_name = "Fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(0.126592, 0.114976), Vector2(0.240222, 0.229943), Vector2(1.1098, 1.14967)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-75.5, 0.500008), Vector2(-68.1422, 0.0623603), Vector2(-60.7843, -0.095072), Vector2(-1.92155, -0.723134)]
+}
+
+[sub_resource type="Animation" id="Animation_8tox3"]
+resource_name = "Fade_in_circle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_q46ue"]
@@ -44,6 +112,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1e-05, 1e-05)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-2.5, 67.5)]
 }
 
 [sub_resource type="Animation" id="Animation_1ks6s"]
@@ -64,22 +144,41 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q5eyl"]
 _data = {
 "Fade_in": SubResource("Animation_fp38x"),
+"Fade_in_circle": SubResource("Animation_8tox3"),
 "RESET": SubResource("Animation_q46ue"),
 "fade_out": SubResource("Animation_1ks6s")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fx3rw"]
-size = Vector2(100, 100)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wpp2p"]
+size = Vector2(71.9874, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1uidf"]
+size = Vector2(86, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gqhlc"]
+size = Vector2(54, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2oddr"]
+size = Vector2(34, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_74jv7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2mvd8"]
+size = Vector2(109, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vt74b"]
+size = Vector2(137, 16)
 
 [sub_resource type="Gradient" id="Gradient_sxdgv"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="EnemyTargetSystem" type="Node2D" node_paths=PackedStringArray("hitboxx")]
+z_index = 15
+z_as_relative = false
 script = ExtResource("1_dv1ql")
 hitboxx = NodePath("HitBox")
 
 [node name="HitBox" type="Node2D" parent="."]
-z_index = -1
 script = ExtResource("2_irwds")
 
 [node name="Circle" type="Area2D" parent="HitBox"]
@@ -87,6 +186,7 @@ visible = false
 modulate = Color(1, 1, 1, 0.188235)
 
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/Circle"]
+modulate = Color(1, 0, 0, 1)
 material = SubResource("CanvasItemMaterial_vfekf")
 position = Vector2(-2.5, -0.499996)
 scale = Vector2(1.14844, 1.19531)
@@ -97,7 +197,7 @@ shape = SubResource("CircleShape2D_dxwh3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HitBox/Circle"]
 libraries = {
-"": SubResource("AnimationLibrary_q5eyl")
+"": SubResource("AnimationLibrary_t4k0v")
 }
 
 [node name="Sprite2D2" type="Sprite2D" parent="HitBox/Circle"]
@@ -123,8 +223,67 @@ libraries = {
 }
 
 [node name="Sprite2D2" type="Sprite2D" parent="HitBox/Rectangle"]
+position = Vector2(-2.5, 67.5)
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("6_8rv30")
+
+[node name="Cone" type="Area2D" parent="HitBox"]
+visible = false
+modulate = Color(1, 0, 0, 0.188235)
+
+[node name="Sprite2D" type="Sprite2D" parent="HitBox/Cone"]
+material = SubResource("CanvasItemMaterial_vfekf")
+position = Vector2(-2.5, -0.499996)
+rotation = 1.5708
+scale = Vector2(1.14844, 1.19531)
+texture = ExtResource("7_ai22d")
+
+[node name="Sprite2D2" type="Sprite2D" parent="HitBox/Cone"]
+material = SubResource("CanvasItemMaterial_vfekf")
+position = Vector2(-2.5, 67.5)
+rotation = 1.5708
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("8_bcnow")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HitBox/Cone"]
+libraries = {
+"": SubResource("AnimationLibrary_q5eyl")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox/Cone"]
+position = Vector2(1, -4)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_wpp2p")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="HitBox/Cone"]
+position = Vector2(22, -2)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_1uidf")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="HitBox/Cone"]
+position = Vector2(-19, -2)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_gqhlc")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="HitBox/Cone"]
+position = Vector2(-39, -1)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_2oddr")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="HitBox/Cone"]
+position = Vector2(-60, -1)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_74jv7")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="HitBox/Cone"]
+position = Vector2(43, 0)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_2mvd8")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="HitBox/Cone"]
+position = Vector2(63, 0)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_vt74b")
 
 [node name="ProjectileMarker" type="Node2D" parent="."]
 visible = false
@@ -163,5 +322,5 @@ offset = Vector2(0, -8)
 texture_scale = 0.4
 script = ExtResource("9_iocah")
 
-[connection signal="animation_finished" from="HitBox/Circle/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="HitBox/Rectangle/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="animation_finished" from="HitBox/Cone/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

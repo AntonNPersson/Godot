@@ -29,7 +29,7 @@ var top_list_defense
 var top_list_utility
 
 var starting_items = 0
-var weapon_list = [14, 15, 16, 17, 18, 19, 20]
+var weapon_list = [14, 15, 16, 17, 18, 19, 20] # 14 = Greataxe, 15 = Bow, 16 = Crossbow, 17 = Scepter, 18 = Staff, 19 = Sword, 20 = Dagger
 var evade_armor_list = [0, 1, 2, 3, 4]
 var barrier_armor_list = [5, 6, 7, 8, 9]
 var armor_armor_list = [10, 11, 12, 13]
@@ -125,8 +125,13 @@ func _initialize():
 	player.get_node('InventoryManager').current_potion_charges[1] = player.get_node('InventoryManager').potion_charges[1]
 
 	if !GameManager.is_save_file:
-		for i in range(0, 4):
+		for i in range(0, 3):
 			_add_to_inventory()
+		if GameManager.selected_character_name == "Explorer":
+			_add_specific_to_inventory(19)
+		elif GameManager.selected_character_name == "Berserker":
+			_add_specific_to_inventory(14)
+
 
 
 func _calculate_item_rarity():
@@ -212,11 +217,8 @@ func _calculate_item_rarity():
 
 	# Use the same roll to determine rarity
 	roll = randi() % 100
-	print("Roll: " + str(roll))
-	print("Adjusted chances: " + str(adjusted_rarity_chances))
 	for rarity in adjusted_rarity_chances.keys():
 		if roll < adjusted_rarity_chances[rarity]:
-			print("Rarity: " + str(adjusted_rarity_chances[rarity]))
 			return rarity
 		roll -= adjusted_rarity_chances[rarity]
 	
@@ -631,6 +633,21 @@ func _add_to_inventory():
 		starting_items += 1
 	if _item == null:
 		return
+	player.get_node('InventoryManager')._on_item_picked_up(_item)
+
+func _add_specific_to_inventory(item_id):
+	var _component = bot_list[item_id].duplicate()
+	_component._initialize()
+	var _item = item.instantiate()
+	_item.i_name = _component.name
+	_item.player = player
+	_item.rarity = ITEM_RARITY.COMMON
+	_item.im = self
+	_item.add_child(_component)
+	_component.set_owner(_item)
+	_item._initialize()
+	_item.picked_up.connect(player.get_node('InventoryManager')._on_item_picked_up)
+	player.get_node('InventoryManager').get_node('Items').add_child(_item)
 	player.get_node('InventoryManager')._on_item_picked_up(_item)
 
 func _create_chest():

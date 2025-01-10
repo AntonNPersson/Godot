@@ -11,6 +11,7 @@ mana_cost = 50.0
 cooldown = 15.0
 projectile_type = 9
 ability_type = "INT"
+sprite_scale = 0.0
 summon_scene = ExtResource("2_jx3ad")
 summon_amount = 2
 summon_scaling = 0.3

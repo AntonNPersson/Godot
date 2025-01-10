@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dm3y6fghb2h5o"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_uesmo"]
+[ext_resource type="Texture2D" uid="uid://ihxam1k55b30" path="res://Abilities/Enchants/icons/Blue Ability_24.png" id="2_db8wj"]
+
+[node name="AddFreeze" type="Node2D"]
+script = ExtResource("1_uesmo")
+i_name = "General: Freeze"
+tooltip = "Add freeze effect to selected ability."
+icon = ExtResource("2_db8wj")
+tags = Array[String](["Freeze"])
+values = Array[float]([20.0])
+types = Array[int]([-1])
+unique = true
+rarity = 2

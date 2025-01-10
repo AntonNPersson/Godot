@@ -253,9 +253,14 @@ func _attack(tags = null, values = null, delta = 0.0):
 			attack_sprite.scale = Vector2(0.08, 0.08)
 			extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : null}
 			_on_action(new_damage, attack_target, stats, "Damage", extra)
+			var j = 0
 			for i in range(tags.size()):
-				extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities[i]}
+				if j < stats.current_attack_modifier_abilities.size():
+					extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities[i]}
+				else:
+					extra = {"basic_attacking": true, "critical": crit["critical"]}
 				_on_action(values[i], attack_target, stats, tags[i], extra)
+				j += 1
 		else:
 			attack_sprite.scale = Vector2(0.08 + (0.02*stats.total_attack_targets), 0.08 + (0.02*stats.total_attack_targets))
 			var targets = get_tree().get_nodes_in_group('enemies')
@@ -418,20 +423,21 @@ func _check_collision():
 	
 	for area in overlapping:
 		if area.is_in_group('obstacles'):
-			var collision_point_1 = area.get_node("CollisionShape2D").global_position
-			var collision_point_2 = null
-			if area.get_node("CollisionShape2D2") != null:
-				collision_point_2 = area.get_node("CollisionShape2D2").global_position
-			var collision_point = null
-			if collision_point_2 != null:
-				if collision_point_1.distance_to(stats.global_position) < collision_point_2.distance_to(stats.global_position):
-					collision_point = collision_point_1
+			if area.visible:
+				var collision_point_1 = area.get_node("CollisionShape2D").global_position
+				var collision_point_2 = null
+				if area.has_node("CollisionShape2D2"):
+					collision_point_2 = area.get_node("CollisionShape2D2").global_position
+				var collision_point = null
+				if collision_point_2 != null:
+					if collision_point_1.distance_to(stats.global_position) < collision_point_2.distance_to(stats.global_position):
+						collision_point = collision_point_1
+					else:
+						collision_point = collision_point_2
 				else:
-					collision_point = collision_point_2
-			else:
-				collision_point = collision_point_1
-			
-			collision_direction = (collision_point - stats.global_position).normalized()
-			colliding = true
-			stats.is_colliding = true
-			return
+					collision_point = collision_point_1
+				
+				collision_direction = (collision_point - stats.global_position).normalized()
+				colliding = true
+				stats.is_colliding = true
+				return

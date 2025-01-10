@@ -11,6 +11,7 @@ tooltip_text = "Create a magical wind around you and your allies, increasing mov
 _range = 200.0
 projectile_type = 8
 ability_type = "DEX"
+sprite_scale = 0.0
 tags = Array[String](["AttackSpeedPassive", "MovementSpeedPassive"])
 values = Array[float]([15.0, 5.0])
 increased_values = Array[float]([5.0, 3.0])

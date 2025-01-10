@@ -16,6 +16,7 @@ var original_speed
 var original_position
 var hit_enemies = []
 var in_air = false
+var is_hit = []
 
 func _use():
 	timer = Timer.new()
@@ -72,8 +73,11 @@ func _check_collision():
 
 	for area in overlapping:
 		if area.is_in_group('players') or area.is_in_group('player_summon'):
+			if is_hit.has(area):
+				continue
 			do_damage.emit(damage, area, self, tag)
 			get_node('Sprite2D').play('hit')
+			is_hit.append(area)
 			if !get_node('Sprite2D').animation_finished.is_connected(_on_hit_finished):
 				get_node('Sprite2D').animation_finished.connect(_on_hit_finished)
 			return

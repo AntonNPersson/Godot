@@ -18,13 +18,14 @@ var light_color
 var _ability
 var sprint_timer = 0.2
 
+var max_distance
+
 var hit_enemies = []
 # Called when the node enters the scene tree for the first time.
 func _start(origin, target, rnge, speed, type, light_color, explosion, explosion_radius, _ability, pool = false, sprite_frames = null, sprite_scale = 1, custom_movement = false):
 	if target == null:
 		queue_free()
 		return
-	print('hi')
 	start_position = origin.global_position
 	self.origin = origin
 	self.target = target
@@ -33,6 +34,7 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 	self.type = type
 	if type == "Charge":
 		self.direction = (target.global_position - origin.global_position).normalized()
+		self.max_distance = origin.global_position.distance_to(target.global_position)
 	if type == "Sprint":
 		self.direction = (target - origin.global_position).normalized()
 	self.global_position = origin.global_position
@@ -78,7 +80,7 @@ func _process(delta):
 	if !is_instance_valid(origin):
 		return
 	if type == "Charge":
-		if move:
+		if move and is_instance_valid(target):
 			direction = (target.global_position - origin.global_position).normalized()
 			origin.global_position += direction * speed * delta
 			if origin.global_position.distance_to(target.global_position) <= 30:
@@ -92,14 +94,14 @@ func _process(delta):
 					_explosion.get_node('particle').color = light_color
 					_explosion.get_node('particle').scale = Vector2(explosion_radius/3, explosion_radius/3)
 					_explosion.get_node('particle').initial_velocity_min *= explosion_radius
-					_explosion.get_child(1).shape.radius = 50 * explosion_radius
+					_explosion.get_child(1).shape.radius = explosion_radius
 					_explosion.get_node('particle').emitting = true
 					_explosion.has_hit.connect(_ability._on_hit)
 					_explosion.hit_enemies.append_array(hit_enemies)
 					get_tree().get_root().get_node('Main').add_child(_explosion)
 				queue_free()
 	if type == "Blink":
-		if move:
+		if move and is_instance_valid(target):
 			origin.global_position = target.global_position
 			hit_enemies.append(target)
 			has_hit.emit(target)
@@ -109,7 +111,7 @@ func _process(delta):
 					_explosion.get_node('particle').color = light_color
 					_explosion.get_node('particle').scale = Vector2(explosion_radius/3, explosion_radius/3)
 					_explosion.get_node('particle').initial_velocity_min *= explosion_radius
-					_explosion.get_child(1).shape.radius = 50 * explosion_radius
+					_explosion.get_child(1).shape.radius = explosion_radius
 					_explosion.get_node('particle').emitting = true
 					_explosion.has_hit.connect(_ability._on_hit)
 					_explosion.hit_enemies.append_array(hit_enemies)
@@ -122,6 +124,7 @@ func _process(delta):
 		if move:
 			origin.global_position += direction * speed * delta
 			sprint_timer += delta
+			print(sprint_timer)
 			if sprint_timer > 0.2 and !pool and explosion:
 				var __explosion = explosion_effect.instantiate()
 				__explosion.global_position = origin.global_position
@@ -139,7 +142,7 @@ func _process(delta):
 				__explosion.has_hit.connect(_ability._on_hit)
 				get_tree().get_root().get_node('Main').add_child(__explosion)
 				sprint_timer = 0
-			if origin.global_position.distance_to(target) > 30 and origin.global_position.distance_to(start_position) < _range:
+			if origin.global_position.distance_to(start_position) < _range:
 				origin.get_node('Control').movement_target = Vector2.ZERO
 				origin.get_node('Control').update_sprite_direction((target - origin.global_position).normalized(), "Walk")
 				if pool:
@@ -149,13 +152,20 @@ func _process(delta):
 						if !hit_enemies.has(enemy):
 							hit_enemies.append(enemy)
 							has_hit.emit(enemy)
+							var new_explosion = get_child(0).duplicate()
+							new_explosion.global_position = enemy.global_position
+							new_explosion.get_child(0).color = light_color
+							new_explosion.get_child(0).initial_velocity_min = 10
+							new_explosion.get_child(0).emitting = true
+							new_explosion.visible = true
+							get_tree().get_root().get_node('Main').add_child(new_explosion)
+
 							if explosion:
 								var _explosion = explosion_effect.instantiate()
 								_explosion.global_position = enemy.global_position
 								_explosion.get_node('particle').color = light_color
-								_explosion.get_node('particle').scale = Vector2(explosion_radius/3, explosion_radius/3)
-								_explosion.get_node('particle').initial_velocity_min *= explosion_radius
-								_explosion.get_child(1).shape.radius = 50 * explosion_radius
+								_explosion.get_node('particle').initial_velocity_min = explosion_radius + randi() % 40 + 10
+								_explosion.get_child(1).shape.radius = explosion_radius
 								_explosion.get_node('particle').emitting = true
 								_explosion.has_hit.connect(_ability._on_hit)
 								_explosion.hit_enemies.append_array(hit_enemies)

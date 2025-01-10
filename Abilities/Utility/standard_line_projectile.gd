@@ -60,9 +60,11 @@ func _check_collision():
 				var _explosion = explosion_instance.instantiate()
 				_explosion.global_position = area.global_position
 				_explosion.get_node('particle').color = explosion_color
-				_explosion.get_node('particle').scale = Vector2(explosion_radius/2, explosion_radius/2)
-				_explosion.get_node('particle').initial_velocity_min *= explosion_radius
-				_explosion.get_child(1).shape.radius = 50 * explosion_radius
+				_explosion.get_node('particle').initial_velocity_min = explosion_radius
+				_explosion.get_node('particle').scale = Vector2(explosion_radius/100, explosion_radius/100)
+				print(explosion_radius)
+				_explosion.get_child(1).shape.radius = explosion_radius
+				print(_explosion.get_child(1).shape.radius)
 				_explosion.get_node('particle').emitting = true
 				_explosion.has_hit.connect(origin._on_hit)
 				_explosion.hit_enemies.append_array(hit_enemies)

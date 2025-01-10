@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1e2f4edculv3"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_v6w3s"]
+[ext_resource type="Texture2D" uid="uid://dr0n4rqrrlxxn" path="res://Abilities/STR/Crimson Combination/dark spell_18.png" id="2_nehy4"]
+[ext_resource type="Texture2D" uid="uid://btqt2ef2cjbtj" path="res://Abilities/STR/Crimson Combination/Heal Spell21.png" id="3_hr1r8"]
+
+[node name="CrimsonCombination" type="Node2D"]
+script = ExtResource("1_v6w3s")
+a_name = "Crimson Combination"
+tooltip_text = "Switch between two states, either dealing Value0% of total health extra damage or heal 5% + Value1 every third attack."
+projectile_type = 4
+ability_type = "STR"
+auto_attack_based = true
+auto_attack_interval = 3.0
+toggle = true
+toggle_state_count = 1
+toggle_icons = Array[Texture]([ExtResource("2_nehy4"), ExtResource("3_hr1r8")])
+tags = Array[String](["CrimsonReckoning", "CrimsonSalvation"])
+values = Array[float]([10.0, 10.0])
+increased_values = Array[float]([5.0, 15.0])

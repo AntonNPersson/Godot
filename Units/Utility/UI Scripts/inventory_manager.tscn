@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dlpkjnesre3k2"]
+[gd_scene load_steps=29 format=3 uid="uid://dlpkjnesre3k2"]
 
 [ext_resource type="Script" path="res://Managers/InventoryManager.gd" id="1_rdvac"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_qob8h"]
@@ -17,6 +17,10 @@
 [ext_resource type="Texture2D" uid="uid://d2syqp1iwpmbx" path="res://GUI/potions0 x2.png" id="15_itbpl"]
 [ext_resource type="Texture2D" uid="uid://cwuivcmsn1yi" path="res://GUI/Level.png" id="17_uyls1"]
 [ext_resource type="Texture2D" uid="uid://cvsjvrgxgkm2w" path="res://GUI/Level_progress.png" id="18_0as54"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/Minimap.gd" id="19_h7yeb"]
+[ext_resource type="Texture2D" uid="uid://d10uri8vjqvip" path="res://Units/Utility/UI Scripts/Unlocked1.png" id="20_uiqqb"]
+[ext_resource type="Texture2D" uid="uid://odq7n4b3xqao" path="res://Units/Utility/UI Scripts/Unlocked4.png" id="21_y2chw"]
+[ext_resource type="Texture2D" uid="uid://di0iwla8yenf2" path="res://Units/Utility/UI Scripts/Unlocked2.png" id="22_2wcnl"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="23_6j2bt"]
 
 [sub_resource type="FontVariation" id="FontVariation_q5uqw"]
@@ -1246,9 +1250,9 @@ visible = false
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 0
 offset_left = 13.0
-offset_top = -35.0
+offset_top = -27.0
 offset_right = 33.0
-offset_bottom = -15.0
+offset_bottom = -7.0
 text = "+"
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="CanvasLayer/HotbarC/Hotbar/TextureRect1/level_up"]
@@ -1303,9 +1307,9 @@ visible = false
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 0
 offset_left = 12.0
-offset_top = -36.0
+offset_top = -27.0
 offset_right = 32.0
-offset_bottom = -16.0
+offset_bottom = -7.0
 text = "+"
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="CanvasLayer/HotbarC/Hotbar/TextureRect2/level_up"]
@@ -1684,6 +1688,12 @@ grow_vertical = 2
 theme_override_font_sizes/normal_font_size = 35
 bbcode_enabled = true
 text = "[center]1"
+
+[node name="Minimap" type="CanvasLayer" parent="CanvasLayer"]
+script = ExtResource("19_h7yeb")
+enemy_sprite = ExtResource("20_uiqqb")
+player_sprite = ExtResource("21_y2chw")
+portal_sprite = ExtResource("22_2wcnl")
 
 [node name="Items" type="Node" parent="."]
 

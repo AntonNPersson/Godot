@@ -4,6 +4,7 @@ signal start_round_manager()
 signal character_selected(unit)
 @export var units : Node
 @export var item_manager : Node
+@export var map_manager : Node
 var selected_character_name : String
 
 func _initialize():
@@ -15,6 +16,7 @@ func _initialize():
 	var selected_character = selected_character_scene.instantiate()
 	units.add_child(selected_character)
 	selected_character.item_manager = item_manager
+	selected_character.map_manager = map_manager
 	
 	if selected_character:
 		character_selected.emit(selected_character)

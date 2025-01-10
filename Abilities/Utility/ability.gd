@@ -35,7 +35,7 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var ability_type : String
 @export_group('Sprite Settings')
 @export var sprite_frames : SpriteFrames
-@export var sprite_scale : float
+@export var sprite_scale : float = 1
 @export_group('Projectile Settings')
 @export_subgroup('Collision')
 @export var collision_radius : float
@@ -63,6 +63,13 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var pool : bool
 @export var custom_movement : bool
 @export var charges : int = 1
+@export_group("Passive Settings")
+@export var auto_attack_based : bool
+@export var auto_attack_interval : float
+@export var toggle : bool
+@export var toggle_state_count : int
+@export var toggle_icons : Array[Texture]
+var toggle_state = 0
 @export_group('Summon Settings')
 @export var summon_scene : PackedScene
 @export var summon_amount : int
@@ -198,6 +205,9 @@ func _update_tooltip():
 		unit = get_tree().get_first_node_in_group('players')
 	tooltip = tooltip_text + "\n\n"
 	secondary_tooltip = ""
+	if projectile_type == targeting_type.Passive and toggle:
+		tooltip += "Current State: " + str(tags[toggle_state]) + "\n\n"
+
 	if projectile_type == targeting_type.Summon:
 		tooltip += "\nLevel: " + str(level)
 		tooltip += " Cost: " + str(mana_cost)
@@ -209,15 +219,33 @@ func _update_tooltip():
 	unit._update_stats()
 
 	var previous_objects = {}
+
 	if enchant_objects.size() != 0:
+		# Aggregate the values for each enchant object by a unique identifier
 		for object in enchant_objects:
-			if previous_objects.has(object):
-				for t in range(object.tags.size()):
-					previous_objects[object] = object.tooltip.replace("Value" + str(t), str(object.values[t] + object.values[t])) + "\n"
+			var key = object.name if object.has_method("name") else str(object)
+
+			if previous_objects.has(key):
+				# Aggregate the values
+				for t in range(object.values.size()):
+					previous_objects[key]["values"][t] += object.values[t]
 			else:
-				previous_objects[object] = object._get_tooltip() + "\n"
-		for object in previous_objects:
-			tooltip += previous_objects[object]
+				# Initialize the tooltip data
+				previous_objects[key] = {
+					"tooltip": object._get_tooltip_2(),
+					"values": object.values.duplicate()  # Create a copy of the values array
+				}
+
+		# Generate the final tooltips by replacing placeholders
+		for key in previous_objects:
+			var tooltip_data = previous_objects[key]
+			var tooltip_text = tooltip_data["tooltip"]
+			for t in range(tooltip_data["values"].size()):
+				# Replace each value placeholder with the aggregated value
+				tooltip_text = tooltip_text.replace("Value" + str(t), str(tooltip_data["values"][t]))
+			tooltip += tooltip_text + "\n\n"
+
+
 		
 			
 	if values.size() != 0:
@@ -313,11 +341,12 @@ func _add_enchant(tag, value, _type, extra = null, object = null):
 	enchant_objects.append(object)
 
 	_add_tag(tag, value, 0)
-	_initialize()
 
 	print("Enchanting" + tag)
 	if "Hit" not in extra:
 		non_hit_tags.append(tag)
+		extra["ability"] = a_name
+		unit.get_node('Control').on_action.emit(value, unit, self, tag, extra)
 
 func _get_enchant_extras(tag):
 	var index = enchants["Tags"].find(tag)
@@ -358,16 +387,20 @@ func _level_grants():
 
 	if level % 3 == 0:
 		level_enchant.emit(tags, projectile_type, self)
-	
-	if projectile_type == targeting_type.Passive:
-		_update_passive()
-		return
 
 # Update passive abilities. If ability is passive, a new passive_ability class must be used, that inherits from this class
 func _update_passive():
 	extra["ability"] = a_name
-	for t in tags.size():
-		unit.get_node('Control').on_action.emit(values[t], unit, unit, tags[t], extra)
+	if auto_attack_based:
+		extra["interval"] = auto_attack_interval
+	if !toggle:
+		for t in tags.size():
+			unit.get_node('Control').on_action.emit(values[t], unit, unit, tags[t], extra)
+	else:
+		icon = toggle_icons[toggle_state]
+		unit.get_node('Control').on_action.emit(values[toggle_state], unit, true, tags[toggle_state], extra)
+		for t in range(toggle_state_count, tags.size()):
+			unit.get_node('Control').on_action.emit(values[t], unit, true, tags[t], extra)
 
 # Get closest visible enemy to mouse
 func _get_closest_visible_enemy_to_mouse():
@@ -435,10 +468,7 @@ func _advanced_update():
 func _initialize():
 	lowest_cooldown = cooldown * 0.3
 
-	if projectile_type == targeting_type.Summon or is_docile:
-		return
-	if projectile_type == targeting_type.Passive:
-		_update_passive()
+	if projectile_type == targeting_type.Summon or is_docile or projectile_type == targeting_type.Passive:
 		return
 	extra["ability"] = a_name
 	for e in enchants["Extra"]:
@@ -642,7 +672,12 @@ func _use():
 						return
 			unit.get_node('Summons').add_child(summon_instance)
 			summon_instance.global_position = unit.global_position
-		
+	elif projectile_type == targeting_type.Passive:
+		if toggle:
+			unit.get_node('Control').on_action.emit(values[toggle_state], unit, false, tags[toggle_state], extra)
+			toggle_state += 1
+			if toggle_state >= toggle_state_count:
+				toggle_state = 0
 
 	elif projectile_type == targeting_type.None:
 		pass

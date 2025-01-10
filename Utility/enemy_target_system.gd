@@ -15,10 +15,10 @@ func _shake_camera(unit):
 		unit.get_node('Camera').shake_duration = 0.2
 		unit.get_node('Camera').is_shaking = true
 
-func _check_collision(hitbox, _call : Callable):
+func _check_collision(hitbox, _call : Callable, child = 0):
 	if is_instance_valid(hitbox) == false:
 		return
-	var box = hitbox.get_child(0)
+	var box = hitbox.get_child(child)
 	var overlapping_areas = box.get_overlapping_areas()
 	for area in overlapping_areas:
 		if area.is_in_group('players') or area.is_in_group('player_summon'):
@@ -40,7 +40,7 @@ func _create_circle_ability(size : float, duration : float, direction: Vector2, 
 		hitbox.global_position += direction * 64 * size
 		origini.add_child(hitbox)
 		hitbox.get_node('Circle').get_node('AnimationPlayer').speed_scale = 1/duration
-		hitbox.get_node('Circle').get_node('AnimationPlayer').play('Fade_in')
+		hitbox.get_node('Circle').get_node('AnimationPlayer').play('Fade_in_circle')
 		if i == 0:
 			await get_tree().create_timer(duration).timeout
 		if !is_instance_valid(origini) or origini.is_queued_for_deletion():
@@ -92,7 +92,7 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 	hitbox.global_position = target
 	origini.get_tree().get_root().add_child(hitbox)
 	hitbox.get_node('Circle').get_node('AnimationPlayer').speed_scale = 1/duration
-	hitbox.get_node('Circle').get_node('AnimationPlayer').play('Fade_in')
+	hitbox.get_node('Circle').get_node('AnimationPlayer').play('Fade_in_circle')
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini) or !is_instance_valid(hitbox):
 		return
@@ -157,4 +157,30 @@ func _create_flexible_rectangle_ability(size_y : float, size_x : float, duration
 		effect.scale = Vector2(size_x, size_y)
 	if do_damage:
 		_check_collision(hitbox, _call)
+
+func _create_cone_ability(size : Vector2, duration : float, direction: Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null):
+		for child in get_tree().get_nodes_in_group('players'):
+			player = child
+		origini.is_rooted = true
+		var hitbox = hitboxx.duplicate()
+		hitbox._initialize()
+		hitbox.get_node('Cone').visible = true
+		hitbox.scale = size
+		hitbox.global_position += direction * 78 * size.x
+		hitbox.rotation = direction.angle()
+		origini.add_child(hitbox)
+		hitbox.get_node('Cone').get_node('AnimationPlayer').speed_scale = 1/duration
+		hitbox.get_node('Cone').get_node('AnimationPlayer').play('Fade_in')
+		await get_tree().create_timer(duration).timeout
+		if !is_instance_valid(origini):
+			return
+		origini.is_rooted = false
+		if after_effect:
+			_shake_camera(player)
+			var effect = after_effect.instantiate()
+			origini.add_child(effect)
+			effect.global_position = hitbox.global_position
+			effect.scale = Vector2(size.x, size.y + 0.5)
+			effect.rotation = hitbox.rotation + PI/2
+		_check_collision(hitbox, _call, 2)
 

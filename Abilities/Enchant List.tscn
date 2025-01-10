@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://jg40w51mf1ji"]
+[gd_scene load_steps=55 format=3 uid="uid://jg40w51mf1ji"]
 
 [ext_resource type="PackedScene" uid="uid://dsp8rlsmfo1r6" path="res://Abilities/Enchants/Add Armor Reduction.tscn" id="1_chb2h"]
 [ext_resource type="PackedScene" uid="uid://bsm37gbrbg5ql" path="res://Abilities/Enchants/Add Attack Damage Passive.tscn" id="1_e3fqh"]
@@ -29,7 +29,6 @@
 [ext_resource type="PackedScene" uid="uid://kui6skjvl1l3" path="res://Abilities/Enchants/Add Self Target.tscn" id="17_e6dg4"]
 [ext_resource type="Texture2D" uid="uid://bv2n2mhmfywq6" path="res://Abilities/Enchants/icons/2BrownAbility_10.png" id="18_frvf5"]
 [ext_resource type="PackedScene" uid="uid://cqpjcqs3mkwh" path="res://Abilities/Enchants/Add Attack Speed Passive.tscn" id="19_kxmno"]
-[ext_resource type="PackedScene" uid="uid://c1m2ap8x4dbhf" path="res://Abilities/Enchants/Add Attack Range Passive.tscn" id="20_d6yvk"]
 [ext_resource type="Texture2D" uid="uid://b8ju266ggqm33" path="res://Abilities/Enchants/icons/2BlueAbility_6.png" id="20_oump2"]
 [ext_resource type="Texture2D" uid="uid://bu1r0t3amhquq" path="res://Abilities/Enchants/icons/2BlueAbility_19.png" id="22_b81et"]
 [ext_resource type="Texture2D" uid="uid://dp8s3i4q8i41q" path="res://Abilities/Enchants/icons/Blue Ability_12.png" id="24_gs41u"]
@@ -39,7 +38,6 @@
 [ext_resource type="Texture2D" uid="uid://ssx02xmv1b1v" path="res://Abilities/Enchants/icons/2BrownAbility_24.png" id="33_uaxyp"]
 [ext_resource type="Texture2D" uid="uid://60v1kk4qq6o8" path="res://Abilities/Enchants/icons/2BrownAbility_2.png" id="35_m1j2k"]
 [ext_resource type="Texture2D" uid="uid://1b4n4h3cj4fh" path="res://Abilities/Enchants/icons/Yellow Ability_23.png" id="37_8tkd7"]
-[ext_resource type="Texture2D" uid="uid://4wdpm7v08tdb" path="res://Abilities/Enchants/icons/Yellow Ability_16.png" id="39_r885c"]
 [ext_resource type="PackedScene" uid="uid://bvfwpqva6jwdl" path="res://Abilities/Enchants/Add Evade To Target.tscn" id="40_tx1q6"]
 [ext_resource type="PackedScene" uid="uid://mvapbjluavwi" path="res://Abilities/Enchants/Add Resistances to target.tscn" id="41_mi1wk"]
 [ext_resource type="PackedScene" uid="uid://bfnqkre4ce5ln" path="res://Abilities/Enchants/Add Target Multistrike.tscn" id="42_m3vhx"]
@@ -52,6 +50,10 @@
 [ext_resource type="PackedScene" uid="uid://cm4dqmm68ueyi" path="res://Abilities/Enchants/Add Life Steal Passive.tscn" id="50_ym3ma"]
 [ext_resource type="PackedScene" uid="uid://rdq7k84cbdmy" path="res://Abilities/Enchants/Add Spell Vamp Passive.tscn" id="51_ikd5b"]
 [ext_resource type="PackedScene" uid="uid://dkmykyjywm5b6" path="res://Abilities/Enchants/Add Critical Chance Passive.tscn" id="52_pdld1"]
+[ext_resource type="PackedScene" uid="uid://bqtccyh5611y5" path="res://Abilities/Enchants/Add Bleed.tscn" id="56_ev8wj"]
+[ext_resource type="Texture2D" uid="uid://dnncrpu6yf055" path="res://Abilities/Enchants/icons/Green Ability_24.png" id="57_8ofmt"]
+[ext_resource type="PackedScene" uid="uid://i1yswhb86rcw" path="res://Abilities/Enchants/Add Attack Speed Buff.tscn" id="60_ii03j"]
+[ext_resource type="PackedScene" uid="uid://b7m2q8i4yek25" path="res://Abilities/Enchants/Add Critical Chance Buff.tscn" id="61_xulfy"]
 
 [node name="EnchantList" type="Node2D"]
 
@@ -144,13 +146,9 @@ tooltip = "Add Value0% attack speed."
 icon = ExtResource("37_8tkd7")
 types = Array[int]([4, 8])
 
-[node name="Add Attack Range Passive" parent="." instance=ExtResource("20_d6yvk")]
-tooltip = "Add Value0 flat range to your basic attacks."
-icon = ExtResource("39_r885c")
-types = Array[int]([4, 8])
-
 [node name="Add Evade To Target" parent="." instance=ExtResource("40_tx1q6")]
 tooltip = "Add Value0 evade to target for 3 seconds."
+types = Array[int]([2, 5])
 extra = {
 "Duration": 3,
 "Hit": true
@@ -158,6 +156,7 @@ extra = {
 
 [node name="Add Resistances To Target" parent="." instance=ExtResource("41_mi1wk")]
 tooltip = "Add Value0 armor, and Value1% affliction resistance to target for 3 seconds."
+types = Array[int]([2, 5])
 extra = {
 "Duration": 3,
 "Hit": true
@@ -200,3 +199,22 @@ types = Array[int]([4, 8])
 [node name="Add Critical Chance Passive" parent="." instance=ExtResource("52_pdld1")]
 tooltip = "Add Value0% critical chance."
 types = Array[int]([4, 8])
+
+[node name="Add Wind" parent="." instance=ExtResource("56_ev8wj")]
+i_name = "General: Wind"
+tooltip = "Add wind effect.(Value0 pixels knockback)."
+icon = ExtResource("57_8ofmt")
+tags = Array[String](["Wind"])
+values = Array[float]([100.0])
+extra = {
+"Hit": true
+}
+
+[node name="Add Attack Speed to target" parent="." instance=ExtResource("60_ii03j")]
+types = Array[int]([2, 5])
+extra = {
+"Duration": 2,
+"Hit": true
+}
+
+[node name="Add Attack Speed to target2" parent="." instance=ExtResource("61_xulfy")]

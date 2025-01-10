@@ -47,9 +47,10 @@ script = ExtResource("1_osw0d")
 [node name="WaveManager" parent="CanvasModulate" node_paths=PackedStringArray("map_manager") instance=ExtResource("1_6yxuh")]
 map_manager = NodePath("../MapManager")
 
-[node name="CharacterManager" parent="CanvasModulate" node_paths=PackedStringArray("units", "item_manager") instance=ExtResource("2_rdbr4")]
+[node name="CharacterManager" parent="CanvasModulate" node_paths=PackedStringArray("units", "item_manager", "map_manager") instance=ExtResource("2_rdbr4")]
 units = NodePath("../Units")
 item_manager = NodePath("../ItemManager")
+map_manager = NodePath("../MapManager")
 
 [node name="RoundManager" parent="CanvasModulate" instance=ExtResource("3_s7syv")]
 
@@ -126,6 +127,7 @@ follow_viewport_enabled = true
 [connection signal="start_boss" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_start_wave"]
 [connection signal="start_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_wave_manager_start_wave"]
 [connection signal="start_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_start_wave"]
+[connection signal="stop_sub_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/RoundManager" method="_on_stop_sub_wave"]
 [connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/RoundManager" method="_on_stop_wave"]
 [connection signal="stop_wave" from="CanvasModulate/WaveManager" to="CanvasModulate/CombatManager" method="_on_stop_wave"]
 [connection signal="unit_dead" from="CanvasModulate/WaveManager" to="CanvasModulate/MapManager" method="_on_creature_dead"]

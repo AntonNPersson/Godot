@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3q7cheu3xa3a"]
 
 [ext_resource type="Script" path="res://Abilities/Creature Spells/Cursed Light Beam/Cursed Light Beam.gd" id="1_b2crg"]
-[ext_resource type="PackedScene" uid="uid://ca48nx0fdtqjw" path="res://Abilities/Creature Spells/Cursed Light Beam/after_effect1.tscn" id="2_8atvs"]
+[ext_resource type="PackedScene" uid="uid://dxmpuc0c6xmku" path="res://Abilities/Creature Spells/Cursed Light Beam/after_effect.tscn" id="2_u1rhp"]
 
 [node name="Cursed Light Beam" type="Node2D"]
 script = ExtResource("1_b2crg")
@@ -9,4 +9,4 @@ cast_duration = 3.0
 cooldown = 7.0
 size = 2.5
 values = [100.0]
-after_effect = ExtResource("2_8atvs")
+after_effect = ExtResource("2_u1rhp")

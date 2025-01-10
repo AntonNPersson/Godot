@@ -1,29 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://ogcxhkkfsmdi"]
+[gd_scene load_steps=8 format=3 uid="uid://ogcxhkkfsmdi"]
 
 [ext_resource type="Script" path="res://Managers/AbilityManager.gd" id="1_033sp"]
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="2_dib7m"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="3_goub6"]
 [ext_resource type="Texture2D" uid="uid://cil81eu46xxqv" path="res://GUI/Scalable txt screen x1.png" id="4_i7qnj"]
-[ext_resource type="Shader" path="res://Shaders/glow.gdshader" id="4_k31hf"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="7_hjc1x"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jsed8"]
-shader = ExtResource("4_k31hf")
-shader_parameter/color1 = Color(0.803922, 0.701961, 0, 1)
-shader_parameter/color2 = Color(0.803922, 0.701961, 0, 1)
-shader_parameter/threshold = 2.0
-shader_parameter/intensity = 1.0
-shader_parameter/opacity = 0.4
-shader_parameter/glow_color = Color(0.803922, 0.701961, 0, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tsstx"]
-shader = ExtResource("4_k31hf")
-shader_parameter/color1 = Color(1, 0.164706, 0, 1)
-shader_parameter/color2 = Color(1, 0.164706, 0, 1)
-shader_parameter/threshold = 2.0
-shader_parameter/intensity = 1.0
-shader_parameter/opacity = 0.4
-shader_parameter/glow_color = Color(1, 0.164706, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0dwdp"]
 bg_color = Color(0.152941, 0.152941, 0.152941, 1)
@@ -137,6 +120,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 1"
 fit_content = true
 autowrap_mode = 0
@@ -220,6 +204,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 2"
 fit_content = true
 autowrap_mode = 0
@@ -303,6 +288,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 3"
 fit_content = true
 autowrap_mode = 0
@@ -490,6 +476,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 1"
 fit_content = true
 autowrap_mode = 0
@@ -577,6 +564,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 2"
 fit_content = true
 autowrap_mode = 0
@@ -664,6 +652,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 3"
 fit_content = true
 autowrap_mode = 0
@@ -730,7 +719,7 @@ scale = Vector2(0.65, 1)
 texture = ExtResource("7_hjc1x")
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI/CanvasLayer/Curse"]
-material = SubResource("ShaderMaterial_tsstx")
+modulate = Color(1, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -856,6 +845,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 1"
 fit_content = true
 autowrap_mode = 0
@@ -939,6 +929,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 2"
 fit_content = true
 autowrap_mode = 0
@@ -1022,6 +1013,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 13
 text = "Ability 3"
 fit_content = true
 autowrap_mode = 0
@@ -1226,6 +1218,16 @@ offset_top = 375.0
 offset_right = 564.0
 offset_bottom = 415.0
 texture = ExtResource("7_hjc1x")
+
+[node name="Ability_name" type="RichTextLabel" parent="UI/CanvasLayer/Enchant"]
+modulate = Color(0.352941, 0.701961, 0, 1)
+material = SubResource("ShaderMaterial_jsed8")
+layout_mode = 0
+offset_top = 20.0
+offset_right = 239.0
+offset_bottom = 53.0
+bbcode_enabled = true
+text = "[center]Unending Wrath"
 
 [connection signal="item_clicked" from="UI/CanvasLayer/choiceList" to="." method="_on_choice_list_item_clicked"]
 [connection signal="pressed" from="UI/CanvasLayer/showButton" to="." method="_on_button_pressed"]

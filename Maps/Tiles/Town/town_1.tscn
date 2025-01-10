@@ -178,6 +178,7 @@ position = Vector2(675, 100)
 position = Vector2(545, 337)
 
 [node name="south_ wall" parent="." instance=ExtResource("3_uj6cs")]
+z_index = 1
 position = Vector2(-126, 294)
 
 [node name="right_wall" parent="." instance=ExtResource("4_f4qba")]

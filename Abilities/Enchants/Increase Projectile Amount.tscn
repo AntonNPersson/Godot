@@ -9,3 +9,4 @@ tooltip = "Adds Value0 extra projectile to owned selected projectile ability."
 tags = Array[String](["Duplicate"])
 values = Array[float]([1.0])
 types = Array[int]([0])
+rarity = 2

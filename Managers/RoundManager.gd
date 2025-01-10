@@ -4,7 +4,7 @@ extends Node
 @export var ability_time = 5
 @export var shop_time = 20
 signal next_wave()
-signal next_choice(unit)
+signal next_choice(unit, subwave)
 signal next_shop(time)
 signal update_characters()
 signal start_encounter(value, completed_waves, unit)
@@ -41,14 +41,13 @@ func _next_area(area, value):
 		await get_tree().create_timer(0.5).timeout
 		Utility.get_node('Brightness')._set_fog_layer(-2)
 		Utility.get_node('Brightness')._set_color(Color8(136, 158, 151))
-		GameManager.save_game()
 		start_singleplayer.emit()
 	if area == 'Combat':
 		Utility.get_node('Transition')._start(2)
 		await get_tree().create_timer(0.5).timeout
 		start_encounter.emit(value, units[0]._get_completed_waves(), units[0])
 	if area == 'Ability':
-		next_choice.emit(units[0])
+		next_choice.emit(units[0], value)
 		
 func _create_timer(time):
 	timer = Timer.new()
@@ -78,8 +77,9 @@ func _on_start_round_manager():
 	else:
 		_start_manager()
 
-func _on_ability_manager_picked(_ability):
-	_next_area('Town', null)
+func _on_ability_manager_picked(_ability, subwave = false):
+	if !subwave:
+		_next_area('Town', null)
 
 func _on_shop_closed():
 	_next_round()
@@ -91,12 +91,20 @@ func _on_character_selected(unit):
 func _on_stop_wave(completed, wave):
 	#_create_timer(wave_end_time)
 	if GameManager.is_singleplayer:
+		
 		if completed:
 			_next_area('Town', null)
 		else:
 			units[0]._add_completed_wave(wave)
-			_next_area('Ability', null)
+			_next_area('Ability', false)
 			update_characters.emit()
+
+func _on_stop_sub_wave():
+	#_create_timer(wave_end_time)
+	if GameManager.is_singleplayer:
+		print('subwave')
+		_next_area('Ability', true)
+		update_characters.emit()
 
 func _on_ability_manager_curse_picked(curse:Variant):
 	Utility.get_node('Transition')._start(0.3)

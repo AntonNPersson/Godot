@@ -39,9 +39,10 @@ func _action(_delta):
 		break
 	if _unit.is_rooted or _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		return
-	if _closest_distance > _unit.total_range + 10:
+	if _closest_distance > _unit.total_range - 5:
 		_move_towards_target(_delta)
 	else:
+		start_position = _unit.global_position
 		_change_state.call('attacking')
 
 func _flockBehaviour(_delta, target):
@@ -85,7 +86,6 @@ func _flockBehaviour(_delta, target):
 func _move_towards_target(_delta):
 	if current_path_index == -1 or current_path_index >= 1:
 		if _update_path() == -1:
-			print('No path found')
 			return
 	
 	if _unit.total_speed <= 0:
@@ -179,6 +179,8 @@ func _check_collision():
 	
 	for area in overlapping:
 		if area.is_in_group('obstacles') and !colliding and area.get_meta('Walkable'):
+			if !area.visible:
+				continue
 			var collision_point_1 = area.get_node("CollisionShape2D").global_position
 			var collision_point_2 = null
 			if area.has_node("CollisionShape2D2"):

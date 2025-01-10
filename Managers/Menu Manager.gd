@@ -14,7 +14,6 @@ var players_loaded = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	store_panel = get_child(0).get_node('StorePanel')
-	GameManager.save_game('user://ascension.save')
 
 func _input(event):
 	if event.is_action_pressed("Ability_1"):
@@ -44,6 +43,8 @@ func _open_store():
 		store_panel.visible = false
 	else:
 		store_panel.visible = true
+		print(Utility.get_node('AscensionBalance')._get_balance())
+		get_node('AC').load()
 		store_panel.get_node('AC_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_ascension_gain()) + "x.[/center]" 
 		store_panel.get_node('XP_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_xp_gain()) + "x.[/center]"
 		store_panel.get_node('Drop_Current').text = "[center]Current: " + str(Utility.get_node('AscensionStats')._get_bonus_drop_rate()) + "x.[/center]"
@@ -51,7 +52,6 @@ func _open_store():
 		store_panel.get_node('XP_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_xp_price()) + "AC.[/center]"
 		store_panel.get_node('Drop_Cost').text = "[center]Cost: " + str(Utility.get_node('AscensionStats')._get_bonus_drop_rate_price()) + "AC.[/center]"
 		store_panel.get_node('RichTextLabel').text = "[center]Total Ascension Currency: " + str(Utility.get_node('AscensionBalance')._get_balance()) + "AC.[/center]"
-		get_node('AC').load()
 
 func _buy_ascension_currency():
 	if Utility.get_node('AscensionStats')._get_bonus_ascension_gain() >= 20:

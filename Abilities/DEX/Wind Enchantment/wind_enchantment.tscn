@@ -11,6 +11,7 @@ tooltip_text = "Enchant your body with wind, increasing your attack damage by Va
 "
 projectile_type = 4
 ability_type = "DEX"
+sprite_scale = 0.0
 tags = Array[String](["WindSpeedPassive"])
 values = Array[float]([15.0])
 increased_values = Array[float]([8.0])

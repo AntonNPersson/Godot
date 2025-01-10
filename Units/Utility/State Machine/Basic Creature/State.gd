@@ -21,6 +21,7 @@ var current_progress = 0.0
 var cast_bar = null
 var cast_timer = 0.0
 var is_casting = false
+var start_position
 
 func _setup(change_state, unit):
 	self._change_state = change_state

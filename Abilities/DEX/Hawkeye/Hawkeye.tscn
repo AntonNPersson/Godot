@@ -10,6 +10,7 @@ a_name = "Hawkeye"
 tooltip_text = "Equip a scope to your weapon, passively increasing basic attack range by Value0."
 projectile_type = 4
 ability_type = "DEX"
+sprite_scale = 0.0
 tags = Array[String](["AttackRangePassive"])
 values = Array[float]([40.0])
 increased_values = Array[float]([5.0])

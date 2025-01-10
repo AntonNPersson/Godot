@@ -493,10 +493,10 @@ c_name = "Explorer"
 tooltip = "Loving the thrill of exploration, the explorer gains stats of the players chosing after each wave. Explorer ability pool contains: DEX, INT, STR."
 base_speed = 115
 base_barrier = 50
-base_health = 8000
 base_range = 50
 base_attack_speed = 0.7
 base_attack_damage = 5
+base_windup_time = 0.8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, 4)

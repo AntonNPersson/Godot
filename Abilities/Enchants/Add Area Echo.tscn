@@ -9,3 +9,4 @@ tooltip = "Your area of effect spell echoes, using the same spell after a delay 
 tags = Array[String](["Echo"])
 values = Array[float]([1.0])
 types = Array[int]([3])
+rarity = 1

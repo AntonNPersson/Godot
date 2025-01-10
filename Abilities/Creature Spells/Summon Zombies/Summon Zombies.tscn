@@ -8,6 +8,6 @@
 [node name="Summon Zombies" type="Node2D"]
 script = ExtResource("1_sfk4b")
 cast_duration = 1.0
-cooldown = 30.0
+cooldown = 60.0
 summons = Array[PackedScene]([ExtResource("2_3ger4"), ExtResource("2_3ger4"), ExtResource("2_3ger4"), ExtResource("2_3ger4"), ExtResource("3_b4rfa")])
 summon_effect = ExtResource("4_2ccu0")

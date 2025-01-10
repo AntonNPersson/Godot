@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnqfpaa38h7ha"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_mesu0"]
+[ext_resource type="Texture2D" uid="uid://c4hhvuhpr3yqv" path="res://Abilities/Enchants/icons/Red Ability_24.png" id="2_ovicn"]
+
+[node name="Add Burn" type="Node2D"]
+script = ExtResource("1_mesu0")
+i_name = "General: Burn"
+tooltip = "Add burn effect to selected ability."
+icon = ExtResource("2_ovicn")
+tags = Array[String](["Burn"])
+values = Array[float]([20.0])
+types = Array[int]([-1])
+unique = true
+rarity = 2

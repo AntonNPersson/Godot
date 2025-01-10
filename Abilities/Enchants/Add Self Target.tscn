@@ -9,3 +9,4 @@ tooltip = "On using selected targeted ability use it on yourself as well, but re
 tags = Array[String](["SelfTarget"])
 values = Array[float]([1.0])
 types = Array[int]([2])
+rarity = 1

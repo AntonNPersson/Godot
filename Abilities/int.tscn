@@ -1,29 +1,19 @@
-[gd_scene load_steps=19 format=3 uid="uid://b8a6w1f865pfx"]
+[gd_scene load_steps=13 format=3 uid="uid://b8a6w1f865pfx"]
 
-[ext_resource type="PackedScene" uid="uid://0k44xt34bdmb" path="res://Abilities/INT/Frozen Flash/Frozen Flash.tscn" id="1_oktd4"]
 [ext_resource type="PackedScene" uid="uid://da871oh6rfrvj" path="res://Abilities/INT/Fireball/fireball.tscn" id="1_vlnpx"]
-[ext_resource type="Texture2D" uid="uid://dx1tof507oy5y" path="res://Abilities/icons/Ice Spells36.png" id="2_4swp8"]
 [ext_resource type="PackedScene" uid="uid://c6nvjhyersa53" path="res://Abilities/INT/Healing Grace/Healing Grace.tscn" id="3_7ms2t"]
 [ext_resource type="PackedScene" uid="uid://c3omlhw6hvji2" path="res://Abilities/INT/Frostbolt/frostbolt.tscn" id="3_q2o0l"]
 [ext_resource type="Texture2D" uid="uid://dk1wq7mald1h1" path="res://Abilities/icons/light Spell_23.png" id="4_hwtba"]
 [ext_resource type="PackedScene" uid="uid://skewnj2yv5vd" path="res://Abilities/INT/Arcane Enchantment/arcane_enchantment.tscn" id="4_tck2m"]
-[ext_resource type="PackedScene" uid="uid://diqae7qfk1r2d" path="res://Abilities/INT/Fire Nova/fire_nova.tscn" id="5_u454j"]
 [ext_resource type="Texture2D" uid="uid://ihx6niid3jy3" path="res://Abilities/icons/Ice Spells15.png" id="6_7db48"]
-[ext_resource type="PackedScene" uid="uid://djiyu6xw762gv" path="res://Abilities/INT/Blood Storm/blood_storm.tscn" id="8_7g0ly"]
 [ext_resource type="Texture2D" uid="uid://x6x5qok08lid" path="res://Abilities/icons/Fire Spell Pack25.png" id="8_ku6w6"]
 [ext_resource type="PackedScene" uid="uid://rlftu05nuo57" path="res://Abilities/INT/Flaming Flash/Flaming Flash.tscn" id="10_oqlo0"]
 [ext_resource type="Texture2D" uid="uid://cjh1gix76i1f2" path="res://Abilities/icons/2PurpleAbility_4.png" id="10_w82ty"]
 [ext_resource type="PackedScene" uid="uid://dh1pinlr1cd20" path="res://Abilities/INT/Summon Goblins/Summon Goblins.tscn" id="11_d4kjh"]
-[ext_resource type="Texture2D" uid="uid://4q0mmw2k3ig" path="res://Abilities/icons/Fire Spell Pack3.png" id="12_gwrmr"]
-[ext_resource type="Texture2D" uid="uid://c1rmn1dvqox6g" path="res://Abilities/icons/Red Ability_24.png" id="14_8q3d4"]
 [ext_resource type="Texture2D" uid="uid://bg4hvqfnjmxwd" path="res://Abilities/icons/Fire Spell Pack35.png" id="16_qfptd"]
 [ext_resource type="Texture2D" uid="uid://d1gj2yku1x7yn" path="res://Abilities/icons/dark spell_4.png" id="18_5ogvs"]
 
 [node name="INT" type="Node"]
-
-[node name="Frozen Flash" parent="." instance=ExtResource("1_oktd4")]
-position = Vector2(240.176, -84.2922)
-icon = ExtResource("2_4swp8")
 
 [node name="Healing Grace" parent="." instance=ExtResource("3_7ms2t")]
 icon = ExtResource("4_hwtba")
@@ -37,12 +27,6 @@ icon = ExtResource("8_ku6w6")
 [node name="Arcane Enchantment" parent="." instance=ExtResource("4_tck2m")]
 icon = ExtResource("10_w82ty")
 
-[node name="Fire Nova" parent="." instance=ExtResource("5_u454j")]
-icon = ExtResource("12_gwrmr")
-
-[node name="Blood Storm" parent="." instance=ExtResource("8_7g0ly")]
-icon = ExtResource("14_8q3d4")
-
 [node name="Flaming Flash" parent="." instance=ExtResource("10_oqlo0")]
 position = Vector2(268, 383)
 icon = ExtResource("16_qfptd")
@@ -50,3 +34,5 @@ icon = ExtResource("16_qfptd")
 [node name="Summon Goblins" parent="." instance=ExtResource("11_d4kjh")]
 position = Vector2(2.91632, 84.8627)
 icon = ExtResource("18_5ogvs")
+tooltip_text = "Summon three goblins that bleed enemies on hit.
+NEED TO FIX SUMMON PATHING."

@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://bf2pw63lo38iu"]
+[gd_scene load_steps=8 format=3 uid="uid://bf2pw63lo38iu"]
 
 [ext_resource type="Script" path="res://Scenes/Cinematics/cinematic_0.gd" id="1_psd2c"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="2_oh3qy"]
-[ext_resource type="Texture2D" uid="uid://cil81eu46xxqv" path="res://GUI/Scalable txt screen x1.png" id="3_il1cj"]
 [ext_resource type="Script" path="res://Managers/Game Manager.gd" id="3_j513h"]
 [ext_resource type="Texture2D" uid="uid://jt5xm2q0f8sp" path="res://GUI/Explorer.png" id="4_wntu0"]
+[ext_resource type="Texture2D" uid="uid://c0wvcpkruf07g" path="res://Units/Instance/Characters/Berserker/berserker_1.png" id="5_3iw44"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l0sle"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ra660"]
 
 [node name="StartCinematic" type="Node2D"]
 script = ExtResource("1_psd2c")
@@ -13,10 +17,12 @@ script = ExtResource("1_psd2c")
 follow_viewport_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="UI"]
+modulate = Color(1, 1, 1, 0.698039)
 position = Vector2(988, 560)
 scale = Vector2(1.96227, 1.09387)
 
 [node name="characterList" type="ItemList" parent="UI"]
+visible = false
 custom_minimum_size = Vector2(100, 300)
 anchors_preset = 8
 anchor_left = 0.5
@@ -37,11 +43,17 @@ same_column_width = true
 
 [node name="Info" type="Panel" parent="UI"]
 visible = false
-custom_minimum_size = Vector2(200, 300)
-offset_left = 1008.0
-offset_top = 323.0
-offset_right = 1631.0
-offset_bottom = 623.0
+custom_minimum_size = Vector2(100, 200)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -304.5
+offset_top = -200.0
+offset_right = 304.5
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="Name" type="RichTextLabel" parent="UI/Info"]
 layout_mode = 1
@@ -52,27 +64,19 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "[center]Name"
 fit_content = true
 autowrap_mode = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="UI/Info"]
-position = Vector2(310.259, 22.3333)
+position = Vector2(305.259, 22.3333)
 scale = Vector2(0.518519, 2.66667)
 texture = ExtResource("2_oh3qy")
 
-[node name="Border" type="Sprite2D" parent="UI/Info"]
-position = Vector2(309, 75)
-scale = Vector2(2, 2)
-texture = ExtResource("3_il1cj")
-
-[node name="Icon" type="Sprite2D" parent="UI/Info/Border"]
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("4_wntu0")
-
 [node name="Sprite2D2" type="Sprite2D" parent="UI/Info"]
-position = Vector2(309.698, 146.333)
+position = Vector2(301.698, 146.333)
 scale = Vector2(1.39683, 2.66667)
 texture = ExtResource("2_oh3qy")
 
@@ -84,9 +88,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -30.0
-offset_top = -24.0
+offset_top = -62.0
 offset_right = 30.0
-offset_bottom = -8.0
+offset_bottom = -46.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
@@ -102,9 +106,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -43.5
-offset_top = -1.0
+offset_top = -44.0
 offset_right = 43.5
-offset_bottom = 15.0
+offset_bottom = -28.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.615686, 0.635294, 0.486275, 1)
@@ -121,9 +125,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -31.0
-offset_top = 44.0
+offset_top = -12.0
 offset_right = 29.0
-offset_bottom = 60.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
@@ -139,9 +143,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -44.5
-offset_top = 67.0
+offset_top = 7.0
 offset_right = 42.5
-offset_bottom = 83.0
+offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.615686, 0.635294, 0.486275, 1)
@@ -157,10 +161,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -254.5
-offset_top = 107.0
-offset_right = -120.5
-offset_bottom = 139.0
+offset_left = -190.5
+offset_top = 59.0
+offset_right = -56.5
+offset_bottom = 91.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
@@ -184,13 +188,38 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Select"
 
-[node name="Sprite2D3" type="Sprite2D" parent="UI/Info"]
-position = Vector2(308.698, 214.333)
-scale = Vector2(1.39683, 2.66667)
-texture = ExtResource("2_oh3qy")
+[node name="Explorer" type="Panel" parent="UI"]
+offset_left = 776.0
+offset_top = 482.0
+offset_right = 904.0
+offset_bottom = 610.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(62, 62)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_l0sle")
+
+[node name="Explorer" type="Sprite2D" parent="UI/Explorer"]
+position = Vector2(62, 62)
+scale = Vector2(2, 2)
+texture = ExtResource("4_wntu0")
+
+[node name="Berserker" type="Panel" parent="UI"]
+offset_left = 1027.0
+offset_top = 508.0
+offset_right = 1155.0
+offset_bottom = 636.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(62, 62)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
+
+[node name="Berserker" type="Sprite2D" parent="UI/Berserker"]
+position = Vector2(62, 62)
+scale = Vector2(2, 2)
+texture = ExtResource("5_3iw44")
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("3_j513h")
 
 [connection signal="item_clicked" from="UI/characterList" to="." method="_on_item_list_item_clicked"]
 [connection signal="pressed" from="UI/Info/Select" to="." method="_on_finished"]
+[connection signal="gui_input" from="UI/Explorer" to="." method="_on_character_pressed" binds= ["Explorer"]]
+[connection signal="gui_input" from="UI/Berserker" to="." method="_on_character_pressed" binds= ["Berserker"]]

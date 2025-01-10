@@ -6,7 +6,8 @@ var selected_character_name
 var settings = {
 	"screen_shake" : true,
 	"moba_controls" : false,
-	"roguelike_controls" : true,}
+	"roguelike_controls" : true,
+	"smart_cast" : true,}
 
 func _change_scene(parameter: String, mode : bool):
 	get_tree().change_scene_to_file(parameter)	
@@ -62,7 +63,20 @@ func save_game(filename = "user://savegame.save"):
 
 		# Store the save dictionary as a new line in the save file.
 		save_file.store_line(json_string)
+		save_file.store_line("")
 		print("Saved node '%s'" % node.name)
+
+func save_ac():
+	var save_dict = {
+		"ascension_currency" : Utility.get_node('AscensionBalance').ascension_currency,
+		"bonus_ascension_gain" : Utility.get_node('AscensionStats').bonus_ascension_gain,
+		"bonus_xp_gain" : Utility.get_node('AscensionStats').bonus_xp_gain,
+		"bonus_drop_rate" : Utility.get_node('AscensionStats').bonus_drop_rate,
+		"pre_chosen_abilities" : Utility.get_node('AscensionStats').pre_chosen_abilities,
+	}
+	var save_file = FileAccess.open("user://ascension.save", FileAccess.WRITE)
+	var json_string = JSON.stringify(save_dict)
+	save_file.store_line(json_string)
 
 func delete_saved_game():
 	var dir = DirAccess.open("user://")

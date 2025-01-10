@@ -111,7 +111,8 @@ _data = {
 [sub_resource type="Gradient" id="Gradient_ug0xy"]
 colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
 
-[node name="PortalEffect" type="Node2D"]
+[node name="PortalEffect" type="Node2D" groups=["portal"]]
+z_index = 3
 script = ExtResource("1_rbkjb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -125,7 +126,7 @@ speed_scale = 1.328
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.239216, 0, 0.239216, 1)
-energy = 0.7
+energy = 6.29
 texture = ExtResource("2_1te6m")
 texture_scale = 0.5
 script = ExtResource("3_nubvm")

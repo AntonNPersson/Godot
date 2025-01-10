@@ -9,3 +9,4 @@ tooltip = "Creates a pool after the ability has been used, dealing the same dama
 tags = Array[String](["AreaPool"])
 values = Array[float]([1.0])
 types = Array[int]([3])
+rarity = 2

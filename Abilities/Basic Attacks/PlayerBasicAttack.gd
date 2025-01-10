@@ -39,6 +39,7 @@ func _do_damage():
 		if tags.size() > 0:
 			for i in range(tags.size()):
 				if original_unit.is_in_group('players'):
-					extra = {"basic_attacking": true, "critical": is_critical, "ability" : original_unit.current_attack_modifier_abilities[i]}
+					if i < original_unit.current_attack_modifier_abilities.size():
+						extra = {"basic_attacking": true, "critical": is_critical, "ability" : original_unit.current_attack_modifier_abilities[i]}
 				do_damage.emit(values[i], unit, original_unit, tags[i], extra)
 	queue_free()

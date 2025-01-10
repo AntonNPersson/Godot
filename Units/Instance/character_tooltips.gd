@@ -5,3 +5,4 @@ extends Node
 @export_multiline var active_tooltip : String
 @export var icon : Texture
 @export var type : Array[String]
+@export var unlocked = false

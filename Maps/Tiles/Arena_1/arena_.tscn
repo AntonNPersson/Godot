@@ -97,6 +97,7 @@ size = Vector2(128, 129)
 
 [node name="Arena_" type="Node2D"]
 z_index = -1
+position = Vector2(5844, -347)
 
 [node name="boss_encounter" parent="." instance=ExtResource("1_i01gl")]
 z_index = -1
@@ -107,12 +108,15 @@ position = Vector2(-754, -43)
 
 [node name="_Area2D_104" parent="." instance=ExtResource("4_tp6e0")]
 z_index = -1
+position = Vector2(825, 45)
 
 [node name="player_spawn" parent="." instance=ExtResource("5_uao02")]
 z_index = -1
+position = Vector2(880, 271)
 
 [node name="creature_spawn" parent="." instance=ExtResource("6_s543w")]
 z_index = -1
+position = Vector2(45, 545)
 
 [node name="torch" parent="." instance=ExtResource("8_3sbft")]
 z_index = -1
@@ -239,7 +243,7 @@ shape = SubResource("RectangleShape2D_ua1te")
 
 [node name="_Area2D_150" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 z_index = -1
-position = Vector2(319, 135)
+position = Vector2(431, 137)
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_150"]
 modulate = Color(1, 1, 1, 0.733333)
@@ -301,9 +305,10 @@ shape = SubResource("RectangleShape2D_ogq66")
 
 [node name="WallCorner" parent="." instance=ExtResource("20_2acxd")]
 position = Vector2(610, 181)
+metadata/Walkable = true
 
 [node name="@Area2D@153" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
-position = Vector2(209, -6)
+position = Vector2(771, -218)
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="@Area2D@153"]
 texture = ExtResource("24_rurrl")
@@ -322,7 +327,8 @@ position = Vector2(607, 416)
 
 [node name="_Area2D_152" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 z_index = -1
-position = Vector2(101, 223)
+position = Vector2(252, 222)
+scale = Vector2(1.00383, 1)
 metadata/Walkable = false
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_152"]
@@ -340,7 +346,7 @@ shape = SubResource("RectangleShape2D_gg3lj")
 
 [node name="_Area2D_153" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 z_index = -1
-position = Vector2(-219, 287)
+position = Vector2(-253, 290)
 metadata/Walkable = false
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_153"]
@@ -372,15 +378,15 @@ shape = SubResource("RectangleShape2D_olui0")
 
 [node name="_Area2D_155" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 z_index = -1
-position = Vector2(-218, -19)
+position = Vector2(-189, -16)
 metadata/Walkable = false
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_155"]
-z_index = 1
+z_index = 10
 z_as_relative = false
 texture = ExtResource("23_feuj8")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_155" groups=["obstacles"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_155"]
 position = Vector2(-1.25, 0)
 shape = SubResource("RectangleShape2D_e7t5y")
 
@@ -433,7 +439,7 @@ z_index = -1
 position = Vector2(-348, 126)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_156" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_156"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("13_unqjw")
@@ -447,7 +453,7 @@ z_index = -1
 position = Vector2(-999, 141)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_157" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_157"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("23_feuj8")
@@ -464,7 +470,7 @@ z_index = -1
 position = Vector2(-874, 320)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_158" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_158"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("28_dg0ae")
@@ -486,7 +492,7 @@ z_index = -1
 position = Vector2(-999, 531)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_159" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_159"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("30_sk6u2")
@@ -513,9 +519,7 @@ z_index = -1
 position = Vector2(-777, 542)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_160" groups=["obstacle"]]
-z_index = 1
-z_as_relative = false
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_160"]
 texture = ExtResource("31_1kwjm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_160"]
@@ -540,7 +544,7 @@ z_index = -1
 position = Vector2(-1267, 538)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_161" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_161"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("32_c3yk4")
@@ -556,7 +560,7 @@ z_index = -1
 position = Vector2(-1353, 265)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_162" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_162"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("33_4irn2")
@@ -573,7 +577,7 @@ z_index = -1
 position = Vector2(-1506, 491)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_163" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_163"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("35_arugn")
@@ -590,7 +594,7 @@ z_index = -1
 position = Vector2(-1709, 476)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_164" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_164"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("36_raqug")
@@ -603,18 +607,78 @@ shape = SubResource("RectangleShape2D_uiewv")
 texture = ExtResource("28_i1rpe")
 
 [node name="_Area2D_165" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
-z_index = -1
 position = Vector2(-1065, 725)
 metadata/Walkable = false
 
-[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_165" groups=["obstacle"]]
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_165"]
 z_index = 1
 z_as_relative = false
 texture = ExtResource("37_y6mqh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_165"]
+z_index = 2
 position = Vector2(1, 0.5)
 shape = SubResource("RectangleShape2D_w4ais")
 
 [node name="Sprite2D4" type="Sprite2D" parent="_Area2D_165"]
 texture = ExtResource("28_i1rpe")
+
+[node name="_Area2D_166" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(1051, -23)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_166"]
+z_index = 1
+z_as_relative = false
+texture = ExtResource("9_minmn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_166"]
+position = Vector2(0.5, 50.5)
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="_Area2D_166"]
+position = Vector2(-51, -8)
+rotation = 1.56785
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="Floor_obstacle2" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(1195, -22)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="Floor_obstacle2"]
+z_index = 1
+z_as_relative = false
+texture = ExtResource("8_tun4d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor_obstacle2"]
+position = Vector2(-2, 50.5)
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Floor_obstacle2"]
+position = Vector2(50, -2)
+rotation = 1.57865
+shape = SubResource("RectangleShape2D_7idap")
+
+[node name="Floor2" parent="." instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-754, -43)
+metadata/Walkable = false
+
+[node name="_Area2D_167" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(431, 137)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_167"]
+modulate = Color(1, 1, 1, 0.733333)
+z_index = 3
+position = Vector2(11, -93)
+scale = Vector2(2, 2)
+texture = ExtResource("16_xn62k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_167"]
+position = Vector2(-1, 10)
+scale = Vector2(1.13064, 0.624678)
+shape = SubResource("CircleShape2D_f1lnr")

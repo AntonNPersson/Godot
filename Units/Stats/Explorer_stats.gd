@@ -38,3 +38,6 @@ func _on_finished(index):
 		_update_stats()
 	_update_stats()
 	get_node('menu').visible = false
+
+func _character_passive():
+	pass

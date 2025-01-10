@@ -10,6 +10,7 @@ a_name = "Arcane Enchantment"
 tooltip_text = "Enchant your body with the arcane, increasing attack damage by Value0% of your intelligence."
 projectile_type = 4
 ability_type = "INT"
+sprite_scale = 0.0
 tags = Array[String](["ArcaneDamagePassive"])
 values = Array[float]([10.0])
 increased_values = Array[float]([5.0])

@@ -28,8 +28,33 @@ var tilemap_width : int = 0
 # The height of the tilemap.
 var tilemap_height : int = 0
 
+var disable_minimap = false
+
+var minimap_tile_height : float = 0
+
+var minimap_tile_width : float = 0
+
+var minimap_total_width : float = 0
+
+var minimap_total_height : float = 0
+
+var minimap_scale
+
+var minimap_position
+
+var minimap_max_size
+
+var minimap_min_size
+
+var minimap_tilemap_width
+
+var minimap_tilemap_height
+
+var minimap_offset
 # The positions of the tiles in the tilemap.
 var tile_positions : Array = []
+
+var minimap_positions : Array = []
 
 # The array of walkable tiles.
 var walkable_tiles : Array = []
@@ -62,6 +87,8 @@ var cached_neighbors = {}
 
 # The cumulative position.
 var cumulative_position = Vector2.ZERO
+
+var minimap_cumulative_position = Vector2.ZERO
 
 # A flag indicating if the tile is walkable.
 var walkable = false
@@ -128,8 +155,11 @@ func _change_map(map_path, tiles):
 	spawn_position.clear()
 	special_positions.clear()
 	Utility.get_node('Interactable').interactable_objects.clear()
+	Utility.get_node('Interactable').interactable_objects_hold.clear()
 	Utility.get_node('Interactable').special_objects.clear()
 	for i in get_tree().get_nodes_in_group('projectiles'):
+		i.queue_free()
+	for i in get_tree().get_nodes_in_group('obstacles'):
 		i.queue_free()
 	for child in get_children():
 		child.queue_free()
@@ -175,6 +205,20 @@ func _create_tile(scene, debug_color = Color.GREEN, debug = false):
 	walkable = instance.get_meta('Walkable')
 	add_child(instance)
 
+	if disable_minimap:
+		return instance.global_position
+
+	var minimap_sprite = instance.duplicate()
+	minimap_sprite.modulate = Color(0.5, 0.5, 0.5, 0.7)
+	minimap_sprite.set_script(null)
+	minimap_sprite.scale = Vector2(minimap_scale, minimap_scale)
+	players[0].get_node('InventoryManager').get_node('CanvasLayer').get_node('Minimap').add_child(minimap_sprite)
+	minimap_tile_width = minimap_sprite.get_node("Sprite2D").texture.get_width() * minimap_scale
+	minimap_tile_height = minimap_sprite.get_node("Sprite2D").texture.get_height() * minimap_scale
+	minimap_sprite.global_position = minimap_cumulative_position + Vector2(minimap_tile_width, 0)
+	minimap_cumulative_position.x += minimap_tile_width
+	minimap_total_width += minimap_tile_width
+
 	return instance.global_position
 # Load the tilemap from layout (file) with specific tileset(tiles). Creates two arrays, tile_positions for all center positions of the tiles
 # and walkable_tiles to represent which tiles are walkable. Populates with _create_tile - teleporter and spawn always needs to have index 2
@@ -188,14 +232,32 @@ func _loadTileMap(file, tiles):
 		tilemap_data = content.split("\n")
 		tilemap_height = tilemap_data.size()
 		tilemap_width = tilemap_data[0].length()
-		cumulative_position = Vector2.ZERO
+		cumulative_position = Vector2(0, 1000)
+		
+		minimap_max_size = Vector2(500, 500)
+
+		var scale_x = minimap_max_size.x / (tilemap_width * tilemap_tile_width)
+		var scale_y = minimap_max_size.y / (tilemap_height * tilemap_tile_height)
+		minimap_scale = min(scale_x, scale_y)  # Uniform scaling to fit within the rectangle
+
+		minimap_tilemap_width = tilemap_width * tilemap_tile_width * minimap_scale
+		minimap_tilemap_height = tilemap_height * tilemap_tile_height * minimap_scale
+	
+		minimap_position = get_viewport().get_visible_rect().size - minimap_max_size + Vector2(150, 150)
+		minimap_cumulative_position = minimap_position
+		players[0].get_node('InventoryManager').get_node('CanvasLayer').get_node('Minimap').is_enabled = false
+		for i in players[0].get_node('InventoryManager').get_node('CanvasLayer').get_node('Minimap').get_children():
+			i.queue_free()
 		tile_positions = []
 		walkable_tiles = []
+		minimap_positions = []
+		players[0].get_node('InventoryManager').get_node('CanvasLayer').get_node('Minimap').players_arr.clear()
 		
 		for y in range(tilemap_data.size()):
 			var line = tilemap_data[y]
 			var row = []
 			var row2 = []
+			var minimap_row = []
 			var x = 0
 			while x < line.length():
 				var tile_value = ""
@@ -222,18 +284,36 @@ func _loadTileMap(file, tiles):
 							boss_spawn_position = _create_tile(tiles[tile])
 							row.append(boss_spawn_position)
 						else:
-							_create_tile(tiles[tile], debug_walkable)
+							_create_tile(tiles[tile], debug_walkable, pathfinding_debug)
 							row.append(cumulative_position)
+						minimap_row.append(minimap_cumulative_position)
 			cumulative_position.x = 0  # Reset X for the next row
 			cumulative_position.y += tilemap_tile_height
+			minimap_cumulative_position.x = minimap_position.x
+			minimap_cumulative_position.y += minimap_tile_height
 			tile_positions.append(row)
+			minimap_positions.append(minimap_row)
 			walkable_tiles.append(row2)
+			for i in range(tiles.size()):
+				tiles[i].queue_free()
+
+		players[0].get_node('InventoryManager').get_node('CanvasLayer').get_node('Minimap').is_enabled = true
 	else:
 		print("Error: Unable to open the file.")
 
 #----------------------#
 # Tilemap Helper functions
 #----------------------#
+
+func _get_tilemap_index(position):
+	for y in range(tile_positions.size()):
+		for x in range(tile_positions[y].size()):
+			if tile_positions[y][x] == position:
+				return Vector2(x, y)
+	return Vector2(-1, -1)
+
+func _get_minimap_position_from_index(index):
+	return minimap_positions[index.y][index.x]
 
 func _check_tile_meta(meta, instance):
 	if instance.has_meta(meta):
@@ -507,7 +587,7 @@ func _calculate_neighbors(pos: Vector2) -> Array:
 # Checks if a neighbor position is valid within the map boundaries.
 # Returns true if the neighbor position is valid, false otherwise.
 func _is_valid_neighbor(neighbor_pos: Vector2, _pos_index: Vector2) -> bool:
-	var width = tile_positions[0].size() - 1
+	var width = tile_positions[0].size()
 	var height = tile_positions.size() - 1
 
 	if neighbor_pos.x >= 0 and neighbor_pos.x < width and neighbor_pos.y >= 0 and neighbor_pos.y < height:
@@ -588,12 +668,14 @@ func _on_character_selected(unit):
 # map is string name of the map. Should be same as layout. Needs to change to use map variable.
 func _get_tiles_for_map(map):
 	var tiles
+	disable_minimap = false
 	if map == 1:
 		tiles = arena_1_scene.instantiate()
 	elif map == 2:
 		tiles = arena_2_scene.instantiate()
 	elif map == 0:
 		tiles = town_scene.instantiate()
+		disable_minimap = true
 	var children = tiles.get_children()
 	tiles.queue_free()
 	return children
@@ -660,7 +742,7 @@ func _spawn_and_attach():
 	var arr = []
 	var random_creatures = []
 	var creature_positions = []
-	var random_increase = int((int(grid_size/20) + ((sub_wave*4))) * creatures[0].increased_amount)
+	var random_increase = int((int(grid_size/40) + ((sub_wave/2))) * creatures[0].increased_amount)
 	var spawn_time = 1.5
 	
 	for i in range(random_increase):
@@ -715,10 +797,11 @@ func _calculate_creature(size):
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		print('exiting..')
-		GameManager.save_game('user://ascension.save')
+		GameManager.save_game()
 		spawn_position.clear()
 		special_positions.clear()
 		Utility.get_node('Interactable').interactable_objects.clear()
+		Utility.get_node('Interactable').interactable_objects_hold.clear()
 		Utility.get_node('Interactable').special_objects.clear()
 		for i in get_tree().get_nodes_in_group('projectiles'):
 			i.queue_free()

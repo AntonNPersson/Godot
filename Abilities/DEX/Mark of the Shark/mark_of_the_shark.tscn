@@ -135,7 +135,6 @@ _range = 512.0
 projectile_type = 1
 ability_type = "DEX"
 sprite_frames = SubResource("SpriteFrames_jfylr")
-sprite_scale = 1.0
 tags = Array[String](["PercentArmorBuff"])
 values = Array[float]([-20.0])
 increased_values = Array[float]([-5.0])

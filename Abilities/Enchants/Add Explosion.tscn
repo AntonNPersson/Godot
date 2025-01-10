@@ -9,3 +9,4 @@ tooltip = "Add an explosion to selected ability, doing its values in an area aro
 tags = Array[String](["Explosion"])
 values = Array[float]([75.0])
 types = Array[int]([0, 1, 2])
+rarity = 2

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqtccyh5611y5"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_gj4yb"]
+[ext_resource type="Texture2D" uid="uid://b4d0sorqr4hvw" path="res://Abilities/Enchants/icons/Purple Ability_24.png" id="2_i08iu"]
+
+[node name="Add Bleed" type="Node2D"]
+script = ExtResource("1_gj4yb")
+i_name = "General: Bleed"
+tooltip = "Add bleed effect to selected ability."
+icon = ExtResource("2_i08iu")
+tags = Array[String](["Bleed"])
+values = Array[float]([20.0])
+types = Array[int]([0, 1, 3, 6, 7])
+unique = true
+rarity = 2

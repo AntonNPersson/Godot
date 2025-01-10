@@ -19,6 +19,7 @@ func _use():
 	timer.start()
 	if is_instance_valid(target):
 		target.do_action.emit(bonus_speed, target, duration, tag)
+		print(duration)
 	
 func _on_timeout():
 	if target and is_instance_valid(target):

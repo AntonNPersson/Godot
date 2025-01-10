@@ -1,11 +1,10 @@
-[gd_scene load_steps=37 format=3 uid="uid://bj6xebem8yoad"]
+[gd_scene load_steps=58 format=3 uid="uid://bj6xebem8yoad"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_hri6t"]
 [ext_resource type="PackedScene" uid="uid://c3q7cheu3xa3a" path="res://Abilities/Creature Spells/Cursed Light Beam/Cursed Light Beam.tscn" id="2_j8ppe"]
 [ext_resource type="PackedScene" uid="uid://dggvooau7aocl" path="res://Abilities/Creature Spells/Summon Zombies/Summon Zombies.tscn" id="3_7qh6y"]
 [ext_resource type="PackedScene" uid="uid://h2siw6omqbjr" path="res://Abilities/Creature Spells/Summon Skeleton King/Summon Skeleton King.tscn" id="4_aa4iv"]
 [ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="7_14784"]
-[ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="8_kft03"]
 [ext_resource type="Script" path="res://Units/Instance/Enemies/Bosses/Cursed Light Beams.gd" id="9_mbt4v"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="10_6i7xk"]
 [ext_resource type="Script" path="res://Units/Instance/Enemies/Bosses/Summon_Zombies.gd" id="11_phvvc"]
@@ -14,124 +13,244 @@
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/abovehalfhp.gd" id="13_5cega"]
 [ext_resource type="Script" path="res://Units/Instance/Enemies/Bosses/Summon Skeleton King.gd" id="16_dwqvl"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/is_on_cd.gd" id="17_ofwva"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="21_fbqpk"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/belowhalfhp.gd" id="21_g3q6d"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="22_7g8er"]
+[ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="23_2j3ko"]
+[ext_resource type="Texture2D" uid="uid://5badparh4uxa" path="res://Sprites/Infected Cemetery/tiles/cypt3 entrance glow animation 160x280.png" id="23_om7fw"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/has_printed_dialogue.gd" id="24_hpmau"]
+[ext_resource type="Texture2D" uid="uid://cnc48eh8erilw" path="res://Sprites/Infected Cemetery/tiles/candle-fire-only.png" id="24_p56h0"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/print_dialogue.gd" id="25_keqcg"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="31_itgyp"]
 [ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="32_w7dvs"]
 [ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="33_vp8ln"]
 [ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="34_afvav"]
-[ext_resource type="Texture2D" uid="uid://cnty04i31asxy" path="res://Units/Instance/Enemies/Sprite Sheets/Download85704.png" id="35_1ma42"]
-[ext_resource type="Texture2D" uid="uid://nm2ugr3vwe1a" path="res://Sprites/Infected Cemetery/boss2.png" id="36_rn1r6"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
-radius = 12.0037
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eaewv"]
+size = Vector2(141, 65.3333)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv25l"]
-shader = ExtResource("8_kft03")
-shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tkwpf"]
+shader = ExtResource("23_2j3ko")
+shader_parameter/hit_effect_color = Color(1, 1, 1, 1)
 shader_parameter/hit_effect_intensity = 0.0
 shader_parameter/outline_intensity = 0.0
 shader_parameter/outline_size = 0.05
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_kuiqf"]
-atlas = ExtResource("35_1ma42")
-region = Rect2(64, 1280, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_76xun"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(0, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s2748"]
-atlas = ExtResource("35_1ma42")
-region = Rect2(128, 1280, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_3tuvf"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(160, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0f536"]
-atlas = ExtResource("35_1ma42")
-region = Rect2(192, 1280, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_psufd"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(320, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5l8ix"]
-atlas = ExtResource("35_1ma42")
-region = Rect2(256, 1280, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_w2pn7"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(480, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sx5yl"]
-atlas = ExtResource("35_1ma42")
-region = Rect2(320, 1280, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_lm4kv"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(640, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gsd34"]
-atlas = ExtResource("36_rn1r6")
-region = Rect2(0, 0, 128, 128)
+[sub_resource type="AtlasTexture" id="AtlasTexture_txpel"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(800, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uttcx"]
-atlas = ExtResource("36_rn1r6")
-region = Rect2(0, 0, 128, 128)
+[sub_resource type="AtlasTexture" id="AtlasTexture_gm4m8"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(960, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gxad6"]
-atlas = ExtResource("36_rn1r6")
-region = Rect2(0, 0, 128, 128)
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0qce"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(1120, 0, 160, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hlwdj"]
-atlas = ExtResource("36_rn1r6")
-region = Rect2(0, 0, 128, 128)
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhpwu"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(1280, 0, 160, 256)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_3csfa"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nrq6"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(1440, 0, 160, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3olo"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(1600, 0, 160, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkbcb"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(1760, 0, 160, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4t6n"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(1920, 0, 160, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d4axn"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(2080, 0, 160, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pt8xa"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(2240, 0, 160, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0328"]
+atlas = ExtResource("23_om7fw")
+region = Rect2(2400, 0, 160, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rdkvx"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_kuiqf")
+"texture": SubResource("AtlasTexture_76xun")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s2748")
+"texture": SubResource("AtlasTexture_3tuvf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0f536")
+"texture": SubResource("AtlasTexture_psufd")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5l8ix")
+"texture": SubResource("AtlasTexture_w2pn7")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_sx5yl")
+"texture": SubResource("AtlasTexture_lm4kv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_txpel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gm4m8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0qce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhpwu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nrq6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3olo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkbcb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4t6n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d4axn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pt8xa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0328")
 }],
 "loop": true,
-"name": &"Death",
-"speed": 6.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gsd34")
-}],
-"loop": true,
-"name": &"Walk East",
-"speed": 12.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uttcx")
-}],
-"loop": true,
-"name": &"Walk North",
-"speed": 12.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gxad6")
-}],
-"loop": true,
-"name": &"Walk South",
-"speed": 12.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hlwdj")
-}],
-"loop": true,
-"name": &"Walk West",
-"speed": 12.0
+"name": &"default",
+"speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d5oqj"]
-size = Vector2(117.333, 87.3333)
+[sub_resource type="AtlasTexture" id="AtlasTexture_doxgo"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(0, 0, 64, 64)
 
-[node name="Infected Soul" type="Area2D" groups=["boss", "enemies", "obstacles"]]
+[sub_resource type="AtlasTexture" id="AtlasTexture_18rns"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iah2y"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4rdf"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wopqq"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4d1k"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vhb4u"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_005st"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_884co"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3suxs"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lh8sq"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y87a3"]
+atlas = ExtResource("24_p56h0")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n52jg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_doxgo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_18rns")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iah2y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4rdf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wopqq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4d1k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vhb4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_005st")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_884co")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3suxs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lh8sq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y87a3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Infected Soul" type="Area2D" groups=["boss", "enemies"]]
 top_level = true
-z_index = -1
 scale = Vector2(1.5, 1.5)
 collision_layer = 2
 script = ExtResource("1_hri6t")
@@ -146,10 +265,6 @@ base_attack_damage = 0
 base_windup_time = 100000.0
 abilities = Array[PackedScene]([ExtResource("2_j8ppe"), ExtResource("3_7qh6y"), ExtResource("4_aa4iv")])
 basic_attack_scene = ExtResource("7_14784")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1, 2.88)
-shape = SubResource("CircleShape2D_ujh6a")
 
 [node name="Infected Soul Tree" type="Node" parent="."]
 script = ExtResource("10_6i7xk")
@@ -230,13 +345,84 @@ texture_progress_offset = Vector2(2, 2)
 script = ExtResource("34_afvav")
 metadata/_edit_use_anchors_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-material = SubResource("ShaderMaterial_xv25l")
-sprite_frames = SubResource("SpriteFrames_3csfa")
-animation = &"Walk West"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["obstacle"]]
+position = Vector2(2.5, -15.3333)
+shape = SubResource("RectangleShape2D_eaewv")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(0.666664, -14.3333)
-shape = SubResource("RectangleShape2D_d5oqj")
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(3, -10)
+scale = Vector2(0.664063, 0.445313)
+color = Color(0, 0.858824, 0.854902, 1)
+energy = 0.7
+shadow_enabled = true
+texture = ExtResource("21_fbqpk")
+script = ExtResource("22_7g8er")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_as_relative = false
+material = SubResource("ShaderMaterial_tkwpf")
+position = Vector2(2, -52)
+sprite_frames = SubResource("SpriteFrames_rdkvx")
+autoplay = "default"
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
+z_index = 1
+position = Vector2(-53, -81)
+sprite_frames = SubResource("SpriteFrames_n52jg")
+autoplay = "default"
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="."]
+z_index = 1
+position = Vector2(56, -81)
+sprite_frames = SubResource("SpriteFrames_n52jg")
+autoplay = "default"
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(56, -80)
+scale = Vector2(0.664063, 0.445313)
+color = Color(0, 0.858824, 0.854902, 1)
+shadow_enabled = true
+texture = ExtResource("21_fbqpk")
+texture_scale = 0.6
+script = ExtResource("22_7g8er")
+
+[node name="PointLight2D3" type="PointLight2D" parent="."]
+position = Vector2(-52, -80)
+scale = Vector2(0.664063, 0.445313)
+color = Color(0, 0.858824, 0.854902, 1)
+shadow_enabled = true
+texture = ExtResource("21_fbqpk")
+texture_scale = 0.6
+script = ExtResource("22_7g8er")
+
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="."]
+z_index = 1
+position = Vector2(-53, -157)
+sprite_frames = SubResource("SpriteFrames_n52jg")
+autoplay = "default"
+
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="."]
+z_index = 1
+position = Vector2(56, -157)
+sprite_frames = SubResource("SpriteFrames_n52jg")
+autoplay = "default"
+
+[node name="PointLight2D4" type="PointLight2D" parent="."]
+position = Vector2(-52, -156)
+scale = Vector2(0.664063, 0.445313)
+color = Color(0, 0.858824, 0.854902, 1)
+shadow_enabled = true
+texture = ExtResource("21_fbqpk")
+texture_scale = 0.6
+script = ExtResource("22_7g8er")
+
+[node name="PointLight2D5" type="PointLight2D" parent="."]
+position = Vector2(57, -156)
+scale = Vector2(0.664063, 0.445313)
+color = Color(0, 0.858824, 0.854902, 1)
+shadow_enabled = true
+texture = ExtResource("21_fbqpk")
+texture_scale = 0.6
+script = ExtResource("22_7g8er")
 
 [connection signal="is_dead" from="." to="Infected Soul Tree" method="_on_goblin_chief_is_dead"]

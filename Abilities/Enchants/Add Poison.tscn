@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://brmhahlp74k70"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_4oouv"]
+[ext_resource type="Texture2D" uid="uid://b4d0sorqr4hvw" path="res://Abilities/Enchants/icons/Purple Ability_24.png" id="2_ac41g"]
+
+[node name="Add Poison" type="Node2D"]
+script = ExtResource("1_4oouv")
+i_name = "General: Poison"
+tooltip = "Add poison effect to selected ability."
+icon = ExtResource("2_ac41g")
+tags = Array[String](["Poison"])
+values = Array[float]([5.0])
+types = Array[int]([-1])
+unique = true
+rarity = 2

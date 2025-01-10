@@ -4,12 +4,12 @@ func load():
 	# Load the save file and set the values
 	if not FileAccess.file_exists("user://ascension.save"):
 		return # Error! We don't have a save to load.
-	Utility.get_node('AscensionBalance')._set_balance(load_specific_value(get_path(), "ascension_currency"))
-	Utility.get_node('AscensionStats')._set_bonus_ascension_gain(load_specific_value(get_path(), "bonus_ascension_gain"))
-	Utility.get_node('AscensionStats')._set_bonus_xp_gain(load_specific_value(get_path(), "bonus_xp_gain"))
-	Utility.get_node('AscensionStats')._set_bonus_drop_rate(load_specific_value(get_path(), "bonus_drop_rate"))
+	Utility.get_node('AscensionBalance')._set_balance(load_specific_value("ascension_currency"))
+	Utility.get_node('AscensionStats')._set_bonus_ascension_gain(load_specific_value("bonus_ascension_gain"))
+	Utility.get_node('AscensionStats')._set_bonus_xp_gain(load_specific_value("bonus_xp_gain"))
+	Utility.get_node('AscensionStats')._set_bonus_drop_rate(load_specific_value("bonus_drop_rate"))
 
-func load_specific_value(filename_to_find: String, key_to_find: String) -> Variant:
+func load_specific_value(key_to_find: String) -> Variant:
 	if not FileAccess.file_exists("user://ascension.save"):
 		return null # Error! We don't have a save to load.
 
@@ -31,18 +31,16 @@ func load_specific_value(filename_to_find: String, key_to_find: String) -> Varia
 		var node_data = json.get_data()
 
 		# Check if the current entry matches the desired filename
-		if node_data.has("filename") and node_data["filename"] == filename_to_find:
 			# Check if the key exists and return the value if found
-			if node_data.has(key_to_find):
-				save_file.close()
-				return node_data[key_to_find]
-			else:
-				print("Key not found:", key_to_find)
-				save_file.close()
-				return null
+		if node_data.has(key_to_find):
+			save_file.close()
+			return node_data[key_to_find]
+		else:
+			print("Key not found:", key_to_find)
+			save_file.close()
+			return null
 
 	# If we reach here, the file or key wasn't found
-	print("Filename not found:", filename_to_find)
 	save_file.close()
 	return 0
 

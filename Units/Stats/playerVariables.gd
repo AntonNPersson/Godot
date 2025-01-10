@@ -22,6 +22,7 @@ signal is_dead(unit)
 var movement_skill
 var player_is_ready = false
 var item_manager = null
+var map_manager = null
 
 # Player variables
 var in_combat = false
@@ -338,10 +339,6 @@ func _ready():
 	current_mana = total_mana
 	current_stamina = total_stamina
 	current_barrier = total_barrier
-	if !GameManager.is_save_file:
-		experience_multiplier += Utility.get_node('AscensionStats')._get_bonus_xp_gain()
-		ascension_currency_multiplier += Utility.get_node('AscensionStats')._get_bonus_drop_rate()
-		item_drop_chance_multiplier += Utility.get_node('AscensionStats')._get_bonus_drop_rate()
 
 # Process function called every frame
 func _process(delta):
@@ -371,8 +368,8 @@ func _process(delta):
 			ab._remove_all_enchants()
 			ab._reset_ability()
 		Utility.get_node('AscensionBalance')._add_balance(ascension_currency/2)
-		print(Utility.get_node('AscensionBalance')._get_balance())
 		Utility.get_node("Transition")._start_death(2, ascension_currency/2, ascension_level)
+		GameManager.save_ac()
 		GameManager.delete_saved_game()
 		paused = true
 	if current_stamina < 0:
@@ -720,6 +717,7 @@ func save():
 		var ability_manager = get_node("InventoryManager").abilities
 		for i in range(ability_manager.size()):
 			ability_data.append(ability_manager[i]._get_ability_data())
+			print(ability_manager[i]._get_ability_data())
 		im_abilities = ability_data
 
 		var inventory_data = []

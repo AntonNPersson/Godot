@@ -13,3 +13,5 @@ func _get_special():
 
 func _on_timeout(player):
 	player.get_node('Control').on_action.emit(player.total_health * 0.05, player, player, 'PVEDarkness')
+	if !player.in_combat:
+		player.get_node("Darkness").queue_free()

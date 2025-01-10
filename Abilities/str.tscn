@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://biy6h4xtj237j"]
+[gd_scene load_steps=21 format=3 uid="uid://biy6h4xtj237j"]
 
 [ext_resource type="PackedScene" uid="uid://vbb0pmq2aasg" path="res://Abilities/STR/Vampiric Strike/Vampiric_strike.tscn" id="1_kspom"]
 [ext_resource type="Texture2D" uid="uid://c3c0s7pokrwty" path="res://Abilities/icons/dark spell_71.png" id="2_5iubh"]
@@ -11,13 +11,15 @@
 [ext_resource type="PackedScene" uid="uid://6oybqfl38sko" path="res://Abilities/STR/Thirst for Blood/Thirst for Blood.tscn" id="6_rl4ye"]
 [ext_resource type="PackedScene" uid="uid://d2qrbdy3b5ifg" path="res://Abilities/STR/Frozen Blitz/Frozen Blitz.tscn" id="7_sp3dw"]
 [ext_resource type="Texture2D" uid="uid://dcxvpvhg4lfxs" path="res://Abilities/icons/dark spell_64.png" id="8_6q5rv"]
-[ext_resource type="PackedScene" uid="uid://d140ply3usbjm" path="res://Abilities/STR/Ice Skin/Ice Skin.tscn" id="8_teah3"]
 [ext_resource type="PackedScene" uid="uid://5mmxg5gx87tr" path="res://Abilities/STR/Bloody Blitz/Bloody Blitz.tscn" id="9_jwbqb"]
 [ext_resource type="Texture2D" uid="uid://3jhoc5xyk6y7" path="res://Abilities/icons/dark spell_73.png" id="10_6xw6d"]
 [ext_resource type="Texture2D" uid="uid://y7qhneriygnb" path="res://Abilities/icons/dark spell_34.png" id="12_nux6a"]
 [ext_resource type="Texture2D" uid="uid://cf8pfxip8570w" path="res://Abilities/icons/Ice Spells75.png" id="14_wv45b"]
-[ext_resource type="Texture2D" uid="uid://c4w74fn3wv6es" path="res://Abilities/icons/Ice Spells25.png" id="16_aegew"]
 [ext_resource type="Texture2D" uid="uid://bug2xvltgwbh8" path="res://Abilities/icons/Red Ability_15.png" id="18_j1fgx"]
+[ext_resource type="PackedScene" uid="uid://l5xltywwtgac" path="res://Abilities/STR/Bulwark Transference/Bulwark Transference.tscn" id="19_fcvyj"]
+[ext_resource type="PackedScene" uid="uid://b1e2f4edculv3" path="res://Abilities/STR/Crimson Combination/Crimson Combination.tscn" id="19_lvop3"]
+[ext_resource type="Texture2D" uid="uid://dasmx846krdjt" path="res://Abilities/STR/Crimson Combination/combination.png" id="20_hsap4"]
+[ext_resource type="PackedScene" uid="uid://c3dgpqdpr3k7" path="res://Abilities/STR/Cleave/Cleave.tscn" id="20_l7oab"]
 
 [node name="STR" type="Node"]
 
@@ -28,7 +30,7 @@ icon = ExtResource("2_5iubh")
 icon = ExtResource("4_u1guf")
 
 [node name="Frost Slash" parent="." instance=ExtResource("4_i5pe1")]
-position = Vector2(820.122, 317.894)
+position = Vector2(821.122, 317.894)
 icon = ExtResource("6_byvbs")
 
 [node name="Frenzy" parent="." instance=ExtResource("5_bbpsj")]
@@ -43,8 +45,13 @@ icon = ExtResource("12_nux6a")
 [node name="Frozen Blitz" parent="." instance=ExtResource("7_sp3dw")]
 icon = ExtResource("14_wv45b")
 
-[node name="Ice Skin" parent="." instance=ExtResource("8_teah3")]
-icon = ExtResource("16_aegew")
-
 [node name="Bloody Blitz" parent="." instance=ExtResource("9_jwbqb")]
 icon = ExtResource("18_j1fgx")
+
+[node name="Crimson Combination" parent="." instance=ExtResource("19_lvop3")]
+icon = ExtResource("20_hsap4")
+toggle_state_count = 2
+
+[node name="Bulwark Transference" parent="." instance=ExtResource("19_fcvyj")]
+
+[node name="Cleave" parent="." instance=ExtResource("20_l7oab")]

@@ -1,0 +1,100 @@
+[gd_scene load_steps=14 format=3 uid="uid://dnlwbbwnl46bu"]
+
+[ext_resource type="Script" path="res://Abilities/Movement/Hungering Leap.gd" id="1_mdd41"]
+[ext_resource type="Texture2D" uid="uid://bwtr7opcqkrim" path="res://Abilities/Movement/Smoke VFX3.png" id="2_r07ro"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5mmn"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dodlp"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3viub"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yq5gi"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l3a4u"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(128, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6c6o8"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(160, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5uvcd"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(192, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mx4mi"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(224, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yv5ox"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(256, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_673xm"]
+atlas = ExtResource("2_r07ro")
+region = Rect2(288, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_svv1p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r5mmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dodlp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3viub")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yq5gi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l3a4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6c6o8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5uvcd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mx4mi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yv5ox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_673xm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="Dash" type="Node2D"]
+position = Vector2(0, -1)
+script = ExtResource("1_mdd41")
+cost = 50
+cooldown = 0
+tags = Array[String](["Damage", "Heal"])
+values = Array[float]([15.0, 0.0])
+_range = 150.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_as_relative = false
+position = Vector2(0, -1.19209e-06)
+scale = Vector2(1.4, 1.4)
+sprite_frames = SubResource("SpriteFrames_svv1p")
+frame = 9
+frame_progress = 1.0
+offset = Vector2(0, -5)

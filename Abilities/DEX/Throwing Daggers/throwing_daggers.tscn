@@ -29,6 +29,7 @@ cooldown = 4.0
 _range = 256.0
 ability_type = "DEX"
 sprite_frames = SubResource("SpriteFrames_djxlc")
+sprite_scale = 0.0
 collision_radius = 32.0
 speed = 800.0
 amount = 3.0

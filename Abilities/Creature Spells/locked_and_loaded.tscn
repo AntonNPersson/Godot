@@ -143,7 +143,7 @@ animations = [{
 }]
 
 [node name="Locked and Loaded" type="Area2D" groups=["projectile"]]
-scale = Vector2(0.4, 0.4)
+scale = Vector2(0.3, 0.3)
 script = ExtResource("1_l340k")
 bonus_speed = 250
 damage = 30

@@ -492,11 +492,12 @@ script = ExtResource("1_7kwcb")
 u_name = "Goblin Fighter"
 experience = 5
 base_armor = 15
-base_speed = 100
+base_speed = 105
 base_health = 75
-base_range = 55
-base_attack_damage = 6
-base_windup_time = 1.5
+base_range = 65
+base_attack_speed = 0.1
+base_attack_damage = 12
+base_windup_time = 0.3
 abilities = Array[PackedScene]([ExtResource("2_5vejn")])
 basic_attack_scene = ExtResource("3_37flo")
 

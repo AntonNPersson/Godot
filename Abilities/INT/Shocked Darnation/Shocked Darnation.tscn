@@ -12,6 +12,7 @@ mana_cost = 50.0
 cooldown = 12.0
 projectile_type = 3
 ability_type = "INT"
+sprite_scale = 0.0
 amount = 3.0
 area_type = 2
 duration = 0.3

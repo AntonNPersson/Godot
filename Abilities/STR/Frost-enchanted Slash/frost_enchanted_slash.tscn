@@ -12,6 +12,7 @@ mana_cost = 15.0
 cooldown = 3.0
 projectile_type = 5
 ability_type = "STR"
+sprite_scale = 0.0
 tags = Array[String](["AttackDamageBuff", "AttackFreezeBuff", "QuickAttack"])
 values = Array[float]([40.0, 40.0, 1.0])
 increased_values = Array[float]([25.0, 3.0, 0.0])

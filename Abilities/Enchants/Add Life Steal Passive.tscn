@@ -11,3 +11,4 @@ icon = ExtResource("2_h3vuh")
 tags = Array[String](["LifeStealPassive"])
 values = Array[float]([5.0])
 types = Array[int]([4])
+rarity = 1

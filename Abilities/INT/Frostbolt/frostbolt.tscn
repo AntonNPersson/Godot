@@ -14,7 +14,6 @@ cooldown = 4.0
 _range = 384.0
 ability_type = "INT"
 sprite_frames = ExtResource("2_jnsgv")
-sprite_scale = 1.0
 collision_radius = 24.0
 speed = 400.0
 tags = Array[String](["Damage", "Freeze", "Pierce"])

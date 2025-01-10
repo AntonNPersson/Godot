@@ -7,5 +7,5 @@ script = ExtResource("1_avkho")
 i_name = "Passive: Attack Damage"
 tooltip = "Add value0 flat damage to your selected passive ability."
 tags = Array[String](["AttackDamagePassive"])
-values = Array[float]([20.0])
+values = Array[float]([5.0])
 types = Array[int]([4])

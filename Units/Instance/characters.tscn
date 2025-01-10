@@ -13,3 +13,13 @@ active_name = "Dash"
 active_tooltip = "Dash towards the forward direction, becoming invurnable during its duration."
 icon = ExtResource("2_7ighg")
 type = Array[String](["DEX", "INT", "STR"])
+unlocked = true
+
+[node name="Berserker" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+passive_name = "Dying Breath"
+passive_tooltip = "Gain increased global damage based on percentage missing health."
+active_name = "Hungering Leap"
+active_tooltip = "Leap towards target location, dealing damage and healing per target hit."
+type = Array[String](["STR"])
+unlocked = true
