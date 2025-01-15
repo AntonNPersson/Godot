@@ -1,0 +1,114 @@
+[gd_scene load_steps=17 format=3 uid="uid://bf7038bu8ou7v"]
+
+[ext_resource type="Texture2D" uid="uid://bbj7cem26oego" path="res://Abilities/Utility/death_smoke.png" id="1_r7v0l"]
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Massive Attack/self_delete.gd" id="2_q70b1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7djc"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igvl3"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1alb"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1m2dk"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y0dmj"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x8g6v"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wajey"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4vrs"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fb8fj"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqlg6"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vywga"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfggk"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(1408, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2mum1"]
+atlas = ExtResource("1_r7v0l")
+region = Rect2(1536, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8vbjc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e7djc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igvl3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s1alb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1m2dk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y0dmj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x8g6v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wajey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4vrs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fb8fj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gqlg6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vywga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dfggk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2mum1")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="DeathAnimation" type="AnimatedSprite2D"]
+modulate = Color(1, 1, 1, 0.745098)
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_8vbjc")
+autoplay = "default"
+frame = 12
+frame_progress = 1.0
+script = ExtResource("2_q70b1")
+
+[connection signal="animation_finished" from="." to="." method="_on_finished"]

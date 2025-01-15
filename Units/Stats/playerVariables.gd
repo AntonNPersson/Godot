@@ -344,6 +344,7 @@ func _ready():
 func _process(delta):
 	if paused:
 		return
+
 	# Why the fuck is this nessecary suddenly?
 	if movement_skill == null:
 		print_debug('Movement_skill added at runtime for some reason?')
@@ -584,11 +585,11 @@ func _on_add_stats(value):
 	if "increased_vitality" in value:
 		global_vitality += value.increased_vitality
 	if "increased_drop_chance" in value:
-		item_drop_chance_multiplier += value.increased_drop_chance
+		item_drop_chance_multiplier += value.increased_drop_chance/100.0
 	if "increased_ascension_currency" in value:
-		ascension_currency_multiplier += value.increased_ascension_currency
+		ascension_currency_multiplier += value.increased_ascension_currency/100.0
 	if "increased_experience" in value:
-		experience_multiplier += value.increased_experience
+		experience_multiplier += value.increased_experience/100.0
 	if "increased_attack_damage" in value:
 		global_attack_damage += value.increased_attack_damage
 	if "increased_life_steal" in value:
@@ -701,11 +702,11 @@ func _on_remove_stats(value):
 	if "increased_vitality" in value:
 		global_vitality -= value.increased_vitality
 	if "increased_drop_chance" in value:
-		item_drop_chance_multiplier -= value.increased_drop_chance
+		item_drop_chance_multiplier -= value.increased_drop_chance/100.0
 	if "increased_ascension_currency" in value:
-		ascension_currency_multiplier -= value.increased_ascension_currency
+		ascension_currency_multiplier -= value.increased_ascension_currency/100.0
 	if "increased_experience" in value:
-		experience_multiplier -= value.increased_experience
+		experience_multiplier -= value.increased_experience/100.0
 	if "increased_attack_damage" in value:
 		global_attack_damage -= value.increased_attack_damage
 	if "increased_life_steal" in value:
@@ -717,7 +718,6 @@ func save():
 		var ability_manager = get_node("InventoryManager").abilities
 		for i in range(ability_manager.size()):
 			ability_data.append(ability_manager[i]._get_ability_data())
-			print(ability_manager[i]._get_ability_data())
 		im_abilities = ability_data
 
 		var inventory_data = []

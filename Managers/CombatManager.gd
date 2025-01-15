@@ -8,12 +8,14 @@ extends Node
 @export var combat_text : PackedScene
 @export var explosion_effect : PackedScene
 @export var heal_effect : PackedScene
+@export var root_effect : PackedScene
 
 @export var map_manager : Node
 @export var ability_manager : Node
 
 var invincible_units : Array = []
 var knockback_units : Array = []
+var pulled_units : Array = []
 var pve_light_units : Array = []
 var special_objects : Array = []
 var player = null
@@ -44,6 +46,8 @@ var bleed_stacks_name = 0
 
 var frozen_targets = []
 var frozen_stacks_name = 0
+
+signal enemy_basic_attacking(origin)
 
 const COMBINE_TIME_PERIOD = 0.4
 
@@ -76,10 +80,10 @@ func _calculate_evade_chance(value: float) -> float:
 
 
 func _ready():
-	pass
+	enemy_basic_attacking.connect(_on_enemy_basic_attack)
 
 func _process(delta):
-	
+
 	if timers.size() > 0:
 		if timers.has("ChaosMagic"):
 			if typeof(timers["ChaosMagic"]) == TYPE_FLOAT or typeof(timers["ChaosMagic"]) == TYPE_INT:
@@ -109,6 +113,21 @@ func _process(delta):
 				player.global_attack_damage += extra_effect_values["DreadWarden"]
 				player._update_stats()
 
+		if extra_effect_values.has("DexterityStatConversion"):
+			var extra = {"ability": extra_effect_values["DexterityStatConversionAbility"]}
+			_on_do_action(extra_effect_values["DexterityStatConversion"], player, player, "StrengthToDexterityConversion", extra)
+			_on_do_action(extra_effect_values["DexterityStatConversion"], player, player, "IntelligenceToDexterityConversion", extra)
+		
+		if extra_effect_values.has("IntelligenceStatConversion"):
+			var extra = {"ability": extra_effect_values["IntelligenceStatConversionAbility"]}
+			_on_do_action(extra_effect_values["IntelligenceStatConversion"], player, player, "StrengthToIntelligenceConversion", extra)
+			_on_do_action(extra_effect_values["IntelligenceStatConversion"], player, player, "DexterityToIntelligenceConversion", extra)
+
+		if extra_effect_values.has("StrengthStatConversion"):
+			var extra = {"ability": extra_effect_values["StrengthStatConversionAbility"]}
+			_on_do_action(extra_effect_values["StrengthStatConversion"], player, player, "DexterityToStrengthConversion", extra)
+			_on_do_action(extra_effect_values["StrengthStatConversion"], player, player, "IntelligenceToStrengthConversion", extra)
+
 	if knockback_units.size() > 0:
 		for unit in knockback_units:
 			if _check_if_dead(unit) or !unit.has_meta('Knockback_origin'):
@@ -116,19 +135,51 @@ func _process(delta):
 				continue
 
 			if unit.is_colliding:
-				unit.is_rooted = false
+				if !unit.is_in_group('players'):
+					unit.is_rooted = false
 				unit.global_position -= unit.get_meta('Knockback_direction').normalized() * 10
 				knockback_units.erase(unit)
+				unit.remove_meta('Knockback_origin')
 				continue
 
 			var origin = unit.get_meta('Knockback_origin')
 			var direction = unit.get_meta('Knockback_direction').normalized()
 			var max_distance = unit.get_meta('Knockback_distance')
 			var current_distance = unit.global_position.distance_to(origin)
-			if current_distance >= max_distance - 5:
-				unit.is_rooted = false
+			if current_distance <= 5:
+				if !unit.is_in_group('players'):
+					unit.is_rooted = false
 				knockback_units.erase(unit)
 				unit.remove_meta('Knockback_origin')
+				continue
+			
+			var speed = lerp(200, 25, current_distance / max_distance)
+			unit.global_position += direction * speed * delta
+			if !unit.is_in_group('players'):
+				unit.is_rooted = true
+	
+	if pulled_units.size() > 0:
+		for unit in pulled_units:
+			if _check_if_dead(unit) or !unit.has_meta('Pull_origin'):
+				pulled_units.erase(unit)
+				continue
+
+			if unit.is_colliding:
+				unit.is_rooted = false
+				pulled_units.erase(unit)
+				unit.remove_meta('Pull_origin')
+				continue
+
+			var origin = unit.get_meta('Pull_origin')
+			var direction = unit.get_meta('Pull_direction').normalized()
+			var max_distance = unit.get_meta('Pull_distance')
+			var current_distance = unit.global_position.distance_to(origin)
+			if current_distance >= max_distance - 5:
+				unit.is_rooted = false
+				pulled_units.erase(unit)
+				unit.remove_meta('Pull_origin')
+				unit.remove_meta('Pull_direction')
+				unit.remove_meta('Pull_distance')
 				continue
 			
 			var speed = lerp(200, 25, current_distance / max_distance)
@@ -142,6 +193,9 @@ func _process(delta):
 # Signal Handler
 # ------------------------------------------------------#
 func _on_do_action(value, target, user, tag, extra = null):
+	if extra != null:
+		if extra.has("enemy_basic_attacking"):
+			enemy_basic_attacking.emit(extra["enemy"])
 	match tag:
 		"AbilityPercentDamage":
 			_handle_ability_percent_damage_action(user, value)
@@ -158,6 +212,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"BoostManaRegen":
 			_handle_boost_mana_regen_action(target, value, user)
 			return
+		"BoostManaRegenPassive":
+			_handle_boost_mana_regen_passive_action(target, value, extra['ability'])
 		"BurnHeal":
 			_handle_burn_heal_action(target, value)
 			return
@@ -220,6 +276,9 @@ func _on_do_action(value, target, user, tag, extra = null):
 			return
 		"MovementPenalty":
 			_handle_movement_penalty_action(target, value, user)
+			return
+		"MovementPenaltyBuff":
+			_handle_movement_penalty_buff_action(target, value)
 			return
 		"MovementCharges":
 			_handle_movement_charges_action(value, user)
@@ -298,6 +357,10 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_attack_target_passive(target, value, extra['ability'])
 		"Bleed":
 			_handle_bleed_action(target, value, user, extra)
+		"BleedStackConsumeHeal":
+			_handle_bleed_stack_consume_heal_action(target, value, user, extra)
+		"BleedReflectPassive":
+			_handle_bleed_reflect_action(target, value, extra['ability'])
 		"Burn":
 			_handle_burn_action(target, value, user, extra)
 		"CrimsonReckoning": # Toggle Passive
@@ -308,27 +371,49 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_crit_chance_buff_action(target, value, extra)
 		"CriticalChancePassive":
 			_handle_critical_chance_passive(target, value, extra['ability'])
+		"CooldownResetOnKill":
+			_handle_cooldown_reset_on_kill_action(target, extra)
 		"Damage":
 			if _calculate_evade_chance(target.total_evade):
 				_trigger_combat_text(target, 0, 'Springgreen')
 				return
 			_handle_damage_action(target, damage, tag, user, extra)
+		"DexterityStatConversion":
+			_handle_dexterity_stat_conversion_action(user, value, extra)
+		"DexterityToStrengthConversion":
+			_handle_dexterity_to_strength_conversion(target, value, extra['ability'])
+		"DexterityToIntelligenceConversion":
+			_handle_dexterity_to_intelligence_conversion(target, value, extra['ability'])
 		"DoubleCastPassive":
 			_handle_double_cast_passive(target, value, extra['ability'])
+		"Execute":
+			_handle_execute_action(target, value, user)
+		"Ferver":
+			_handle_ferver_action(user, value, extra)
 		"FlatEvadeBuff":
 			_handle_evade_buff_action(target, value, extra)
 		"Freeze":
 			_handle_freeze_action(target, value, user, extra)
+		"FreezeExtraFlatDamage":
+			_handle_freeze_extra_flat_damage_action(target, value)
 		"FrozenChancePassive":
 			_handle_frozen_chance_passive(target, value, extra['ability'])
 		"FrenzyBuff":
 			_handle_frenzy_buff_action(target, value, user)
 		"FlatArmorBuff":
 			_handle_flat_armor_buff_action(target, value, extra)
+		"GravityPull":
+			_handle_gravity_pull_action(target, value, user)
 		"Heal":
 			_handle_heal_action(target, value, tag)
 		"PercentHeal":
 			_handle_heal_action(target, target.total_health * (value/100.0), tag)
+		"IntelligenceStatConversion":
+			_handle_intelligence_stat_conversion_action(user, value, extra)
+		"IntelligenceToDexterityConversion":
+			_handle_intelligence_to_dexterity_conversion(target, value, extra['ability'])
+		"IntelligenceToStrengthConversion":
+			_handle_intelligence_to_strength_conversion(target, value, extra['ability'])
 		"Infected":
 			_handle_infected_action(target)
 		"Lifesteal":
@@ -345,6 +430,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_percent_armor_debuff_action(target, value, user, extra)
 		"PercentAttackDamageBuff":
 			_handle_percent_attack_buff_action(target, value, user)
+		"PercentAttackDamagePassive":
+			_handle_percent_attack_damage_passive(target, value, extra['ability'])
 		"PercentSpeedBuff":
 			_handle_percent_speed_buff_action(target, value, user)
 		"Poison":
@@ -363,6 +450,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_refund_mana_action(target, value, extra)
 		"Root":
 			_handle_root_action(target, value)
+		"UmbralSnare":
+			_handle_umbral_snare_action(target, value, user, extra)
 		"SelfInvincible":
 			_handle_self_invincible_action(user, value)
 		"Shock":
@@ -373,8 +462,14 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_stealth_action(target, value)
 		"SpellVampPassive":
 			_handle_spell_vamp_passive(target, value, extra['ability'])
+		"StrengthStatConversion":
+			_handle_strength_stat_conversion_action(user, value, extra)
 		"StrengthToVitalityPassive":
 			_handle_strength_to_vitality_passive(target, value, extra['ability'])
+		"StrengthToDexterityConversion":
+			_handle_strength_to_dexterity_conversion(target, value, extra['ability'])
+		"StrengthToIntelligenceConversion":
+			_handle_strength_to_intelligence_conversion(target, value, extra['ability'])
 		"Wind":
 			_handle_wind_action(target, value, user)
 	_update_boss_health_bar(target, user)
@@ -383,6 +478,16 @@ func _on_do_action(value, target, user, tag, extra = null):
 # ------------------------------------------------------#
 # Helper methods
 # ------------------------------------------------------#
+
+func _calculate_damage(value, target):
+	var damage = _calculate_reduced_damage(value, target.total_armor)
+	return damage
+
+func _check_if_kills(target, _damage):
+	var damage = _calculate_damage(_damage, target)
+	if target.current_health - damage <= 0:
+		return true
+	return false
 
 func _barrier_protection(target, value):
 	var rest_damage = value
@@ -415,11 +520,24 @@ func _chance_calculator(chance):
 		return true
 	return false
 
+func _on_enemy_basic_attack(origin):
+	if player.has_meta("BleedReflectPassive"):
+		var extra = {"ability" : player.get_meta("BleedReflectAbility")}
+		_on_do_action(player.get_meta("BleedReflectPassive"), origin, player, "Bleed", extra)
+
 func _on_basic_attack(target):
 	if player.total_life_steal > 0:
 		_on_do_action(player.total_attack_damage * (player.total_life_steal/100.0), player, player, "Heal")
 
-	
+	if extra_effect_values.has("Ferver"):
+		if target != extra_effect_values["FerverCurrentTarget"]:
+			extra_effect_values["FerverCurrentStacks"] = 1
+		var extra = {"ability" : extra_effect_values["FerverAbility"]}
+		_on_do_action((extra_effect_values["Ferver"]) * extra_effect_values["FerverCurrentStacks"], player, player, "AttackSpeedPassive", extra)
+		extra_effect_values["FerverCurrentStacks"] += 1
+		extra_effect_values["FerverCurrentTarget"] = target
+		if extra_effect_values["FerverCurrentStacks"] > extra_effect_values["FerverMaximumStacks"]:
+			extra_effect_values["FerverCurrentStacks"] = extra_effect_values["FerverMaximumStacks"]
 	if extra_effect_values.has("CrimsonReckoning"):
 		extra_effect_values["CrimsonReckoningCurrent"] += 1
 		if extra_effect_values["CrimsonReckoningCurrent"] >= extra_effect_values["CrimsonReckoningInterval"]:
@@ -459,7 +577,17 @@ func _handle_movement_penalty_action(target, value, unit):
 		unit.bonus_speed += value
 		if unit.is_in_group('players'):
 			unit._update_stats()
-			
+
+func _handle_movement_penalty_buff_action(target, value):
+	target.get_node('Control').ranged_movement_penalty = 1.0
+	target.get_node('Control').melee_movement_penalty = 1.0
+	var timer = Utility.get_node('TimerCreator')._create_timer(value, false, target)
+	timer.timeout.connect(_deapply_movement_penalty_buff.bind(target))
+	timer.start()
+
+func _deapply_movement_penalty_buff(target):
+	target.get_node('Control').ranged_movement_penalty = 0.5
+	target.get_node('Control').melee_movement_penalty = 0.6
 
 func _handle_movement_charges_action(value, unit):
 	unit.charges += value
@@ -508,6 +636,7 @@ func _handle_arcane_damage_passive(target, value, ability):
 	target.bonus_attack_damage += target.get_meta(ability_name_clean)
 	if target.is_in_group('players'):
 		target._update_stats()
+		
 
 func _handle_freeze_amount_action(target, value, unit):
 	if target:
@@ -700,6 +829,51 @@ func _handle_crimson_salvation_action(enabled, value, extra):
 		extra_effect_values.erase("CrimsonSalvationInterval")
 		extra_effect_values.erase("CrimsonSalvationCurrent")
 
+func _handle_strength_stat_conversion_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["StrengthStatConversion"] = value
+		extra_effect_values["StrengthStatConversionAbility"] = extra['ability']
+	else:
+		extra_effect_values.erase("StrengthStatConversion")
+		extra_effect_values.erase("StrengthStatConversionAbility")
+		_on_do_action(0, player, player, "DexterityToStrengthConversion", extra)
+		_on_do_action(0, player, player, "IntelligenceToStrengthConversion", extra)
+
+func _handle_dexterity_stat_conversion_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["DexterityStatConversion"] = value
+		extra_effect_values["DexterityStatConversionAbility"] = extra['ability']
+	else:
+		extra_effect_values.erase("DexterityStatConversion")
+		extra_effect_values.erase("DexterityStatConversionAbility")
+		_on_do_action(0, player, player, "StrengthToDexterityConversion", extra)
+		_on_do_action(0, player, player, "IntelligenceToDexterityConversion", extra)
+
+func _handle_intelligence_stat_conversion_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["IntelligenceStatConversion"] = value
+		extra_effect_values["IntelligenceStatConversionAbility"] = extra['ability']
+	else:
+		extra_effect_values.erase("IntelligenceStatConversion")
+		extra_effect_values.erase("IntelligenceStatConversionAbility")
+		_on_do_action(0, player, player, "StrengthToIntelligenceConversion", extra)
+		_on_do_action(0, player, player, "DexterityToIntelligenceConversion", extra)
+
+func _handle_ferver_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["Ferver"] = value
+		extra_effect_values["FerverMaximumStacks"] = 10
+		extra_effect_values["FerverAbility"] = extra['ability']
+		if !extra_effect_values.has("FerverCurrentStacks"):
+			extra_effect_values["FerverCurrentStacks"] = 1
+			extra_effect_values["FerverCurrentTarget"] = null
+	else:
+		extra_effect_values.erase("Ferver")
+		extra_effect_values.erase("FerverMaximumStacks")
+		extra_effect_values.erase("FerverCurrentStacks")
+		extra_effect_values.erase("FerverCurrentTarget")
+		extra_effect_values.erase("FerverAbility")
+
 func _handle_burn_heal_action(target, value):
 	if target:
 		if burn_effect_values.has("BurnHeal"):
@@ -847,9 +1021,24 @@ func _handle_pierce_action(user):
 
 func _handle_root_action(target, value):
 	target.is_rooted = true
+	print(target.is_rooted)
 	var timer = Utility.get_node('TimerCreator')._create_timer(value, true, target)
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Root"))
 	timer.start()
+	var effect = root_effect.instantiate()
+	target.add_child(effect)
+
+func _handle_umbral_snare_action(target, value, user, extra):
+	if target.global_position.distance_to(user.global_position) < 100:
+		_on_do_action(value, target, user, "Freeze", extra)
+	_on_do_action(150, target, user, "GravityPull")
+
+func _handle_execute_action(target, value, user):
+	if target in invincible_units or _check_if_dead(target) or target.is_in_group('boss'):
+		return
+	if target.current_health <= target.total_health * (value/100.0):
+		target.current_health = 0
+		_trigger_combat_text(user, target.total_health, 'Execute')
 
 # Handles the refunding of mana.
 # Parameters:
@@ -949,6 +1138,24 @@ func _handle_ability_percent_damage_action(user, value):
 	if dmg != -1:
 		user.values[dmg] = user.values[dmg] * (1 + value/100.0)
 
+func _handle_cooldown_reset_on_kill_action(target, extra):
+	var total_damage = 0
+	for t in extra["ability_instance"].tags:
+		if "Damage" in t:
+			total_damage += extra["ability_instance"].values[extra["ability_instance"].tags.find(t)]
+	
+	if _check_if_kills(target, total_damage):
+		extra["ability_instance"]._reset_cooldown()
+
+func _handle_bleed_stack_consume_heal_action(target, value, user, extra):
+	if target.has_meta("Bleed_stacks"):
+		var stacks = target.get_meta("Bleed_stacks")
+		_on_do_action(value * stacks, user, target, "PercentHeal", extra)
+		target.set_meta("Bleed_stacks", 0)
+
+func _handle_freeze_extra_flat_damage_action(target, value):
+	if target.has_node("Freeze_timer"):
+		_on_do_action(value, target, player, "Damage")
 # Handles the modifier action for the user.
 # Parameters:
 # - user: The user of the action.
@@ -1022,6 +1229,23 @@ func _handle_attack_range_passive(target, value, ability):
 	if target.is_in_group('players'):
 		target._update_stats()
 
+func _handle_bleed_reflect_action(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_BleedReflect"
+	if target.has_meta('BleedReflectPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('BleedReflectPassive'):
+		target.set_meta('BleedReflectPassive', value)
+		target.set_meta("BleedReflectAbility", ability_name_clean)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('BleedReflectPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('BleedReflectPassive', target.get_meta('BleedReflectPassive') - old_passive)
+		target.set_meta('BleedReflectPassive', target.get_meta('BleedReflectPassive') + value)
+
+	target.set_meta(ability_name_clean, value)
+
 func _handle_spell_vamp_passive(target, value, ability):
 	var ability_name_clean = ability.replace(" ", "_")
 	ability_name_clean += "_SpellVamp"
@@ -1060,6 +1284,162 @@ func _handle_strength_to_vitality_passive(target, value, ability):
 
 	target.set_meta(ability_name_clean, new_value)
 	target.bonus_vitality += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_strength_to_dexterity_conversion(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_StrengthToDexterity"
+	var left_over = 0
+	var new_value = target.total_strength * (value/100.0)
+	if value > 100:
+		left_over = new_value - target.total_strength
+	if target.has_meta('StrengthToDexterityPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('StrengthToDexterityPassive'):
+		target.set_meta('StrengthToDexterityPassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('StrengthToDexterityPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('StrengthToDexterityPassive', target.get_meta('StrengthToDexterityPassive') - old_passive)
+		target.set_meta('StrengthToDexterityPassive', target.get_meta('StrengthToDexterityPassive') + new_value)
+		target.bonus_dexterity -= old_passive
+		target.bonus_strength += old_passive - left_over
+
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_dexterity += target.get_meta(ability_name_clean)
+	target.bonus_strength -= target.get_meta(ability_name_clean) - left_over
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_strength_to_intelligence_conversion(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_StrengthToIntelligence"
+	var left_over = 0
+	var new_value = target.total_strength * (value/100.0)
+	if value > 100:
+		left_over = new_value - target.total_strength
+	if target.has_meta('StrengthToIntelligencePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('StrengthToIntelligencePassive'):
+		target.set_meta('StrengthToIntelligencePassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('StrengthToIntelligencePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('StrengthToIntelligencePassive', target.get_meta('StrengthToIntelligencePassive') - old_passive)
+		target.set_meta('StrengthToIntelligencePassive', target.get_meta('StrengthToIntelligencePassive') + new_value)
+		target.bonus_intelligence -= old_passive
+		target.bonus_strength += old_passive - left_over
+
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_intelligence += target.get_meta(ability_name_clean)
+	target.bonus_strength -= target.get_meta(ability_name_clean) - left_over
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_dexterity_to_strength_conversion(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_DexterityToStrength"
+	var left_over = 0
+	var new_value = target.total_dexterity * (value/100.0)
+	if value > 100:
+		left_over = new_value - target.total_dexterity
+	if target.has_meta('DexterityToStrengthPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('DexterityToStrengthPassive'):
+		target.set_meta('DexterityToStrengthPassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('DexterityToStrengthPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('DexterityToStrengthPassive', target.get_meta('DexterityToStrengthPassive') - old_passive)
+		target.set_meta('DexterityToStrengthPassive', target.get_meta('DexterityToStrengthPassive') + new_value)
+		target.bonus_strength -= old_passive
+		target.bonus_dexterity += old_passive - left_over
+
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_strength += target.get_meta(ability_name_clean)
+	target.bonus_dexterity -= target.get_meta(ability_name_clean) - left_over
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_dexterity_to_intelligence_conversion(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_DexterityToIntelligence"
+	var left_over = 0
+	var new_value = target.total_dexterity * (value/100.0)
+	if value > 100:
+		left_over = new_value - target.total_dexterity
+	if target.has_meta('DexterityToIntelligencePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('DexterityToIntelligencePassive'):
+		target.set_meta('DexterityToIntelligencePassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('DexterityToIntelligencePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('DexterityToIntelligencePassive', target.get_meta('DexterityToIntelligencePassive') - old_passive)
+		target.set_meta('DexterityToIntelligencePassive', target.get_meta('DexterityToIntelligencePassive') + new_value)
+		target.bonus_intelligence -= old_passive
+		target.bonus_dexterity += old_passive - left_over
+
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_intelligence += target.get_meta(ability_name_clean)
+	target.bonus_dexterity -= target.get_meta(ability_name_clean) - left_over
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_intelligence_to_strength_conversion(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_IntelligenceToStrength"
+	var left_over = 0
+	var new_value = target.total_intelligence * (value/100.0)
+	if value > 100:
+		left_over = new_value - target.total_intelligence
+	if target.has_meta('IntelligenceToStrengthPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('IntelligenceToStrengthPassive'):
+		target.set_meta('IntelligenceToStrengthPassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('IntelligenceToStrengthPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('IntelligenceToStrengthPassive', target.get_meta('IntelligenceToStrengthPassive') - old_passive)
+		target.set_meta('IntelligenceToStrengthPassive', target.get_meta('IntelligenceToStrengthPassive') + new_value)
+		target.bonus_strength -= old_passive
+		target.bonus_intelligence += old_passive - left_over
+
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_strength += target.get_meta(ability_name_clean)
+	target.bonus_intelligence -= target.get_meta(ability_name_clean) - left_over
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_intelligence_to_dexterity_conversion(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_IntelligenceToDexterity"
+	var left_over = 0
+	var new_value = target.total_intelligence * (value/100.0)
+	if value > 100:
+		left_over = new_value - target.total_intelligence
+	if target.has_meta('IntelligenceToDexterityPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == new_value:
+		return
+
+	if !target.has_meta('IntelligenceToDexterityPassive'):
+		target.set_meta('IntelligenceToDexterityPassive', new_value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('IntelligenceToDexterityPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('IntelligenceToDexterityPassive', target.get_meta('IntelligenceToDexterityPassive') - old_passive)
+		target.set_meta('IntelligenceToDexterityPassive', target.get_meta('IntelligenceToDexterityPassive') + new_value)
+		target.bonus_dexterity -= old_passive
+		target.bonus_intelligence += old_passive - left_over
+
+	target.set_meta(ability_name_clean, new_value)
+	target.bonus_dexterity += target.get_meta(ability_name_clean)
+	target.bonus_intelligence -= target.get_meta(ability_name_clean) - left_over
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -1323,7 +1703,7 @@ func _handle_poison_action(target, value, user):
 # - value: The value of the frenzy buff.
 # - user: The duration of the frenzy buff.
 func _handle_frenzy_buff_action(target, value, user):
-	var duration = 2
+	var duration = 5
 	var tick_interval = 1
 	var total_ticks = ceil(duration / tick_interval)
 	var damage_per_tick = (target.total_health * 0.25) / total_ticks
@@ -1447,6 +1827,47 @@ func _handle_attack_damage_passive(target, value, ability):
 		var old_passive = target.get_meta(ability_name_clean)
 		target.set_meta('AttackDamagePassive', target.get_meta('AttackDamagePassive') - old_passive)
 		target.set_meta('AttackDamagePassive', target.get_meta('AttackDamagePassive') + value)
+		target.bonus_attack_damage -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_attack_damage += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_boost_mana_regen_passive_action(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_ManaRegenBoost"
+	if target.has_meta('ManaRegenBoostPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('ManaRegenBoostPassive'):
+		target.set_meta('ManaRegenBoostPassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('ManaRegenBoostPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('ManaRegenBoostPassive', target.get_meta('ManaRegenBoostPassive') - old_passive)
+		target.set_meta('ManaRegenBoostPassive', target.get_meta('ManaRegenBoostPassive') + value)
+		target.bonus_mana_regen -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_mana_regen += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_percent_attack_damage_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	value = target.total_attack_damage * (value/100.0)
+	ability_name_clean += "_PercentAttackDamage"
+	if target.has_meta('PercentAttackDamagePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('PercentAttackDamagePassive'):
+		target.set_meta('PercentAttackDamagePassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('PercentAttackDamagePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('PercentAttackDamagePassive', target.get_meta('PercentAttackDamagePassive') - old_passive)
+		target.set_meta('PercentAttackDamagePassive', target.get_meta('PercentAttackDamagePassive') + value)
 		target.bonus_attack_damage -= old_passive
 
 	target.set_meta(ability_name_clean, value)
@@ -1632,6 +2053,15 @@ func _handle_wind_action(target, value, user):
 	target.set_meta('Knockback_distance', value)
 	knockback_units.append(target)
 
+func _handle_gravity_pull_action(target, value, user):
+	if target in invincible_units or _check_if_dead(target) or target.is_in_group('boss') or target.is_in_group('special'):
+		return
+	var direction = (user.global_position - target.global_position).normalized()
+	target.set_meta('Pull_direction', direction)
+	target.set_meta('Pull_origin', target.global_position)
+	target.set_meta('Pull_distance', value)
+	pulled_units.append(target)
+
 # Handles the bleed action on the target.
 # Parameters:
 # - target: The target of the action.
@@ -1663,22 +2093,16 @@ func _handle_bleed_action(target, value, user, extra):
 		target.set_meta('Bleed_damage', damage_per_tick)
 		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'crimson', 'Bleed'))
 		timer.name = "Bleed_timer"
-		target.add_child(timer)
 		timer.start()
 	else:
 		if target.get_meta('Bleed_stacks') >= 10:
 			return
+		print("Bleed stacks: " + str(target.get_meta('Bleed_stacks')))
 		target.set_meta('Bleed_count', 0)
 		target.set_meta('Bleed_stacks', target.get_meta('Bleed_stacks') + 1)
 		if target.get_meta('Bleed_damage') < damage_per_tick:
 			target.set_meta('Bleed_damage', damage_per_tick)
-			target.get_node('Bleed_timer').free()
-			var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
-			timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'crimson', 'Bleed'))
-			timer.name = "Bleed_timer"
-			target.add_child(timer)
-			timer.start()
-		duration = 2
+		target.get_node('Bleed_timer').start()
 
 
 # Handles the infected action on the target.
@@ -1829,6 +2253,8 @@ func _deapply_invincibility(user):
 #   - original_speed: The original speed value of the target.
 #   - target: The target from which to deapply the freeze effect.
 func _deapply_freeze(original_speed, target):
+	if _check_if_dead(target):
+		return
 	target.bonus_speed += original_speed
 	target.get_node('Freeze_timer').queue_free()
 	if target.has_node('Freeze_effect'):
@@ -1866,6 +2292,7 @@ func _deapply_buff(target, value, tag):
 	if tag == "ManaRegen":
 		target.bonus_mana_regen -= value
 	if tag == "Root":
+		print("Deapplying root")
 		target.is_rooted = false
 	if tag == "FlatArmor":
 		target.bonus_armor -= value
@@ -1890,7 +2317,8 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 		return
 	var damage
 	if type == "Bleed":
-		damage = _calculate_reduced_damage(damage_per_tick * (1 + target.get_meta('Bleed_stacks')/10), target.total_armor)
+		damage = _calculate_reduced_damage(target.get_meta("Bleed_damage") * (1 + target.get_meta('Bleed_stacks')/2), target.total_armor)
+		print("Bleed damage: " + str(damage))
 	elif type == "Frenzy":
 		damage = damage_per_tick
 	elif type == "Poison":
@@ -2051,6 +2479,9 @@ func _create_combat_text_and_update_recent(value, current_time, target, color):
 	instanced._create_text(recent_combat_text_values[target][color], target, color)
 
 func _trigger_combat_text(target, value, color):
+	if _check_if_dead(target):
+		return
+
 	value = ceil(value)
 	var current_time = Time.get_ticks_msec() / 1000.0
 	if recent_combat_text_values.has(target):

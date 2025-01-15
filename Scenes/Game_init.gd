@@ -7,8 +7,10 @@ func _initialize_managers():
 	print('Game Initialized')
 	if GameManager.is_save_file:
 		get_node('CharacterManager').selected_character_name = load_specific_value(get_node('CharacterManager').get_path(), "selected_character_name")
+		GameManager.selected_character_name = get_node('CharacterManager').selected_character_name
 
 	var player = get_node('CharacterManager')._initialize()
+	player.map_manager = get_node('MapManager')
 	get_node('WaveManager')._initialize()
 	get_node('MapManager')._initialize()
 	get_node('AbilityManager')._initialize()

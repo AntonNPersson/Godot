@@ -32,6 +32,9 @@ var last_attack_target = null
 var movement_skill = null
 var current_sprite_direction = ""
 var movement_penalty = 1.0 # 1.0 = normal speed, 0.4 = slow speed
+var ranged_movement_penalty = 0.5
+var melee_movement_penalty = 0.6
+var default_movement_penalty = 1.0
 
 var mouse_pointer_pressed = load('res://Sprites/Icons/pointer_pressed.png')
 var mouse_pointer = load('res://Sprites/Icons/pointer.png')
@@ -207,7 +210,7 @@ func _wasd_attack_movement(delta, closest_target):
 			attack_bar.visible = false
 
 
-func _attack(tags = null, values = null, delta = 0.0):
+func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = null):
 	stats.in_stealth = false
 	if tags == null:
 		tags = []
@@ -225,19 +228,85 @@ func _attack(tags = null, values = null, delta = 0.0):
 	basic_attacking.emit(attack_target)
 	tags.append_array(stats.current_attack_modifier_tags)
 	values.append_array(stats.current_attack_modifier_values)
+
+	if GameManager.selected_character_name == "Ranger":
+		if stats.total_attack_targets <= 1:
+			update_sprite_direction(mouse_pos - stats.global_position, "Attack")
+			var instance = stats.basic_attack_scene.instantiate()
+			get_tree().get_root().add_child(instance)
+			instance.global_position = stats.global_position
+			instance.do_damage.connect(_on_action)
+			instance.tags = tags
+			instance.values = values
+			instance.unit = stats
+			if new_attack_direction != null:
+				instance.target_position = new_attack_direction
+				instance.rotation = new_attack_direction.angle()
+			else:
+				instance.target_position = (mouse_pos - stats.global_position).normalized()
+				instance.rotation = (mouse_pos - stats.global_position).angle()
+			var crit = stats._apply_critical_damage(stats.total_attack_damage)
+			instance.damage = crit["value"]
+			if crit["critical"]:
+				instance.is_critical = true
+			return
+		else:
+			update_sprite_direction(mouse_pos - stats.global_position, "Attack")
+			var base_direction = (mouse_pos - stats.global_position).normalized()
+			var spread_angle = deg_to_rad(10)
+			for i in range(stats.total_attack_targets):
+				var instance = stats.basic_attack_scene.instantiate()
+				get_tree().get_root().add_child(instance)
+				instance.global_position = stats.global_position
+				instance.do_damage.connect(_on_action)
+				instance.tags = tags
+				instance.values = values
+				instance.unit = stats
+				if new_attack_direction != null:
+					instance.target_position = new_attack_direction.rotated(spread_angle * i)
+					instance.rotation = new_attack_direction.angle_to(new_attack_direction.rotated(spread_angle * i))
+				else:
+					instance.target_position = base_direction.rotated(spread_angle * i)
+					instance.rotation = base_direction.angle_to(base_direction.rotated(spread_angle * i))
+				var crit = stats._apply_critical_damage(stats.total_attack_damage)
+				instance.damage = crit["value"]
+				if crit["critical"]:
+					instance.is_critical = true
+
 	if !stats.melee:
-		var instance = stats.basic_attack_scene.instantiate()
-		get_tree().get_root().add_child(instance)
-		instance.global_position = stats.global_position
-		instance.do_damage.connect(_on_action)
-		instance.tags = tags
-		instance.values = values
-		instance.unit = attack_target
-		instance.original_unit = stats
-		var crit = stats._apply_critical_damage(stats.total_attack_damage)
-		instance.damage = crit["value"]
-		if crit["critical"]:
-			instance.is_critical = true
+		if stats.total_attack_targets <= 1:
+			var instance = stats.basic_attack_scene.instantiate()
+			get_tree().get_root().add_child(instance)
+			instance.global_position = stats.global_position
+			instance.do_damage.connect(_on_action)
+			instance.tags = tags
+			instance.values = values
+			instance.unit = attack_target
+			instance.original_unit = stats
+			var crit = stats._apply_critical_damage(stats.total_attack_damage)
+			instance.damage = crit["value"]
+			if crit["critical"]:
+				instance.is_critical = true
+		else:
+			var targets = get_tree().get_nodes_in_group('enemies')
+			var g = 0
+			for target in targets:
+				if target.global_position.distance_to(attack_target.global_position) > 64:
+					continue
+				g += 1
+				if g <= stats.total_attack_targets:
+					var instance = stats.basic_attack_scene.instantiate()
+					get_tree().get_root().add_child(instance)
+					instance.global_position = stats.global_position
+					instance.do_damage.connect(_on_action)
+					instance.tags = tags
+					instance.values = values
+					instance.unit = target
+					instance.original_unit = stats
+					var crit = stats._apply_critical_damage(stats.total_attack_damage)
+					instance.damage = crit["value"]
+					if crit["critical"]:
+						instance.is_critical = true
 	else:
 		update_sprite_direction(attack_target.global_position - stats.global_position, "Attack")
 		attack_sprite.get_child(0).play('default')
@@ -382,12 +451,12 @@ func _input(event):
 			if attack_target == null:
 				return
 			if stats.melee:
-				movement_penalty = 0.6
+				movement_penalty = melee_movement_penalty
 			else:
-				movement_penalty = 0.5
+				movement_penalty = ranged_movement_penalty
 		if event.is_action_released("Attack"):
 			Input.set_custom_mouse_cursor(mouse_pointer)
-			movement_penalty = 1.0
+			movement_penalty = default_movement_penalty
 			if attack_target == null:
 				return
 			attack_target.is_hovered = false

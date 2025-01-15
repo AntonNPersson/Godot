@@ -25,6 +25,8 @@ func _create_text(value, target, color):
 	scale = Vector2(scale_factor, scale_factor)
 	if color == "Purple":
 		text = '[center][color=Violet]' + str(snapped(value/2, 0.1)) + "(" + str(snapped(value/2, 0.1)) + ")" + '[/color][/center]'
+	elif color == "Execute":
+		text = '[center][color=Red]Executed[/color][/center]'
 	if positive_effects.find(color) != -1:
 		global_position.x -= 32
 	start = true

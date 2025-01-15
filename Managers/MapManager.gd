@@ -490,6 +490,19 @@ func _world_to_tilemap_position(_world_position):
 			distance = dist
 			current_tile = tile.position
 	return current_tile
+
+func _world_to_tilemap_position_all(_world_position):
+	if _world_position == null:
+		return
+
+	var distance = INF
+	var current_tile
+	for tile in tile_data_dict.values():
+		var dist = _world_position.distance_squared_to(tile.position)
+		if dist < distance:
+			distance = dist
+			current_tile = tile.position
+	return current_tile
 	
 # Finds a walkable tile away from the given position.
 func _find_walkable_tile_away_from(_position):
@@ -742,7 +755,7 @@ func _spawn_and_attach():
 	var arr = []
 	var random_creatures = []
 	var creature_positions = []
-	var random_increase = int((int(grid_size/40) + ((sub_wave/2))) * creatures[0].increased_amount)
+	var random_increase = int((int(grid_size/40) + 3) * creatures[0].increased_amount)
 	var spawn_time = 1.5
 	
 	for i in range(random_increase):
@@ -797,7 +810,6 @@ func _calculate_creature(size):
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		print('exiting..')
-		GameManager.save_game()
 		spawn_position.clear()
 		special_positions.clear()
 		Utility.get_node('Interactable').interactable_objects.clear()
@@ -814,4 +826,11 @@ func _notification(what):
 
 		for child in get_children():
 			child.queue_free()
+
+		# Fix this somewhen
+		var orhpans = get_tree().get_nodes_in_group("all_nodes")
+		print_orphan_nodes()
+		for orphan in orhpans:
+			print(orphan.name)
+			orphan.queue_free()
 		get_tree().quit()

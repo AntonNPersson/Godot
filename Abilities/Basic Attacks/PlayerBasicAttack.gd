@@ -33,7 +33,7 @@ func _do_damage():
 		if original_unit.is_in_group('players'):
 			extra = {"basic_attacking": true, "critical": is_critical, "ability" : null}
 		else:
-			extra = {"basic_attacking": true, "critical": is_critical}
+			extra = {"enemy_basic_attacking": true, "critical": is_critical, "enemy": original_unit}
 
 		do_damage.emit(damage, unit, original_unit, tag, extra)
 		if tags.size() > 0:

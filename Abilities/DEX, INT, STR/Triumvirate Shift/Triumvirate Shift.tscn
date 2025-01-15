@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgn56rj0erh0s"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_31cfa"]
+[ext_resource type="Texture2D" uid="uid://p8bt5o1etsmw" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/all.png" id="2_gcgn3"]
+[ext_resource type="Texture2D" uid="uid://chei3cr2fb8vd" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/int.png" id="3_j3nv3"]
+[ext_resource type="Texture2D" uid="uid://ba8xjq0crsvxt" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/str.png" id="4_leqn0"]
+[ext_resource type="Texture2D" uid="uid://rw6y0x3y38hy" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/dex.png" id="5_rerjp"]
+
+[node name="Triumvirate Shift" type="Node2D"]
+script = ExtResource("1_31cfa")
+icon = ExtResource("2_gcgn3")
+a_name = "Triumvirate Shift"
+tooltip_text = "Switch between three states, each state converts Value0% two of the basic stats into the last one."
+projectile_type = 4
+ability_type = "STR, INT, DEX"
+toggle = true
+toggle_state_count = 3
+toggle_icons = Array[Texture]([ExtResource("3_j3nv3"), ExtResource("4_leqn0"), ExtResource("5_rerjp")])
+tags = Array[String](["IntelligenceStatConversion", "StrengthStatConversion", "DexterityStatConversion"])
+values = Array[float]([10.0, 10.0, 10.0])
+increased_values = Array[float]([10.0, 10.0, 10.0])

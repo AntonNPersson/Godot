@@ -31,7 +31,7 @@ func _use_weapon(player, delta):
 			additional_timer = 0
 			player.get_node('Control').attack_target = _find_closest_enemy(player)
 			if player.get_node('Control').attack_target:
-				player.get_node('Control')._attack([], [])
+				player.get_node('Control')._attack([], [], 0.0, (get_global_mouse_position() - player.global_position).normalized())
 
 func _find_closest_enemy(player):
 	var closest_enemy = null

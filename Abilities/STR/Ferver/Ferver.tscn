@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd6okohyvel3m"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_ecksx"]
+[ext_resource type="Texture2D" uid="uid://b6rvoc6xfxvrb" path="res://Abilities/STR/Ferver/Stone Spells21.png" id="2_oyxdm"]
+
+[node name="Ferver" type="Node2D"]
+script = ExtResource("1_ecksx")
+icon = ExtResource("2_oyxdm")
+a_name = "Ferver"
+tooltip_text = "Through endless repetition gain Value0%, doubling everytime you attack the same target, capping at 10 stacks."
+projectile_type = 4
+ability_type = "STR"
+custom_end = null
+custom_start = null
+tags = Array[String](["Ferver"])
+values = Array[float]([10.0])
+increased_values = Array[float]([5.0])

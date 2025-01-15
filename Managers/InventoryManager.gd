@@ -234,6 +234,10 @@ func _reduce_cooldown(_ability, amount):
 	var index = abilities.find(_ability)
 	cooldown_timers[index] -= amount
 
+func _reset_cooldown(_ability):
+	var index = abilities.find(_ability)
+	cooldown_timers[index] = 0
+
 func toggle_hud(hud):
 	if hud == "Inventory":
 		_update_inventory_test()
@@ -487,6 +491,7 @@ func _on_ability_manager_picked(_ability, subwave):
 	_ability.unit = self.get_parent()
 	_ability.is_docile = false
 	_ability._initialize()
+	add_child(_ability)
 
 func _on_enchant_picked(enchant, index, _type):
 	enchant._initialize()
@@ -601,6 +606,10 @@ func _on_item_picked_up(item):
 				else:
 					Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
 				return
+			if GameManager.selected_character_name == "Ranger":
+				if children_[2].range < 75:
+					Utility.get_node("ErrorMessage")._create_error_message("Can't equip melee weapon", self)
+					return
 			current_weapon = item.get_child(2)
 			weapon_equipped = true
 
@@ -693,6 +702,11 @@ func _add_from_storage_to_inventory(it):
 
 	# Check if item is a weapon, and if it's already equipped
 	if storage.size() > 0:
+		if GameManager.selected_character_name == "Ranger":
+			if "range" in selected_storage_item.get_child(2):
+				if selected_storage_item.get_child(2).range < 75:
+					Utility.get_node("ErrorMessage")._create_error_message("Can't equip melee weapon", self)
+					return
 		if weapon_equipped:
 			if "range" in it.get_child(2):
 				for i in range(inventory.size()):

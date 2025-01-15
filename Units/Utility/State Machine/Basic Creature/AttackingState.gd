@@ -13,7 +13,7 @@ func _action(_delta):
 		_interrupt_cast_timer()
 		return
 
-	if _unit.has_meta('Knockback_origin'):
+	if _unit.has_meta('Knockback_origin') or _unit.has_meta('Pull_origin'):
 		_interrupt_cast_timer()
 		_is_winding = false
 		attack_timer = _unit.total_windup_time
@@ -36,6 +36,8 @@ func _action(_delta):
 	if _unit.total_range < 200:
 		if _is_winding:	
 			attack_timer -= _delta
+			var extra = {"enemy_basic_attacking": true,
+						"enemy": _unit}
 
 			if abs(attack_timer - (_unit.total_windup_time / 2)) < 0.01:
 				var _target_position = _get_closest_target().global_position
@@ -51,7 +53,7 @@ func _action(_delta):
 
 			if attack_timer <= 0.0:
 				if _unit.global_position.distance_to(_get_closest_target().global_position) < _unit.total_range + 15:
-					_unit.do_action.emit(_unit.total_attack_damage, _get_closest_target(), _unit, "Damage")
+					_unit.do_action.emit(_unit.total_attack_damage, _get_closest_target(), _unit, "Damage", extra)
 					if _unit.attack_modifier_tags.size() > 0:
 						for i in range(_unit.attack_modifier_tags.size()):
 							_unit.do_action.emit(_unit.attack_modifier_values[i], _get_closest_target(), _unit, _unit.attack_modifier_tags[i])
@@ -74,6 +76,7 @@ func _action(_delta):
 				instance.do_damage.connect(_unit._on_do_action)
 				instance.global_position = _unit.global_position
 				instance.unit = _get_closest_target()
+				instance.original_unit = _unit
 				instance.damage = _unit.total_attack_damage
 				instance.tags = _unit.attack_modifier_tags
 				attack_timer = _unit.total_windup_time

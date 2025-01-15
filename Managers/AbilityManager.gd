@@ -198,26 +198,25 @@ func _load_abilities(abilities):
 		_create_ability_based_on_type(current_ability_data['type'], current_ability_data)
 
 func _create_ability_based_on_type(type, ability_data):
-	var index
-	var created_ability
-	if type == "INT":
-		for i in range(int_list.size() - 1):
+	var created_ability = null
+	if "INT" in type:
+		for i in range(int_list.size()):
 			if int_list[i].a_name == ability_data['name']:
-				index = i
 				created_ability = int_list[i].duplicate()
 				int_list.erase(int_list[i])
-	if type == "DEX":
-		for i in range(dex_List.size() - 1):
+				break
+	if "DEX" in type and created_ability == null:
+		for i in range(dex_List.size()):
 			if dex_List[i].a_name == ability_data['name']:
-				index = i
 				created_ability = dex_List[i].duplicate()
 				dex_List.erase(dex_List[i])
-	if type == "STR":
-		for i in range(str_List.size() - 1):
+				break
+	if "STR" in type and created_ability == null:
+		for i in range(str_List.size()):
 			if str_List[i].a_name == ability_data['name']:
-				index = i
 				created_ability = str_List[i].duplicate()
 				str_List.erase(str_List[i])
+				break
 
 	picked.emit(created_ability, is_subwave)
 	chosen_ability_choices.append(created_ability)

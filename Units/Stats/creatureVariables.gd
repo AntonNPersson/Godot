@@ -111,8 +111,11 @@ var _target = null
 
 var increased_amount = 1.0
 
+var death_animation
+
 func _ready():
 	# Update the totals and set the current health.
+	death_animation = preload("res://Abilities/Utility/death_animation.tscn")
 	_ascend()
 	current_base_speed = base_speed
 	current_base_range = base_range
@@ -146,6 +149,10 @@ func _is_dead(unit):
 		else:
 			if drop_charge < get_tree().get_nodes_in_group("players")[0].total_charge_drop_chance:
 				get_tree().get_nodes_in_group("players")[0].get_node('InventoryManager')._on_potion_recharge_picked_up()
+		if !unit.is_in_group("boss"):
+			var death_effect = death_animation.instantiate()
+			death_effect.global_position = unit.global_position
+			get_tree().get_root().get_node('Main').get_node('Objects').add_child(death_effect)
 		queue_free()
 
 func _calculate_health_percentage():

@@ -131,6 +131,10 @@ func _initialize():
 			_add_specific_to_inventory(19)
 		elif GameManager.selected_character_name == "Berserker":
 			_add_specific_to_inventory(14)
+		elif GameManager.selected_character_name == "Ranger":
+			_add_specific_to_inventory(16)
+		elif GameManager.selected_character_name == "Mage":
+			_add_specific_to_inventory(18)
 
 
 

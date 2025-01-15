@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8hkpl0o0dxyd"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_i0j1j"]
+[ext_resource type="Texture2D" uid="uid://ns8ptyj0sg6p" path="res://Abilities/STR/Crimson Surge/dark spell_82.png" id="2_b2ck6"]
+
+[node name="Crimson Surge" type="Node2D"]
+script = ExtResource("1_i0j1j")
+icon = ExtResource("2_b2ck6")
+a_name = "Crimson Surge"
+tooltip_text = "Shroud yourself in crimson energy teleporting towards target, consuming all bleed stacks in an area healing Value0% per stack."
+mana_cost = 30.0
+cooldown = 10.0
+projectile_type = 6
+ability_type = "STR"
+type = "Blink"
+custom_movement = true
+custom_end = true
+custom_start = null
+tags = Array[String](["BleedStackConsumeHeal", "Explosion"])
+values = Array[float]([3.0, 75.0])
+increased_values = Array[float]([2.0, 0.0])

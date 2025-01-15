@@ -17,12 +17,16 @@ var explosion_effect
 var light_color
 var _ability
 var sprint_timer = 0.2
+var custom_move = false
+var custom_end = false
+var sprite_frames = null
+var sprite_scale = 1
 
 var max_distance
 
 var hit_enemies = []
 # Called when the node enters the scene tree for the first time.
-func _start(origin, target, rnge, speed, type, light_color, explosion, explosion_radius, _ability, pool = false, sprite_frames = null, sprite_scale = 1, custom_movement = false):
+func _start(origin, target, rnge, speed, type, light_color, explosion, explosion_radius, _ability, pool = false, sprite_frames = null, sprite_scale = 1, custom_movement = false, custom_end = false, custom_start = false):
 	if target == null:
 		queue_free()
 		return
@@ -32,6 +36,10 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 	self._range = rnge
 	self.speed = speed
 	self.type = type
+	self.custom_move = custom_movement
+	self.custom_end = custom_end
+	self.sprite_frames = sprite_frames
+	self.sprite_scale = sprite_scale
 	if type == "Charge":
 		self.direction = (target.global_position - origin.global_position).normalized()
 		self.max_distance = origin.global_position.distance_to(target.global_position)
@@ -58,7 +66,7 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 		get_child(0).visible = true
 		get_child(0).get_child(0).emitting = true
 		get_child(0).get_child(0).color = light_color
-	if custom_movement:
+	if custom_movement and custom_start:
 		if sprite_frames != null:
 			var animated_sprite = AnimatedSprite2D.new()
 			add_child(animated_sprite)
@@ -69,11 +77,9 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 			animated_sprite.modulate = light_color
 			animated_sprite.animation_finished.connect(_remove_sprite)
 			animated_sprite.play()
-			print(animated_sprite.name)
 
 func _remove_sprite():
-	if has_node(_ability.name):
-		get_node(_ability.name).queue_free()
+	queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -88,6 +94,10 @@ func _process(delta):
 				origin.get_node('Control').attack_target = target
 				hit_enemies.append(target)
 				has_hit.emit(target)
+				origin.get_node("Control").attack_sprite.get_child(0).play('default')
+				origin.get_node("Control").attack_sprite.global_position = origin.global_position + (target.global_position - origin.global_position).normalized() * 20
+				origin.get_node("Control").attack_sprite.rotation = (target.global_position - origin.global_position).angle()
+				origin.get_node("Control").attack_sprite.modulate = light_color
 				if explosion:
 					var _explosion = explosion_effect.instantiate()
 					_explosion.global_position = target.global_position
@@ -99,7 +109,19 @@ func _process(delta):
 					_explosion.has_hit.connect(_ability._on_hit)
 					_explosion.hit_enemies.append_array(hit_enemies)
 					get_tree().get_root().get_node('Main').add_child(_explosion)
-				queue_free()
+				if !custom_move:
+					queue_free()
+				elif custom_move and custom_end:
+					if sprite_frames != null:
+						var animated_sprite = AnimatedSprite2D.new()
+						add_child(animated_sprite)
+						animated_sprite.name = _ability.name
+						animated_sprite.global_position = global_position
+						animated_sprite.sprite_frames = sprite_frames
+						animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+						animated_sprite.modulate = light_color
+						animated_sprite.animation_finished.connect(_remove_sprite)
+						animated_sprite.play()
 	if type == "Blink":
 		if move and is_instance_valid(target):
 			origin.global_position = target.global_position
@@ -118,8 +140,20 @@ func _process(delta):
 					get_tree().get_root().get_node('Main').add_child(_explosion)
 			explosion = false
 			move = false
-			await get_tree().create_timer(0.5).timeout
-			queue_free()
+			if !custom_move:
+				await get_tree().create_timer(0.5).timeout
+				queue_free()
+			elif custom_move and custom_end:
+				if sprite_frames != null:
+					var animated_sprite = AnimatedSprite2D.new()
+					add_child(animated_sprite)
+					animated_sprite.name = _ability.name
+					animated_sprite.global_position = global_position
+					animated_sprite.sprite_frames = sprite_frames
+					animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+					animated_sprite.modulate = light_color
+					animated_sprite.animation_finished.connect(_remove_sprite)
+					animated_sprite.play()
 	if type == "Sprint":
 		if move:
 			origin.global_position += direction * speed * delta
@@ -173,5 +207,17 @@ func _process(delta):
 			else:
 				origin.get_node('Control').movement_target = Vector2.ZERO
 				move = false
-				queue_free()
+				if !custom_move:
+					queue_free()
+				elif custom_move and custom_end:
+					if sprite_frames != null:
+						var animated_sprite = AnimatedSprite2D.new()
+						add_child(animated_sprite)
+						animated_sprite.name = _ability.name
+						animated_sprite.global_position = global_position
+						animated_sprite.sprite_frames = sprite_frames
+						animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+						animated_sprite.modulate = light_color
+						animated_sprite.animation_finished.connect(_remove_sprite)
+						animated_sprite.play()
 

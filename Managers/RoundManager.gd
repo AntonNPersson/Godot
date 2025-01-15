@@ -42,6 +42,7 @@ func _next_area(area, value):
 		Utility.get_node('Brightness')._set_fog_layer(-2)
 		Utility.get_node('Brightness')._set_color(Color8(136, 158, 151))
 		start_singleplayer.emit()
+		GameManager.save_game()
 	if area == 'Combat':
 		Utility.get_node('Transition')._start(2)
 		await get_tree().create_timer(0.5).timeout

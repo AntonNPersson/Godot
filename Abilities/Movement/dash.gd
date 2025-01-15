@@ -18,10 +18,11 @@ func _ready():
 
 func _use_ability(delta):
 	if Input.is_action_just_pressed('Dash'):
-		if !is_dashing and unit.current_stamina - cost >= 0:
-			start_dash()
-			dash_speed = 300
-			cost = 1
+		if !is_dashing:
+			if unit.current_stamina - cost >= 0:
+				start_dash()
+			else:
+				Utility.get_node("ErrorMessage")._create_error_message("Not enough stamina!", unit)
 
 	if is_dashing:
 		update_dash(delta)

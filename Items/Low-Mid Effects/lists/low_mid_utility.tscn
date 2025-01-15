@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://or0tserw6r61"]
+[gd_scene load_steps=6 format=3 uid="uid://or0tserw6r61"]
 
 [ext_resource type="PackedScene" uid="uid://dunpu687qf50k" path="res://Items/Low-Mid Effects/Magical.tscn" id="1_a7wxv"]
 [ext_resource type="PackedScene" uid="uid://c17mduk4t8t6w" path="res://Items/Low-Mid Effects/Dexterious.tscn" id="2_k2hx5"]
 [ext_resource type="PackedScene" uid="uid://dy71mgvjyxn0k" path="res://Items/Low-Mid Effects/Everlasting.tscn" id="3_gya3c"]
+[ext_resource type="PackedScene" uid="uid://c2g6ylgdob0jd" path="res://Items/Low-Mid Effects/Arcanic.tscn" id="4_25bjn"]
+[ext_resource type="Script" path="res://Items/Low-Mid Effects/Arcanic.gd" id="5_psxlj"]
 
 [node name="LowMidUtility" type="Node2D"]
 
@@ -14,3 +16,6 @@ position = Vector2(535.126, 43.8267)
 
 [node name="Everlasting" parent="." instance=ExtResource("3_gya3c")]
 position = Vector2(535.126, 43.8267)
+
+[node name="Arcanic" parent="." instance=ExtResource("4_25bjn")]
+script = ExtResource("5_psxlj")

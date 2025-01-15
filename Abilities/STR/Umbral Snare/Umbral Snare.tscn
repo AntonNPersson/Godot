@@ -1,0 +1,131 @@
+[gd_scene load_steps=19 format=3 uid="uid://dit2e0wpm7t01"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_b5erg"]
+[ext_resource type="Texture2D" uid="uid://cor8qebhtoap0" path="res://Abilities/STR/Umbral Snare/dark spell_1.png" id="2_pwnet"]
+[ext_resource type="Texture2D" uid="uid://blakrgtc6s52v" path="res://Abilities/STR/Umbral Snare/Spell8_BatExplosion1-Sheet.png" id="3_7wymb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcuf1"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2g2cv"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ifoth"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ockpx"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_awqlb"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wook"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p08ga"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6qunl"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ixjf"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lj3qj"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vy5h4"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_npp4k"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(1408, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8n5kf"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(1536, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ck383"]
+atlas = ExtResource("3_7wymb")
+region = Rect2(1664, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_33dhq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rcuf1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2g2cv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ifoth")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ockpx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_awqlb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8wook")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p08ga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6qunl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ixjf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lj3qj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vy5h4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_npp4k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8n5kf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ck383")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Umbral Snare" type="Node2D"]
+script = ExtResource("1_b5erg")
+icon = ExtResource("2_pwnet")
+a_name = "Umbral Snare"
+tooltip_text = "Unleash dark energy pulling surrounding targets closer to you, applying Value0% freeze if close enough, freeze has a chance of applying frozen to target."
+mana_cost = 30.0
+cooldown = 8.0
+projectile_type = 3
+ability_type = "STR"
+sprite_frames = SubResource("SpriteFrames_33dhq")
+sprite_scale = 2.0
+area_type = 3
+duration = 0.65
+radius = 256.0
+custom_end = null
+custom_start = null
+tags = Array[String](["UmbralSnare"])
+values = Array[float]([40.0])
+increased_values = Array[float]([5.0])

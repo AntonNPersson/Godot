@@ -64,6 +64,10 @@ func _remove_random_tag():
 	values.remove_at(index)
 	tags.remove_at(index)
 
+func _choose_random_tag(_tags):
+	var index = randi() % _tags.size()
+	return _tags[index]
+
 func remove_part(original: String, to_remove: String) -> String:
 	var start_index = original.find(to_remove)
 	if start_index == -1:

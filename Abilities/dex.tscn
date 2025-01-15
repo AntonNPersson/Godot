@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b1jel7idmqb86"]
+[gd_scene load_steps=18 format=3 uid="uid://b1jel7idmqb86"]
 
 [ext_resource type="PackedScene" uid="uid://bg0m4lqesjegg" path="res://Abilities/DEX/Throwing Daggers/throwing_daggers.tscn" id="1_g5psk"]
 [ext_resource type="Texture2D" uid="uid://c2jviaf1o7ryu" path="res://Abilities/icons/dark spell_67.png" id="2_h7jwv"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b4g4tkel6m12c" path="res://Abilities/DEX/Shuriken Throw/Shuriken Throw.tscn" id="9_mxhi2"]
 [ext_resource type="PackedScene" uid="uid://cv63eiqc43ybs" path="res://Abilities/DEX/Aura of wind/Aura of Wind.tscn" id="12_k88gb"]
 [ext_resource type="Texture2D" uid="uid://bjhbjbgx863mi" path="res://Abilities/icons/dark spell_43.png" id="14_cufio"]
+[ext_resource type="PackedScene" uid="uid://dgn56rj0erh0s" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/Triumvirate Shift.tscn" id="17_1tkxk"]
 [ext_resource type="Texture2D" uid="uid://cb3ikb5hreosr" path="res://Abilities/icons/wind spell14.png" id="20_krok3"]
 [ext_resource type="Texture2D" uid="uid://c4mj6gqmgwid" path="res://Abilities/icons/wind spell80.png" id="22_afysr"]
 [ext_resource type="Texture2D" uid="uid://wboiklmt5vmg" path="res://Abilities/icons/wind spell46.png" id="24_igmq6"]
@@ -48,3 +49,5 @@ icon = ExtResource("22_afysr")
 
 [node name="Wind Enchantment" parent="." instance=ExtResource("6_m3de7")]
 icon = ExtResource("24_igmq6")
+
+[node name="Triumvirate Shift" parent="." instance=ExtResource("17_1tkxk")]

@@ -63,7 +63,6 @@ func save_game(filename = "user://savegame.save"):
 
 		# Store the save dictionary as a new line in the save file.
 		save_file.store_line(json_string)
-		save_file.store_line("")
 		print("Saved node '%s'" % node.name)
 
 func save_ac():

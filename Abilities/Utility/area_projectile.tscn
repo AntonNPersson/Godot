@@ -22,6 +22,7 @@ _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3rywr"]
+radius = 64.0
 
 [sub_resource type="Curve" id="Curve_k4tke"]
 max_value = 100.0

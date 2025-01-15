@@ -36,6 +36,7 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export_group('Sprite Settings')
 @export var sprite_frames : SpriteFrames
 @export var sprite_scale : float = 1
+@export var sprite_offset : Vector2
 @export_group('Projectile Settings')
 @export_subgroup('Collision')
 @export var collision_radius : float
@@ -62,6 +63,8 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var movement_speed : float
 @export var pool : bool
 @export var custom_movement : bool
+@export var custom_end : bool = false
+@export var custom_start : bool = true
 @export var charges : int = 1
 @export_group("Passive Settings")
 @export var auto_attack_based : bool
@@ -124,6 +127,9 @@ var extra : Dictionary
 func _process(delta):
 	if is_docile:
 		return
+
+	if projectile_type == targeting_type.Area:
+		sprite_scale = radius/(sprite_frames.get_frame_texture("default", 0).get_width())
 	
 	if cooldown < lowest_cooldown:
 		cooldown = lowest_cooldown
@@ -180,6 +186,7 @@ func _apply_aura():
 	if unit == null:
 		return
 	extra["ability"] = a_name
+	extra["ability_instance"] = self
 	for e in enchants["Extra"]:
 		extra.merge(e)
 	if projectile_type == targeting_type.EnemyAura:
@@ -276,6 +283,12 @@ func _add_experience(value):
 	if current_experience >= max_experience:
 		_add_level()
 
+func _reduce_cooldown(_amount):
+	unit.get_node("InventoryManager")._reduce_cooldown(self, _amount)
+
+func _reset_cooldown():
+	unit.get_node("InventoryManager")._reset_cooldown(self)
+
 func _reset_ability():
 	for i in range(values.size()):
 		values[i] -= increased_values[i] * (level - 1)
@@ -346,6 +359,7 @@ func _add_enchant(tag, value, _type, extra = null, object = null):
 	if "Hit" not in extra:
 		non_hit_tags.append(tag)
 		extra["ability"] = a_name
+		extra["ability_instance"] = self
 		unit.get_node('Control').on_action.emit(value, unit, self, tag, extra)
 
 func _get_enchant_extras(tag):
@@ -388,9 +402,9 @@ func _level_grants():
 	if level % 3 == 0:
 		level_enchant.emit(tags, projectile_type, self)
 
-# Update passive abilities. If ability is passive, a new passive_ability class must be used, that inherits from this class
 func _update_passive():
 	extra["ability"] = a_name
+	extra["ability_instance"] = self
 	if auto_attack_based:
 		extra["interval"] = auto_attack_interval
 	if !toggle:
@@ -471,6 +485,7 @@ func _initialize():
 	if projectile_type == targeting_type.Summon or is_docile or projectile_type == targeting_type.Passive:
 		return
 	extra["ability"] = a_name
+	extra["ability_instance"] = self
 	for e in enchants["Extra"]:
 		extra.merge(e)
 	for tag in tags.size():
@@ -646,7 +661,7 @@ func _use():
 			instance.has_hit.connect(_on_hit)
 			unit.get_tree().get_root().add_child(instance)
 			instance.global_position = unit.global_position
-			instance._start(pos, _range, speed, unit, radius, duration, area_type, light_color, always_trigger, sprite_frames, sprite_scale, area_pool, area_pool_radius, i, self)
+			instance._start(pos, _range, speed, unit, radius, duration, area_type, light_color, always_trigger, sprite_frames, sprite_scale, area_pool, area_pool_radius, i, self, sprite_offset)
 			_shake_camera()
 	elif projectile_type == targeting_type.Movement:
 		if type == "Sprint":
@@ -656,7 +671,7 @@ func _use():
 		var instance = load("res://Abilities/Utility/movement_ability.tscn").instantiate()
 		instance.has_hit.connect(_on_hit)
 		unit.get_tree().get_root().add_child(instance)
-		instance._start(unit, target, _range, movement_speed, type, light_color, explosion, explosion_radius, self, pool, sprite_frames, sprite_scale, custom_movement)
+		instance._start(unit, target, _range, movement_speed, type, light_color, explosion, explosion_radius, self, pool, sprite_frames, sprite_scale, custom_movement, custom_end, custom_start)
 	elif projectile_type == targeting_type.Summon:
 		for s in range(0, summon_amount):
 			summon_instance = summon_scene.instantiate()
@@ -736,9 +751,11 @@ func _update_targeting(_delta, _targeting_array, _targeting):
 # Hit function, this will be called when the ability hits something, no matter the type
 func _on_hit(area, extra = null):
 	if extra == null:
-		extra = {"ability": a_name}
+		extra = {"ability": a_name,
+				 "ability_instance": self}
 	else:
 		extra["ability"] = a_name
+		extra["ability_instance"] = self
 	
 	var changed_values = []
 	for val in values.size():

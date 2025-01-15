@@ -21,7 +21,7 @@ var extra = {}
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-func _start(vector, distance, velocity, unit, radius, duration, type, color = Color(1, 1, 1, 1), always = false, sprite_frames = null, sprite_scale = 1, pool = false, pool_radius = 0, echo = 0, ability = null):
+func _start(vector, distance, velocity, unit, radius, duration, type, color = Color(1, 1, 1, 1), always = false, sprite_frames = null, sprite_scale = 1, pool = false, pool_radius = 0, echo = 0, ability = null, offset = Vector2(0, 0)):
 	speed = velocity
 	target = vector
 	_range = distance
@@ -66,11 +66,12 @@ func _start(vector, distance, velocity, unit, radius, duration, type, color = Co
 		current_type = get_child(4)
 	if type == 3:
 		if sprite_frames != null:
+			get_child(5).global_position = global_position + offset
 			get_child(5).sprite_frames = sprite_frames
 			get_child(5).scale = Vector2(sprite_scale, sprite_scale)
 			get_child(5).play()
 			current_type = get_child(5)
-	get_child(1).shape.radius = radius * 0.8
+	get_child(1).shape.radius = radius/2
 	_cast_area()
 
 func _process(_delta):

@@ -23,3 +23,21 @@ active_name = "Hungering Leap"
 active_tooltip = "Leap towards target location, dealing damage and healing per target hit."
 type = Array[String](["STR"])
 unlocked = true
+
+[node name="Ranger" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+passive_name = "Marksman"
+passive_tooltip = "The ranger can only use ranged weapons, but basic attacks are now projectiles."
+active_name = "Sprint"
+active_tooltip = "Remove auto attack movement penalty and increase movement speed by 40%."
+type = Array[String](["DEX"])
+unlocked = true
+
+[node name="Mage" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+passive_name = "Arcane Intelligence"
+passive_tooltip = "Passively regenerate mana at a higher rate based on intelligence."
+active_name = "Teleport"
+active_tooltip = "Teleport a short distance."
+type = Array[String](["INT"])
+unlocked = true
