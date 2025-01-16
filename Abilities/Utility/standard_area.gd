@@ -35,7 +35,7 @@ func _start(vector, distance, velocity, unit, radius, duration, type, color = Co
 	_type = type
 	trigger_always = always
 	if echo > 0:
-		extra['Echo'] = 0.4
+		extra['Echo'] = 0.3
 		print('Echo')
 	if global_position.distance_to(target) > _range:
 		global_position = global_position.lerp(target, _range/global_position.distance_to(target))

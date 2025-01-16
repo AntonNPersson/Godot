@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://biy6h4xtj237j"]
+[gd_scene load_steps=58 format=3 uid="uid://biy6h4xtj237j"]
 
 [ext_resource type="PackedScene" uid="uid://vbb0pmq2aasg" path="res://Abilities/STR/Vampiric Strike/Vampiric_strike.tscn" id="1_kspom"]
 [ext_resource type="Texture2D" uid="uid://c3c0s7pokrwty" path="res://Abilities/icons/dark spell_71.png" id="2_5iubh"]
@@ -28,6 +28,8 @@
 [ext_resource type="PackedScene" uid="uid://ck7jyxrsiwy0s" path="res://Abilities/STR/Vengeful Wound/Vengeful Wound.tscn" id="26_kujfj"]
 [ext_resource type="PackedScene" uid="uid://b8hkpl0o0dxyd" path="res://Abilities/STR/Crimson Surge/Crimson Surge.tscn" id="27_7lgku"]
 [ext_resource type="PackedScene" uid="uid://dgn56rj0erh0s" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/Triumvirate Shift.tscn" id="28_6h8jp"]
+[ext_resource type="PackedScene" uid="uid://c55yksr4s56gu" path="res://Abilities/STR/Whirlwind/Whirlwind.tscn" id="29_botpu"]
+[ext_resource type="PackedScene" uid="uid://bkmhwaojd3dci" path="res://Abilities/STR/Unrelenting Charge/Unrelenting Charge.tscn" id="30_mhln1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5532n"]
 atlas = ExtResource("3_kvoqp")
@@ -224,10 +226,15 @@ animations = [{
 
 [node name="Vampiric Strike" parent="." instance=ExtResource("1_kspom")]
 icon = ExtResource("2_5iubh")
+_range = 75.0
 sprite_frames = SubResource("SpriteFrames_wedif")
 sprite_scale = 0.6
 sprite_offset = Vector2(0, 22)
+echo_delay = 1.8
+values = Array[float]([15.0, 40.0])
+increased_values = Array[float]([15.0, 5.0])
 buff_duration = 0.8
+weight = 45.0
 
 [node name="Blood Scream" parent="." instance=ExtResource("2_q5nx3")]
 icon = ExtResource("4_u1guf")
@@ -236,42 +243,50 @@ sprite_scale = 1.2
 sprite_offset = Vector2(0, 22)
 area_type = 3
 duration = 0.45
-custom_end = false
-custom_start = true
-values = Array[float]([10.0, 6.0])
-increased_values = Array[float]([10.0, 2.0])
+values = Array[float]([5.0, 10.0])
+increased_values = Array[float]([5.0, 5.0])
+weight = 100.0
 
 [node name="Frost Slash" parent="." instance=ExtResource("4_i5pe1")]
 position = Vector2(821.122, 317.894)
 icon = ExtResource("6_byvbs")
 tooltip_text = "Enchant your weapon to deal Value0 increased damage and freeze. slowing Value1%, then quick attack the closest target; freezing has a chance to apply frozen to target."
+echo_delay = 1.8
 values = Array[float]([15.0, 40.0, 1.0])
 increased_values = Array[float]([15.0, 5.0, 0.0])
+weight = 45.0
 
 [node name="Frenzy" parent="." instance=ExtResource("5_bbpsj")]
 icon = ExtResource("8_6q5rv")
 tooltip_text = "Increase attack speed of target by Value0%, but lose 5% health each second for 5 seconds."
+echo_delay = 1.8
 
 [node name="Cry of Desperation" parent="." instance=ExtResource("6_b1rky")]
 icon = ExtResource("10_6xw6d")
-values = Array[float]([20.0])
+values = Array[float]([15.0])
+weight = 100.0
 
 [node name="Thirst For Blood" parent="." instance=ExtResource("6_rl4ye")]
 icon = ExtResource("12_nux6a")
 values = Array[float]([10.0, 5.0])
 increased_values = Array[float]([5.0, 2.5])
+weight = 30.0
+weight_duration = 0.45
 
 [node name="Frozen Blitz" parent="." instance=ExtResource("7_sp3dw")]
 icon = ExtResource("14_wv45b")
+echo_delay = 1.8
 increased_values = Array[float]([5.0])
 
 [node name="Bloody Blitz" parent="." instance=ExtResource("9_jwbqb")]
 icon = ExtResource("18_j1fgx")
+echo_delay = 1.8
 values = Array[float]([10.0, 3.0])
 increased_values = Array[float]([5.0, 1.0])
 
 [node name="Crimson Combination" parent="." instance=ExtResource("19_lvop3")]
 icon = ExtResource("20_hsap4")
+echo_delay = 1.8
 custom_end = false
 custom_start = true
 toggle_state_count = 2
@@ -279,16 +294,19 @@ values = Array[float]([5.0, 15.0])
 increased_values = Array[float]([5.0, 10.0])
 
 [node name="Bulwark Transference" parent="." instance=ExtResource("19_fcvyj")]
+echo_delay = 1.8
 custom_end = false
 custom_start = true
 increased_values = Array[float]([5.0])
 
 [node name="Cleave" parent="." instance=ExtResource("20_l7oab")]
+echo_delay = 1.8
 custom_end = false
 custom_start = true
 
 [node name="Ferver" parent="." instance=ExtResource("21_x2oym")]
 tooltip_text = "Through endless repetition gain Value0% attack speed, doubling everytime you attack the same target, capping at 10 stacks."
+echo_delay = 1.8
 custom_end = false
 custom_start = true
 values = Array[float]([5.0])
@@ -296,25 +314,39 @@ increased_values = Array[float]([2.5])
 
 [node name="Umbral Snare" parent="." instance=ExtResource("22_6esoo")]
 sprite_offset = Vector2(0, 22)
+echo_delay = 1.8
 custom_end = false
 custom_start = true
 tags = Array[String](["UmbralSnare", "Damage"])
 values = Array[float]([40.0, 5.0])
-increased_values = Array[float]([10.0, 10.0])
+increased_values = Array[float]([10.0, 5.0])
+light_scale = 0.6
+weight = 100.0
 
 [node name="Shatterstrike" parent="." instance=ExtResource("23_ngjmi")]
 sprite_scale = 0.8
+echo_delay = 1.8
 custom_end = false
-values = Array[float]([15.0, 30.0, 0.0])
+values = Array[float]([15.0, 15.0, 0.0])
 increased_values = Array[float]([15.0, 20.0, 0.0])
 
 [node name="Vengeful Wound" parent="." instance=ExtResource("26_kujfj")]
+echo_delay = 1.8
 custom_end = false
 custom_start = true
 
 [node name="Crimson Surge" parent="." instance=ExtResource("27_7lgku")]
+echo_delay = 1.8
 custom_start = true
 light_color = Color(1, 0, 0, 1)
 light_scale = 0.4
 
 [node name="Triumvirate Shift" parent="." instance=ExtResource("28_6h8jp")]
+echo_delay = 1.8
+
+[node name="Whirlwind" parent="." instance=ExtResource("29_botpu")]
+values = Array[float]([10.0])
+increased_values = Array[float]([10.0])
+weight = 100.0
+
+[node name="Unrelenting Charge" parent="." instance=ExtResource("30_mhln1")]

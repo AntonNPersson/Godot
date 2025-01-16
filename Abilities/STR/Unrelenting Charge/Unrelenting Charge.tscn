@@ -1,0 +1,99 @@
+[gd_scene load_steps=14 format=3 uid="uid://bkmhwaojd3dci"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_diwke"]
+[ext_resource type="Texture2D" uid="uid://bjjvvvnp4tv8k" path="res://Abilities/STR/Unrelenting Charge/Stone Spells76.png" id="2_i2apf"]
+[ext_resource type="Texture2D" uid="uid://dq3pth2bqo8rk" path="res://Abilities/STR/Unrelenting Charge/Spell3_Smoke-Sheet.png" id="2_tx6oe"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_05dvq"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(0, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vu6yg"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(224, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v347d"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(448, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ji1oh"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(672, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w81sg"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(896, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3lum"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(1120, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d0uh7"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(1344, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47dab"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(1568, 0, 224, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3dto"]
+atlas = ExtResource("2_tx6oe")
+region = Rect2(1792, 0, 224, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e0eqw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_05dvq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vu6yg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v347d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ji1oh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w81sg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3lum")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d0uh7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_47dab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3dto")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Unrelenting Charge" type="Node2D"]
+script = ExtResource("1_diwke")
+icon = ExtResource("2_i2apf")
+a_name = "Unrelenting Charge"
+tooltip_text = "Charge forward, stunning targets hit for Value0 seconds, and dealing Value1 damage."
+mana_cost = 30.0
+cooldown = 10.0
+_range = 200.0
+projectile_type = 6
+ability_type = "STR"
+sprite_frames = SubResource("SpriteFrames_e0eqw")
+sprite_scale = 0.4
+sprite_offset = Vector2(0, 22)
+echo_delay = 1.8
+type = "Sprint"
+movement_speed = 400.0
+custom_movement = true
+tags = Array[String](["Stun", "Damage"])
+values = Array[float]([2.0, 5.0])
+increased_values = Array[float]([0.1, 5.0])
+light_color = Color(0.537255, 0, 0, 1)
+light_scale = 0.5

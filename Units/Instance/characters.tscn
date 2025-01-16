@@ -41,3 +41,12 @@ active_name = "Teleport"
 active_tooltip = "Teleport a short distance."
 type = Array[String](["INT"])
 unlocked = true
+
+[node name="Warrior" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+passive_name = "Ancestral Rage"
+passive_tooltip = "Passively generate unique resource rage, increasing damage on abilities based on amount used."
+active_name = "Induced Rage"
+active_tooltip = "Increase movement speed for a short duration, regeneration more rage during its duration."
+type = Array[String](["STR"])
+unlocked = true

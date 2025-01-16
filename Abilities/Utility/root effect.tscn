@@ -1,7 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://ery3fax7rykx"]
+[gd_scene load_steps=25 format=3 uid="uid://ery3fax7rykx"]
 
 [ext_resource type="Texture2D" uid="uid://cct7w1mqfal7f" path="res://Abilities/Utility/Buff n Debuff P08 03.png" id="1_y1461"]
-[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Massive Attack/self_delete.gd" id="2_4fn5g"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yffvw"]
 atlas = ExtResource("1_y1461")
@@ -160,16 +159,15 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vxgjf")
 }],
-"loop": false,
+"loop": true,
 "name": &"default",
-"speed": 20.0
+"speed": 18.0
 }]
 
 [node name="HealingEffect" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_tmf60")
 autoplay = "default"
-frame = 21
-frame_progress = 1.0
-script = ExtResource("2_4fn5g")
+frame_progress = 0.615608
+offset = Vector2(0, -32)
 
 [connection signal="animation_finished" from="." to="." method="_on_finished"]

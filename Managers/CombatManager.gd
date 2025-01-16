@@ -9,6 +9,7 @@ extends Node
 @export var explosion_effect : PackedScene
 @export var heal_effect : PackedScene
 @export var root_effect : PackedScene
+@export var stun_effect : PackedScene
 
 @export var map_manager : Node
 @export var ability_manager : Node
@@ -371,6 +372,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_crit_chance_buff_action(target, value, extra)
 		"CriticalChancePassive":
 			_handle_critical_chance_passive(target, value, extra['ability'])
+		"CrowdControlExtraFlatDamage":
+			_handle_crowd_control_extra_flat_damage_action(target, value)
 		"CooldownResetOnKill":
 			_handle_cooldown_reset_on_kill_action(target, extra)
 		"Damage":
@@ -450,6 +453,10 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_refund_mana_action(target, value, extra)
 		"Root":
 			_handle_root_action(target, value)
+		"RageRegenBuff":
+			if !GameManager.selected_character_name == "Warrior":
+				return
+			_handle_rage_regen_buff_action(target, value, extra)
 		"UmbralSnare":
 			_handle_umbral_snare_action(target, value, user, extra)
 		"SelfInvincible":
@@ -460,6 +467,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_speed_buff_action(target, value, user)
 		"Stealth":
 			_handle_stealth_action(target, value)
+		"Stun":
+			_handle_stun_action(target, value)
 		"SpellVampPassive":
 			_handle_spell_vamp_passive(target, value, extra['ability'])
 		"StrengthStatConversion":
@@ -724,6 +733,12 @@ func _handle_affliction_buff_action(target, value, extra):
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Affliction"))
 	timer.start()
 	target.bonus_affliction_resistance += value
+
+func _handle_rage_regen_buff_action(target, value, extra):
+	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "RageRegen"))
+	timer.start()
+	target.rage_regen += value
 
 func _handle_evade_buff_action(target, value, extra):
 	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
@@ -1026,6 +1041,16 @@ func _handle_root_action(target, value):
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Root"))
 	timer.start()
 	var effect = root_effect.instantiate()
+	effect.name = "Root_effect"
+	target.add_child(effect)
+
+func _handle_stun_action(target, value):
+	target.is_stunned = true
+	var timer = Utility.get_node('TimerCreator')._create_timer(value, true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "Stun"))
+	timer.start()
+	var effect = stun_effect.instantiate()
+	effect.name = "Stun_effect"
 	target.add_child(effect)
 
 func _handle_umbral_snare_action(target, value, user, extra):
@@ -1155,6 +1180,10 @@ func _handle_bleed_stack_consume_heal_action(target, value, user, extra):
 
 func _handle_freeze_extra_flat_damage_action(target, value):
 	if target.has_node("Freeze_timer"):
+		_on_do_action(value, target, player, "Damage")
+
+func _handle_crowd_control_extra_flat_damage_action(target, value):
+	if target.is_stunned or target.is_rooted:
 		_on_do_action(value, target, player, "Damage")
 # Handles the modifier action for the user.
 # Parameters:
@@ -2292,14 +2321,19 @@ func _deapply_buff(target, value, tag):
 	if tag == "ManaRegen":
 		target.bonus_mana_regen -= value
 	if tag == "Root":
-		print("Deapplying root")
 		target.is_rooted = false
+		target.get_node('Root_effect').queue_free()
 	if tag == "FlatArmor":
 		target.bonus_armor -= value
 	if tag == "Affliction":
 		target.bonus_affliction_resistance -= value
 	if tag == "Evade":
 		target.bonus_evade -= value
+	if tag == "RageRegen":
+		target.rage_regen -= value
+	if tag == "Stun":
+		target.is_stunned = false
+		target.get_node("Stun_effect").queue_free()
 	
 	if target.is_in_group('players'):
 		target._update_stats()
@@ -2351,8 +2385,7 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 
 	target.current_health -= _barrier_protection(target, damage)
 
-	if target.is_in_group("enemies"):
-		_trigger_combat_text(target, damage, color)
+	_trigger_combat_text(target, damage, color)
 	
 	var current_tick = 0
 	if target.has_meta(type + "_count"):

@@ -34,7 +34,7 @@ func _on_next_typing():
 func _on_finished():
 	Utility.get_node('Transition')._start(2)
 	await get_tree().create_timer(0.5).timeout
-	GameManager._change_scene("res://Scenes/Game.tscn", true)
+	GameManager.new_game()
 	
 func _on_character_pressed(event:InputEvent, extra_arg_0:String):
 	if event is InputEventMouseButton and event.button_index == MouseButton.MOUSE_BUTTON_LEFT and event.pressed:

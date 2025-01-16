@@ -72,6 +72,9 @@ func _initialize():
 	ability_popup = get_node('UI/CanvasLayer/Ability')
 	curse_popup = get_node('UI/CanvasLayer/Curse')
 	enchant_popup = get_node('UI/CanvasLayer/Enchant')
+	add_child(enchant_instance)
+	add_child(curse_instance)
+	
 
 func _process(delta):
 	if !initialized:

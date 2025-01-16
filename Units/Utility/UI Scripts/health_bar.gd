@@ -25,6 +25,11 @@ func _update_exp(percentage):
 	self.visible = true
 	self.value = percentage
 
+func _update_rage(total_rage, current_rage):
+	self.visible = true
+	self.value = current_rage
+	self.max_value = total_rage
+
 func _update_potion(total_charge, current_charge, type):
 	self.visible = true
 

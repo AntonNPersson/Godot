@@ -127,6 +127,13 @@ func _process(delta):
 			origin.global_position = target.global_position
 			hit_enemies.append(target)
 			has_hit.emit(target)
+			if pool:
+				var pool = pool_effect.instantiate()
+				pool.global_position = origin.global_position
+				pool.get_node('particle').color = light_color
+				pool.get_node('particle').emitting = true
+				pool.has_hit.connect(_ability._on_hit)
+				get_tree().get_root().get_node('Main').add_child(pool)
 			if explosion:
 					var _explosion = explosion_effect.instantiate()
 					_explosion.global_position = target.global_position
@@ -220,4 +227,42 @@ func _process(delta):
 						animated_sprite.modulate = light_color
 						animated_sprite.animation_finished.connect(_remove_sprite)
 						animated_sprite.play()
+
+	if type == "Teleport":
+		if move:
+			if !origin.map_manager._is_tile_walkable(origin.map_manager._world_to_tilemap_position_all(target)):
+				queue_free()
+				return
+			origin.global_position = target
+			move = false
+			if pool:
+				var _pool = pool_effect.instantiate()
+				_pool.global_position = origin.global_position
+				_pool.get_node('particle').color = light_color
+				_pool.get_node('particle').emitting = true
+				_pool.has_hit.connect(_ability._on_hit)
+				get_tree().get_root().get_node('Main').add_child(_pool)
+			if explosion:
+				var _explosion = explosion_effect.instantiate()
+				_explosion.global_position = origin.global_position
+				_explosion.get_node('particle').color = light_color
+				_explosion.get_node('particle').initial_velocity_min = explosion_radius + randi() % 40 + 10
+				_explosion.get_child(1).shape.radius = explosion_radius
+				_explosion.get_node('particle').emitting = true
+				_explosion.has_hit.connect(_ability._on_hit)
+				_explosion.hit_enemies.append_array(hit_enemies)
+				get_tree().get_root().get_node('Main').add_child(_explosion)
+			if !custom_move:
+				queue_free()
+			elif custom_move and custom_end:
+				if sprite_frames != null:
+					var animated_sprite = AnimatedSprite2D.new()
+					add_child(animated_sprite)
+					animated_sprite.name = _ability.name
+					animated_sprite.global_position = global_position
+					animated_sprite.sprite_frames = sprite_frames
+					animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+					animated_sprite.modulate = light_color
+					animated_sprite.animation_finished.connect(_remove_sprite)
+					animated_sprite.play()
 

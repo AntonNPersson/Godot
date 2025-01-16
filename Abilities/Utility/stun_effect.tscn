@@ -1,0 +1,115 @@
+[gd_scene load_steps=17 format=3 uid="uid://o685vveu3an6"]
+
+[ext_resource type="Texture2D" uid="uid://b1yia8ps52ooc" path="res://Abilities/Utility/Buff n Debuff P5 04.png" id="1_7fyr3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5byqg"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2x71"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipkow"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g3cfs"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xcv4"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_glyoq"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvjve"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dua7l"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m13w4"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohfpv"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2gsf"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofiwg"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwy2e"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n3oxu"]
+atlas = ExtResource("1_7fyr3")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dlab7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5byqg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2x71")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipkow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g3cfs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xcv4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_glyoq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvjve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dua7l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m13w4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohfpv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2gsf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofiwg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fwy2e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n3oxu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 18.0
+}]
+
+[node name="StunEffect" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_dlab7")
+autoplay = "default"
+frame_progress = 0.604446
+offset = Vector2(0, -32)

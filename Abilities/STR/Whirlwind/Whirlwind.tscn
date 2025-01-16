@@ -1,0 +1,106 @@
+[gd_scene load_steps=15 format=3 uid="uid://c55yksr4s56gu"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_8yk05"]
+[ext_resource type="Texture2D" uid="uid://gw6uabsfqxor" path="res://Abilities/STR/Whirlwind/Stone Spells18.png" id="2_l3haj"]
+[ext_resource type="Texture2D" uid="uid://c65rky4wfbnqn" path="res://Abilities/STR/Whirlwind/sprite-sheet.png" id="3_ap0d4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_golr4"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6l0n"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wm8j"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xnrnh"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oa56q"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ask0s"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlcwm"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(0, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flxv4"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(128, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5xp7"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(0, 512, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x51qm"]
+atlas = ExtResource("3_ap0d4")
+region = Rect2(128, 512, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oeokq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_golr4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h6l0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4wm8j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xnrnh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oa56q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ask0s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wlcwm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flxv4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s5xp7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x51qm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Whirlwind" type="Node2D"]
+script = ExtResource("1_8yk05")
+icon = ExtResource("2_l3haj")
+a_name = "Whirlwind"
+tooltip_text = "Whirl your weapons around you three times, dealing Value0 damage the first time, then 30% of the damage on the rest."
+mana_cost = 30.0
+cooldown = 8.0
+projectile_type = 3
+ability_type = "STR"
+sprite_frames = SubResource("SpriteFrames_oeokq")
+sprite_offset = Vector2(0, 22)
+area_type = 3
+duration = 0.5
+radius = 200.0
+echo = 3.0
+echo_delay = 0.7
+tags = Array[String](["Damage"])
+values = Array[float]([15.0])
+increased_values = Array[float]([15.0])
+light_color = Color(0.686275, 0, 0, 1)
+light_scale = 0.5
+weight = 70.0

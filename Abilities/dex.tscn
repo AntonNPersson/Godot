@@ -23,31 +23,40 @@
 [node name="Throwing Daggers" parent="." instance=ExtResource("1_g5psk")]
 z_index = 1
 icon = ExtResource("2_h7jwv")
+echo_delay = null
 
 [node name="Freezing Arrows" parent="." instance=ExtResource("2_rt4oq")]
 position = Vector2(379, 295)
 icon = ExtResource("4_2uxlr")
+echo_delay = null
 
 [node name="Burning Arrows" parent="." instance=ExtResource("3_kjmsk")]
 icon = ExtResource("6_oh4hn")
+echo_delay = null
 
 [node name="Flurry Of Arrows" parent="." instance=ExtResource("4_awjux")]
 icon = ExtResource("8_2lo47")
+echo_delay = null
 
 [node name="Shuriken Throw" parent="." instance=ExtResource("9_mxhi2")]
 icon = ExtResource("14_cufio")
 _range = 200.0
 sprite_scale = 0.5
+echo_delay = null
 light_scale = 1.0
 
 [node name="Aura Of Wind" parent="." instance=ExtResource("12_k88gb")]
 icon = ExtResource("20_krok3")
+echo_delay = null
 
 [node name="Hawkeye" parent="." instance=ExtResource("8_00vvo")]
 position = Vector2(1, 0)
 icon = ExtResource("22_afysr")
+echo_delay = null
 
 [node name="Wind Enchantment" parent="." instance=ExtResource("6_m3de7")]
 icon = ExtResource("24_igmq6")
+echo_delay = null
 
 [node name="Triumvirate Shift" parent="." instance=ExtResource("17_1tkxk")]
+echo_delay = null

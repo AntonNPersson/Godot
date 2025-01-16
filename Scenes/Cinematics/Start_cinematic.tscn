@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bf2pw63lo38iu"]
+[gd_scene load_steps=11 format=3 uid="uid://bf2pw63lo38iu"]
 
 [ext_resource type="Script" path="res://Scenes/Cinematics/cinematic_0.gd" id="1_psd2c"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="2_oh3qy"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c0wvcpkruf07g" path="res://Units/Instance/Characters/Berserker/berserker_1.png" id="5_3iw44"]
 [ext_resource type="Texture2D" uid="uid://qb01drn6pjqs" path="res://Units/Instance/Characters/Ranger/ranger_pic.png" id="5_qnkqh"]
 [ext_resource type="Texture2D" uid="uid://duml0ej3x3c5x" path="res://Units/Instance/Characters/Mage/Mage_pic.png" id="6_ygm4i"]
+[ext_resource type="Texture2D" uid="uid://dem2h88u3ebjl" path="res://Units/Instance/Characters/Warrior/warrior_pic.png" id="7_mu4gx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l0sle"]
 
@@ -51,9 +52,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -304.5
+offset_left = -390.5
 offset_top = -200.0
-offset_right = 304.5
+offset_right = 390.5
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -62,9 +63,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 40.0
+offset_left = -28.5
+offset_top = 8.0
+offset_right = 28.5
+offset_bottom = 48.0
 grow_horizontal = 2
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
@@ -73,12 +75,12 @@ fit_content = true
 autowrap_mode = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="UI/Info"]
-position = Vector2(305.259, 22.3333)
+position = Vector2(391.259, 30.3333)
 scale = Vector2(0.518519, 2.66667)
 texture = ExtResource("2_oh3qy")
 
 [node name="Sprite2D2" type="Sprite2D" parent="UI/Info"]
-position = Vector2(301.698, 146.333)
+position = Vector2(391.698, 154.333)
 scale = Vector2(1.39683, 2.66667)
 texture = ExtResource("2_oh3qy")
 
@@ -90,9 +92,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -30.0
-offset_top = -62.0
+offset_top = -54.0
 offset_right = 30.0
-offset_bottom = -46.0
+offset_bottom = -38.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
@@ -108,9 +110,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -43.5
-offset_top = -44.0
+offset_top = -36.0
 offset_right = 43.5
-offset_bottom = -28.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.615686, 0.635294, 0.486275, 1)
@@ -127,9 +129,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -31.0
-offset_top = -12.0
+offset_top = -4.0
 offset_right = 29.0
-offset_bottom = 4.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
@@ -145,9 +147,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -44.5
-offset_top = 7.0
+offset_top = 15.0
 offset_right = 42.5
-offset_bottom = 23.0
+offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.615686, 0.635294, 0.486275, 1)
@@ -191,9 +193,9 @@ grow_vertical = 0
 text = "Select"
 
 [node name="Explorer" type="Panel" parent="UI"]
-offset_left = 554.0
+offset_left = 469.0
 offset_top = 482.0
-offset_right = 682.0
+offset_right = 597.0
 offset_bottom = 610.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -205,9 +207,9 @@ scale = Vector2(2, 2)
 texture = ExtResource("4_wntu0")
 
 [node name="Berserker" type="Panel" parent="UI"]
-offset_left = 805.0
+offset_left = 720.0
 offset_top = 508.0
-offset_right = 933.0
+offset_right = 848.0
 offset_bottom = 636.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -219,9 +221,9 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_3iw44")
 
 [node name="Ranger" type="Panel" parent="UI"]
-offset_left = 1029.0
+offset_left = 944.0
 offset_top = 508.0
-offset_right = 1157.0
+offset_right = 1072.0
 offset_bottom = 636.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -233,9 +235,9 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_qnkqh")
 
 [node name="Mage" type="Panel" parent="UI"]
-offset_left = 1275.0
+offset_left = 1182.0
 offset_top = 508.0
-offset_right = 1403.0
+offset_right = 1310.0
 offset_bottom = 636.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -246,6 +248,20 @@ position = Vector2(63, 62)
 scale = Vector2(2, 2)
 texture = ExtResource("6_ygm4i")
 
+[node name="Warrior" type="Panel" parent="UI"]
+offset_left = 1398.0
+offset_top = 514.0
+offset_right = 1526.0
+offset_bottom = 642.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(62, 62)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
+
+[node name="Warrior" type="Sprite2D" parent="UI/Warrior"]
+position = Vector2(63, 62)
+scale = Vector2(2, 2)
+texture = ExtResource("7_mu4gx")
+
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("3_j513h")
 
@@ -255,3 +271,4 @@ script = ExtResource("3_j513h")
 [connection signal="gui_input" from="UI/Berserker" to="." method="_on_character_pressed" binds= ["Berserker"]]
 [connection signal="gui_input" from="UI/Ranger" to="." method="_on_character_pressed" binds= ["Ranger"]]
 [connection signal="gui_input" from="UI/Mage" to="." method="_on_character_pressed" binds= ["Mage"]]
+[connection signal="gui_input" from="UI/Warrior" to="." method="_on_character_pressed" binds= ["Warrior"]]

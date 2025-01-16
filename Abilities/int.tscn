@@ -18,30 +18,37 @@
 
 [node name="Healing Grace" parent="." instance=ExtResource("3_7ms2t")]
 icon = ExtResource("4_hwtba")
+echo_delay = null
 custom_end = false
 custom_start = true
 
 [node name="Frostbolt" parent="." instance=ExtResource("3_q2o0l")]
 icon = ExtResource("6_7db48")
+echo_delay = null
 custom_end = false
 custom_start = true
 
 [node name="Fireball" parent="." instance=ExtResource("1_vlnpx")]
 icon = ExtResource("8_ku6w6")
+echo_delay = null
 custom_end = false
 custom_start = true
 
 [node name="Arcane Enchantment" parent="." instance=ExtResource("4_tck2m")]
 icon = ExtResource("10_w82ty")
+echo_delay = null
 
 [node name="Flaming Flash" parent="." instance=ExtResource("10_oqlo0")]
 position = Vector2(268, 383)
 icon = ExtResource("16_qfptd")
+echo_delay = null
 
 [node name="Summon Goblins" parent="." instance=ExtResource("11_d4kjh")]
 position = Vector2(2.91632, 84.8627)
 icon = ExtResource("18_5ogvs")
 tooltip_text = "Summon three goblins that bleed enemies on hit.
 NEED TO FIX SUMMON PATHING."
+echo_delay = null
 
 [node name="Triumvirate Shift" parent="." instance=ExtResource("13_ifka7")]
+echo_delay = null

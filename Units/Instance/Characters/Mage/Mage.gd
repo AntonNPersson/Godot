@@ -1,11 +1,9 @@
 extends player_variables
 # Private Variables
-@export var level_up_menu : PackedScene
 @export_multiline var passive_name : String
 @export_multiline var passive_tooltip : String
 @export_multiline var passive_tooltip2 : String
 @export var passive_icon : Texture
-@export var passive_increase : int
 @export_multiline var active_name : String
 @export_multiline var active_tooltip : String
 @export_multiline var active_tooltip2 : String

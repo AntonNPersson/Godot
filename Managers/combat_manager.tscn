@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://slvbxmwh715i"]
+[gd_scene load_steps=14 format=3 uid="uid://slvbxmwh715i"]
 
 [ext_resource type="Script" path="res://Managers/CombatManager.gd" id="1_2mio6"]
 [ext_resource type="PackedScene" uid="uid://bo7pvdl0hpuri" path="res://Abilities/Utility/burn_effect.tscn" id="2_b7ees"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://ery3fax7rykx" path="res://Abilities/Utility/root effect.tscn" id="9_1qcvo"]
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_6qfh8"]
 [ext_resource type="Texture2D" uid="uid://bldcod4q50o0a" path="res://Managers/boss_bar_Filler x1.png" id="9_pulgd"]
+[ext_resource type="PackedScene" uid="uid://o685vveu3an6" path="res://Abilities/Utility/stun_effect.tscn" id="10_mjk2m"]
 
 [node name="CombatManager" type="Node" groups=["Persist"]]
 script = ExtResource("1_2mio6")
@@ -23,6 +24,7 @@ infected_effect = ExtResource("5_xywp1")
 combat_text = ExtResource("6_nfvwq")
 heal_effect = ExtResource("8_6e60c")
 root_effect = ExtResource("9_1qcvo")
+stun_effect = ExtResource("10_mjk2m")
 
 [node name="UI" type="CanvasLayer" parent="." groups=["UI"]]
 

@@ -52,6 +52,7 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var always_trigger : bool
 @export var radius : float
 @export var echo : float = 1
+@export var echo_delay : float = 1.8
 @export var area_pool : bool = false
 @export var area_pool_damage : float
 @export var area_pool_radius : float
@@ -128,7 +129,7 @@ func _process(delta):
 	if is_docile:
 		return
 
-	if projectile_type == targeting_type.Area:
+	if projectile_type == targeting_type.Area and sprite_frames != null:
 		sprite_scale = radius/(sprite_frames.get_frame_texture("default", 0).get_width())
 	
 	if cooldown < lowest_cooldown:
@@ -656,7 +657,9 @@ func _use():
 		var pos = unit.get_global_mouse_position()
 		for i in range(echo):
 			if i > 0:
-				await unit.get_tree().create_timer(1.8).timeout
+				await unit.get_tree().create_timer(echo_delay).timeout
+				if _check_weight(false):
+					unit.get_node('Control').on_action.emit(weight, unit, weight_duration, 'SpeedBuff')
 			var instance = load("res://Abilities/Utility/area_projectile.tscn").instantiate()
 			instance.has_hit.connect(_on_hit)
 			unit.get_tree().get_root().add_child(instance)
@@ -664,7 +667,7 @@ func _use():
 			instance._start(pos, _range, speed, unit, radius, duration, area_type, light_color, always_trigger, sprite_frames, sprite_scale, area_pool, area_pool_radius, i, self, sprite_offset)
 			_shake_camera()
 	elif projectile_type == targeting_type.Movement:
-		if type == "Sprint":
+		if type == "Sprint" or type == "Teleport":
 			target = unit.get_global_mouse_position()
 		else:
 			target = _get_closest_visible_enemy_to_mouse()
@@ -761,14 +764,18 @@ func _on_hit(area, extra = null):
 	for val in values.size():
 		changed_values.append(values[val])
 
+	if GameManager.selected_character_name == "Warrior" and unit.current_rage - mana_cost > 0:
+		changed_values[tags.find("Damage")] *= 1 + mana_cost/100.0
+		unit.current_rage -= mana_cost
+
 	if "Pool" in extra:
 		for v in changed_values.size():
-			changed_values[v] = changed_values[v] * extra['Pool']
+			changed_values[v] = values[v] * extra['Pool']
 			print(changed_values[v])
 			print("Pool")
 	elif "Echo" in extra:
 		for v in changed_values.size():
-			changed_values[v] = changed_values[v] * extra['Echo']
+			changed_values[v] = values[v] * extra['Echo']
 			print(changed_values[v])
 			print("Echo")
 

@@ -1,0 +1,161 @@
+[gd_scene load_steps=24 format=3 uid="uid://bl3ks6df3hu6w"]
+
+[ext_resource type="Script" path="res://Abilities/Movement/Induced Rage.gd" id="1_5tu8p"]
+[ext_resource type="Texture2D" uid="uid://7lu5lv6po5gy" path="res://Abilities/Movement/Buff n Debuff P1 06.png" id="2_joarh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32ihr"]
+atlas = ExtResource("2_joarh")
+region = Rect2(0, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_axjrp"]
+atlas = ExtResource("2_joarh")
+region = Rect2(48, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sbcol"]
+atlas = ExtResource("2_joarh")
+region = Rect2(96, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hgb82"]
+atlas = ExtResource("2_joarh")
+region = Rect2(144, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ib5d"]
+atlas = ExtResource("2_joarh")
+region = Rect2(192, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48i21"]
+atlas = ExtResource("2_joarh")
+region = Rect2(240, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6v58"]
+atlas = ExtResource("2_joarh")
+region = Rect2(288, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3fww"]
+atlas = ExtResource("2_joarh")
+region = Rect2(336, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0c0ut"]
+atlas = ExtResource("2_joarh")
+region = Rect2(384, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dbge"]
+atlas = ExtResource("2_joarh")
+region = Rect2(432, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q6n7n"]
+atlas = ExtResource("2_joarh")
+region = Rect2(480, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qbbvx"]
+atlas = ExtResource("2_joarh")
+region = Rect2(528, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cjd3"]
+atlas = ExtResource("2_joarh")
+region = Rect2(576, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjvd6"]
+atlas = ExtResource("2_joarh")
+region = Rect2(624, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xmf13"]
+atlas = ExtResource("2_joarh")
+region = Rect2(672, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gvfg"]
+atlas = ExtResource("2_joarh")
+region = Rect2(720, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jl38a"]
+atlas = ExtResource("2_joarh")
+region = Rect2(768, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g71pc"]
+atlas = ExtResource("2_joarh")
+region = Rect2(816, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k24ha"]
+atlas = ExtResource("2_joarh")
+region = Rect2(864, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4k73"]
+atlas = ExtResource("2_joarh")
+region = Rect2(912, 0, 48, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_movgc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_32ihr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_axjrp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sbcol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hgb82")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ib5d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48i21")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g6v58")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x3fww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0c0ut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dbge")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q6n7n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qbbvx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cjd3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjvd6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xmf13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7gvfg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jl38a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g71pc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k24ha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k4k73")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Induced Rage" type="Node2D"]
+script = ExtResource("1_5tu8p")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_movgc")
+frame = 19
+frame_progress = 1.0
+offset = Vector2(0, -32)

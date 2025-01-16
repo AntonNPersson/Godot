@@ -1,10 +1,10 @@
 extends Node
 var unit
-@export var tooltip = "Dash forward, becoming invincible for a short time. Costs 35 stamina, and has zero cooldown."
+@export var tooltip = ""
 @export var sprint_speed = 40
 @export var cost = 50
 @export var sprint_duration = 3
-@export var particle_effects : CPUParticles2D
+@export var rage_regenerated = 10
 @export var icon : Texture
 var current_cooldown = 0
 
@@ -16,7 +16,7 @@ func _use_ability(_delta):
 			return
 			
 		if current_cooldown >= 0:
-			Utility.get_node("ErrorMessage")._create_error_message("Sprint on cooldown!", unit)
+			Utility.get_node("ErrorMessage")._create_error_message("Induced Rage on cooldown!", unit)
 			return
 
 		start_dash()
@@ -27,7 +27,7 @@ func start_dash():
 	get_child(0).global_position = unit.global_position
 	get_child(0).play()
 	unit.get_node("Control").on_action.emit(sprint_speed, unit, sprint_duration, "PercentSpeedBuff")
-	unit.get_node("Control").on_action.emit(sprint_duration, unit, unit, "MovementPenaltyBuff")
+	unit.get_node("Control").on_action.emit(rage_regenerated, unit, unit, "RageRegenBuff", {'Duration': sprint_duration})
 	unit.current_stamina -= cost
 	current_cooldown = sprint_duration
 
