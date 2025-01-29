@@ -11,6 +11,8 @@ extends Node
 # The PackedScene for Arena 2.
 @export var arena_2_scene : PackedScene
 
+@export var arena_3_scene : PackedScene
+
 @export var town_scene : PackedScene
 
 # The data of the tilemap.
@@ -127,6 +129,8 @@ var grid_size
 
 var sub_wave = 1
 
+var paused_semaphore = Semaphore.new()
+
 
 #----------------------#
 # Main functions
@@ -136,6 +140,9 @@ func _initialize():
 	used_creatures.connect(get_parent().get_node('WaveManager')._on_map_manager_used_creatures)
 	used_creatures.connect(get_parent().get_node('CombatManager')._update_sub_wave)
 	spawn_effect = spawn_effects.instantiate()
+	add_child(spawn_effect)
+	spawn_effect.name = 'Spawn_effect'
+
 
 #Start a wave, and cache the walkable neighboars for AI pathfinding.
 func _start(file, tiles):
@@ -162,6 +169,8 @@ func _change_map(map_path, tiles):
 	for i in get_tree().get_nodes_in_group('obstacles'):
 		i.queue_free()
 	for child in get_children():
+		if child.name == "Spawn_effect":
+			continue
 		child.queue_free()
 	_loadTileMap(map_path, tiles)
 	_initialize_tile_data()
@@ -689,6 +698,8 @@ func _get_tiles_for_map(map):
 	elif map == 0:
 		tiles = town_scene.instantiate()
 		disable_minimap = true
+	elif map == 3:
+		tiles = arena_3_scene.instantiate()
 	var children = tiles.get_children()
 	tiles.queue_free()
 	return children
@@ -755,13 +766,17 @@ func _spawn_and_attach():
 	var arr = []
 	var random_creatures = []
 	var creature_positions = []
-	var random_increase = int((int(grid_size/40) + 3) * creatures[0].increased_amount)
+	var random_increase = int((int(grid_size/30) + 3) * creatures[0].increased_amount)
 	var spawn_time = 1.5
 	
 	for i in range(random_increase):
 		random_creatures = await _calculate_creature(random_increase)
 	for c in random_creatures:
 		var d = c.duplicate()
+
+		while players[0].paused:
+			await get_tree().create_timer(0.1).timeout
+
 		creature_positions.append(_get_random_walkable_tile())
 		d.global_position = creature_positions[nm]
 		d.obstacles_info = self
@@ -772,6 +787,10 @@ func _spawn_and_attach():
 		arr.shuffle()
 	used_creatures.emit(nm, arr)
 	for a in range(arr.size()):
+
+		while players[0].paused:
+			await get_tree().create_timer(0.1).timeout
+
 		if a > 0 and a % 10 == 0:
 			await get_tree().create_timer(alive_creatures).timeout
 			alive_creatures += 10

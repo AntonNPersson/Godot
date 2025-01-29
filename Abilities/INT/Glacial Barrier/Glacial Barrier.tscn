@@ -1,0 +1,133 @@
+[gd_scene load_steps=19 format=3 uid="uid://8yp1v3hnu4vs"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_oawq1"]
+[ext_resource type="Texture2D" uid="uid://0dc4asfphw8a" path="res://Abilities/INT/Glacial Barrier/Water Spell_76.png" id="2_nlr7v"]
+[ext_resource type="Texture2D" uid="uid://6uf7gsln1jrc" path="res://Abilities/INT/Glacial Barrier/Spell 7-Sheet_blue.png" id="3_0j4te"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ygqlr"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pyc7w"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uj16l"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0rud"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e6p6x"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ijyx"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ixfw"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3hoj"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8xjk"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2u2w"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7i4b"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lh8mm"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(1760, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnwau"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(1920, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3x63j"]
+atlas = ExtResource("3_0j4te")
+region = Rect2(2080, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2xghe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ygqlr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pyc7w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uj16l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0rud")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e6p6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ijyx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ixfw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3hoj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8xjk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2u2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7i4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lh8mm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vnwau")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3x63j")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="GlacialBarrier" type="Node2D"]
+script = ExtResource("1_oawq1")
+icon = ExtResource("2_nlr7v")
+a_name = "Glacial Barrier"
+tooltip_text = "Apply a barrier of pure ice on an ally, increasing armor by Value0 for 8 seconds, at the end of the duration apply frozen effect to all nearby enemies for Value1 second(s)."
+mana_cost = 35.0
+cooldown = 14.0
+projectile_type = 2
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_2xghe")
+sprite_offset = Vector2(0, -32)
+is_buff = true
+buff_duration = 8.0
+end_action = true
+end_action_tags = Array[int]([1])
+tags = Array[String](["FlatArmorBuff", "Frozen"])
+values = Array[float]([50.0, 2.0])
+increased_values = Array[float]([30.0, 0.1])
+light_color = Color(0.164706, 0.396078, 1, 1)
+light_scale = 0.6
+weight = 45.0

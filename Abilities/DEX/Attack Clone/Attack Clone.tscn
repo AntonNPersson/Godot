@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2erjsp7imy6u"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_la0gf"]
+[ext_resource type="Texture2D" uid="uid://c3l8xjgxl5lpk" path="res://Abilities/DEX/Attack Clone/dark spell_5.png" id="2_dkj0g"]
+[ext_resource type="PackedScene" uid="uid://c8uuchqv0i43j" path="res://Abilities/DEX/Attack Clone/Attack_clone.tscn" id="3_636ek"]
+
+[node name="AttackClone" type="Node2D"]
+script = ExtResource("1_la0gf")
+icon = ExtResource("2_dkj0g")
+a_name = "Shadow Clone: Attack"
+tooltip_text = "Conjure a shadow clone, that attacks on an interval for 8 seconds, scaling with 100% of you auto attack damage."
+mana_cost = 40.0
+cooldown = 14.0
+projectile_type = 9
+ability_type = "DEX"
+summon_scene = ExtResource("3_636ek")
+summon_amount = 1
+summon_scaling = 0.2
+is_totem = true
+totem_duration = 8.0

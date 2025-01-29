@@ -18,7 +18,6 @@ func _do_damage(target):
 	var extra = {}
 
 	extra = {"basic_attacking": true, "critical": is_critical, "ability" : null}
-	print("do_damage")
 	do_damage.emit(damage, target, unit, tag, extra)
 	if tags.size() > 0:
 		for i in range(tags.size()):
@@ -30,7 +29,6 @@ func _do_damage(target):
 func _check_collision():
 	var overlapping = self.get_overlapping_areas()
 	for area in overlapping:
-		print(area)
 		if area.is_in_group("enemies"):
 			_do_damage(area)
 			return

@@ -22,7 +22,7 @@ func _initialize():
 			intelligence = randi_range(10, 20)
 	range = 15
 	increased_global_weight = -30
-	attack_damage = randi_range(4, 5)
+	attack_damage = randi_range(1, 3)
 	icon = preload('res://Sprites/Icons/Scepter.png')
 	type = ["Offense"]
 	# Types: Defense, Utility, Offense, All

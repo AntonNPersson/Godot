@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://sdyc1u3ma3vm"]
+
+[ext_resource type="Texture2D" uid="uid://k12rnbvew45p" path="res://Sprites/Sewers/acid_bot_left_corner.png" id="1_ktpdr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_co0cj"]
+size = Vector2(128, 127)
+
+[node name="Acid South Left Corner" type="Area2D" groups=["obstacles"]]
+position = Vector2(855, 543)
+metadata/Walkable = true
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ktpdr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_co0cj")

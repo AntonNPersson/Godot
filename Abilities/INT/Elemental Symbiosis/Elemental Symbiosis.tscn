@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://5sci8q00jixc"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_uvna8"]
+[ext_resource type="Texture2D" uid="uid://dldpokd1m81wm" path="res://Abilities/INT/Elemental Symbiosis/Elemental Symbiosis.png" id="2_tk1p5"]
+
+[node name="Elemental Symbiosis" type="Node2D"]
+script = ExtResource("1_uvna8")
+icon = ExtResource("2_tk1p5")
+a_name = "Elemental Symbiosis"
+tooltip_text = "Abilities of different effects cast in sequence increasing damage of the next one by Value0%, resets on casting same effect, and caps at 4 stacks."
+projectile_type = 4
+ability_type = "INT"
+tags = Array[String](["ElementalSymbiosis"])
+values = Array[float]([10.0])
+increased_values = Array[float]([5.0])

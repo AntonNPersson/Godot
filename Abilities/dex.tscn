@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b1jel7idmqb86"]
+[gd_scene load_steps=42 format=3 uid="uid://b1jel7idmqb86"]
 
 [ext_resource type="PackedScene" uid="uid://bg0m4lqesjegg" path="res://Abilities/DEX/Throwing Daggers/throwing_daggers.tscn" id="1_g5psk"]
 [ext_resource type="Texture2D" uid="uid://c2jviaf1o7ryu" path="res://Abilities/icons/dark spell_67.png" id="2_h7jwv"]
@@ -14,49 +14,205 @@
 [ext_resource type="PackedScene" uid="uid://cv63eiqc43ybs" path="res://Abilities/DEX/Aura of wind/Aura of Wind.tscn" id="12_k88gb"]
 [ext_resource type="Texture2D" uid="uid://bjhbjbgx863mi" path="res://Abilities/icons/dark spell_43.png" id="14_cufio"]
 [ext_resource type="PackedScene" uid="uid://dgn56rj0erh0s" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/Triumvirate Shift.tscn" id="17_1tkxk"]
+[ext_resource type="PackedScene" uid="uid://bv50v567wxiiu" path="res://Abilities/DEX/Caster Clone/Caster Clone.tscn" id="18_p5uw3"]
+[ext_resource type="PackedScene" uid="uid://b2erjsp7imy6u" path="res://Abilities/DEX/Attack Clone/Attack Clone.tscn" id="19_fou7t"]
 [ext_resource type="Texture2D" uid="uid://cb3ikb5hreosr" path="res://Abilities/icons/wind spell14.png" id="20_krok3"]
+[ext_resource type="PackedScene" uid="uid://bvg66k1rotmtq" path="res://Abilities/DEX/Multishot/Multishot.tscn" id="20_ngi4f"]
+[ext_resource type="PackedScene" uid="uid://ce0fb536yw8k" path="res://Abilities/DEX/Quick Roll/Quick Roll.tscn" id="21_xx1r6"]
 [ext_resource type="Texture2D" uid="uid://c4mj6gqmgwid" path="res://Abilities/icons/wind spell80.png" id="22_afysr"]
+[ext_resource type="Texture2D" uid="uid://be174ndalgt8v" path="res://Abilities/DEX/Quick Roll/wind spell54.png" id="22_f3vgi"]
+[ext_resource type="Texture2D" uid="uid://xm8nly4so7l2" path="res://Abilities/DEX/Quick Roll/Fire Spell 4-Sheet green.png" id="23_7u3kr"]
+[ext_resource type="PackedScene" uid="uid://eheomybu22w3" path="res://Abilities/DEX/Relentless Precision/Relentless Precision.tscn" id="24_5a5sa"]
 [ext_resource type="Texture2D" uid="uid://wboiklmt5vmg" path="res://Abilities/icons/wind spell46.png" id="24_igmq6"]
+[ext_resource type="PackedScene" uid="uid://d27rdv0iqcoqj" path="res://Abilities/DEX/Venomous Slash/Venomous Slash.tscn" id="25_xki7k"]
+[ext_resource type="PackedScene" uid="uid://dx1fcmtebktj5" path="res://Abilities/DEX/Toxic Infusion/Toxic Infusion.tscn" id="26_6cver"]
+[ext_resource type="PackedScene" uid="uid://ba4tbdsn5luoi" path="res://Abilities/DEX/Serpent Blink/Serpent Blink.tscn" id="27_olnyu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2batn"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(0, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dxcn"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(64, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xns0"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(128, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hqb5"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(192, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kxp8y"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(256, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnti0"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(320, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2r6j5"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(384, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6wnw"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(448, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fk2vd"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(512, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vqex3"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(576, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iao0i"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(640, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kqky"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(704, 0, 64, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_167f2"]
+atlas = ExtResource("23_7u3kr")
+region = Rect2(768, 0, 64, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8fx8o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2batn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dxcn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xns0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0hqb5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kxp8y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnti0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2r6j5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6wnw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fk2vd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vqex3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iao0i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4kqky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_167f2")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
 
 [node name="DEX" type="Node"]
 
 [node name="Throwing Daggers" parent="." instance=ExtResource("1_g5psk")]
 z_index = 1
 icon = ExtResource("2_h7jwv")
-echo_delay = null
+sprite_scale = 1.0
+values = Array[float]([2.0, 3.0, 1.0])
+increased_values = Array[float]([2.0, 1.0, 0.0])
 
 [node name="Freezing Arrows" parent="." instance=ExtResource("2_rt4oq")]
 position = Vector2(379, 295)
 icon = ExtResource("4_2uxlr")
-echo_delay = null
+sprite_scale = 1.0
+sprite_offset = Vector2(0, -32)
+values = Array[float]([5.0, 40.0])
+increased_values = Array[float]([5.0, 5.0])
 
 [node name="Burning Arrows" parent="." instance=ExtResource("3_kjmsk")]
 icon = ExtResource("6_oh4hn")
-echo_delay = null
+tooltip_text = "Equip a set of fire coated arrows, making your basic attacks deal Value0 extra damage and burn target(s) for Value1."
+sprite_offset = Vector2(0, -32)
+increased_values = Array[float]([5.0, 15.0])
 
 [node name="Flurry Of Arrows" parent="." instance=ExtResource("4_awjux")]
 icon = ExtResource("8_2lo47")
-echo_delay = null
+activatable_cooldown = 0.0
 
 [node name="Shuriken Throw" parent="." instance=ExtResource("9_mxhi2")]
 icon = ExtResource("14_cufio")
+tooltip_text = "Throw a shuriken that deals Value0 damage, and procs attack modifiers."
 _range = 200.0
 sprite_scale = 0.5
-echo_delay = null
+activatable_cooldown = 0.0
+values = Array[float]([5.0, 0.0])
+increased_values = Array[float]([5.0, 0.0])
 light_scale = 1.0
 
 [node name="Aura Of Wind" parent="." instance=ExtResource("12_k88gb")]
 icon = ExtResource("20_krok3")
-echo_delay = null
+tooltip_text = "Create a magical wind around you and your allies, increasing movement speed by Value1 and attack speed Value0%."
+values = Array[float]([10.0, 5.0])
 
 [node name="Hawkeye" parent="." instance=ExtResource("8_00vvo")]
 position = Vector2(1, 0)
 icon = ExtResource("22_afysr")
-echo_delay = null
+values = Array[float]([20.0])
 
 [node name="Wind Enchantment" parent="." instance=ExtResource("6_m3de7")]
 icon = ExtResource("24_igmq6")
-echo_delay = null
 
 [node name="Triumvirate Shift" parent="." instance=ExtResource("17_1tkxk")]
-echo_delay = null
+
+[node name="Shadow Clone Caster" parent="." instance=ExtResource("18_p5uw3")]
+activatable_cooldown = 0.0
+
+[node name="Shadow Clone Attacker" parent="." instance=ExtResource("19_fou7t")]
+activatable_cooldown = 0.0
+
+[node name="Multishot" parent="." instance=ExtResource("20_ngi4f")]
+activatable_cooldown = 0.0
+
+[node name="Quick Roll" parent="." instance=ExtResource("21_xx1r6")]
+icon = ExtResource("22_f3vgi")
+_range = 115.0
+sprite_frames = SubResource("SpriteFrames_8fx8o")
+sprite_scale = 0.8
+custom_movement = true
+increased_values = Array[float]([0.3])
+
+[node name="Relentless Precision" parent="." instance=ExtResource("24_5a5sa")]
+tooltip_text = "Every fifth auto attack is a garantueed critical, also passively increase critical damage by Value1%."
+auto_attack_interval = 5.0
+activatable_cooldown = 0.0
+
+[node name="Venomous Slash" parent="." instance=ExtResource("25_xki7k")]
+tooltip_text = "Attack all enemies in close range, dealing Value0 damage, and applying Value1 stack(s) of poison. If target is already poisoned apply Value2 stack(s) more.
+"
+activatable_cooldown = 0.0
+
+[node name="Toxic Infusion" parent="." instance=ExtResource("26_6cver")]
+activatable_cooldown = 0.0
+light_color = Color(0, 0.992157, 0, 1)
+light_scale = 0.6
+weight = 50.0
+
+[node name="Serpent Blink" parent="." instance=ExtResource("27_olnyu")]
+cooldown = 8.0
+sprite_scale = 0.4
+activatable_cooldown = 0.0

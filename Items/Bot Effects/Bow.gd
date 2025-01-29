@@ -10,7 +10,7 @@ var channel_time = 1
 
 func _initialize():
 	range = 200
-	attack_damage = randi_range(15, 25)
+	attack_damage = randi_range(8, 14)
 	icon = preload('res://Sprites/Icons/Bow.png')
 	type = ["Offense"]
 	# Types: Defense, Utility, Offense, All

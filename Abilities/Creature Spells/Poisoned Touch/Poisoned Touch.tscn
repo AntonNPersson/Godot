@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://robr1ftourck"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Poisoned Touch/Poisoned Touch.gd" id="1_kji1l"]
+
+[node name="Poisoned Touch" type="Node"]
+script = ExtResource("1_kji1l")

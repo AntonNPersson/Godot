@@ -6,8 +6,9 @@ func _run(_delta):
 		unit.has_aggro = false
 		_fail()
 		return
-	get_child(0)._run(_delta)
+	unit._target = _get_closest_enemy()
 	unit.has_aggro = true
+	get_child(0)._run(_delta)
 	_running()
 		
 func _child_success():

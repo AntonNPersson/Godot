@@ -7,11 +7,9 @@
 [node name="CrimsonCombination" type="Node2D"]
 script = ExtResource("1_v6w3s")
 a_name = "Crimson Combination"
-tooltip_text = "Switch between two states, either dealing Value0% of total health extra damage or heal 5% + Value1 every third attack."
+tooltip_text = "Switch between two states, either dealing Value0% of total health extra damage, on yourself and your target, or heal 5% + Value1 every third attack."
 projectile_type = 4
 ability_type = "STR"
-custom_end = null
-custom_start = null
 auto_attack_based = true
 auto_attack_interval = 3.0
 toggle = true

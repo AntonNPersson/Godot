@@ -22,9 +22,9 @@ func _get_closest_target():
 				distance_to_target = distance
 				return child
 
-func _do_action():
+func _do_action(enemy):
 	for i in range(0, values.size()):
-		origin.do_action.emit(values[i], _get_closest_target(), origin, tags[i])
+		origin.do_action.emit(values[i], enemy, origin, tags[i])
 	queue_free()
 
 func _use():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=3 uid="uid://hcueby24qqw3"]
+[gd_scene load_steps=101 format=3 uid="uid://hcueby24qqw3"]
 
 [ext_resource type="Script" path="res://Units/Instance/Characters/Ranger/Ranger.gd" id="1_dj361"]
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="2_dmyi4"]
@@ -159,6 +159,22 @@ region = Rect2(512, 1088, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_3172p"]
 atlas = ExtResource("10_8caet")
 region = Rect2(576, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trjdw"]
+atlas = ExtResource("10_8caet")
+region = Rect2(0, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_es3dm"]
+atlas = ExtResource("10_8caet")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_at48i"]
+atlas = ExtResource("10_8caet")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j4qol"]
+atlas = ExtResource("10_8caet")
+region = Rect2(0, 64, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ylqsp"]
 atlas = ExtResource("10_8caet")
@@ -325,9 +341,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pyv0x")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack East",
-"speed": 1.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -348,9 +364,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s7ytx")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack North",
-"speed": 1.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -371,9 +387,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dlrty")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack South",
-"speed": 1.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -394,9 +410,41 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3172p")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack West",
-"speed": 1.0
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trjdw")
+}],
+"loop": true,
+"name": &"Idle East",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_es3dm")
+}],
+"loop": true,
+"name": &"Idle North",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_at48i")
+}],
+"loop": true,
+"name": &"Idle South",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j4qol")
+}],
+"loop": true,
+"name": &"Idle West",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -552,8 +600,8 @@ point_count = 2
 size = Vector2(65, 16)
 
 [node name="Ranger" type="Area2D" groups=["Persist", "players"]]
-top_level = true
 position = Vector2(-1, 0)
+collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_dj361")
 passive_name = "Marksman"
@@ -572,8 +620,8 @@ tooltip = "To be added"
 base_armor = 5
 base_evade = 50
 base_speed = 115
-base_mana = 120
-base_stamina = 150
+base_health = 75
+base_stamina = 125
 base_range = 200
 base_attack_damage = 7
 base_windup_time = 0.8
@@ -618,8 +666,8 @@ replication_config = SubResource("SceneReplicationConfig_cualu")
 material = SubResource("ShaderMaterial_qiveg")
 position = Vector2(2, 0)
 sprite_frames = SubResource("SpriteFrames_cd88l")
-animation = &"Walk West"
-frame_progress = 0.209632
+animation = &"Idle South"
+autoplay = "Idle South"
 
 [node name="UI" type="Node2D" parent="."]
 z_index = 12

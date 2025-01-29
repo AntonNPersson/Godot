@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6t5y57rec3i7"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_eav73"]
+[ext_resource type="Texture2D" uid="uid://b2n3bwa2li6xy" path="res://Abilities/Enchants/icons/Green Ability_13.png" id="2_ene34"]
+
+[node name="Add Rush" type="Node2D"]
+script = ExtResource("1_eav73")
+i_name = "Self: Rush"
+tooltip = "Add Value0% movement speed for 1 second."
+icon = ExtResource("2_ene34")
+tags = Array[String](["PercentSpeedBuff"])
+values = Array[float]([100.0])
+types = Array[int]([5])
+extra = {
+"Duration": 1.0,
+"Hit": true
+}
+unique = true
+rarity = 1

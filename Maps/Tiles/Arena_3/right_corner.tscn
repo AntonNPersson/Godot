@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dts510igsta0o"]
+
+[ext_resource type="Texture2D" uid="uid://b42gyp5dp0pp4" path="res://Sprites/Sewers/right_corner.png" id="1_lx82m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u6fxb"]
+size = Vector2(128, 128)
+
+[node name="Right Corner" type="Area2D" groups=["obstacles"]]
+position = Vector2(471, -2)
+metadata/Walkable = false
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lx82m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_u6fxb")

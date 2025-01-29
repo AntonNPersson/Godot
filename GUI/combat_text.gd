@@ -4,20 +4,22 @@ var velocity = Vector2()
 var speed = 10
 var time_passed = 0
 var start = false
-var target1
 var _color
 var scale_factor
 
 var positive_effects = ["green", "blue", "purple"]
 
-func _create_text(value, target, color):
-	if !is_instance_valid(target):
+func _create_text(value, target, color, player = null):
+	if !is_instance_valid(target) and typeof(target) != TYPE_VECTOR2:
 		return
 	text = '[center][color=' + color + ']' + str(snapped(value, 0.1)) + '[/color][/center]'
 	_color = color
-	target1 = target
-	target.get_tree().current_scene.get_node('Combat Layer').add_child(self)
-	global_position = target.global_position
+	if typeof(target) != TYPE_VECTOR2:
+		target.get_tree().current_scene.get_node('Combat Layer').add_child(self)
+		global_position = target.global_position
+	else:
+		global_position = target
+		player.get_tree().current_scene.get_node('Combat Layer').add_child(self)
 	modulate = Color(1, 1, 1, 1)
 
 	scale_factor = 0.45 + min(value / 1000.0, 1.0)

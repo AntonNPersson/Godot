@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3ba6t62n32e6"]
+
+[ext_resource type="Texture2D" uid="uid://djva6f5uerk87" path="res://Sprites/Sewers/acid_top_right_corner.png" id="1_dybqw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_85dws"]
+size = Vector2(126, 128)
+
+[node name="Acid Right Corner" type="Area2D" groups=["obstacles"]]
+position = Vector2(1113, 288)
+metadata/Walkable = true
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_dybqw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_85dws")

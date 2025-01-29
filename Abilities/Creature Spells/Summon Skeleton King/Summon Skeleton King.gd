@@ -2,6 +2,7 @@ extends Node2D
 var troop
 var unit
 var current_summons = 1
+var instance = null
 @export var cast_duration = 0.0
 @export var cooldown = 4.0
 @export var summons:Array[PackedScene] = []
@@ -16,7 +17,7 @@ func _ready():
 	
 func _use():
 	temp_name += 1
-	if !unit.summoned:
+	if instance == null:
 		for child in summons:
 			var instanced = child.instantiate()
 			var effect = summon_effect.instantiate()
@@ -36,10 +37,9 @@ func _use():
 			instanced.add_to_group('enemies')
 			instanced.paused = false
 			instanced.has_aggro = true
-		cooldown = 9999999
-		unit.summoned = true
+			instanced.summoned = true
+			instance = instanced
 
 func _process(_delta):
 	if current_summons <= 0 and unit:
-		unit.summoned = false
 		self.queue_free()

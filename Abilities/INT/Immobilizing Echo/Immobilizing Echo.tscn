@@ -1,0 +1,190 @@
+[gd_scene load_steps=27 format=3 uid="uid://bh25hgn7hffbx"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_vxhfb"]
+[ext_resource type="Texture2D" uid="uid://jv4427hrq4pj" path="res://Abilities/INT/Immobilizing Echo/Poison Spell56.png" id="2_q7sdf"]
+[ext_resource type="Texture2D" uid="uid://qruiouhg6wwy" path="res://Abilities/INT/Immobilizing Echo/Spell 11-Sheet_purple.png" id="3_ddlv6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uo43a"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_27ruc"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x0t7c"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6wlnv"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dtlj7"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3f247"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i5ymo"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ch0kc"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ob0vi"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5sna"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwrvv"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bvix2"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(0, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wcyqj"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(160, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4hb80"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(320, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bv224"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(480, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7bvu"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(640, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1y62"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(800, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hc03"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(960, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a1utv"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1120, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_67dbk"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1280, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d63f3"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1440, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ivwj"]
+atlas = ExtResource("3_ddlv6")
+region = Rect2(1600, 160, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1tsrd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uo43a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_27ruc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x0t7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6wlnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dtlj7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3f247")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i5ymo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ch0kc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ob0vi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n5sna")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwrvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bvix2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wcyqj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4hb80")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bv224")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7bvu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1y62")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hc03")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a1utv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_67dbk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d63f3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ivwj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Immobilizing Echo" type="Node2D"]
+script = ExtResource("1_vxhfb")
+icon = ExtResource("2_q7sdf")
+a_name = "Immobilizing Echo"
+tooltip_text = "Shout with arcane energy, stunning surrounding targets for Value0 second(s), repeating 5 times and dealing Value1 damage, the echoes have 70% less effectiveness."
+mana_cost = 40.0
+cooldown = 12.0
+projectile_type = 3
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_1tsrd")
+sprite_offset = Vector2(0, 22)
+area_type = 3
+duration = 1.1
+radius = 200.0
+echo = 6.0
+echo_delay = 1.5
+tags = Array[String](["Stun", "Damage"])
+values = Array[float]([1.0, 6.0])
+increased_values = Array[float]([0.2, 6.0])
+light_color = Color(1, 0, 1, 1)
+light_scale = 0.6
+weight = 75.0

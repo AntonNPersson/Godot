@@ -8,5 +8,5 @@ script = ExtResource("1_b2crg")
 cast_duration = 3.0
 cooldown = 7.0
 size = 2.5
-values = [100.0]
+values = [125.0]
 after_effect = ExtResource("2_u1rhp")

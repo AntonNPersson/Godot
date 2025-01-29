@@ -5,7 +5,7 @@ var armor : int = 10
 
 func _initialize():
 	tags = ["mana_regen", "armor"]
-	mana_regen = round_to_dec(randf_range(0.2, 0.8), 2)
+	mana_regen = round_to_dec(randf_range(0.05, 0.4), 2)
 	armor = randi() % 42 + 10
 	values = [mana_regen, armor]
 	icon = preload('res://Sprites/Icons/Helmet.png')

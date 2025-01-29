@@ -1,10 +1,154 @@
-[gd_scene load_steps=4 format=3 uid="uid://n6f065x12uuq"]
+[gd_scene load_steps=25 format=3 uid="uid://n6f065x12uuq"]
 
 [ext_resource type="Script" path="res://Abilities/Creature Spells/summon_troops.gd" id="1_vlf78"]
-[ext_resource type="PackedScene" uid="uid://cevf2javmbcgc" path="res://Units/Instance/Enemies/Common/goblinFighter.tscn" id="2_bbxbs"]
+[ext_resource type="PackedScene" uid="uid://ra5y56o6peg0" path="res://Units/Instance/Enemies/Common/goblinRanger.tscn" id="2_kn5kp"]
+[ext_resource type="PackedScene" uid="uid://dbkbmyl0v2i8r" path="res://Units/Instance/Enemies/Common/Goblin Farmer.tscn" id="3_5r4gw"]
 [ext_resource type="PackedScene" uid="uid://babgdhhfthpqt" path="res://Utility/Spawn_effects.tscn" id="4_tabh4"]
+[ext_resource type="Texture2D" uid="uid://ldxtnemst6kq" path="res://Abilities/Creature Spells/Buff n Debuff P5 03.png" id="5_65j8n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5bfu"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_814y1"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ydxmn"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rm1yv"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5vgl1"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ieldn"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7f0ba"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lk7vh"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lvo62"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iigmj"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8278o"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7x1ha"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pvi3u"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uni8a"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iul7m"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(896, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0eg53"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(960, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xowws"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(1024, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxeym"]
+atlas = ExtResource("5_65j8n")
+region = Rect2(1088, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dflts"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k5bfu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_814y1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ydxmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rm1yv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5vgl1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ieldn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7f0ba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lk7vh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lvo62")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iigmj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8278o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7x1ha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pvi3u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uni8a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iul7m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0eg53")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xowws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxeym")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
 
 [node name="Summon Troops" type="Node2D"]
 script = ExtResource("1_vlf78")
-summons = Array[PackedScene]([ExtResource("2_bbxbs"), ExtResource("2_bbxbs")])
+cooldown = 60.0
+summons = Array[PackedScene]([ExtResource("2_kn5kp"), ExtResource("3_5r4gw"), ExtResource("3_5r4gw"), ExtResource("3_5r4gw")])
 summon_effect = ExtResource("4_tabh4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_dflts")
+frame = 17
+frame_progress = 1.0
+offset = Vector2(0, -32)

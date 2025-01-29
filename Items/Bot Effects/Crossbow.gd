@@ -12,12 +12,12 @@ var duration_timer = 0
 
 func _initialize():
 	range = 125
-	attack_damage = randi_range(7, 12)
+	attack_damage = randi_range(3, 7)
 	attack_speed = 15
 	icon = preload('res://Sprites/Icons/Crossbow.png')
 	type = ["Offense"]
 	# Types: Defense, Utility, Offense, All
-	weapon_tooltip = "\n[color=green]✸ [/color]Weapon Effect: Basic attack the closest enemy every 0.25 seconds for "+ str(duration) +" second(s), has a " + str(cooldown) + " second cooldown."
+	weapon_tooltip = "\n[color=green]✸ [/color]Weapon Effect: Basic attack the closest enemy every 0.25 seconds for "+ str(duration) +" second(s), dealing 60% reduced direct damage, has a " + str(cooldown) + " second cooldown."
 
 func _use_weapon(player, delta):
 	timer += delta
@@ -31,7 +31,7 @@ func _use_weapon(player, delta):
 			additional_timer = 0
 			player.get_node('Control').attack_target = _find_closest_enemy(player)
 			if player.get_node('Control').attack_target:
-				player.get_node('Control')._attack([], [], 0.0, (get_global_mouse_position() - player.global_position).normalized())
+				player.get_node('Control')._attack([], [], 0.0, (get_global_mouse_position() - player.global_position).normalized(), 60)
 
 func _find_closest_enemy(player):
 	var closest_enemy = null

@@ -1,0 +1,110 @@
+[gd_scene load_steps=16 format=3 uid="uid://dk5pig2o6bdps"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_j5xe7"]
+[ext_resource type="Texture2D" uid="uid://xm3uqf6o81wu" path="res://Abilities/INT/Grace of the Seraphim/light Spell_80.png" id="2_qust2"]
+[ext_resource type="Texture2D" uid="uid://u8ku7eec2n5u" path="res://Abilities/INT/Grace of the Seraphim/Buff n Debuff P3 01.png" id="3_afub2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhfm0"]
+atlas = ExtResource("3_afub2")
+region = Rect2(0, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_52s4n"]
+atlas = ExtResource("3_afub2")
+region = Rect2(48, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8pt01"]
+atlas = ExtResource("3_afub2")
+region = Rect2(96, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tmkl2"]
+atlas = ExtResource("3_afub2")
+region = Rect2(144, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_muslk"]
+atlas = ExtResource("3_afub2")
+region = Rect2(192, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v8dvj"]
+atlas = ExtResource("3_afub2")
+region = Rect2(240, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7pyx5"]
+atlas = ExtResource("3_afub2")
+region = Rect2(288, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qowcn"]
+atlas = ExtResource("3_afub2")
+region = Rect2(336, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkndx"]
+atlas = ExtResource("3_afub2")
+region = Rect2(384, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lgki"]
+atlas = ExtResource("3_afub2")
+region = Rect2(432, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qv3u7"]
+atlas = ExtResource("3_afub2")
+region = Rect2(480, 0, 48, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sh3ci"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yhfm0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_52s4n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8pt01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tmkl2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_muslk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v8dvj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7pyx5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qowcn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bkndx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lgki")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qv3u7")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Grace Of The Seraphim" type="Node2D"]
+script = ExtResource("1_j5xe7")
+icon = ExtResource("2_qust2")
+a_name = "Grace of the Seraphim"
+tooltip_text = "Enhance an ally with divine energy, granting Value0% increased attack speed for 5 seconds, and reduce cooldowns by Value1."
+mana_cost = 35.0
+cooldown = 25.0
+_range = 150.0
+projectile_type = 2
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_sh3ci")
+is_buff = true
+buff_duration = 5.0
+tags = Array[String](["AttackSpeedBuff", "ReduceCooldowns"])
+values = Array[float]([25.0, 5.0])
+increased_values = Array[float]([15.0, 1.0])
+light_color = Color(0.8, 0.8, 0, 1)
+light_scale = 0.5
+weight = 50.0

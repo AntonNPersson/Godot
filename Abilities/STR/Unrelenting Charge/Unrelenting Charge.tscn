@@ -88,7 +88,6 @@ ability_type = "STR"
 sprite_frames = SubResource("SpriteFrames_e0eqw")
 sprite_scale = 0.4
 sprite_offset = Vector2(0, 22)
-echo_delay = 1.8
 type = "Sprint"
 movement_speed = 400.0
 custom_movement = true

@@ -1,28 +1,141 @@
-[gd_scene load_steps=3 format=3 uid="uid://dpm1vfpq3uypm"]
+[gd_scene load_steps=21 format=3 uid="uid://cjtg60equ5cr3"]
 
-[ext_resource type="PackedScene" uid="uid://dg2iyxhbtp8jk" path="res://Abilities/Utility/freeze_effect.tscn" id="1_kmpt4"]
+[ext_resource type="Texture2D" uid="uid://brmta4qmvlcs3" path="res://Abilities/Utility/Ice Spell-Sheet.png" id="1_i6tow"]
 
-[sub_resource type="Curve" id="Curve_6ld0v"]
-min_value = -1.0
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="AtlasTexture" id="AtlasTexture_jo41h"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(0, 0, 96, 112)
 
-[node name="Frozen_effect" type="Node2D"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gg6m2"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(96, 0, 96, 112)
 
-[node name="freeze_effect" parent="." instance=ExtResource("1_kmpt4")]
-amount = 50
-lifetime_randomness = 1.0
-emission_shape = 0
-direction = Vector2(0, 0)
-spread = 180.0
-gravity = Vector2(0, -100)
-initial_velocity_max = 75.0
-angular_velocity_min = 60.0
-angular_velocity_max = 100.0
-orbit_velocity_max = 0.1
-damping_min = 16.278
-damping_max = 16.278
-scale_amount_min = 0.01
-hue_variation_min = -0.02
-hue_variation_max = 0.02
-hue_variation_curve = SubResource("Curve_6ld0v")
+[sub_resource type="AtlasTexture" id="AtlasTexture_6t1d3"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(192, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2s6vg"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(288, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_85h50"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(384, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxo3h"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(480, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3asp"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(576, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ttdva"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(672, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1njg"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(768, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g04yb"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(864, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6nj7"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(960, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtlqt"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(1056, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qthra"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(1152, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6oxiq"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(1248, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1qdp8"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(1344, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4ffr"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(1440, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1m1wf"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(1536, 0, 96, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjpv0"]
+atlas = ExtResource("1_i6tow")
+region = Rect2(1632, 0, 96, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s0ydr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jo41h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gg6m2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6t1d3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2s6vg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_85h50")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fxo3h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3asp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttdva")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1njg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g04yb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6nj7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rtlqt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qthra")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6oxiq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1qdp8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4ffr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1m1wf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tjpv0")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="FrozenEffect" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_s0ydr")
+autoplay = "default"

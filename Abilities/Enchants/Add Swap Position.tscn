@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnur8oiul28m3"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_oi5hn"]
+[ext_resource type="Texture2D" uid="uid://dk5xgwbj8kgoa" path="res://Abilities/Enchants/icons/2PurpleAbility_9.png" id="2_lkus3"]
+
+[node name="Add Swap Position" type="Node2D"]
+script = ExtResource("1_oi5hn")
+i_name = "Target: Swap"
+tooltip = "Swap positions with the targeted unit."
+icon = ExtResource("2_lkus3")
+tags = Array[String](["Swap"])
+values = Array[float]([1.0])
+types = Array[int]([1, 2])
+unique = true
+rarity = 2

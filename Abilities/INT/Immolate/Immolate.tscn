@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://otf0g3mice0t"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_yjrjr"]
+[ext_resource type="Texture2D" uid="uid://dnlo706c1pg1b" path="res://Abilities/INT/Immolate/Fire Spell Pack79.png" id="2_c4wbx"]
+[ext_resource type="Texture2D" uid="uid://c1fbupce8dbwl" path="res://Abilities/INT/Immolate/Fire Spell Pack79_off.png" id="3_otsqj"]
+
+[node name="Immolate" type="Node2D"]
+script = ExtResource("1_yjrjr")
+icon = ExtResource("2_c4wbx")
+a_name = "Immolate"
+tooltip_text = "Concentrate flaming energy around you, applying Value0 burn every 2.5 seconds to nearby enemies."
+mana_cost = 15.0
+_range = 150.0
+projectile_type = 7
+ability_type = "INT"
+aura_interval = 2.5
+aura_toggle = true
+aura_toggle_icons = Array[Texture]([ExtResource("2_c4wbx"), ExtResource("3_otsqj")])
+tags = Array[String](["Burn"])
+values = Array[float]([5.0])
+increased_values = Array[float]([5.0])
+light_color = Color(0.776471, 0.298039, 0, 1)
+light_scale = 0.6

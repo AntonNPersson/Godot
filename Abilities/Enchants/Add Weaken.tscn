@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c362xkd5e140q"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_sk6b8"]
+[ext_resource type="Texture2D" uid="uid://7c411hdfxykv" path="res://Abilities/Enchants/icons/2PurpleAbility_19.png" id="2_pmpsp"]
+
+[node name="Add Weaken" type="Node2D"]
+script = ExtResource("1_sk6b8")
+i_name = "General: Weaken"
+tooltip = "Weakens your enemies on hit, increasing damage taken by Value0%."
+icon = ExtResource("2_pmpsp")
+tags = Array[String](["Weaken"])
+values = Array[float]([20.0])
+types = Array[int]([0, 1])
+extra = {
+"Hit": true
+}
+unique = true
+rarity = 3

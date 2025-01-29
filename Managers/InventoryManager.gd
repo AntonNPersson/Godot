@@ -68,6 +68,8 @@ var items_
 var _dragging = false
 var _drag_offset = Vector2()
 
+var cooldown_timer_multiple = 1
+
 func _ready():
 	unit = get_parent()
 	inventory_hud = get_node("CanvasLayer/Inventory")
@@ -104,7 +106,7 @@ func _process(delta):
 	potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], potions[1].type)
 	level_bar.get_node('level').text = '[center]' + str(unit.player_level)
 	for i in abilities.size():
-		cooldown_timers[i] -= 1 * delta
+		cooldown_timers[i] -= cooldown_timer_multiple * delta
 		hotbar.get_child(i).texture = abilities[i].icon
 		hotbar.get_child(i).get_child(0).text ="[center][color=wheat]" + str(int(cooldown_timers[i]))
 		if abilities[i].charges > 1:
@@ -171,6 +173,13 @@ func _input(event):
 			_on_level_pressed(1)
 		elif event.is_action_pressed('Level_up_3') and !event.is_echo():
 			_on_level_pressed(2)
+
+		if event.is_action_released("Ability_1") and !event.is_echo() and abilities[0].is_channel_ability:
+			abilities[0]._stop_channel()
+		elif event.is_action_released('Ability_2') and !event.is_echo() and abilities[1].is_channel_ability:
+			abilities[1]._stop_channel()
+		elif event.is_action_released('Ability_3') and !event.is_echo() and abilities[2].is_channel_ability:
+			abilities[2]._stop_channel()
 
 		if event.is_action_pressed('Ability_Q') and !event.is_echo():
 			if potions.size() > 0:
@@ -272,6 +281,13 @@ func _get_highest_power_ability():
 func activate_ability(index):
 	if abilities.size() > index:
 		unit.in_stealth = false
+
+		if abilities[index].projectile_type == PROJECTILE_TYPE.Summon and cooldown_timers[index] > 0:
+			if unit.get_node("Summons").get_child_count() > 0:
+				for child in unit.get_node("Summons").get_children():
+					child.global_position = unit.global_position
+				return
+
 		if unit.current_mana < abilities[index].mana_cost and abilities[index].projectile_type != PROJECTILE_TYPE.Passive:
 			Utility.get_node('ErrorMessage')._create_error_message('Not enough mana', self)
 			return
@@ -282,6 +298,10 @@ func activate_ability(index):
 
 		if abilities[index].projectile_type == PROJECTILE_TYPE.Passive:
 			abilities[index]._use()
+			return
+
+		if abilities[index].area_channel or abilities[index].projectile_channel:
+			abilities[index]._start_channel()
 			return
 
 		if abilities[index].projectile_type == PROJECTILE_TYPE.Self or abilities[index].projectile_type == PROJECTILE_TYPE.Summon or GameManager.settings['smart_cast']:
@@ -386,6 +406,7 @@ func _update_stats():
 		"Block": {"base": round_place(unit.base_block,2), "bonus": unit.bonus_block, "tooltip" : "Block reduces a flat amount of direct damage taken."},
 		"Lifesteal": {"base": round_place(unit.base_life_steal,2), "bonus": unit.bonus_life_steal, "tooltip" : "Lifesteal heals the unit for a percentage of the auto attack damage dealt."},
 		"Spell Vamp": {"base": round_place(unit.base_spell_vamp,2), "bonus": unit.bonus_spell_vamp, "tooltip" : "Spell Vamp heals the unit for a percentage of the spell damage dealt."},
+		"Thorns": {"base": round_place(unit.base_thorns,2), "bonus": unit.bonus_thorns, "tooltip" : "Thorns deals its value divided by ten as damage back to the attacker."},
 	}
 
 	var utility_stats = {
@@ -406,12 +427,30 @@ func _update_stats():
 	}
 
 	var global_stats = {
-		"Burn Damage": {"base": unit.global_burn_damage, "tooltip" : "Burn Damage increases the damage of burns by a percentage - burn has a base duration of 5 seconds with a 1 second tick rate. \n\nBurn effects apply seperately and can't stack."},
-		"Bleed Damage": {"base": unit.global_bleed_damage, "tooltip" : "Bleed Damage increases the damage of bleeds by a percentage - bleed has a duration of 2 seconds with a 0.5 second tick rate. \n\nIf new sources of bleed are applied the duration only refreshes if the new source has a higher damage, else it adds a stack increasing the damage by 20%."},
-		"Poison Damage": {"base": unit.global_poison_damage, "tooltip" : "Poison Damage increases the damage of poisons by a percentage, poison has a duration of 5 seconds and a base damage of 5, with a 1 second tick rate. \n\nPoison effects only apply stacks, each stack doing the base damage."},
-		"Damage": {"base": unit.global_damage, "tooltip" : "Damage increases the damage of everything by a percentage."},
-		"Attack Damage": {"base": unit.global_attack_damage, "tooltip" : "Attack Damage increases the damage of auto attacks, and certain spells by a percentage."},
-		"Freeze Efficiency": {"base": unit.global_freeze_effectiveness, "tooltip" : "Freeze Efficiency increases the amount slowed by frozen effects by a percentage."},
+		"Burn Damage": {"base": unit.global_burn_damage, "tooltip" : "Global Burn Damage increases all the damage of burns by a percentage - burn has a base duration of 5 seconds with a 1 second tick rate. \n\nBurn effects apply seperately and can't stack."},
+		"Bleed Damage": {"base": unit.global_bleed_damage, "tooltip" : "Global Bleed Damage increases all the damage of bleeds by a percentage - bleed has a duration of 2 seconds with a 0.5 second tick rate. \n\nIf new sources of bleed are applied the duration only refreshes if the new source has a higher damage, else it adds a stack increasing the damage by 50%."},
+		"Poison Damage": {"base": unit.global_poison_damage, "tooltip" : "Global Poison Damage increases all the damage of poisons by a percentage, poison has a duration of 5 seconds and a base damage of 5, with a 1 second tick rate. \n\nPoison effects only apply stacks, each stack doing the base damage."},
+		"Damage": {"base": unit.global_damage, "tooltip" : "Global Damage increases the damage of everything by a percentage."},
+		"Attack Damage": {"base": unit.global_attack_damage, "tooltip" : "Global Attack Damage increases all the damage of auto attacks, and certain spells by a percentage."},
+		"Freeze Efficiency": {"base": unit.global_freeze_effectiveness, "tooltip" : "Global Freeze Efficiency increases the amount slowed by frozen effects by a percentage."},
+		"Heal Efficiency": {"base": unit.global_heal_effectiveness, "tooltip" : "Global Heal Efficiency increases all the amount healed by a percentage."},
+		"Movement Speed": {"base": unit.global_movement_speed, "tooltip" : "Global Movement Speed increases all the flat amount of movement speed."},
+		"Evade": {"base": unit.global_evade, "tooltip" : "Global Evade increases all the flat amount of evade."},
+		"Armor": {"base": unit.global_armor, "tooltip" : "Global Armor increases all the flat amount of armor."},
+		"Block": {"base": unit.global_block, "tooltip" : "Global Block increases all the flat amount of block."},
+		"Thorns": {"base": unit.global_thorns, "tooltip" : "Global Thorns increases all the flat amount of damage thorns does."},
+		"Health": {"base": unit.global_health, "tooltip" : "Global Health increases the total health of a unit by a percentage."},
+		"Mana": {"base": unit.global_mana, "tooltip" : "Global Mana increases the total mana of a unit by a percentage."},
+		"Stamina": {"base": unit.global_stamina, "tooltip" : "Global Stamina increases the total stamina of a unit by a percentage."},
+		"Barrier": {"base": unit.global_barrier, "tooltip" : "Global Barrier increases the total barrier of a unit by a percentage."},
+		"Dexterity": {"base": unit.global_dexterity, "tooltip" : "Global Dexterity increases all the flat dexterity."},
+		"Strength": {"base": unit.global_strength, "tooltip" : "Global Strength increases all the flat strength."},
+		"Intelligence": {"base": unit.global_intelligence, "tooltip" : "Global Intelligence increases all the flat intelligence."},
+		"Vitality": {"base": unit.global_vitality, "tooltip" : "Global Vitality increases all the total health and health regen of a unit by a percentage."},
+		"Health Regen": {"base": unit.global_health_regen, "tooltip" : "Global Health Regen increases all the amount of health regenerated per second by a percentage."},
+		"Mana Regen": {"base": unit.global_mana_regen, "tooltip" : "Global Mana Regen increases all the flat amount of mana regenerated per second by a percentage."},
+		"Stamina Regen": {"base": unit.global_stamina_regen, "tooltip" : "Global Stamina Regen increases all the flat amount of stamina regenerated per second by a percentage."},
+		"Barrier Regen": {"base": unit.global_barrier_regen, "tooltip" : "Global Barrier Regen increases all the flat amount of barrier regenerated per second by a percentage."},
 	}
 
 	var character_specifics
@@ -496,7 +535,6 @@ func _on_ability_manager_picked(_ability, subwave):
 func _on_enchant_picked(enchant, index, _type):
 	enchant._initialize()
 	for i in range(enchant.tags.size()):
-		print(enchant.extra)
 		abilities[index]._add_enchant(enchant.tags[i], enchant.values[i], enchant.types, enchant.extra, enchant)
 
 func _add_item_effect(type, tag, value, duration, item_color, item_cooldown = 0):
@@ -634,7 +672,6 @@ func _on_item_picked_up(item):
 			var added_stats = {}
 			for j in range(children[i]._get_tags().size()):
 				added_stats[children[i]._get_tags()[j]] = children[i]._get_values()[j]
-				print(added_stats)
 			add_stats.emit(added_stats)
 	_update_stats()
 	item.remove_from_group("Items")
@@ -918,7 +955,6 @@ func _on_hotbar_ability_mouse_exited(index):
 
 func load_items():
 	weapon_equipped = false
-	print("Loading items")
 	for i in range(unit.im_inventory.size()):
 		var the_item_data = unit.im_inventory[i]
 		var the_item = unit.item_manager._load_item(the_item_data['bot_piece'], the_item_data['second_mid_piece'], the_item_data['mid_piece'], the_item_data['top_piece'], the_item_data['second_top_piece'], the_item_data['item_name'], the_item_data['rarity'])

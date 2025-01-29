@@ -1,0 +1,101 @@
+[gd_scene load_steps=14 format=3 uid="uid://bsabxv2bo40vj"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_lb768"]
+[ext_resource type="Texture2D" uid="uid://bo8uw8tc166xp" path="res://Abilities/INT/Shattering Light/light Spell_9.png" id="2_p5kih"]
+[ext_resource type="Texture2D" uid="uid://cnnnnmqesxawy" path="res://Abilities/INT/Shattering Light/Spell 7-Sheet.png" id="3_k8cwl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wg66e"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwp3s"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ct2op"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7w3fc"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j7pk3"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lt0p"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ku0s"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ylhco"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_arikj"]
+atlas = ExtResource("3_k8cwl")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8tin6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wg66e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwp3s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ct2op")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7w3fc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j7pk3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lt0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ku0s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ylhco")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_arikj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Shattering Light" type="Node2D"]
+script = ExtResource("1_lb768")
+icon = ExtResource("2_p5kih")
+a_name = "Shattering Light"
+tooltip_text = "Shoot out a projectile of pure light, that deals Value0 damage to enemies every 0.5 seconds, and heals allies by Value1."
+mana_cost = 35.0
+cooldown = 10.0
+_range = 600.0
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_8tin6")
+sprite_scale = 0.8
+collision_radius = 128.0
+speed = 150.0
+line_pierce = true
+hit_allies = true
+ally_tags = Array[int]([1])
+multiple_hit = true
+multiple_hit_interval = 0.5
+tags = Array[String](["Damage", "Heal"])
+values = Array[float]([3.0, 3.0])
+increased_values = Array[float]([3.0, 3.0])
+light_color = Color(0.803922, 0.803922, 0, 1)
+light_scale = 0.8
+weight = 75.0

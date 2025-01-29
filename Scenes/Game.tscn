@@ -54,7 +54,8 @@ map_manager = NodePath("../MapManager")
 
 [node name="RoundManager" parent="CanvasModulate" instance=ExtResource("3_s7syv")]
 
-[node name="AbilityManager" parent="CanvasModulate" instance=ExtResource("5_d0xog")]
+[node name="AbilityManager" parent="CanvasModulate" node_paths=PackedStringArray("cm") instance=ExtResource("5_d0xog")]
+cm = NodePath("../CombatManager")
 
 [node name="MapManager" parent="CanvasModulate" node_paths=PackedStringArray("im") instance=ExtResource("5_rckfc")]
 im = NodePath("../ItemManager")

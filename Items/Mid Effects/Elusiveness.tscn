@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddm5unhthsnw6"]
+
+[ext_resource type="Script" path="res://Items/Mid Effects/Elusiveness.gd" id="1_qfw5u"]
+
+[node name="Elusiveness" type="Node2D"]
+script = ExtResource("1_qfw5u")

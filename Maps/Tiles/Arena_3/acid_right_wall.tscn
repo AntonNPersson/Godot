@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bistbrsfxbxr3"]
+
+[ext_resource type="Texture2D" uid="uid://ds6l0lwkikjvr" path="res://Sprites/Sewers/acid_right_wall.png" id="1_tmo7x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_85dws"]
+size = Vector2(127, 128)
+
+[node name="Acid Right Wall" type="Area2D" groups=["obstacles"]]
+position = Vector2(1113, 417)
+metadata/Walkable = true
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tmo7x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_85dws")

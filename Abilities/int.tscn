@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b8a6w1f865pfx"]
+[gd_scene load_steps=40 format=3 uid="uid://b8a6w1f865pfx"]
 
 [ext_resource type="PackedScene" uid="uid://da871oh6rfrvj" path="res://Abilities/INT/Fireball/fireball.tscn" id="1_vlnpx"]
 [ext_resource type="PackedScene" uid="uid://c6nvjhyersa53" path="res://Abilities/INT/Healing Grace/Healing Grace.tscn" id="3_7ms2t"]
@@ -9,46 +9,207 @@
 [ext_resource type="Texture2D" uid="uid://x6x5qok08lid" path="res://Abilities/icons/Fire Spell Pack25.png" id="8_ku6w6"]
 [ext_resource type="PackedScene" uid="uid://rlftu05nuo57" path="res://Abilities/INT/Flaming Flash/Flaming Flash.tscn" id="10_oqlo0"]
 [ext_resource type="Texture2D" uid="uid://cjh1gix76i1f2" path="res://Abilities/icons/2PurpleAbility_4.png" id="10_w82ty"]
-[ext_resource type="PackedScene" uid="uid://dh1pinlr1cd20" path="res://Abilities/INT/Summon Goblins/Summon Goblins.tscn" id="11_d4kjh"]
 [ext_resource type="PackedScene" uid="uid://dgn56rj0erh0s" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/Triumvirate Shift.tscn" id="13_ifka7"]
+[ext_resource type="PackedScene" uid="uid://bkiow65f3njkn" path="res://Abilities/INT/Arcane Cascade/Arcane Cascade.tscn" id="14_2hhe2"]
+[ext_resource type="PackedScene" uid="uid://cn3h6qmgqguvd" path="res://Abilities/INT/Mana Overload/Mana Overload.tscn" id="15_mrxtr"]
+[ext_resource type="PackedScene" uid="uid://d270g20l8jdpj" path="res://Abilities/INT/Mana Shield/Mana Shield.tscn" id="16_d4qqg"]
 [ext_resource type="Texture2D" uid="uid://bg4hvqfnjmxwd" path="res://Abilities/icons/Fire Spell Pack35.png" id="16_qfptd"]
-[ext_resource type="Texture2D" uid="uid://d1gj2yku1x7yn" path="res://Abilities/icons/dark spell_4.png" id="18_5ogvs"]
+[ext_resource type="PackedScene" uid="uid://dro6o68pd6hrm" path="res://Abilities/INT/Ice Block/Ice Block.tscn" id="17_nd3u8"]
+[ext_resource type="PackedScene" uid="uid://otf0g3mice0t" path="res://Abilities/INT/Immolate/Immolate.tscn" id="18_qlxvs"]
+[ext_resource type="PackedScene" uid="uid://bp1ly0v28b8dh" path="res://Abilities/INT/Detonate/Detonate.tscn" id="19_0f1a4"]
+[ext_resource type="PackedScene" uid="uid://bh25hgn7hffbx" path="res://Abilities/INT/Immobilizing Echo/Immobilizing Echo.tscn" id="20_sssa5"]
+[ext_resource type="PackedScene" uid="uid://dh1pinlr1cd20" path="res://Abilities/INT/Summon Werewolf/Summon Werewolf.tscn" id="21_iqafv"]
+[ext_resource type="PackedScene" uid="uid://bsabxv2bo40vj" path="res://Abilities/INT/Shattering Light/Shattering Light.tscn" id="21_mf4b5"]
+[ext_resource type="Texture2D" uid="uid://cyqxhqc2ywcj1" path="res://Abilities/INT/Summon Werewolf/dark spell_6.png" id="22_6gsmi"]
+[ext_resource type="PackedScene" uid="uid://dk5pig2o6bdps" path="res://Abilities/INT/Grace of the Seraphim/Grace of the Seraphim.tscn" id="22_jyw55"]
+[ext_resource type="PackedScene" uid="uid://5sci8q00jixc" path="res://Abilities/INT/Elemental Symbiosis/Elemental Symbiosis.tscn" id="23_16bo7"]
+[ext_resource type="PackedScene" uid="uid://bwow1tpbh1c0a" path="res://Abilities/INT/Infernal Barrier/Infernal Shield.tscn" id="24_ex545"]
+[ext_resource type="PackedScene" uid="uid://8yp1v3hnu4vs" path="res://Abilities/INT/Glacial Barrier/Glacial Barrier.tscn" id="25_eler8"]
+[ext_resource type="Texture2D" uid="uid://dc3ppufrdy35v" path="res://Abilities/INT/Glacial Barrier/Spell 2-Sheet-blue.png" id="26_pa5at"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hdmql"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2mhlm"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tbpwb"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnbws"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxbjj"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cv5iu"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_58v17"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnfe7"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mdn5k"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0dlg"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nmtp"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2l7b"]
+atlas = ExtResource("26_pa5at")
+region = Rect2(1760, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y4bep"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hdmql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2mhlm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tbpwb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnbws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxbjj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cv5iu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_58v17")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jnfe7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mdn5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0dlg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nmtp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2l7b")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
 
 [node name="INT" type="Node"]
 
 [node name="Healing Grace" parent="." instance=ExtResource("3_7ms2t")]
 icon = ExtResource("4_hwtba")
-echo_delay = null
-custom_end = false
-custom_start = true
+cooldown = 8.0
+values = Array[float]([15.0, 10.0, 10.0])
 
 [node name="Frostbolt" parent="." instance=ExtResource("3_q2o0l")]
 icon = ExtResource("6_7db48")
-echo_delay = null
-custom_end = false
-custom_start = true
+activatable_cooldown = 0.0
+values = Array[float]([10.0, 30.0, 1.0])
 
 [node name="Fireball" parent="." instance=ExtResource("1_vlnpx")]
 icon = ExtResource("8_ku6w6")
-echo_delay = null
-custom_end = false
-custom_start = true
+tooltip_text = "Shoot a ball of fire in a straight line, dealing Value0 damage and Value1 burn to anything it touches."
+activatable_cooldown = 0.0
+tags = Array[String](["Damage", "Burn", "Explosion"])
+values = Array[float]([10.0, 7.5, 75.0])
+increased_values = Array[float]([10.0, 5.0, 0.0])
 
 [node name="Arcane Enchantment" parent="." instance=ExtResource("4_tck2m")]
 icon = ExtResource("10_w82ty")
-echo_delay = null
 
 [node name="Flaming Flash" parent="." instance=ExtResource("10_oqlo0")]
 position = Vector2(268, 383)
 icon = ExtResource("16_qfptd")
-echo_delay = null
-
-[node name="Summon Goblins" parent="." instance=ExtResource("11_d4kjh")]
-position = Vector2(2.91632, 84.8627)
-icon = ExtResource("18_5ogvs")
-tooltip_text = "Summon three goblins that bleed enemies on hit.
-NEED TO FIX SUMMON PATHING."
-echo_delay = null
+tooltip_text = "Blink to chosen targeted enemy, upon arriving deal Value0 damage and Value1 burn in an area."
+values = Array[float]([5.0, 7.5, 1.0])
+increased_values = Array[float]([5.0, 3.5, 0.1])
 
 [node name="Triumvirate Shift" parent="." instance=ExtResource("13_ifka7")]
-echo_delay = null
+
+[node name="Arcane Cascade" parent="." instance=ExtResource("14_2hhe2")]
+area_channel_interval = 1.0
+
+[node name="Mana Overload" parent="." instance=ExtResource("15_mrxtr")]
+light_color = Color(0, 0.219608, 1, 1)
+light_scale = 0.6
+weight = 100.0
+weight_duration = 0.85
+
+[node name="Mana Shield" parent="." instance=ExtResource("16_d4qqg")]
+tooltip_text = "Concentrate your mana around you shielding you again Value1% of damage taken, being dealt to your mana instead."
+mana_cost = 10.0
+values = Array[float]([0.0, 60.0])
+increased_values = Array[float]([0.0, 2.0])
+
+[node name="Ice Block" parent="." instance=ExtResource("17_nd3u8")]
+sprite_offset = Vector2(0, 22)
+
+[node name="Immolate" parent="." instance=ExtResource("18_qlxvs")]
+
+[node name="Detonate" parent="." instance=ExtResource("19_0f1a4")]
+
+[node name="Immobilizing Echo" parent="." instance=ExtResource("20_sssa5")]
+activatable_cooldown = 0.0
+
+[node name="Shattering Light" parent="." instance=ExtResource("21_mf4b5")]
+tooltip_text = "Shoot out a projectile of pure light, that deals Value0 damage to enemies every 0.5 seconds, and heal allies by Value1."
+sprite_scale = 0.5
+collision_radius = 80.0
+speed = 75.0
+values = Array[float]([2.0, 2.0])
+light_scale = 0.0
+
+[node name="Grace Of The Seraphim" parent="." instance=ExtResource("22_jyw55")]
+tooltip_text = "Enhance an ally with divine energy, granting Value0% increased attack speed for 5 seconds, and reduce cooldowns by Value1 seconds."
+cooldown = 15.0
+increased_values = Array[float]([10.0, 1.0])
+
+[node name="Summon Werewolf" parent="." instance=ExtResource("21_iqafv")]
+icon = ExtResource("22_6gsmi")
+a_name = "Summon Werewolf"
+tooltip_text = "Summon a werewolf that applies bleed on hit."
+cooldown = 30.0
+activatable_cooldown = 0.0
+summon_amount = 1
+
+[node name="Elemental Symbiosis" parent="." instance=ExtResource("23_16bo7")]
+tooltip_text = "Abilities of different effects cast in sequence increases damage of the next one by Value0%, resets on casting same effect, and caps at 4 stacks."
+activatable_cooldown = 0.0
+
+[node name="Infernal Barrier" parent="." instance=ExtResource("24_ex545")]
+_range = 200.0
+sprite_scale = 0.4
+sprite_offset = Vector2(0, -32)
+activatable_cooldown = 0.0
+
+[node name="Glacial Barrier" parent="." instance=ExtResource("25_eler8")]
+_range = 200.0
+sprite_scale = 0.4
+activatable_cooldown = 0.0
+action_range = 100.0
+action_spritesheet = SubResource("SpriteFrames_y4bep")

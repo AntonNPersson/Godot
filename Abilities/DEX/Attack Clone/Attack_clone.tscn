@@ -1,0 +1,231 @@
+[gd_scene load_steps=28 format=3 uid="uid://c8uuchqv0i43j"]
+
+[ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_gdji4"]
+[ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="3_5n4qs"]
+[ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="4_3qw7o"]
+[ext_resource type="Texture2D" uid="uid://cyuhq8o7lpi6" path="res://GUI/shadow.png" id="5_aqa7i"]
+[ext_resource type="Texture2D" uid="uid://6jiv4b2mj5cg" path="res://Units/Instance/Enemies/Sprite Sheets/Goblin Farmer.png" id="6_s7c7h"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="7_i7jw8"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/selector.gd" id="8_56d5j"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Summons/check_enemies.gd" id="9_xmrfl"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Summons/check_cooldowns.gd" id="10_e1mrq"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Summons/cast_ability.gd" id="11_dhn6q"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Summons/in_attack_range.gd" id="12_b33v3"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="12_hbfi7"]
+[ext_resource type="Script" path="res://Abilities/DEX/Attack Clone/basic_attack_clone.gd" id="13_c344e"]
+[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="13_pkhlk"]
+[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="14_185af"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="15_tqh26"]
+[ext_resource type="Texture2D" uid="uid://dadbdownsdgp6" path="res://GUI/test.png" id="16_b1vqh"]
+[ext_resource type="Texture2D" uid="uid://bves5jgiciy81" path="res://GUI/Stamina_filler.png" id="17_co2g8"]
+[ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="18_dtryw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
+radius = 16.1555
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2l1cy"]
+shader = ExtResource("4_3qw7o")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sfoxj"]
+atlas = ExtResource("6_s7c7h")
+region = Rect2(64, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2mxh"]
+atlas = ExtResource("6_s7c7h")
+region = Rect2(128, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u23n3"]
+atlas = ExtResource("6_s7c7h")
+region = Rect2(192, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ogsk5"]
+atlas = ExtResource("6_s7c7h")
+region = Rect2(256, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjk3c"]
+atlas = ExtResource("6_s7c7h")
+region = Rect2(320, 1280, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yljm5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": false,
+"name": &"Attack East",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": false,
+"name": &"Attack North",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": false,
+"name": &"Attack South",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": false,
+"name": &"Attack West",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sfoxj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2mxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u23n3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ogsk5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vjk3c")
+}],
+"loop": true,
+"name": &"Death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": true,
+"name": &"Walk East",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": true,
+"name": &"Walk North",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": true,
+"name": &"Walk South",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aqa7i")
+}],
+"loop": true,
+"name": &"Walk West",
+"speed": 12.0
+}]
+
+[node name="basicMeleeCreature" type="Area2D" groups=["player_summon"]]
+top_level = true
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_gdji4")
+u_name = "Clone A"
+base_speed = 0
+base_range = 200
+base_attack_speed = 0.0
+base_attack_damage = 0
+base_windup_time = 0.0
+basic_attack_scene = ExtResource("3_5n4qs")
+aggro_range = 250.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_2l1cy")
+position = Vector2(0, -0.666667)
+sprite_frames = SubResource("SpriteFrames_yljm5")
+animation = &"Walk West"
+autoplay = "Walk East"
+
+[node name="Update_timer" type="Node" parent="."]
+
+[node name="Tree" type="Node" parent="."]
+script = ExtResource("7_i7jw8")
+summon = true
+
+[node name="Selector" type="Node" parent="Tree"]
+script = ExtResource("8_56d5j")
+
+[node name="Check For enemies" type="Node" parent="Tree/Selector"]
+script = ExtResource("9_xmrfl")
+
+[node name="Selector" type="Node" parent="Tree/Selector/Check For enemies"]
+script = ExtResource("8_56d5j")
+
+[node name="check_cooldowns" type="Node" parent="Tree/Selector/Check For enemies/Selector"]
+script = ExtResource("10_e1mrq")
+
+[node name="cast_ability" type="Node" parent="Tree/Selector/Check For enemies/Selector/check_cooldowns"]
+script = ExtResource("11_dhn6q")
+
+[node name="in_attack_range" type="Node" parent="Tree/Selector/Check For enemies/Selector"]
+script = ExtResource("12_b33v3")
+
+[node name="Basic Attack" type="Node" parent="Tree/Selector/Check For enemies/Selector/in_attack_range"]
+script = ExtResource("13_c344e")
+
+[node name="Summons" type="Node2D" parent="."]
+
+[node name="UI" type="Node2D" parent="."]
+scale = Vector2(0.2, 0.2)
+
+[node name="cast_bar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+offset_left = -70.0
+offset_top = 170.0
+offset_right = -36.0
+offset_bottom = 178.0
+scale = Vector2(4, 3)
+theme = ExtResource("12_hbfi7")
+value = 100.0
+texture_under = ExtResource("13_pkhlk")
+texture_progress = ExtResource("14_185af")
+texture_progress_offset = Vector2(2, 2)
+script = ExtResource("15_tqh26")
+metadata/_edit_use_anchors_ = true
+
+[node name="ProgressBar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -125.0
+offset_right = 125.0
+offset_bottom = -105.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 1.2)
+theme = ExtResource("12_hbfi7")
+value = 50.0
+texture_over = ExtResource("16_b1vqh")
+texture_progress = ExtResource("17_co2g8")
+script = ExtResource("18_dtryw")

@@ -1,0 +1,89 @@
+[gd_scene load_steps=13 format=3 uid="uid://dxtl5uxsrtvk4"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_eocr8"]
+[ext_resource type="Texture2D" uid="uid://cnffc0fjtlh2h" path="res://Abilities/STR/Colossal Smash/Stone Spells46.png" id="2_3cnlj"]
+[ext_resource type="Texture2D" uid="uid://dy8imtpl2hecw" path="res://Abilities/STR/Colossal Smash/sprite-sheet.png" id="2_7x38e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dabg4"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4vegp"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3sl2v"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k11iw"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pq447"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgeac"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b84rw"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(0, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvb8k"]
+atlas = ExtResource("2_7x38e")
+region = Rect2(128, 384, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_edrge"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dabg4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4vegp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3sl2v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k11iw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pq447")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgeac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b84rw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvb8k")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Colossal Smash" type="Node2D"]
+script = ExtResource("1_eocr8")
+icon = ExtResource("2_3cnlj")
+a_name = "Colossal Smash"
+tooltip_text = "Smash an area in front of you dealing Value0 damage, and an additional Value1 damage if the target is stunned."
+mana_cost = 30.0
+cooldown = 10.0
+_range = 50.0
+projectile_type = 3
+ability_type = "STR"
+sprite_frames = SubResource("SpriteFrames_edrge")
+area_type = 3
+duration = 0.4
+radius = 128.0
+tags = Array[String](["Damage", "StunExtraFlatDamage"])
+values = Array[float]([20.0, 20.0])
+increased_values = Array[float]([20.0, 20.0])
+light_color = Color(0.733333, 0, 0, 1)
+light_scale = 0.4

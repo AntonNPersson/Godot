@@ -10,6 +10,8 @@ extends Node
 @export var heal_effect : PackedScene
 @export var root_effect : PackedScene
 @export var stun_effect : PackedScene
+@export var taunt_effect : PackedScene
+@export var weaken_effect : PackedScene
 
 @export var map_manager : Node
 @export var ability_manager : Node
@@ -47,6 +49,10 @@ var bleed_stacks_name = 0
 
 var frozen_targets = []
 var frozen_stacks_name = 0
+
+var last_combat_text_target = null
+
+var end_action_abilities = []
 
 signal enemy_basic_attacking(origin)
 
@@ -129,11 +135,22 @@ func _process(delta):
 			_on_do_action(extra_effect_values["StrengthStatConversion"], player, player, "DexterityToStrengthConversion", extra)
 			_on_do_action(extra_effect_values["StrengthStatConversion"], player, player, "IntelligenceToStrengthConversion", extra)
 
+		if extra_effect_values.has("LowHealthInvincible"):
+			extra_effect_values["LowHealthInvincibleCooldown"] -= delta
+			if extra_effect_values["LowHealthInvincibleCooldown"] <= 0:
+				if player.current_health <= player.total_health * (extra_effect_values["LowHealthInvincible"]/100.0):
+					var extra = {"ability": "LowHealthInvincible"}
+					_on_do_action(3, player, player, "SelfInvincible", extra)
+					extra_effect_values["LowHealthInvincibleCooldown"] = 30
+
 	if knockback_units.size() > 0:
 		for unit in knockback_units:
 			if _check_if_dead(unit) or !unit.has_meta('Knockback_origin'):
 				knockback_units.erase(unit)
 				continue
+
+			if !unit.is_in_group('players'):
+				unit.is_rooted = true
 
 			if unit.is_colliding:
 				if !unit.is_in_group('players'):
@@ -147,7 +164,7 @@ func _process(delta):
 			var direction = unit.get_meta('Knockback_direction').normalized()
 			var max_distance = unit.get_meta('Knockback_distance')
 			var current_distance = unit.global_position.distance_to(origin)
-			if current_distance <= 5:
+			if current_distance >= max_distance - 5:
 				if !unit.is_in_group('players'):
 					unit.is_rooted = false
 				knockback_units.erase(unit)
@@ -156,8 +173,6 @@ func _process(delta):
 			
 			var speed = lerp(200, 25, current_distance / max_distance)
 			unit.global_position += direction * speed * delta
-			if !unit.is_in_group('players'):
-				unit.is_rooted = true
 	
 	if pulled_units.size() > 0:
 		for unit in pulled_units:
@@ -189,7 +204,7 @@ func _process(delta):
 	
 		
 	
-
+# PERCENTAGE INCREASES ALWAYS ADDS TO GLOBAL VERSION OF THE STAT, AS TO NOT BE AFFECTED BY OTHER PERCENTAGE INCREASES
 # ------------------------------------------------------#
 # Signal Handler
 # ------------------------------------------------------#
@@ -197,6 +212,7 @@ func _on_do_action(value, target, user, tag, extra = null):
 	if extra != null:
 		if extra.has("enemy_basic_attacking"):
 			enemy_basic_attacking.emit(extra["enemy"])
+
 	match tag:
 		"AbilityPercentDamage":
 			_handle_ability_percent_damage_action(user, value)
@@ -212,6 +228,9 @@ func _on_do_action(value, target, user, tag, extra = null):
 			return
 		"BoostManaRegen":
 			_handle_boost_mana_regen_action(target, value, user)
+			return
+		"BoostManaRegenPercent":
+			_handle_boost_mana_regen_percent_action(target, value, user)
 			return
 		"BoostManaRegenPassive":
 			_handle_boost_mana_regen_passive_action(target, value, extra['ability'])
@@ -257,6 +276,9 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"Explosion":
 			_handle_explosion_action(user, value)
 			return
+		"ElementalSymbiosis":
+			_handle_elemental_symbiosis_action(target, value, extra)
+			return
 		"FreezeAmount":
 			_handle_freeze_amount_action(target, value, user)
 			return
@@ -286,6 +308,18 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"Pierce":
 			_handle_pierce_action(user)
 			return
+		"Split":
+			_handle_split_action(user, value)
+			return
+		"Ricochet":
+			_handle_ricochet_action(user, value)
+			return
+		"Spread":
+			#_handle_spread_action(user, value)
+			return
+		"Swap":
+			_handle_swap_action(user)
+			return
 		"PoisonAttack":
 			_handle_poison_attack_action(target, value)
 			return
@@ -295,12 +329,13 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"ProjectileSpeed":
 			_handle_projectile_speed_action(user, value)
 			return
+		"PassiveActivate":
+			_handle_passive_activate_action(user, value)
+			return
 		"AreaRadius":
 			_handle_area_radius_action(user, value)
 			return
 		"QuickAttack":
-			for i in tag:
-				i = i.replace("Attack", "").replace("Buff", "")
 			_handle_attack_action(user, value, extra, target)
 			return
 		"SelfTarget":
@@ -321,8 +356,40 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"VampiricalHeal":
 			_handle_vampirical_heal_action(target, value)
 			return
+		"SummonFlatHealth":
+			_handle_summon_flat_health_action(value, user)
+			return
+		"SummonPercentageHealth":
+			_handle_summon_percentage_health_action(value, user)
+			return
+		"SummonFlatAttackDamage":
+			_handle_summon_flat_attack_damage_action(value, user)
+			return
+		"SummonPercentageAttackDamage":
+			_handle_summon_percentage_attack_damage_action(value, user)
+			return
+		"SummonFlatArmor":
+			_handle_summon_flat_armor_action(value, user)
+			return
+		"SummonPercentageArmor":
+			_handle_summon_percentage_armor_action(value, user)
+			return
+		"SummonFlatAttackSpeed":
+			_handle_summon_flat_attack_speed_action(value, user)
+			return
+		"SummonFlatEvade":
+			_handle_summon_flat_evade_action(value, user)
+			return
+		"SummonPercentageEvade":
+			_handle_summon_percentage_evade_action(value, user)
+			return
+		"SummonAbility":
+			_handle_summon_ability_action(user, extra)
+			return
 	_check_if_dead(target)
 	
+	if _check_if_dead(get_tree().get_nodes_in_group("players")[0]):
+		return
 	if get_tree().get_nodes_in_group("players")[0].paused:
 		return
 	_get_global_increases()
@@ -331,6 +398,8 @@ func _on_do_action(value, target, user, tag, extra = null):
 	var damage = _calculate_reduced_damage(value, target.total_armor)
 
 	match tag:
+		"AdrenalineRush":
+			_handle_adrenaline_rush_action(target, user, value, extra)
 		"AfflictionBuff":
 			_handle_affliction_buff_action(target, value, extra)
 		"ArcaneDamagePassive":
@@ -364,6 +433,10 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_bleed_reflect_action(target, value, extra['ability'])
 		"Burn":
 			_handle_burn_action(target, value, user, extra)
+		"BurnReflectBuff":
+			_handle_burn_reflect_buff_action(target, value, extra)
+		"BasicAttackDamage":
+			_handle_basic_attack_damage_action(target, value, user)
 		"CrimsonReckoning": # Toggle Passive
 			_handle_crimson_reckoning_action(user, value, extra)
 		"CrimsonSalvation": # Toggle Passive
@@ -372,15 +445,20 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_crit_chance_buff_action(target, value, extra)
 		"CriticalChancePassive":
 			_handle_critical_chance_passive(target, value, extra['ability'])
+		"CriticalDamagePassive":
+			_handle_critical_damage_passive(target, value, extra['ability'])
 		"CrowdControlExtraFlatDamage":
 			_handle_crowd_control_extra_flat_damage_action(target, value)
 		"CooldownResetOnKill":
 			_handle_cooldown_reset_on_kill_action(target, extra)
 		"Damage":
 			if _calculate_evade_chance(target.total_evade):
+				_on_evade(target, user)
 				_trigger_combat_text(target, 0, 'Springgreen')
 				return
 			_handle_damage_action(target, damage, tag, user, extra)
+		"DetonateBurn":
+			_handle_detonate_burn_action(target, value, user)
 		"DexterityStatConversion":
 			_handle_dexterity_stat_conversion_action(user, value, extra)
 		"DexterityToStrengthConversion":
@@ -395,6 +473,14 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_ferver_action(user, value, extra)
 		"FlatEvadeBuff":
 			_handle_evade_buff_action(target, value, extra)
+		"FlatEvadePassive":
+			_handle_flat_evade_passive(target, value, extra['ability'])
+		"FlatThornsBuff":
+			_handle_flat_thorns_buff_action(target, value, extra)
+		"FlatThornsPassive":
+			_handle_flat_thorns_passive(target, value, extra['ability'])
+		"Frozen":
+			_handle_frozen_action(target, value, user, extra)
 		"Freeze":
 			_handle_freeze_action(target, value, user, extra)
 		"FreezeExtraFlatDamage":
@@ -402,15 +488,25 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"FrozenChancePassive":
 			_handle_frozen_chance_passive(target, value, extra['ability'])
 		"FrenzyBuff":
-			_handle_frenzy_buff_action(target, value, user)
+			_handle_frenzy_buff_action(target, value, user, extra)
 		"FlatArmorBuff":
 			_handle_flat_armor_buff_action(target, value, extra)
+		"FlatArmorDebuff":
+			_handle_flat_armor_debuff_action(target, value, extra)
 		"GravityPull":
 			_handle_gravity_pull_action(target, value, user)
 		"Heal":
-			_handle_heal_action(target, value, tag)
+			_handle_heal_action(target, value, tag, user)
+		"HealOverTime":
+			_handle_heal_over_time_action(target, value, user, extra)
+		"HealManaOverTime":
+			_handle_heal_mana_over_time_action(target, value, user, extra)
+		"PercentHealManaOverTime":
+			_handle_percent_heal_mana_over_time_action(target, value, user, extra)
+		"PercentHealOverTime":
+			_handle_percent_heal_over_time_action(target, value, user, extra)
 		"PercentHeal":
-			_handle_heal_action(target, target.total_health * (value/100.0), tag)
+			_handle_heal_action(target, target.total_health * (value/100.0), tag, user)
 		"IntelligenceStatConversion":
 			_handle_intelligence_stat_conversion_action(user, value, extra)
 		"IntelligenceToDexterityConversion":
@@ -423,8 +519,16 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_lifesteal_action(user, damage, tag)
 		"LifeStealPassive":
 			_handle_life_steal_passive(target, value, extra['ability'])
+		"LowHealthInvincible":
+			_handle_low_health_invincible_action(extra, value)
 		"Mark":
 			_handle_mark_action(target, value, user)
+		"ManaOverload":
+			_handle_mana_overload_action(target, value, user, extra)
+		"ManaShieldOn":
+			_handle_mana_shield_action(true, value, extra)
+		"ManaShieldOff":
+			_handle_mana_shield_action(false, value, extra)
 		"MovementSpeedPassive":
 			_handle_movement_speed_passive(target, value, extra['ability'])
 		"PercentArmorBuff":
@@ -432,13 +536,25 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"PercentArmorDebuff":
 			_handle_percent_armor_debuff_action(target, value, user, extra)
 		"PercentAttackDamageBuff":
-			_handle_percent_attack_buff_action(target, value, user)
+			_handle_percent_attack_buff_action(target, value, user, extra)
 		"PercentAttackDamagePassive":
 			_handle_percent_attack_damage_passive(target, value, extra['ability'])
 		"PercentSpeedBuff":
-			_handle_percent_speed_buff_action(target, value, user)
+			_handle_percent_speed_buff_action(target, value, user, extra)
+		"PercentDamageBuff":
+			_handle_percent_damage_buff_action(target, value, user, extra)
+		"PercentDamagePassive":
+			_handle_percent_damage_passive(target, value, extra['ability'])
+		"PercentHealthBuff":
+			_handle_percent_health_buff_action(target, value, user, extra)
+		"PercentSizeBuff":
+			_handle_percent_size_buff_action(target, value, user, extra)
+		"PercentPoisonDamageBuff":
+			_handle_percent_poison_damage_buff_action(target, value, user, extra)
 		"Poison":
 			_handle_poison_action(target, value, user)
+		"PoisonExtraStack":
+			_handle_poison_extra_stack_action(target, value)
 		"ProtectionFreezePassive":
 			_handle_protection_passive_action(target, value, "Freeze", extra['ability'])
 		"PVEDarkness":
@@ -451,6 +567,10 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_quick_attack_passive(target, value, extra['ability'])
 		"RefundMana":
 			_handle_refund_mana_action(target, value, extra)
+		"ReduceCooldowns":
+			_handle_reduce_cooldowns_action(target, value, extra)
+		"RelentlessPrecision":
+			_handle_relentless_precision_action(user, value, extra)
 		"Root":
 			_handle_root_action(target, value)
 		"RageRegenBuff":
@@ -460,15 +580,17 @@ func _on_do_action(value, target, user, tag, extra = null):
 		"UmbralSnare":
 			_handle_umbral_snare_action(target, value, user, extra)
 		"SelfInvincible":
-			_handle_self_invincible_action(user, value)
+			_handle_self_invincible_action(user, value, extra)
 		"Shock":
 			_handle_shock_action(target, value)
 		"SpeedBuff":
-			_handle_speed_buff_action(target, value, user)
+			_handle_speed_buff_action(target, value, user, extra)
 		"Stealth":
 			_handle_stealth_action(target, value)
 		"Stun":
 			_handle_stun_action(target, value)
+		"StunExtraFlatDamage":
+			_handle_stun_extra_flat_damage_action(target, value)
 		"SpellVampPassive":
 			_handle_spell_vamp_passive(target, value, extra['ability'])
 		"StrengthStatConversion":
@@ -479,8 +601,12 @@ func _on_do_action(value, target, user, tag, extra = null):
 			_handle_strength_to_dexterity_conversion(target, value, extra['ability'])
 		"StrengthToIntelligenceConversion":
 			_handle_strength_to_intelligence_conversion(target, value, extra['ability'])
+		"Taunt":
+			_handle_taunt_action(target, value, user)
 		"Wind":
 			_handle_wind_action(target, value, user)
+		"Weaken":
+			_handle_weaken_action(target, value)
 	_update_boss_health_bar(target, user)
 	_check_if_dead(target)
 
@@ -529,10 +655,46 @@ func _chance_calculator(chance):
 		return true
 	return false
 
+func find_first_matching_index(array, values):
+	for value in values:
+		var index = array.find(value)
+		if index != -1:
+			return index
+	return -1
+
+func _on_evade(target, user):
+	if GameManager.selected_character_name == "Duelist":
+		target.get_node("Control")._attack([], [], 0, null, 70, user)
+
+func _on_cast(ab):
+	if extra_effect_values.has("ElementalSymbiosis"):
+		var extra = {"ability": "ElementalSymbiosis"}
+		var effects = ["Burn", "Freeze", "Poison", "Shock", "Bleed"]
+		var current_effect_index = find_first_matching_index(ab.tags, effects)
+		if !ab.tags.has(extra_effect_values["ElementalSymbiosisLastEffect"]):
+			if extra_effect_values["ElementalSymbiosisCurrentStack"] >= extra_effect_values["ElementalSymbiosisMaximumStack"]:
+				return
+			extra_effect_values["ElementalSymbiosisCurrentStack"] += 1
+			_on_do_action(extra_effect_values["ElementalSymbiosis"] * extra_effect_values["ElementalSymbiosisCurrentStack"], player, player, "PercentDamagePassive", extra)
+		else:
+			extra_effect_values["ElementalSymbiosisCurrentStack"] = 0
+			_on_do_action(extra_effect_values["ElementalSymbiosis"] * extra_effect_values["ElementalSymbiosisCurrentStack"], player, player, "PercentDamagePassive", extra)
+		if current_effect_index != -1:
+			extra_effect_values["ElementalSymbiosisLastEffect"] = ab.tags[current_effect_index]
+		else:
+			extra_effect_values["ElementalSymbiosisLastEffect"] = ""
+
+
 func _on_enemy_basic_attack(origin):
+	_on_do_action(player.total_thorns/10, origin, player, "Damage")
+
 	if player.has_meta("BleedReflectPassive"):
 		var extra = {"ability" : player.get_meta("BleedReflectAbility")}
 		_on_do_action(player.get_meta("BleedReflectPassive"), origin, player, "Bleed", extra)
+	
+	if player.has_meta("BurnReflectBuff"):
+		var extra = {"ability" : "BurnReflectBuff"}
+		_on_do_action(player.get_meta("BurnReflectBuff"), origin, player, "Burn", extra)
 
 func _on_basic_attack(target):
 	if player.total_life_steal > 0:
@@ -547,6 +709,12 @@ func _on_basic_attack(target):
 		extra_effect_values["FerverCurrentTarget"] = target
 		if extra_effect_values["FerverCurrentStacks"] > extra_effect_values["FerverMaximumStacks"]:
 			extra_effect_values["FerverCurrentStacks"] = extra_effect_values["FerverMaximumStacks"]
+	if extra_effect_values.has("RelentlessPrecision"):
+		extra_effect_values["RelentlessPrecisionCurrent"] += 1
+		if extra_effect_values["RelentlessPrecisionCurrent"] >= extra_effect_values["RelentlessPrecisionInterval"]:
+			extra_effect_values["RelentlessPrecisionCurrent"] = 0
+			player.get_node("Control").added_extra["Forced Critical"] = true
+			player.get_node("Control").added_extra["Forced Critical Amount"] = 1
 	if extra_effect_values.has("CrimsonReckoning"):
 		extra_effect_values["CrimsonReckoningCurrent"] += 1
 		if extra_effect_values["CrimsonReckoningCurrent"] >= extra_effect_values["CrimsonReckoningInterval"]:
@@ -681,6 +849,19 @@ func _handle_dread_warden_action(unit, target, value):
 		unit.global_attack_damage -= extra_effect_values["DreadWarden"]
 		extra_effect_values.erase("DreadWarden")
 
+func _handle_elemental_symbiosis_action(target, value, extra):
+	if target:
+		if !extra_effect_values.has("ElementalSymbiosis"):
+			extra_effect_values["ElementalSymbiosis"] = value
+			extra_effect_values["ElementalSymbiosisLastEffect"] = ""
+			extra_effect_values["ElementalSymbiosisCurrentStack"] = 0
+			extra_effect_values["ElementalSymbiosisMaximumStack"] = 4
+	else:
+		extra_effect_values.erase("ElementalSymbiosis")
+		extra_effect_values.erase("ElementalSymbiosisLastEffect")
+		extra_effect_values.erase("ElementalSymbiosisCurrentStack")
+		extra_effect_values.erase("ElementalSymbiosisMaximumStack")
+
 func _handle_survival_action(unit, target, value):
 	if target:
 		extra_effect_values["Survival"] = value
@@ -728,11 +909,21 @@ func _handle_flat_armor_buff_action(target, value, extra):
 	timer.start()
 	target.bonus_armor += value
 
+func _handle_flat_armor_debuff_action(target, value, extra):
+	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, -value, "FlatArmor"))
+	timer.start()
+	target.bonus_armor -= value
+
 func _handle_affliction_buff_action(target, value, extra):
 	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Affliction"))
 	timer.start()
 	target.bonus_affliction_resistance += value
+
+func _handle_adrenaline_rush_action(target, user, value, extra):
+	_on_do_action(value, target, user, "PercentDamageBuff", extra)
+	_on_do_action(20, user, user, "Weaken", extra)
 
 func _handle_rage_regen_buff_action(target, value, extra):
 	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
@@ -745,6 +936,12 @@ func _handle_evade_buff_action(target, value, extra):
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Evade"))
 	timer.start()
 	target.bonus_evade += value
+
+func _handle_flat_thorns_buff_action(target, value, extra):
+	var timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "Thorns"))
+	timer.start()
+	target.bonus_thorns += value
 
 
 func _handle_converganace_action(unit, value, target):
@@ -785,6 +982,35 @@ func _handle_survival_debuff(unit, value):
 		timer.start()
 		_trigger_combat_text(unit, unit.total_health * 0.03, 'wheat')
 
+func _handle_summon_flat_health_action(value, _ability):
+	_ability.summon_extra_flat_health += value
+
+func _handle_summon_percentage_health_action(value, _ability):
+	_ability.summon_extra_percentage_health += value
+
+func _handle_summon_flat_attack_damage_action(value, _ability):
+	_ability.summon_extra_flat_attack_damage += value
+
+func _handle_summon_percentage_attack_damage_action(value, _ability):
+	_ability.summon_extra_percentage_attack_damage += value
+
+func _handle_summon_flat_armor_action(value, _ability):
+	_ability.summon_extra_flat_armor += value
+
+func _handle_summon_percentage_armor_action(value, _ability):
+	_ability.summon_extra_percentage_armor += value
+
+func _handle_summon_flat_attack_speed_action(value, _ability):
+	_ability.summon_extra_flat_attack_speed += value
+
+func _handle_summon_flat_evade_action(value, _ability):
+	_ability.summon_extra_flat_evade += value
+
+func _handle_summon_percentage_evade_action(value, _ability):
+	_ability.summon_extra_percentage_evade += value
+
+func _handle_summon_ability_action(_ability, extra):
+	_ability.summon_extra_abilities.append(extra["SummonAbility"])
 
 func _handle_cascade_refresh_action(target, value):
 	pass # TODO - hitting multiple enemies with area spell reduces remaining cooldown by 50%
@@ -822,6 +1048,14 @@ func _handle_vampirical_heal_action(target, value):
 		if extra_effect_values["VampiricalHeal"] <= 0:
 			extra_effect_values.erase("VampiricalHeal")
 
+func _handle_mana_shield_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["ManaShield"] = value
+		extra_effect_values["ManaShieldAbility"] = extra['ability']
+	else:
+		extra_effect_values.erase("ManaShield")
+		extra_effect_values.erase("ManaShieldAbility")
+
 func _handle_crimson_reckoning_action(enabled, value, extra):
 	if enabled:
 		extra_effect_values["CrimsonReckoning"] = value
@@ -843,6 +1077,17 @@ func _handle_crimson_salvation_action(enabled, value, extra):
 		extra_effect_values.erase("CrimsonSalvation")
 		extra_effect_values.erase("CrimsonSalvationInterval")
 		extra_effect_values.erase("CrimsonSalvationCurrent")
+
+func _handle_relentless_precision_action(enabled, value, extra):
+	if enabled:
+		extra_effect_values["RelentlessPrecision"] = value
+		extra_effect_values["RelentlessPrecisionInterval"] = extra['interval']
+		if !extra_effect_values.has("RelentlessPrecisionCurrent"):
+			extra_effect_values["RelentlessPrecisionCurrent"] = 0
+	else:
+		extra_effect_values.erase("RelentlessPrecision")
+		extra_effect_values.erase("RelentlessPrecisionInterval")
+		extra_effect_values.erase("RelentlessPrecisionCurrent")
 
 func _handle_strength_stat_conversion_action(enabled, value, extra):
 	if enabled:
@@ -970,6 +1215,15 @@ func _handle_lucky_bleed_action(target, value, extra):
 			bleed_effect_values.erase("LuckyBleed")
 			bleed_effect_values.erase("LuckyBleedDuration")
 
+func _handle_low_health_invincible_action(extra, value):
+	if extra["Effect"]:
+		if !extra_effect_values.has("LowHealthInvincible"):
+			extra_effect_values["LowHealthInvincible"] = value
+			extra_effect_values["LowHealthInvincibleCooldown"] = 0
+	else:
+		extra_effect_values.erase("LowHealthInvincible")
+		extra_effect_values.erase("LowHealthInvincibleCooldown")
+
 func _handle_chaos_magic_action(target, value, extra):
 	if target:
 		if extra_effect_values.has("ChaosMagic"):
@@ -1006,8 +1260,14 @@ func _trigger_effects(target, damage, color, tag):
 
 func _handle_boost_mana_regen_action(target, value, unit):
 	var timer = Utility.get_node('TimerCreator')._create_timer(target, true, unit)
-	timer.timeout.connect(_deapply_buff.bind(unit, unit.bonus_mana_regen * (1 + value/100.0), "ManaRegen"))
-	unit.bonus_mana_regen += unit.bonus_mana_regen * (1 + value/100.0)
+	timer.timeout.connect(_deapply_buff.bind(unit, value, "ManaRegen"))
+	unit.bonus_mana_regen += value
+	timer.start()
+
+func _handle_boost_mana_regen_percent_action(target, value, unit):
+	var timer = Utility.get_node('TimerCreator')._create_timer(target, true, unit)
+	timer.timeout.connect(_deapply_global_buff.bind(unit, value, "ManaRegen"))
+	unit.global_mana_regen += value
 	timer.start()
 
 # Handles experience gain for the player.
@@ -1034,9 +1294,21 @@ func _handle_ascension_action(_target, value):
 func _handle_pierce_action(user):
 	user.line_pierce = true
 
+func _handle_ricochet_action(user, amount):
+	user.projectile_ricochet = true
+	user.projectile_ricochet_amount += amount
+
+func _handle_split_action(user, amount):
+	user.projectile_split = true
+	user.projectile_split_amount += amount
+
+func _handle_swap_action(user):
+	user.swap_position = true
+
 func _handle_root_action(target, value):
+	if target.is_in_group('boss'):
+		return
 	target.is_rooted = true
-	print(target.is_rooted)
 	var timer = Utility.get_node('TimerCreator')._create_timer(value, true, target)
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Root"))
 	timer.start()
@@ -1045,12 +1317,26 @@ func _handle_root_action(target, value):
 	target.add_child(effect)
 
 func _handle_stun_action(target, value):
+	if target.is_in_group('boss'):
+		return
 	target.is_stunned = true
 	var timer = Utility.get_node('TimerCreator')._create_timer(value, true, target)
 	timer.timeout.connect(_deapply_buff.bind(target, value, "Stun"))
 	timer.start()
 	var effect = stun_effect.instantiate()
 	effect.name = "Stun_effect"
+	target.add_child(effect)
+
+func _handle_taunt_action(target, value, user):
+	if target.is_in_group('boss'):
+		return
+	target.is_taunted = true
+	target.taunted_target = user
+	var timer = Utility.get_node('TimerCreator')._create_timer(value, true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "Taunt"))
+	timer.start()
+	var effect = taunt_effect.instantiate()
+	effect.name = "Taunt_effect"
 	target.add_child(effect)
 
 func _handle_umbral_snare_action(target, value, user, extra):
@@ -1065,6 +1351,17 @@ func _handle_execute_action(target, value, user):
 		target.current_health = 0
 		_trigger_combat_text(user, target.total_health, 'Execute')
 
+func _handle_detonate_burn_action(target, value, user):
+	var burn_nodes = []
+	for nodes in target.get_children():
+		if "burn" in nodes.name or "Burn" in nodes.name:
+			burn_nodes.append(nodes)
+	
+	if burn_nodes.size() > 0:
+		for node in burn_nodes:
+			_on_do_action(value, target, user, "Damage")
+			node.queue_free()
+
 # Handles the refunding of mana.
 # Parameters:
 # - target: The target of the mana refund.
@@ -1075,6 +1372,12 @@ func _handle_refund_mana_action(target, value, extra):
 		if target.current_mana > target.total_mana:
 			target.current_mana = target.total_mana
 		_trigger_combat_text(target, extra.mana_cost * (value/100), 'blue')
+
+func _handle_reduce_cooldowns_action(target, value, extra):
+	if target.is_in_group('players'):
+		for _ability in target.get_node("InventoryManager").abilities:
+			if _ability.cooldown > 0:
+				_ability._reduce_cooldown(value)
 
 # Spell scaling based on main stat
 # Parameters:
@@ -1094,6 +1397,17 @@ func _handle_crit_chance_buff_action(target, value, extra):
 		target._update_stats()
 		var timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
 		timer.timeout.connect(_deapply_buff.bind(target, value, "CriticalChance"))
+		timer.start()
+
+func _handle_burn_reflect_buff_action(target, value, extra):
+	if target.is_in_group('players'):
+		if target.has_meta("BurnReflectBuff"):
+			target.set_meta("BurnReflectBuff", target.get_meta("BurnReflectBuff") + value)
+		else:
+			target.set_meta("BurnReflectBuff", value)
+		target._update_stats()
+		var timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+		timer.timeout.connect(_deapply_buff.bind(target, value, "BurnReflect"))
 		timer.start()
 
 
@@ -1158,10 +1472,13 @@ func _handle_projectile_speed_action(user, value):
 func _handle_area_radius_action(user, value):
 	user.radius += value
 
+func _handle_passive_activate_action(user, value):
+	user.activatable = true
+	user.activatable_duration = value
+	user.activatable_cooldown = 40
+
 func _handle_ability_percent_damage_action(user, value):
-	var dmg = user.tags.find("Damage")
-	if dmg != -1:
-		user.values[dmg] = user.values[dmg] * (1 + value/100.0)
+	user.added_percentage_damage += value/100.0
 
 func _handle_cooldown_reset_on_kill_action(target, extra):
 	var total_damage = 0
@@ -1182,8 +1499,16 @@ func _handle_freeze_extra_flat_damage_action(target, value):
 	if target.has_node("Freeze_timer"):
 		_on_do_action(value, target, player, "Damage")
 
+func _handle_poison_extra_stack_action(target, value):
+	if target.has_node("Poison_timer"):
+		_on_do_action(value, target, player, "Poison")
+
 func _handle_crowd_control_extra_flat_damage_action(target, value):
 	if target.is_stunned or target.is_rooted:
+		_on_do_action(value, target, player, "Damage")
+
+func _handle_stun_extra_flat_damage_action(target, value):
+	if target.is_stunned:
 		_on_do_action(value, target, player, "Damage")
 # Handles the modifier action for the user.
 # Parameters:
@@ -1196,6 +1521,11 @@ func _handle_modifier_action(user, target, extra = null):
 		user.get_node('Control').basic_attacking.emit(target)
 		for i in range(modifiers.size()):
 			_on_do_action(values[i], target, user, modifiers[i], extra)
+
+
+func _handle_basic_attack_damage_action(target, value, user):
+	if user.is_in_group('players'):
+		_on_do_action(user.total_attack_damage * (value/100.0), target, user, "Damage")
 # Handles the damage action on the target.
 # Parameters:
 # - target: The target of the action.
@@ -1204,18 +1534,30 @@ func _handle_damage_action(target, damage, tag, user, extra = {"basic_attacking"
 	if target in invincible_units:	
 		return
 
+	if target.has_meta("Weaken_amount"):
+		damage += damage * (target.get_meta("Weaken_amount")/100.0)
+
 	if extra == null:
 		extra = {"basic_attacking": false, "critical": false}
 	
 	var new_damage = _apply_shock(target, _apply_global_protection_passives(damage, user))
 	if target.is_in_group('players'):
 		new_damage -= target.total_block
+		if extra_effect_values.has("ManaShield"):
+			var potential_damage = new_damage * (1 - extra_effect_values["ManaShield"]/100.0)
+			var mana_damage = float(new_damage - potential_damage)
+			if target.current_mana >= mana_damage:
+				target.current_mana -= mana_damage
+				new_damage = potential_damage
+			else:
+				new_damage -= target.current_mana
+				target.current_mana = 0
 
 	# Effects:
 	if !target.is_in_group('players'):
 		if target.is_frozen:
 			if frozen_effect_values.has("FrozenPercentageDamageBuff"):
-				new_damage += new_damage *(1 + frozen_effect_values["FrozenPercentageDamageBuff"]/100)
+				new_damage += new_damage *(1 + frozen_effect_values["FrozenPercentageDamageBuff"]/100.0)
 	
 	var rest_damage = _barrier_protection(target, new_damage)
 	if rest_damage == 0:
@@ -1532,6 +1874,26 @@ func _handle_critical_chance_passive(target, value, ability):
 	if target.is_in_group('players'):
 		target._update_stats()
 
+func _handle_critical_damage_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_CriticalDamage"
+	if target.has_meta('CriticalDamagePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('CriticalDamagePassive'):
+		target.set_meta('CriticalDamagePassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('CriticalDamagePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('CriticalDamagePassive', target.get_meta('CriticalDamagePassive') - old_passive)
+		target.set_meta('CriticalDamagePassive', target.get_meta('CriticalDamagePassive') + value)
+		target.bonus_critical_damage -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_critical_damage += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
 func _handle_frozen_chance_passive(target, value, ability):
 	var ability_name_clean = ability.replace(" ", "_")
 	ability_name_clean += "_FrozenChance"
@@ -1593,6 +1955,46 @@ func _handle_double_cast_passive(target, value, ability):
 
 	target.set_meta(ability_name_clean, value)
 	target.bonus_double_cast_chance += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_flat_evade_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_FlatEvade"
+	if target.has_meta('FlatEvadePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('FlatEvadePassive'):
+		target.set_meta('FlatEvadePassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('FlatEvadePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('FlatEvadePassive', target.get_meta('FlatEvadePassive') - old_passive)
+		target.set_meta('FlatEvadePassive', target.get_meta('FlatEvadePassive') + value)
+		target.bonus_evade -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_evade += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_flat_thorns_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_FlatThorns"
+	if target.has_meta('FlatThornsPassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('FlatThornsPassive'):
+		target.set_meta('FlatThornsPassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('FlatThornsPassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('FlatThornsPassive', target.get_meta('FlatThornsPassive') - old_passive)
+		target.set_meta('FlatThornsPassive', target.get_meta('FlatThornsPassive') + value)
+		target.bonus_thorns -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.bonus_thorns += target.get_meta(ability_name_clean)
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -1689,8 +2091,10 @@ func _handle_stealth_action(user, value):
 
 
 func _handle_attack_action(user, times, tags, values):
-	for i in times:
-		user.get_node('Control')._attack(tags, values)
+	if user.is_in_group('players'):
+		for i in range(times):
+			user.get_node('Control')._attack([], [], 0.0, (user.get_global_mouse_position() - user.global_position).normalized(), 0)
+			await get_tree().create_timer(0.3).timeout
 
 # Handles the lifesteal action on the target.
 # Parameters:
@@ -1705,23 +2109,31 @@ func _handle_lifesteal_action(target, damage, tag):
 func _handle_poison_action(target, value, user):
 	if target in invincible_units or _check_if_dead(target):
 		return
+
+	print("Poisoned")
+	if target.has_meta("Weaken_amount"):
+		value += value * (target.get_meta("Weaken_amount")/100.0)
+
 	var duration = 5
 	var base_damage = 5
-	var stacks = value
+	var added_damage = 0
 	if target.is_in_group('players'):
-		duration = 5 - ((target.total_affliction_resistance/100) * duration)
+		duration = 5 - ((target.total_affliction_resistance/100.0) * duration)
+
+	if user.is_in_group('players'):
+		added_damage += base_damage * (user.global_poison_damage/100.0 + user.global_damage/100.0)
+		base_damage += added_damage
 	var tick_interval = 1
 	var total_ticks = ceil(duration / tick_interval)
-	var damage_per_tick = (base_damage * stacks) / total_ticks 
-	var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
+	var damage_per_tick = base_damage / total_ticks 
 
 	if !target.has_node('Poison_timer'):
 		target.set_meta('Poison_count', 0)
-		target.set_meta('Poison_stacks', stacks)
+		target.set_meta('Poison_stacks', value)
+		var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
 		var timer_name = "Poison_timer"
 		timer.timeout.connect(_apply_damage_over_time.bind(target, damage_per_tick, user, total_ticks, 'green', 'Poison', timer_name))
 		timer.name = timer_name
-		target.add_child(timer)
 		timer.start()
 	else:
 		target.set_meta('Poison_stacks', target.get_meta('Poison_stacks') + value)
@@ -1731,7 +2143,7 @@ func _handle_poison_action(target, value, user):
 # - target: The target of the action.
 # - value: The value of the frenzy buff.
 # - user: The duration of the frenzy buff.
-func _handle_frenzy_buff_action(target, value, user):
+func _handle_frenzy_buff_action(target, value, user, extra):
 	var duration = 5
 	var tick_interval = 1
 	var total_ticks = ceil(duration / tick_interval)
@@ -1739,7 +2151,11 @@ func _handle_frenzy_buff_action(target, value, user):
 	target.bonus_attack_speed += value
 	if target.is_in_group('players'):
 		target._update_stats()
-	var timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	var timer
+	if typeof(user) == TYPE_INT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
 	timer.timeout.connect(_deapply_buff.bind(target, value, "AttackSpeed"))
 	target.add_child(timer)
 	timer.start()
@@ -1762,8 +2178,8 @@ func _handle_frenzy_buff_action(target, value, user):
 # - value: The value of the armor buff.
 # - user: The user of the action.
 func _handle_percent_armor_buff_action(target, value, user, extra):
-	target.bonus_armor += (value/100.0) * target.total_armor
-	target.set_meta('ArmorBuff', (value/100.0) * target.total_armor)
+	target.global_armor += value
+	target.set_meta('ArmorBuff', value)
 	if target.is_in_group('players'):
 		target._update_stats()
 	var timer
@@ -1771,7 +2187,7 @@ func _handle_percent_armor_buff_action(target, value, user, extra):
 		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
 	else:
 		timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
-	timer.timeout.connect(_deapply_buff.bind(target, target.get_meta('Armorbuff'), "Armor"))
+	timer.timeout.connect(_deapply_global_buff.bind(target, target.get_meta('Armorbuff'), "Armor"))
 	timer.start()
 
 func _handle_percent_armor_debuff_action(target, value, user, extra):
@@ -1792,32 +2208,82 @@ func _handle_percent_armor_debuff_action(target, value, user, extra):
 # - target: The target of the action.
 # - value: The value of the speed buff.
 # - user: The duration of the action.
-func _handle_percent_speed_buff_action(target, value, user):
-	var percent = (value/100.0) * target.total_speed
-	target.bonus_speed += percent
+func _handle_percent_speed_buff_action(target, value, user, extra):
+	target.global_movement_speed += value
 	if target.is_in_group('players'):
 		target._update_stats()
 	var timer
 	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
 		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-		timer.timeout.connect(_deapply_buff.bind(target, percent, "Speed"))
-		timer.start()
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_global_buff.bind(target, value, "Speed"))
+	timer.start()
+
+func _handle_percent_damage_buff_action(target, value, user, extra):
+	target.global_damage += value
+	if target.is_in_group('players'):
+		target._update_stats()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_global_buff.bind(target, value, "Damage"))
+	timer.start()
+
+func _handle_percent_health_buff_action(target, value, user, extra):
+	target.global_health += value
+	if target.is_in_group('players'):
+		target._update_stats()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_global_buff.bind(target, value, "Health"))
+	timer.start()
+
+func _handle_percent_poison_damage_buff_action(target, value, user, extra):
+	target.global_poison_damage += value
+	if target.is_in_group('players'):
+		target._update_stats()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_global_buff.bind(target, value, "PoisonDamage"))
+	timer.start()
+
+func _handle_percent_size_buff_action(target, value, user, extra):
+	target.global_size += value
+	if target.is_in_group('players'):
+		target._update_stats()
+	var timer
+	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
+		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_global_buff.bind(target, value, "Size"))
+	timer.start()
 
 # Handles the percent attack buff action on the target.
 # Parameters:
 # - target: The target of the action.
 # - value: The value of the attack buff.
 # - user: The duration of the action.
-func _handle_percent_attack_buff_action(target, value, user):
-	var percent = (value/100.0) * target.total_attack_damage
-	target.bonus_attack_damage += percent
+func _handle_percent_attack_buff_action(target, value, user, extra):
+	target.global_attack_damage += value
 	if target.is_in_group('players'):
 		target._update_stats()
 	var timer
 	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
 		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-		timer.timeout.connect(_deapply_buff.bind(target, percent, "Damage"))
-		timer.start()
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_global_buff.bind(target, value, "AttackDamage"))
+	timer.start()
 
 # Handles the attack buff action on the target.
 # Parameters:
@@ -1835,9 +2301,11 @@ func _handle_attack_buff_action(target, value, user, tag, extra):
 	var timer
 	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
 		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra['Duration'], true, target)
 		timer.name = tag + "_attack_timer"
-		timer.timeout.connect(_deapply_attack_buff.bind(target, value, tag))
-		timer.start()
+	timer.timeout.connect(_deapply_attack_buff.bind(target, value, tag))
+	timer.start()
 
 # Handles the attack damage passive on the target.
 # Parameters:
@@ -1885,7 +2353,6 @@ func _handle_boost_mana_regen_passive_action(target, value, ability):
 
 func _handle_percent_attack_damage_passive(target, value, ability):
 	var ability_name_clean = ability.replace(" ", "_")
-	value = target.total_attack_damage * (value/100.0)
 	ability_name_clean += "_PercentAttackDamage"
 	if target.has_meta('PercentAttackDamagePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
 		return
@@ -1897,10 +2364,30 @@ func _handle_percent_attack_damage_passive(target, value, ability):
 		var old_passive = target.get_meta(ability_name_clean)
 		target.set_meta('PercentAttackDamagePassive', target.get_meta('PercentAttackDamagePassive') - old_passive)
 		target.set_meta('PercentAttackDamagePassive', target.get_meta('PercentAttackDamagePassive') + value)
-		target.bonus_attack_damage -= old_passive
+		target.global_attack_damage -= old_passive
 
 	target.set_meta(ability_name_clean, value)
-	target.bonus_attack_damage += target.get_meta(ability_name_clean)
+	target.global_attack_damage += target.get_meta(ability_name_clean)
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _handle_percent_damage_passive(target, value, ability):
+	var ability_name_clean = ability.replace(" ", "_")
+	ability_name_clean += "_PercentDamage"
+	if target.has_meta('PercentDamagePassive') and target.has_meta(ability_name_clean) and target.get_meta(ability_name_clean) == value:
+		return
+
+	if !target.has_meta('PercentDamagePassive'):
+		target.set_meta('PercentDamagePassive', value)
+
+	if target.has_meta(ability_name_clean) and target.has_meta('PercentDamagePassive'):
+		var old_passive = target.get_meta(ability_name_clean)
+		target.set_meta('PercentDamagePassive', target.get_meta('PercentDamagePassive') - old_passive)
+		target.set_meta('PercentDamagePassive', target.get_meta('PercentDamagePassive') + value)
+		target.global_damage -= old_passive
+
+	target.set_meta(ability_name_clean, value)
+	target.global_damage += target.get_meta(ability_name_clean)
 	if target.is_in_group('players'):
 		target._update_stats()
 
@@ -1909,25 +2396,26 @@ func _handle_percent_attack_damage_passive(target, value, ability):
 # - target: The target of the action.
 # - value: The value of the speed buff.
 # - user: The user of the action.
-func _handle_speed_buff_action(target, value, user):
+func _handle_speed_buff_action(target, value, user, extra):
 	if target.is_in_group('players'):
 		if value < 0:
 			value += ((target.total_slow_resistance/100) * value)
-	print("target" + str(user))
 	target.bonus_speed += value
 	if target.is_in_group('players'):
 		target._update_stats()
 	var timer
 	if typeof(user) == TYPE_INT or typeof(user) == TYPE_FLOAT:
 		timer = Utility.get_node('TimerCreator')._create_timer(user, true, target)
-		timer.timeout.connect(_deapply_buff.bind(target, value, "Speed"))
-		timer.start()
+	else:
+		timer = Utility.get_node('TimerCreator')._create_timer(extra["Duration"], true, target)
+	timer.timeout.connect(_deapply_buff.bind(target, value, "Speed"))
+	timer.start()
 
 # Handles the self invincible action on the user.
 # Parameters:
 # - user: The user of the action.
 # - value: The duration of the invincibility.
-func _handle_self_invincible_action(user, value):
+func _handle_self_invincible_action(user, value, extra):
 	invincible_units.append(user)
 	_create_light_specifics(user, 0.3, Color.GOLD)
 	var timer = Utility.get_node('TimerCreator')._create_timer(value, true, user)
@@ -1942,22 +2430,28 @@ func _handle_self_invincible_action(user, value):
 func _handle_burn_action(target, value, user, extra):
 	if target in invincible_units or _check_if_dead(target) or extra["ability"] == null:
 		return
+	if target.has_meta("Weaken_amount"):
+		value += value * (target.get_meta("Weaken_amount")/100.0)
 	var duration = 5
 	if target.is_in_group('players'):
 		duration = 5 - ((target.total_affliction_resistance/100) * duration)
 	var tick_interval = 1
 	var total_ticks = ceil(duration / tick_interval)
+	var added_value = 0
 	if user.is_in_group('players'):
 		for e in user.get_node('InventoryManager').abilities:
 			if e._has_tag('BurnPercentDamage') and extra["ability"].find(e.a_name) != -1:
-				value += value * (e._get_tag('BurnPercentDamage')/100.0)
+				added_value += value * (e._get_tag('BurnPercentDamage')/100.0)
 			if e._has_tag('BurnDuration') and extra["ability"].find(e.a_name) != -1:
 				duration += e._get_tag('BurnDuration')
 
 		if burn_effect_values.has("BurnPercentDamage"):
-			value += value * (burn_effect_values["BurnPercentDamage"]/100.0)
+			added_value += value * (burn_effect_values["BurnPercentDamage"]/100.0)
 		if burn_effect_values.has("BurnDuration"):
 			duration += burn_effect_values["BurnDuration"]
+		
+		added_value += value * ((user.global_burn_damage/100.0) + (user.global_damage/100.0))
+		value += added_value
 	var damage_per_tick = value / total_ticks
 
 	var ability_name = extra["ability"].replace(" ", "_")
@@ -2008,7 +2502,7 @@ func _handle_shock_action(target, value):
 # - target: The target of the action.
 # - value: The percentage of speed reduction.
 func _handle_freeze_action(target, value, user, extra):
-	if target in invincible_units or _check_if_dead(target) or extra == null:
+	if target in invincible_units or _check_if_dead(target) or extra == null or target.total_speed <= 0:
 		return
 	var duration = 3.0
 	var value_to_percent = (value/100.0)
@@ -2027,7 +2521,9 @@ func _handle_freeze_action(target, value, user, extra):
 
 			if e._has_tag('FreezeAmount') and extra["ability"].find(e.a_name) != -1:
 				value_to_percent += e._get_tag('FreezeAmount')/100.0
-				new_speed = target.total_speed * value_to_percent
+		
+		value_to_percent += user.global_freeze_effectiveness
+		new_speed = target.total_speed * value_to_percent
 		
 		if frozen_effect_values.has("FrozenChance"):
 			chance += frozen_effect_values["FrozenChance"]
@@ -2039,9 +2535,10 @@ func _handle_freeze_action(target, value, user, extra):
 		frozen_timer.name = "Frozen_timer"
 		target.is_frozen = true
 		var frozen = frozen_effect.instantiate()
+		var size = target.get_node("AnimatedSprite2D").get_sprite_frames().get_frame_texture("Walk South", 0).get_width()
+		frozen.scale = Vector2(size/96, size/112)
 		frozen.name = "Frozen_effect"
 		target.add_child(frozen)
-		frozen_timer.start()
 		# Add frozen effects here:
 		frozen_targets.append(target)
 		if frozen_effect_values.has("FrozenQuickAttack"):
@@ -2057,16 +2554,129 @@ func _handle_freeze_action(target, value, user, extra):
 	target.add_child(freezing)
 	timer.start()
 
+func _handle_frozen_action(target, value, user, extra):
+	var frozen_duration = value
+
+	if user.is_in_group('players'):
+		for e in user.get_node('InventoryManager').abilities:
+			
+			if e._has_tag('FrozenDuration') and extra["ability"].find(e.a_name) != -1:
+				frozen_duration += e._get_tag('FrozenDuration')
+
+	var frozen_timer = Utility.get_node('TimerCreator')._create_timer(frozen_duration, true, target)
+	frozen_timer.timeout.connect(_deapply_frozen.bind(target))
+	frozen_timer.name = "Frozen_timer"
+	target.is_frozen = true
+	var frozen = frozen_effect.instantiate()
+	var size = target.get_node("AnimatedSprite2D").get_sprite_frames().get_frame_texture("Walk South", 0).get_width()
+	frozen.scale = Vector2(size/96.0 + 0.1, size/112.0 + 0.1)
+	frozen.name = "Frozen_effect"
+	target.add_child(frozen)
+	# Add frozen effects here:
+	frozen_targets.append(target)
+	if frozen_effect_values.has("FrozenQuickAttack"):
+		if _chance_calculator(frozen_effect_values["FrozenQuickAttack"]):
+			player.get_node('Control')._attack()
+	frozen_timer.start()
 # Handles the heal action on the target.
 # Parameters:
 # - target: The target of the action.
 # - value: The amount of health to heal.
-func _handle_heal_action(target, value, tag):
+func _handle_heal_action(target, value, tag, user):
+	var added_value = 0
+	if user.is_in_group('players'):
+		added_value += value * user.global_heal_effectiveness
+		value += added_value
 	target.current_health += value
 	_trigger_effects(target, value, 'green', tag)
 	var effect = heal_effect.instantiate()
 	effect.name = "Heal_effect"
 	target.add_child(effect)
+
+
+func _handle_heal_over_time_action(target, value, user, extra):
+	if _check_if_dead(target):
+		return
+	var duration = extra["Duration"]
+	var base_heal = value
+	var added_heal = 0
+
+	if user.is_in_group('players'):
+		added_heal += base_heal * (user.global_heal_effectiveness/100.0)
+		base_heal += added_heal
+	var tick_interval = 1
+	var total_ticks = ceil(duration / tick_interval)
+	var heal_per_tick = base_heal / total_ticks 
+	var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
+
+	if !target.has_node('Heal_timer' + extra["ability"]):
+		var timer_name = "Heal_timer" + extra["ability"]
+		target.set_meta('Heal_count', 0)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, heal_per_tick, user, total_ticks, 'green', 'Heal', timer_name))
+		timer.name = timer_name
+		target.add_child(timer)
+		timer.start()
+
+func _handle_percent_heal_over_time_action(target, value, user, extra):
+	if _check_if_dead(target):
+		return
+	var duration = extra["Duration"]
+	var base_heal = target.total_health * (value/100.0)
+	var added_heal = 0
+
+	if user.is_in_group('players'):
+		added_heal += base_heal * (user.global_heal_effectiveness/100.0)
+		base_heal += added_heal
+	var tick_interval = 1
+	var total_ticks = ceil(duration / tick_interval)
+	var heal_per_tick = base_heal / total_ticks 
+	var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
+
+	if !target.has_node('Heal_timer' + extra["ability"]):
+		var timer_name = "Heal_timer" + extra["ability"]
+		target.set_meta('Heal_count', 0)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, heal_per_tick, user, total_ticks, 'green', 'Heal', timer_name))
+		timer.name = timer_name
+		target.add_child(timer)
+		timer.start()
+
+func _handle_heal_mana_over_time_action(target, value, user, extra):
+	if _check_if_dead(target):
+		return
+	var duration = extra["Duration"]
+	var base_heal = value
+
+	var tick_interval = 1
+	var total_ticks = ceil(duration / tick_interval)
+	var heal_per_tick = base_heal / total_ticks 
+	var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
+
+	if !target.has_node('ManaHeal_timer' + extra["ability"]):
+		var timer_name = "ManaHeal_timer" + extra["ability"]
+		target.set_meta('ManaHeal_count', 0)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, heal_per_tick, user, total_ticks, 'blue', 'ManaHeal', timer_name))
+		timer.name = timer_name
+		target.add_child(timer)
+		timer.start()
+
+func _handle_percent_heal_mana_over_time_action(target, value, user, extra):
+	if _check_if_dead(target):
+		return
+	var duration = extra["Duration"]
+	var base_heal = target.total_mana * (value/100.0)
+
+	var tick_interval = 1
+	var total_ticks = ceil(duration / tick_interval)
+	var heal_per_tick = base_heal / total_ticks 
+	var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
+
+	if !target.has_node('ManaHeal_timer' + extra["ability"]):
+		var timer_name = "ManaHeal_timer" + extra["ability"]
+		target.set_meta('ManaHeal_count', 0)
+		timer.timeout.connect(_apply_damage_over_time.bind(target, heal_per_tick, user, total_ticks, 'blue', 'ManaHeal', timer_name))
+		timer.name = timer_name
+		target.add_child(timer)
+		timer.start()
 
 # Handles the wind action on the target.
 # Parameters:
@@ -2091,6 +2701,31 @@ func _handle_gravity_pull_action(target, value, user):
 	target.set_meta('Pull_distance', value)
 	pulled_units.append(target)
 
+func _handle_weaken_action(target, value):
+	if target in invincible_units or _check_if_dead(target):
+		return
+	var duration = 5
+	if target.is_in_group('players'):
+		duration = 5 - ((target.total_affliction_resistance/100) * duration)
+	if !target.has_node('Weaken_timer'):
+		var timer = Utility.get_node('TimerCreator')._create_timer(duration, false, target)
+		timer.timeout.connect(_deapply_weaken.bind(target, value))
+		timer.name = "Weaken_timer"
+		target.set_meta('Weaken_amount', value)
+		var weaken = weaken_effect.instantiate()
+		weaken.name = "Weaken_effect"
+		target.add_child(weaken)
+		timer.start()
+	else:
+		target.get_node('Weaken_timer').start(duration)
+
+func _deapply_weaken(target, value):
+	target.get_node('Weaken_effect').queue_free()
+	target.remove_meta('Weaken_amount')
+	if target.is_in_group('players'):
+		target._update_stats()
+
+
 # Handles the bleed action on the target.
 # Parameters:
 # - target: The target of the action.
@@ -2099,6 +2734,8 @@ func _handle_gravity_pull_action(target, value, user):
 func _handle_bleed_action(target, value, user, extra):
 	if target in invincible_units or _check_if_dead(target):
 		return
+	if target.has_meta("Weaken_amount"):
+		value += value * (target.get_meta("Weaken_amount")/100.0)
 	var duration = 2
 	if target.is_in_group('players'):
 		duration = 2 - ((target.total_affliction_resistance/100) * duration)
@@ -2106,6 +2743,7 @@ func _handle_bleed_action(target, value, user, extra):
 	var total_ticks = ceil(duration / tick_interval)
 	var damage_per_tick = value / total_ticks
 	var bleed_stacks = 1
+	var added_value = 0
 	if user.is_in_group('players'):
 		for e in user.get_node('InventoryManager').abilities:
 			if e._has_tag('BleedDuration') and extra["ability"].find(e.a_name) != -1:
@@ -2113,7 +2751,10 @@ func _handle_bleed_action(target, value, user, extra):
 			if e._has_tag('BleedAmount') and extra["ability"].find(e.a_name) != -1:
 				bleed_stacks += e._get_tag('BleedAmount')
 			if e._has_tag('BleedPercentDamage') and extra["ability"].find(e.a_name) != -1:
-				value += value * (e._get_tag('BleedPercentDamage')/100.0)
+				added_value += value * (e._get_tag('BleedPercentDamage')/100.0)
+		
+		added_value += value * ((user.global_bleed_damage/100.0) + (user.global_damage/100.0))
+		value += added_value
 	
 	if !target.has_node('Bleed_timer'):
 		var timer = Utility.get_node('TimerCreator')._create_timer(tick_interval, false, target)
@@ -2126,7 +2767,6 @@ func _handle_bleed_action(target, value, user, extra):
 	else:
 		if target.get_meta('Bleed_stacks') >= 10:
 			return
-		print("Bleed stacks: " + str(target.get_meta('Bleed_stacks')))
 		target.set_meta('Bleed_count', 0)
 		target.set_meta('Bleed_stacks', target.get_meta('Bleed_stacks') + 1)
 		if target.get_meta('Bleed_damage') < damage_per_tick:
@@ -2175,6 +2815,10 @@ func _handle_mark_action(target, value, user):
 	timer.timeout.connect(_deapply_mark.bind(target))
 	timer.start()
 
+func _handle_mana_overload_action(target, value, user, extra):
+	var mana_damage = user.total_mana * (value/100.0)
+	_on_do_action(mana_damage, target, user, "Damage", extra)
+
 # Handles the PvE darkness action on the target.
 # Parameters:
 # - target: The target of the action.
@@ -2214,8 +2858,9 @@ func _deapply_frozen(target):
 		return
 	target.is_frozen = false
 	frozen_targets.erase(target)
-	target.get_node('Frozen_effect').queue_free()
-	target.get_node('Frozen_timer').queue_free()
+	if target:
+		target.get_node('Frozen_effect').queue_free()
+		target.get_node('Frozen_timer').queue_free()
 
 # This function removes a target from an array.
 # Parameters:
@@ -2285,7 +2930,8 @@ func _deapply_freeze(original_speed, target):
 	if _check_if_dead(target):
 		return
 	target.bonus_speed += original_speed
-	target.get_node('Freeze_timer').queue_free()
+	if target.has_node('Freeze_timer'):
+		target.get_node('Freeze_timer').queue_free()
 	if target.has_node('Freeze_effect'):
 		target.get_node('Freeze_effect').queue_free()
 
@@ -2311,6 +2957,10 @@ func _deapply_buff(target, value, tag):
 		target.bonus_speed -= value
 	if tag == "AttackSpeed":
 		target.bonus_attack_speed -= value
+	if tag == "BurnReflect":
+		target.set_meta('BurnReflectBuff', target.get_meta('BurnReflectBuff') - value)
+		if target.get_meta('BurnReflectBuff') <= 0:
+			target.remove_meta('BurnReflectBuff')
 	if tag == "Shock":
 		target.get_node('Shock_timer').queue_free()
 		target.set_meta('Shock_count', 0)
@@ -2334,6 +2984,36 @@ func _deapply_buff(target, value, tag):
 	if tag == "Stun":
 		target.is_stunned = false
 		target.get_node("Stun_effect").queue_free()
+	if tag == "Taunt":
+		target.is_taunted = false
+		target.get_node("Taunt_effect").queue_free()
+	if tag == "Thorns":
+		target.bonus_thorns -= value
+	
+	if target.is_in_group('players'):
+		target._update_stats()
+
+func _deapply_global_buff(target, value, tag):
+	if _check_if_dead(target):
+		return
+	if tag == "Armor":
+		target.global_armor -= value
+	if tag == "Speed":
+		target.global_movement_speed -= value
+	if tag == "AttackDamage":
+		target.global_attack_damage -= value
+	if tag == "ManaRegen":
+		target.global_mana_regen -= value
+	if tag == "Evade":
+		target.global_evade -= value
+	if tag == "Damage":
+		target.global_damage -= value
+	if tag == "Health":
+		target.global_health -= value
+	if tag == "Size":
+		target.global_size -= value
+	if tag == "PoisonDamage":
+		target.global_poison_damage -= value
 	
 	if target.is_in_group('players'):
 		target._update_stats()
@@ -2347,16 +3027,18 @@ func _deapply_buff(target, value, tag):
 #   - color: The color of the damage text.
 #   - type: The type of damage over time effect (e.g., "Bleed", "Burn").
 func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, type, timer_name = null):
-	if target in invincible_units or _check_if_dead(target) or get_tree().get_nodes_in_group("players")[0].paused:
-		return
+	if "Heal" not in type:
+		if target in invincible_units or _check_if_dead(target) or get_tree().get_nodes_in_group("players")[0].paused:
+			return
 	var damage
+	print(type)
 	if type == "Bleed":
 		damage = _calculate_reduced_damage(target.get_meta("Bleed_damage") * (1 + target.get_meta('Bleed_stacks')/2), target.total_armor)
-		print("Bleed damage: " + str(damage))
-	elif type == "Frenzy":
+	elif type == "Frenzy" or type == "Heal":
 		damage = damage_per_tick
 	elif type == "Poison":
-		damage = damage_per_tick
+		damage = float(damage_per_tick * (target.get_meta("Poison_stacks")))
+		print(damage)
 		if !poisoned_targets.has(target):
 			poisoned_targets.append(target)
 	else:    
@@ -2382,8 +3064,24 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 						if enemy.global_position.distance_to(new_explosion.global_position) < e._get_enchant_extras('BurnExplosion')['Radius']:
 							_on_do_action(damage * 3, enemy, user, "Damage")
 						break
+		
+	if extra_effect_values.has("ManaShield"):
+		if target.is_in_group("players"):
+			var potential_damage = damage * (1 - (extra_effect_values["ManaShield"]/100.0))
+			var mana_damage = damage - potential_damage
+			if target.current_mana >= mana_damage:
+				target.current_mana -= mana_damage
+				damage = potential_damage
+			else:
+				damage -= target.current_mana
+				target.current_mana = 0
 
-	target.current_health -= _barrier_protection(target, damage)
+	if type == "Heal":
+		target.current_health += damage
+	elif type == "ManaHeal":
+		target.current_mana += damage
+	else:
+		target.current_health -= _barrier_protection(target, damage)
 
 	_trigger_combat_text(target, damage, color)
 	
@@ -2413,8 +3111,11 @@ func _apply_damage_over_time(target, damage_per_tick, user, total_ticks, color, 
 			target.get_node(type + "_timer").queue_free()
 		if timer_name != null and !_check_if_dead(target) and target.has_node(type + "_timer_" + timer_name):
 			target.get_node(type + "_timer_" + timer_name).queue_free()
+		if timer_name != null and !_check_if_dead(target) and target.has_node(timer_name):
+			target.get_node(timer_name).queue_free()
 	_update_boss_health_bar(target, user)
-	_trigger_hit_effect(target, type)
+	if type != "Heal" or "ManaHeal":
+		_trigger_hit_effect(target, type)
 	if _check_if_dead(target):
 		return
 
@@ -2441,12 +3142,13 @@ func _update_boss_health_bar(target, _user):
 		health_bar._update_health(percentage)
 		
 	
-func 	_check_if_dead(unit):
+func _check_if_dead(unit, value = 0, color = 'red'):
 	if !is_instance_valid(unit):
 		return true
 	if unit.is_queued_for_deletion():
 		return true
 	if unit.current_health <= 0:
+		_trigger_combat_text(unit.global_position, value, color)
 		unit.is_dead.emit(unit)
 		unit.set_meta('dying', true)
 		return true
@@ -2471,7 +3173,7 @@ func _trigger_hit_effect(target, tag):
 	sprite.material = new_material
 	if target.is_in_group('enemies') and tag == "Damage":
 		if !target.is_in_group('boss') or !target.is_in_group('special'):
-			target.do_action.emit(10, target, player, "Wind")
+			_on_do_action(15, target, player, "Wind")
 		if !target.has_node('HitEffect'):
 			var instance = hit_effect.instantiate()
 			target.add_child(instance)
@@ -2509,12 +3211,11 @@ func _create_combat_text_and_update_recent(value, current_time, target, color):
 	recent_combat_text_timestamps[target][color] = current_time
 	var instanced = combat_text.instantiate()
 	recent_combat_text_instances[target][color] = instanced
-	instanced._create_text(recent_combat_text_values[target][color], target, color)
+	instanced._create_text(recent_combat_text_values[target][color], target, color, player)
 
 func _trigger_combat_text(target, value, color):
-	if _check_if_dead(target):
+	if _check_if_dead(target, value, color) and typeof(target) == TYPE_OBJECT:
 		return
-
 	value = ceil(value)
 	var current_time = Time.get_ticks_msec() / 1000.0
 	if recent_combat_text_values.has(target):

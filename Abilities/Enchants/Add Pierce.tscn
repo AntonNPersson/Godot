@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvoklfatkbgig"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_1tc6j"]
+[ext_resource type="Texture2D" uid="uid://c7qs6oamo5ga" path="res://Abilities/Enchants/icons/2BrownAbility_5.png" id="2_nfbuf"]
+
+[node name="Add Pierce" type="Node2D"]
+script = ExtResource("1_1tc6j")
+i_name = "Projectile: Pierce"
+tooltip = "Adds pierce to your projectile, letting them fly through enemies, still applying values."
+icon = ExtResource("2_nfbuf")
+tags = Array[String](["Pierce"])
+values = Array[float]([1.0])
+types = Array[int]([0])
+unique = true
+rarity = 3

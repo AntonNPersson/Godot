@@ -3,7 +3,7 @@ class_name Vitalizing
 var vitality = 12
 
 func _initialize():
-	vitality = randi() % 12 + 5
+	vitality = randi() % 8 + 4
 
 func _get_values():
 	return [vitality]

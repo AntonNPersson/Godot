@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://cgp58fhdbmdwo"]
+
+[ext_resource type="Texture2D" uid="uid://inovn33raxs8" path="res://Sprites/Sewers/acid_bot_wall.png" id="1_qaoa1"]
+[ext_resource type="Texture2D" uid="uid://d4i471m2p14ry" path="res://Sprites/Sewers/Animated sewage water tiles (full tile).png" id="2_km8mh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uxsor"]
+atlas = ExtResource("2_km8mh")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1k63c"]
+atlas = ExtResource("2_km8mh")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wn1dw"]
+atlas = ExtResource("2_km8mh")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tfkdo"]
+atlas = ExtResource("2_km8mh")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_44jw6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uxsor")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1k63c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wn1dw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tfkdo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u6fxb"]
+size = Vector2(128, 128)
+
+[node name="Acid South Wall" type="Area2D" groups=["obstacles"]]
+position = Vector2(984, 547)
+metadata/Walkable = false
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qaoa1")
+
+[node name="Sprite2D2" type="AnimatedSprite2D" parent="."]
+z_index = -1
+sprite_frames = SubResource("SpriteFrames_44jw6")
+autoplay = "default"
+frame_progress = 0.106855
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_u6fxb")

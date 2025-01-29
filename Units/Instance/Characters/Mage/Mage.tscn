@@ -1,4 +1,4 @@
-[gd_scene load_steps=93 format=3 uid="uid://q3mmmpdyndak"]
+[gd_scene load_steps=97 format=3 uid="uid://q3mmmpdyndak"]
 
 [ext_resource type="Script" path="res://Units/Instance/Characters/Mage/Mage.gd" id="1_syysl"]
 [ext_resource type="Texture2D" uid="uid://b2kaq01ppd2xb" path="res://Units/Instance/Characters/Mage/2BlueAbility_1.png" id="3_3b84p"]
@@ -160,6 +160,22 @@ region = Rect2(320, 64, 64, 64)
 atlas = ExtResource("11_up78m")
 region = Rect2(384, 64, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_accdw"]
+atlas = ExtResource("11_up78m")
+region = Rect2(0, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83df7"]
+atlas = ExtResource("11_up78m")
+region = Rect2(0, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwyvb"]
+atlas = ExtResource("11_up78m")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xfpf7"]
+atlas = ExtResource("11_up78m")
+region = Rect2(0, 576, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_kuogh"]
 atlas = ExtResource("11_up78m")
 region = Rect2(64, 704, 64, 64)
@@ -309,9 +325,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_40oq7")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack East",
-"speed": 1.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -332,9 +348,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rmkqq")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack North",
-"speed": 1.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -355,9 +371,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_iibb2")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack South",
-"speed": 1.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -378,9 +394,41 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_khijf")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack West",
-"speed": 1.0
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_accdw")
+}],
+"loop": true,
+"name": &"Idle East",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_83df7")
+}],
+"loop": true,
+"name": &"Idle North",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwyvb")
+}],
+"loop": true,
+"name": &"Idle South",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xfpf7")
+}],
+"loop": true,
+"name": &"Idle West",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -526,12 +574,13 @@ size = Vector2(65, 16)
 [node name="Mage" type="Area2D" groups=["Persist", "players"]]
 top_level = true
 position = Vector2(-1, 0)
+collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_syysl")
 passive_name = "Arcane Intelligence"
 passive_tooltip = "Passively regenerate mana at a higher rate based on intelligence."
 passive_tooltip2 = "Cost: 0 Range: 0
-Gain intelligence/10 mana regeneration."
+Gain intelligence/100 mana regeneration."
 passive_icon = ExtResource("3_3b84p")
 active_name = "Teleport"
 active_tooltip = "Teleport a short distance."
@@ -542,9 +591,8 @@ movement_skill_scene = ExtResource("5_yhj73")
 type = Array[String](["INT"])
 c_name = "Mage"
 base_speed = 115
-base_barrier = 125
 base_health = 75
-base_mana = 150
+base_mana = 125
 base_range = 50
 base_attack_damage = 5
 base_windup_time = 0.8
@@ -588,9 +636,8 @@ replication_config = SubResource("SceneReplicationConfig_cualu")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_qiveg")
 sprite_frames = SubResource("SpriteFrames_cd88l")
-animation = &"Walk East"
-frame = 3
-frame_progress = 0.832741
+animation = &"Idle East"
+autoplay = "Idle South"
 
 [node name="UI" type="Node2D" parent="."]
 z_index = 12

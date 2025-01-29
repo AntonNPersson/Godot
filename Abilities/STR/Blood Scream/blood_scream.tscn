@@ -15,7 +15,6 @@ ability_type = "STR"
 area_type = 2
 duration = 0.3
 radius = 200.0
-echo_delay = 1.8
 tags = Array[String](["Damag e", "Bleed"])
 values = Array[float]([20.0, 4.0])
 increased_values = Array[float]([15.0, 2.0])

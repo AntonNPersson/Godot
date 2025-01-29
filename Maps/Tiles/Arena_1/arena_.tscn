@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://tte1vievd453"]
+[gd_scene load_steps=62 format=3 uid="uid://tte1vievd453"]
 
 [ext_resource type="PackedScene" uid="uid://da2dubhc12iyy" path="res://Maps/Tiles/Arena_1/tiles/boss_encounter1.tscn" id="1_i01gl"]
 [ext_resource type="PackedScene" uid="uid://c4kr1k7bekfs" path="res://Maps/Tiles/Arena_1/tiles/floor.tscn" id="3_41kjs"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cdyndp4pt5enr" path="res://Sprites/Goblin King/tiles/New_tiles_test/test_bot_wall.png" id="15_nr817"]
 [ext_resource type="Texture2D" uid="uid://munhcycjn2cs" path="res://Sprites/Goblin King/tiles/New_tiles_test/new_tree.png" id="16_xn62k"]
 [ext_resource type="Texture2D" uid="uid://cjrxp47c6dgam" path="res://Sprites/Goblin King/tiles/New_tiles_test/new obstacle.png" id="17_5i80f"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/flip_h.gd" id="17_ft2vt"]
 [ext_resource type="Texture2D" uid="uid://cx67x4p767cy6" path="res://Sprites/Goblin King/tiles/New_tiles_test/wall.png" id="18_wrxbl"]
 [ext_resource type="Texture2D" uid="uid://b40yy7j7la7r6" path="res://Sprites/Goblin King/tiles/New_tiles_test/left_corner_wall.png" id="19_3gh3c"]
 [ext_resource type="PackedScene" uid="uid://ecpbj03w3kp2" path="res://Maps/Tiles/Arena_1/tiles/wall corner/wall corner.tscn" id="20_2acxd"]
@@ -37,6 +38,8 @@
 [ext_resource type="Texture2D" uid="uid://c220md4i8c7cd" path="res://Sprites/Goblin King/tiles/New_tiles_test/extra_double_wall_top.png" id="35_arugn"]
 [ext_resource type="Texture2D" uid="uid://dw21sqd7lhche" path="res://Sprites/Goblin King/tiles/New_tiles_test/second_wall.png" id="36_raqug"]
 [ext_resource type="Texture2D" uid="uid://dletj68v21cqc" path="res://Sprites/Goblin King/tiles/New_tiles_test/second_wall_double.png" id="37_y6mqh"]
+[ext_resource type="Texture2D" uid="uid://tmmq0vqhm7xx" path="res://Sprites/Goblin King/tiles/cactus_4.png" id="39_0kogu"]
+[ext_resource type="Texture2D" uid="uid://bo768pdyerth5" path="res://Sprites/Goblin King/tiles/New_tiles_test/altar.png" id="41_vlcp4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7idap"]
 size = Vector2(127, 25)
@@ -94,6 +97,11 @@ size = Vector2(128, 128)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uiewv"]
 size = Vector2(128, 129)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8hf33"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_757w1"]
+size = Vector2(128, 128)
 
 [node name="Arena_" type="Node2D"]
 z_index = -1
@@ -251,6 +259,7 @@ z_index = 3
 position = Vector2(11, -93)
 scale = Vector2(2, 2)
 texture = ExtResource("16_xn62k")
+script = ExtResource("17_ft2vt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_150"]
 position = Vector2(-1, 10)
@@ -668,7 +677,7 @@ metadata/Walkable = false
 
 [node name="_Area2D_167" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 z_index = -1
-position = Vector2(431, 137)
+position = Vector2(1042, 142)
 metadata/Walkable = false
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_167"]
@@ -677,8 +686,39 @@ z_index = 3
 position = Vector2(11, -93)
 scale = Vector2(2, 2)
 texture = ExtResource("16_xn62k")
+script = ExtResource("17_ft2vt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="_Area2D_167"]
 position = Vector2(-1, 10)
 scale = Vector2(1.13064, 0.624678)
 shape = SubResource("CircleShape2D_f1lnr")
+
+[node name="Animated grass" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-1127, -106)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Animated grass"]
+modulate = Color(1, 1, 1, 0.396078)
+z_index = 1
+z_as_relative = false
+position = Vector2(-1, -1)
+texture = ExtResource("39_0kogu")
+script = ExtResource("17_ft2vt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Animated grass"]
+position = Vector2(1, 24)
+shape = SubResource("CircleShape2D_8hf33")
+
+[node name="Fountain" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-1398, -13)
+metadata/Walkable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fountain"]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_757w1")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Fountain"]
+position = Vector2(-1, 12)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("41_vlcp4")

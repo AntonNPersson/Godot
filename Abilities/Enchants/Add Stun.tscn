@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsu6xn1fpmukm"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_bxcfn"]
+[ext_resource type="Texture2D" uid="uid://dcnkye3ffi68v" path="res://Abilities/Enchants/icons/2YellowAbility_11.png" id="2_7yd2y"]
+
+[node name="Add Stun" type="Node2D"]
+script = ExtResource("1_bxcfn")
+i_name = "General: Stun"
+tooltip = "Your ability now stuns for Value0 second(s)."
+icon = ExtResource("2_7yd2y")
+tags = Array[String](["Stun"])
+values = Array[float]([0.75])
+types = Array[int]([0, 1, 3, 6])
+extra = {
+"Hit": true
+}
+rarity = 1

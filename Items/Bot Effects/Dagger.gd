@@ -14,7 +14,7 @@ var attack_sprite = null
 
 func _initialize():
 	range = 15
-	attack_damage = randi_range(4, 6)
+	attack_damage = randi_range(1, 3)
 	quick_attack_chance = 100
 	icon = preload('res://Sprites/Icons/Dagger.png')
 	type = ["Offense"]

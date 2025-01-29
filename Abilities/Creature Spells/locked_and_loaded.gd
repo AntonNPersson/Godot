@@ -43,6 +43,8 @@ func _on_hit_finished():
 func _on_timeout():
 	if target_position == Vector2(0, 0):  # Check if target_position has not been set
 		target_position = target.global_position
+		if target.is_in_group("players") and target.get_node("Control").movement_target != null:
+			target_position = target.global_position + target.get_node("Control").movement_target * 20
 
 		direction = (target_position - self.global_position).normalized()
 		self.global_position += direction * 20

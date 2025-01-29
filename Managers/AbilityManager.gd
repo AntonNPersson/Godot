@@ -1,4 +1,5 @@
 extends Node
+@export var cm : Node
 signal picked(ability_, subwave)
 signal curse_picked(curse)
 signal enchant_picked(enchant, ability_)
@@ -108,6 +109,7 @@ func _choose_ability_choices(list):
 		return choices
 
 func _show_enchant_choices():
+	target.paused = true
 	enchant_popup.get_node('Choice_1').get_node('Name').text = current_ability_choices[0].i_name
 	enchant_popup.get_node('Choice_2').get_node('Name').text = current_ability_choices[1].i_name
 	enchant_popup.get_node('Choice_3').get_node('Name').text = current_ability_choices[2].i_name
@@ -157,12 +159,12 @@ func _show_curse_choices():
 	curse_popup.visible = true
 
 func _on_next_choice(unit, subwave):
-	unit.paused = true
 	current_ability_round += 1
 	var ability_list = []
 	target = unit
 	is_subwave = subwave
 	if unit.get_node("InventoryManager").abilities.size() < 3:
+		GameManager._pause_game()
 		if unit.type.has("INT"):
 			ability_list.append_array(int_list)
 		if unit.type.has("DEX"):
@@ -175,14 +177,13 @@ func _on_next_choice(unit, subwave):
 		_on_next_enchant()
 
 func _on_next_enchant():
-	target.paused = true
 	chosen_enchant_ability = target.get_node("InventoryManager").abilities.pick_random()
 	enchant_popup.get_node('Ability_name').text = "[center]" + chosen_enchant_ability.name
 	_choose_enchants_specific(chosen_enchant_ability.tags, chosen_enchant_ability.projectile_type, chosen_enchant_ability, false)
 	_show_enchant_choices()
 
 func _on_next_curse():
-	target.paused = true
+	GameManager._pause_game()
 	_choose_ability_choices(curse_list)
 	_show_curse_choices()
 
@@ -241,7 +242,7 @@ func _on_enchant_1_pressed(event, index):
 					removed_enchants.append(current_ability_choices[enchant_index].name)
 					enchant_list.erase(current_ability_choices[enchant_index])
 				enchant_popup.visible = false
-				target.paused = false
+				GameManager._continue_game()
 
 func _use_ability_based_on_name(name):
 	var all_lists = []
@@ -258,19 +259,53 @@ func _use_ability_based_on_name(name):
 			return
 
 func _choose_enchants_specific(tags, projectile_type, ability, enchantMode = true):
+	GameManager._pause_game()
 	chosen_enchant_ability = ability
 	reroll_mode = enchantMode
 	enchant_popup.get_node('Ability_name').text = "[center]" + chosen_enchant_ability.name
 	randomize()
 	var roll = randi_range(0, 100)
 	enchant_list.shuffle()
+
+	var types = {"Line": 0, "EnemyTarget": 1, "AllyTarget": 2, "Area": 3, "Passive": 4, "Self": 5, "Movement": 6, "EnemyAura": 7, "AllyAura": 8, "Summon": 9, "None": 10}
+
+	var excluded_tags = ["Explosion", "Pool"]
+	var non_synergazible_functions = {"PassiveActivate": chosen_enchant_ability.toggle,
+									"Pierce": chosen_enchant_ability.projectile_ricochet,
+									"AbilityPercentCooldownReduction": chosen_enchant_ability.cooldown <= 0}
+	var non_synergazible_tags = {}
+	var nessecary_synergies_tags = {"Pool": "Damage"}
+
+	print(non_synergazible_functions)
+
 	while true:
 		# Reset choices at the start of each attempt
 		var choices = []
 		# Go through each enchant in the enchant list
 		for i in enchant_list:
+			var skip = false
+			for non in non_synergazible_functions:
+				if non in i.tags and non_synergazible_functions[non]:
+					skip = true
+					break
+
+			for nes in nessecary_synergies_tags:
+				if nes in i.tags and nessecary_synergies_tags[nes] == -1:
+					skip = true
+					break
 			# Check if it's rare enough
 			if i._get_rarity() > roll or choices.find(i) != -1:
+				continue
+
+			if projectile_type == types["Summon"] and i.types.find(types["Summon"]) != -1:
+				roll = randi_range(0, 100)
+				choices.append(i)
+				continue
+			
+			if skip:
+				continue
+
+			if excluded_tags.find(i.tags[0]) != -1 and ability.tags.find(i.tags[0]) != -1:
 				continue
 			# Check if it matches any tag and if it's a projectile type
 			for j in tags:
@@ -319,16 +354,25 @@ func split_tag(tag: String) -> Array:
 func has_common_substring(tag1: String, tag2: String) -> bool:
 	var split1 = split_tag(tag1)
 	var split2 = split_tag(tag2)
-	
-	# Check for any common substring by iterating through one array and checking the other
+
+	# List of substrings to completely exclude
+	var excluded_tags = ["Damage", "Percent"]
+
 	for substring in split1:
-		if substring in split2 and substring != "Damage" and substring != "Explosion":
+		# Skip if the substring matches or contains any excluded tag
+		if substring in excluded_tags:
+			continue
+		
+		# Check for a match in the other tag's substrings
+		if substring in split2:
 			return true
-	# Exceptions:
-		if substring == "Freeze" and "Frozen" in split2:
+		
+		# Handle specific exceptions
+		if substring == "freeze" and "frozen" in split2:
 			return true
-			
+
 	return false
+
 
 # This function is used to use an ability based on the type of the ability.
 # Types: 0 = line, 1 = enemy target, 2 = ally target, 3 = area, 4 = passive, 5 = self, 6 = movement, 7 = enemy aura, 8 = ally aura, 9 = summon, 10 = none
@@ -361,7 +405,7 @@ func _open_enchant_ability_select(index):
 	if current_ability_choices[enchant_index].unique:
 		removed_enchants.append(current_ability_choices[enchant_index].name)
 		enchant_list.erase(current_ability_choices[enchant_index])
-	target.paused = false
+	GameManager._continue_game()
 
 func _level_up_enchant(tags, projectile_type, ability, enchantMode = true):
 	enchant_mode = false
@@ -370,6 +414,7 @@ func _level_up_enchant(tags, projectile_type, ability, enchantMode = true):
 
 func _on_select_1_pressed(index):
 	current_ability_choices[index].level_enchant.connect(_level_up_enchant)
+	current_ability_choices[index]._on_cast.connect(cm._on_cast)
 	picked.emit(current_ability_choices[index], is_subwave)
 	chosen_ability_choices.append(current_ability_choices[index])
 
@@ -381,7 +426,7 @@ func _on_select_1_pressed(index):
 		str_List.erase(current_ability_choices[index])
 
 	ability_popup.visible = false
-	target.paused = false
+	GameManager._continue_game()
 
 func _on_reroll_pressed():
 	if target.rerolls > 0:
@@ -422,7 +467,7 @@ func _on_curse_1_selected(index):
 		removed_curses.append(current_ability_choices[index].name)
 	curse_popup.visible = false
 	target.ascension_currency_multiplier += current_ability_choices[index].ascension_currency_multiplier
-	target.paused = false
+	GameManager._continue_game()
 
 func _on_curse_reroll_pressed():
 	if target.rerolls > 0:

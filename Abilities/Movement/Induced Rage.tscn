@@ -155,7 +155,8 @@ animations = [{
 script = ExtResource("1_5tu8p")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_movgc")
 frame = 19
 frame_progress = 1.0
-offset = Vector2(0, -32)
+offset = Vector2(0, -50)

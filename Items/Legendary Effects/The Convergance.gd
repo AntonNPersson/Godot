@@ -15,7 +15,7 @@ func _initialize():
 	attack_speed = randi_range(-14, -28)
 	bonus_stamina_regen = randi_range(2, 5)
 	tags.append("TheConvergance")
-	values.append(true)
+	values.append(0)
 	colors.append(color)
 	duration = 0.0
 

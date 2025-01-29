@@ -42,6 +42,9 @@ var mouse_pointer = load('res://Sprites/Icons/pointer.png')
 var tile_history = []
 var current_tile = Vector2.ZERO
 
+var added_extra = {"Forced Critical": false,
+				   "Forced Critical Amount": 0}
+
 #--------------------------#
 # Helper functions
 #--------------------------#
@@ -57,28 +60,32 @@ func _calculate_attack_percentage():
 
 func update_sprite_direction(target_position, type):
 	# Updates the sprite direction based on the target position and type of action.
+
 	var direction_vector = target_position
+
+	var current_anim = animation.get_animation()
+
+	if "Attack" in current_anim and type != "Attack" and animation.is_playing():
+		return
+		
+	animation.set_speed_scale(1.0)
 	
-	if type == "Attack":
-		animation.set_speed_scale((2/stats.total_windup_time))
-	else:
-		animation.speed_scale = 1
-	
+	var new_sprite_direction = ""
 	# Determine the cardinal direction based on the direction vector.
 	if abs(direction_vector.x) > abs(direction_vector.y):
 		if direction_vector.x > 0:
-			current_sprite_direction = type + " East"
-			animation.play(current_sprite_direction)
+			new_sprite_direction = type + " East"
 		else:
-			current_sprite_direction = type + " West"
-			animation.play(current_sprite_direction)
+			new_sprite_direction = type + " West"
 	else:
 		if direction_vector.y > 0:
-			current_sprite_direction = type + " South"
-			animation.play(current_sprite_direction)
+			new_sprite_direction = type + " South"
 		else:
-			current_sprite_direction = type + " North"
-			animation.play(current_sprite_direction)
+			new_sprite_direction = type + " North"
+
+	if current_anim != new_sprite_direction:
+		current_sprite_direction = new_sprite_direction
+		animation.play(current_sprite_direction)
 
 func _get_closest_visible_enemy_to_mouse():
 	# Finds the closest visible enemy to the mouse position.
@@ -110,7 +117,17 @@ func _physics_process(delta):
 	_check_collision()
 	if stats.movement_skill:
 		stats.movement_skill._use_ability(delta)
-	
+
+	if stats.get_node('Summons').get_child_count() > 0:
+		if Input.is_action_pressed('Summon_Attack'):
+			for summon in stats.get_node('Summons').get_children():
+				summon._target = _get_closest_visible_enemy_to_mouse()
+				return
+
+	if added_extra["Forced Critical Amount"] <= 0:
+		added_extra["Forced Critical"] = false
+		added_extra["Forced Critical Amount"] = 0
+
 	if GameManager.settings['moba_controls']:
 		if basic_attack:
 			if stats.is_stunned:
@@ -208,9 +225,10 @@ func _wasd_attack_movement(delta, closest_target):
 			is_winding_upp = false
 			attack_timer = stats.total_windup_time
 			attack_bar.visible = false
+			update_sprite_direction(movement_target, 'Idle')
 
 
-func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = null):
+func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = null, reduced_attack_damage = 0, new_target = null):
 	stats.in_stealth = false
 	if tags == null:
 		tags = []
@@ -219,11 +237,17 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 	attack_timer = stats.total_windup_time
 	is_winding_upp = false
 	if attack_target == null:
-		attack_target = _get_closest_visible_enemy_to_mouse()
-		if attack_target == null:
-			return
+		if GameManager.selected_character_name == "Ranger":
+			mouse_pos = get_global_mouse_position()
+		else:
+			attack_target = _get_closest_visible_enemy_to_mouse()
+			if attack_target == null:
+				return
+			if stats.global_position.distance_to(attack_target.global_position) > stats.total_range:
+				return
+	if new_target != null:
+		attack_target = new_target
 		if stats.global_position.distance_to(attack_target.global_position) > stats.total_range:
-			attack_target = null
 			return
 	basic_attacking.emit(attack_target)
 	tags.append_array(stats.current_attack_modifier_tags)
@@ -245,16 +269,17 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 			else:
 				instance.target_position = (mouse_pos - stats.global_position).normalized()
 				instance.rotation = (mouse_pos - stats.global_position).angle()
-			var crit = stats._apply_critical_damage(stats.total_attack_damage)
+			var crit = stats._apply_critical_damage(stats.total_attack_damage * (1 - reduced_attack_damage/100.0), added_extra["Forced Critical"])
 			instance.damage = crit["value"]
 			if crit["critical"]:
 				instance.is_critical = true
+			added_extra["Forced Critical Amount"] -= 1
 			return
 		else:
 			update_sprite_direction(mouse_pos - stats.global_position, "Attack")
 			var base_direction = (mouse_pos - stats.global_position).normalized()
 			var spread_angle = deg_to_rad(10)
-			for i in range(stats.total_attack_targets):
+			for i in range(-1, stats.total_attack_targets - 1):
 				var instance = stats.basic_attack_scene.instantiate()
 				get_tree().get_root().add_child(instance)
 				instance.global_position = stats.global_position
@@ -264,16 +289,20 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 				instance.unit = stats
 				if new_attack_direction != null:
 					instance.target_position = new_attack_direction.rotated(spread_angle * i)
-					instance.rotation = new_attack_direction.angle_to(new_attack_direction.rotated(spread_angle * i))
+					instance.rotation = new_attack_direction.rotated(spread_angle * i).angle()
 				else:
-					instance.target_position = base_direction.rotated(spread_angle * i)
-					instance.rotation = base_direction.angle_to(base_direction.rotated(spread_angle * i))
-				var crit = stats._apply_critical_damage(stats.total_attack_damage)
+					var direction = base_direction.rotated(spread_angle * i)
+					instance.target_position = direction
+					instance.rotation = direction.angle()
+				var crit = stats._apply_critical_damage(stats.total_attack_damage * (1 - reduced_attack_damage/100.0), added_extra["Forced Critical"])
 				instance.damage = crit["value"]
 				if crit["critical"]:
 					instance.is_critical = true
+				added_extra["Forced Critical Amount"] -= 1
+			return
 
 	if !stats.melee:
+		update_sprite_direction(mouse_pos - stats.global_position, "Attack")
 		if stats.total_attack_targets <= 1:
 			var instance = stats.basic_attack_scene.instantiate()
 			get_tree().get_root().add_child(instance)
@@ -283,10 +312,11 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 			instance.values = values
 			instance.unit = attack_target
 			instance.original_unit = stats
-			var crit = stats._apply_critical_damage(stats.total_attack_damage)
+			var crit = stats._apply_critical_damage(stats.total_attack_damage * (1 - reduced_attack_damage/100.0), added_extra["Forced Critical"])
 			instance.damage = crit["value"]
 			if crit["critical"]:
 				instance.is_critical = true
+			added_extra["Forced Critical Amount"] -= 1
 		else:
 			var targets = get_tree().get_nodes_in_group('enemies')
 			var g = 0
@@ -303,10 +333,11 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 					instance.values = values
 					instance.unit = target
 					instance.original_unit = stats
-					var crit = stats._apply_critical_damage(stats.total_attack_damage)
+					var crit = stats._apply_critical_damage(stats.total_attack_damage * (1 - reduced_attack_damage/100.0), added_extra["Forced Critical"])
 					instance.damage = crit["value"]
 					if crit["critical"]:
 						instance.is_critical = true
+					added_extra["Forced Critical Amount"] -= 1
 	else:
 		update_sprite_direction(attack_target.global_position - stats.global_position, "Attack")
 		attack_sprite.get_child(0).play('default')
@@ -315,7 +346,7 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 		attack_sprite.modulate = Color(1, 1, 1, 1)
 		#remove_child(attack_sprite)
 		#get_tree().get_root().add_child(attack_sprite)
-		var crit = stats._apply_critical_damage(stats.total_attack_damage)
+		var crit = stats._apply_critical_damage(stats.total_attack_damage * (1 - reduced_attack_damage/100.0), added_extra["Forced Critical"])
 		var new_damage = crit["value"]
 		var extra = {}
 		if stats.total_attack_targets <= 1:
@@ -330,6 +361,7 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 					extra = {"basic_attacking": true, "critical": crit["critical"]}
 				_on_action(values[i], attack_target, stats, tags[i], extra)
 				j += 1
+			added_extra["Forced Critical Amount"] -= 1
 		else:
 			attack_sprite.scale = Vector2(0.08 + (0.02*stats.total_attack_targets), 0.08 + (0.02*stats.total_attack_targets))
 			var targets = get_tree().get_nodes_in_group('enemies')
@@ -344,6 +376,7 @@ func _attack(tags = null, values = null, delta = 0.0, new_attack_direction = nul
 					for i in range(tags.size()):
 						extra = {"basic_attacking": true, "critical": crit["critical"], "ability" : stats.current_attack_modifier_abilities[i]}
 						_on_action(values[i], target, stats, tags[i], extra)
+				added_extra["Forced Critical Amount"] -= 1
 
 func _normal_movement(delta, current_target):
 	# Handles the normal movement behavior.
@@ -388,6 +421,10 @@ func _wasd_movement(delta):
 	elif Input.is_action_pressed("Move_Right"):
 		movement.x += 1
 		direction.x = 1
+
+	if movement == Vector2.ZERO:
+		update_sprite_direction(movement_target, 'Idle')
+		return
 	
 	if !colliding:
 		if movement != Vector2.ZERO:

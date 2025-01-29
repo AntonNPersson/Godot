@@ -23,5 +23,5 @@ func _process(delta):
 
 func _character_passive():
 	var extra = {'ability': passive_name}
-	get_node('Control').on_action.emit(total_intelligence/10, self, self, "BoostManaRegenPassive", extra)
+	get_node('Control').on_action.emit(total_intelligence/100, self, self, "BoostManaRegenPassive", extra)
 

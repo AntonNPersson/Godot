@@ -1,0 +1,136 @@
+[gd_scene load_steps=20 format=3 uid="uid://dw3k3u550763s"]
+
+[ext_resource type="Texture2D" uid="uid://cqwpy3tfp5l8y" path="res://Abilities/Utility/taunt.png" id="1_f7yio"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1lqqi"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(0, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56m0f"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(48, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ilx4"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(96, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_572hb"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(144, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bx35w"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(192, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ln0lw"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(240, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qyl6b"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(288, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0085"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(336, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e53ho"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(384, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0bj8v"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(432, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b13hn"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(480, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5go45"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(528, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2xa1"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(576, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_12rhi"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(624, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vyusg"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(672, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gd11j"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(720, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6vjby"]
+atlas = ExtResource("1_f7yio")
+region = Rect2(768, 0, 48, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_thsss"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1lqqi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_56m0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ilx4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_572hb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bx35w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ln0lw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qyl6b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0085")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e53ho")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0bj8v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b13hn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5go45")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s2xa1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_12rhi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vyusg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gd11j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6vjby")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="TauntEffec" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_thsss")
+autoplay = "default"
+frame_progress = 0.300809
+offset = Vector2(0, -32)

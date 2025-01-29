@@ -5,7 +5,7 @@ var barrier : int = 10
 
 func _initialize():
 	tags = ["mana_regen", "barrier"]
-	mana_regen = round_to_dec(randf_range(0.2, 0.8), 2)
+	mana_regen = round_to_dec(randf_range(0.05, 0.4), 2)
 	barrier = randi() % 10 + 2
 	values = [mana_regen, barrier]
 	icon = preload('res://Sprites/Icons/Hood.png')

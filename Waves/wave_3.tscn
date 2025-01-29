@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://ceiwu83ujuuri"]
+
+[ext_resource type="PackedScene" uid="uid://cknhni7nwp7v2" path="res://Units/Instance/Enemies/Common/Mutant Rat.tscn" id="1_7wiw0"]
+[ext_resource type="PackedScene" uid="uid://ra5y56o6peg0" path="res://Units/Instance/Enemies/Common/goblinRanger.tscn" id="2_joyjv"]
+[ext_resource type="PackedScene" uid="uid://bb2rcvgybikqf" path="res://Units/Instance/Enemies/Elite/Ogre.tscn" id="3_oltl8"]
+
+[node name="Wave2" type="Node2D"]
+visible = false
+metadata/Color = Color(0.223529, 0.501961, 0.341176, 1)
+
+[node name="basicMeleeCreature" parent="." instance=ExtResource("1_7wiw0")]
+
+[node name="basicRangeCreature4" parent="." instance=ExtResource("2_joyjv")]
+position = Vector2(586, 205)
+aggro_range = 600.0
+
+[node name="Ogre" parent="." instance=ExtResource("3_oltl8")]

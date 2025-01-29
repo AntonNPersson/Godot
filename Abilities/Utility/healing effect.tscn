@@ -110,7 +110,6 @@ animations = [{
 }]
 
 [node name="HealingEffect" type="AnimatedSprite2D"]
-modulate = Color(1, 0, 0, 1)
 sprite_frames = SubResource("SpriteFrames_tmf60")
 autoplay = "default"
 frame = 13

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cw4km6omp1woc"]
+[gd_scene load_steps=4 format=3 uid="uid://cw4km6omp1woc"]
 
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/interactable_tile.gd" id="1_qpjat"]
 [ext_resource type="Texture2D" uid="uid://dluv21jtvuw0a" path="res://Sprites/Goblin King/tiles/sand_floor.png" id="2_5sy25"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/tiles/Randomize_Floor_tile.gd" id="3_tb2pd"]
 
 [node name="creature_spawn" type="Area2D"]
 light_mask = 3
@@ -16,3 +17,4 @@ metadata/Mob_Spawn = true
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
 texture = ExtResource("2_5sy25")
+script = ExtResource("3_tb2pd")

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cimmlkxfb4tyw"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_eu3vs"]
+[ext_resource type="Texture2D" uid="uid://b2n3bwa2li6xy" path="res://Abilities/Enchants/icons/Green Ability_13.png" id="2_pyolf"]
+
+[node name="Add Summon Flat Evade" type="Node2D"]
+script = ExtResource("1_eu3vs")
+i_name = "Summon: Flat Evade"
+tooltip = "Add Value0 flat evade."
+icon = ExtResource("2_pyolf")
+tags = Array[String](["SummonFlatEvade"])
+values = Array[float]([20.0])
+types = Array[int]([9])

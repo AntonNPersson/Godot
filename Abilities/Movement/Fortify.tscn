@@ -1,0 +1,122 @@
+[gd_scene load_steps=18 format=3 uid="uid://dn8g6rwd6oo6i"]
+
+[ext_resource type="Script" path="res://Abilities/Movement/Fortify.gd" id="1_64t56"]
+[ext_resource type="Texture2D" uid="uid://dimwm8d60gias" path="res://Abilities/Movement/Spell 7-Sheet.png" id="2_glaps"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mx0fj"]
+atlas = ExtResource("2_glaps")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvu2a"]
+atlas = ExtResource("2_glaps")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0sopt"]
+atlas = ExtResource("2_glaps")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_40kr4"]
+atlas = ExtResource("2_glaps")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mn1tr"]
+atlas = ExtResource("2_glaps")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukjsm"]
+atlas = ExtResource("2_glaps")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70206"]
+atlas = ExtResource("2_glaps")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fs8e1"]
+atlas = ExtResource("2_glaps")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jof0"]
+atlas = ExtResource("2_glaps")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06l05"]
+atlas = ExtResource("2_glaps")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yitvp"]
+atlas = ExtResource("2_glaps")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgy1h"]
+atlas = ExtResource("2_glaps")
+region = Rect2(1760, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22grb"]
+atlas = ExtResource("2_glaps")
+region = Rect2(1920, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w4e3q"]
+atlas = ExtResource("2_glaps")
+region = Rect2(2080, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kef6h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mx0fj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvu2a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0sopt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_40kr4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mn1tr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ukjsm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_70206")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fs8e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1jof0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_06l05")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yitvp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgy1h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22grb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w4e3q")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Fortify" type="Node2D"]
+script = ExtResource("1_64t56")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_kef6h")
+frame = 13
+frame_progress = 1.0
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_animation_finished"]

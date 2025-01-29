@@ -5,7 +5,7 @@ var evade : int = 10
 
 func _initialize():
 	tags = ["mana_regen", "evade"]
-	mana_regen = round_to_dec(randf_range(0.2, 0.8), 2)
+	mana_regen = round_to_dec(randf_range(0.05, 0.4), 2)
 	evade = randi() % 42 + 10
 	values = [mana_regen, evade]
 	icon = preload('res://Sprites/Icons/Head.png')

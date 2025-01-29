@@ -16,7 +16,6 @@ func _action(_delta):
 	if _unit.has_meta('Knockback_origin') or _unit.has_meta('Pull_origin'):
 		_interrupt_cast_timer()
 		_is_winding = false
-		attack_timer = _unit.total_windup_time
 		return
 
 	for i in range(ability_cooldowns.size()):

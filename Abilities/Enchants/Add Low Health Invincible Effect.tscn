@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr1b6t0vxe4rq"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_ulkdg"]
+[ext_resource type="Texture2D" uid="uid://kdu751npd7wy" path="res://Abilities/Enchants/icons/Yellow Ability_2.png" id="2_x7y83"]
+
+[node name="Add Low Health Invincible Effect" type="Node2D"]
+script = ExtResource("1_ulkdg")
+i_name = "Passive: Invincible"
+tooltip = "Upon going under Value0% total health, become invincible for 3 seconds (30 seconds cooldown)."
+icon = ExtResource("2_x7y83")
+tags = Array[String](["LowHealthInvincible"])
+values = Array[float]([40.0])
+types = Array[int]([4])
+extra = {
+"Effect": true
+}
+unique = true
+rarity = 2

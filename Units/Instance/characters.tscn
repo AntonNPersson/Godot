@@ -50,3 +50,30 @@ active_name = "Induced Rage"
 active_tooltip = "Increase movement speed for a short duration, regeneration more rage during its duration."
 type = Array[String](["STR"])
 unlocked = true
+
+[node name="Duelist" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+passive_name = "Blade Dancer"
+passive_tooltip = "Passively increase evade based on dexterity, and counter attack on succesful evade."
+active_name = "Blur"
+active_tooltip = "Massively increase evade, and moderately movement speed for a short duration."
+type = Array[String](["DEX"])
+unlocked = true
+
+[node name="Sentinel" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+passive_name = "Iron Resilience"
+passive_tooltip = "Passively increase thorns based on strength."
+active_name = "Fortify"
+active_tooltip = "Reduce your movemen speed, but increase thorns and armor based on level."
+type = Array[String](["STR"])
+unlocked = true
+
+[node name="Chronomancer" type="Node" parent="."]
+script = ExtResource("1_m6kbf")
+passive_name = "Rewind"
+passive_tooltip = "Passively increase doublecast chance based on player level."
+active_name = "Time Dilation"
+active_tooltip = "Slow down time on everything except your cooldowns."
+type = Array[String](["INT"])
+unlocked = true

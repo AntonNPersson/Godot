@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bspwii1b1xx7t"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_r3hnr"]
+[ext_resource type="Texture2D" uid="uid://bd1vgmne0ngle" path="res://Abilities/Enchants/icons/2AbilityPack_19.png" id="2_g0ysw"]
+
+[node name="Add Summon Flat Attack Damage" type="Node2D"]
+script = ExtResource("1_r3hnr")
+i_name = "Summon: Flat Attack Damage"
+tooltip = "Add Value0 flat attack damage."
+icon = ExtResource("2_g0ysw")
+tags = Array[String](["SummonFlatAttackDamage"])
+values = Array[float]([5.0])
+types = Array[int]([9])
+rarity = 1

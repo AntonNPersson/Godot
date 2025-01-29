@@ -1,0 +1,128 @@
+[gd_scene load_steps=19 format=3 uid="uid://ba4tbdsn5luoi"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_rmno7"]
+[ext_resource type="Texture2D" uid="uid://droecvmstkhlt" path="res://Abilities/DEX/Serpent Blink/Poison Spell33.png" id="2_22lnr"]
+[ext_resource type="Texture2D" uid="uid://cf7djy3irpt4e" path="res://Abilities/DEX/Serpent Blink/Spell 4-Sheet.png" id="3_l7qw5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ulvgg"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jaaes"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uig3e"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3w087"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fyvl5"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frhpg"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etma3"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_640di"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(0, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gym4x"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(160, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g7fut"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(320, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kj1sq"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(480, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6oef6"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(640, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_on8gl"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(800, 160, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1t08i"]
+atlas = ExtResource("3_l7qw5")
+region = Rect2(960, 160, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yhi5n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ulvgg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jaaes")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uig3e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3w087")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fyvl5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_frhpg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_etma3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_640di")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gym4x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g7fut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kj1sq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6oef6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_on8gl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1t08i")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Serpent Blink" type="Node2D"]
+script = ExtResource("1_rmno7")
+icon = ExtResource("2_22lnr")
+a_name = "Serpent Blink"
+tooltip_text = "Blink to targeted enemy, applying Value0 poison stacks to all nearby enemies."
+mana_cost = 30.0
+projectile_type = 6
+ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_yhi5n")
+type = "Blink"
+custom_movement = true
+custom_end = true
+custom_start = false
+tags = Array[String](["Poison", "Explosion"])
+values = Array[float]([1.0, 75.0])
+increased_values = Array[float]([1.0, 0.0])

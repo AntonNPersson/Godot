@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://df12xwj0m7yie"]
+
+[ext_resource type="Script" path="res://Items/Mid Effects/Aegis.gd" id="1_wmf2r"]
+
+[node name="Aegis" type="Node2D"]
+script = ExtResource("1_wmf2r")

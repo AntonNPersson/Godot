@@ -1,0 +1,160 @@
+[gd_scene load_steps=22 format=3 uid="uid://bqf2cdqrquoiv"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Locked and loaded spray/locked_and_loaded_spray_projectile.gd" id="1_r23nm"]
+[ext_resource type="Texture2D" uid="uid://c6h2jt4mxlkwn" path="res://Abilities/Creature Spells/Spell 3_red-Sheet.png" id="2_hj12s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t81g7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p54pm"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(640, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5pah"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(768, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wggsc"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(896, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yk0rj"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(0, 96, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urplr"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(0, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yp0sp"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(128, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_07xi7"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(256, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b46gj"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(384, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tca5k"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(512, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0mea"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(640, 0, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yvda1"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(128, 96, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4pnj"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(256, 96, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrlmv"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(384, 96, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hpfbg"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(512, 96, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m16pt"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(640, 96, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0mog"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(768, 96, 128, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4fch"]
+atlas = ExtResource("2_hj12s")
+region = Rect2(896, 96, 128, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m6rvi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p54pm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5pah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wggsc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yk0rj")
+}],
+"loop": true,
+"name": &"air",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_urplr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yp0sp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_07xi7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b46gj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tca5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0mea")
+}],
+"loop": false,
+"name": &"channel",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yvda1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4pnj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrlmv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hpfbg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m16pt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0mog")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4fch")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 20.0
+}]
+
+[node name="Locked and Loaded" type="Area2D" groups=["projectile"]]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_r23nm")
+bonus_speed = 250
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(3.505, 3.505)
+shape = SubResource("CircleShape2D_t81g7")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 2
+position = Vector2(-2, 6)
+scale = Vector2(1.919, 1.832)
+sprite_frames = SubResource("SpriteFrames_m6rvi")
+animation = &"hit"
+autoplay = "channel"

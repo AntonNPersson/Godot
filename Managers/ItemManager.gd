@@ -137,8 +137,12 @@ func _initialize():
 			_add_specific_to_inventory(18)
 		elif GameManager.selected_character_name == "Warrior":
 			_add_specific_to_inventory(19)
-
-
+		elif GameManager.selected_character_name == "Duelist":
+			_add_specific_to_inventory(20)
+		elif GameManager.selected_character_name == "Sentinel":
+			_add_specific_to_inventory(17)
+		elif GameManager.selected_character_name == "Chronomancer":
+			_add_specific_to_inventory(18)
 
 func _calculate_item_rarity():
 	randomize()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://jg40w51mf1ji"]
+[gd_scene load_steps=79 format=3 uid="uid://jg40w51mf1ji"]
 
 [ext_resource type="PackedScene" uid="uid://dsp8rlsmfo1r6" path="res://Abilities/Enchants/Add Armor Reduction.tscn" id="1_chb2h"]
 [ext_resource type="PackedScene" uid="uid://bsm37gbrbg5ql" path="res://Abilities/Enchants/Add Attack Damage Passive.tscn" id="1_e3fqh"]
@@ -50,15 +50,40 @@
 [ext_resource type="PackedScene" uid="uid://cm4dqmm68ueyi" path="res://Abilities/Enchants/Add Life Steal Passive.tscn" id="50_ym3ma"]
 [ext_resource type="PackedScene" uid="uid://rdq7k84cbdmy" path="res://Abilities/Enchants/Add Spell Vamp Passive.tscn" id="51_ikd5b"]
 [ext_resource type="PackedScene" uid="uid://dkmykyjywm5b6" path="res://Abilities/Enchants/Add Critical Chance Passive.tscn" id="52_pdld1"]
+[ext_resource type="PackedScene" uid="uid://c028x6ryl6nmb" path="res://Abilities/Enchants/Add Summon Percentage Armor.tscn" id="55_xh848"]
 [ext_resource type="PackedScene" uid="uid://bqtccyh5611y5" path="res://Abilities/Enchants/Add Bleed.tscn" id="56_ev8wj"]
+[ext_resource type="PackedScene" uid="uid://b2sa48mp7djgp" path="res://Abilities/Enchants/Add Summon Flat Armor.tscn" id="56_npar6"]
+[ext_resource type="PackedScene" uid="uid://btpdstx22j88p" path="res://Abilities/Enchants/Add Summon Percentage Health.tscn" id="57_7khfx"]
 [ext_resource type="Texture2D" uid="uid://dnncrpu6yf055" path="res://Abilities/Enchants/icons/Green Ability_24.png" id="57_8ofmt"]
+[ext_resource type="PackedScene" uid="uid://brve7b8alx03n" path="res://Abilities/Enchants/Add Summon Flat Health.tscn" id="58_oag8g"]
+[ext_resource type="PackedScene" uid="uid://bckhvl1efwrcq" path="res://Abilities/Enchants/Add Summon Percentage Attack Damage.tscn" id="59_2wm3x"]
+[ext_resource type="PackedScene" uid="uid://bspwii1b1xx7t" path="res://Abilities/Enchants/Add Summon Flat Attack Damage.tscn" id="60_fsuud"]
 [ext_resource type="PackedScene" uid="uid://i1yswhb86rcw" path="res://Abilities/Enchants/Add Attack Speed Buff.tscn" id="60_ii03j"]
+[ext_resource type="PackedScene" uid="uid://hnjvv7hfx18q" path="res://Abilities/Enchants/Add Summon Attack Speed.tscn" id="61_40iol"]
 [ext_resource type="PackedScene" uid="uid://b7m2q8i4yek25" path="res://Abilities/Enchants/Add Critical Chance Buff.tscn" id="61_xulfy"]
+[ext_resource type="PackedScene" uid="uid://b6tffqmp4wk58" path="res://Abilities/Enchants/Add Summon Percentage Evade.tscn" id="62_p1sv7"]
+[ext_resource type="PackedScene" uid="uid://cimmlkxfb4tyw" path="res://Abilities/Enchants/Add Summon Flat Evade.tscn" id="63_h76u4"]
+[ext_resource type="PackedScene" uid="uid://2j7iwi20lk4n" path="res://Abilities/Enchants/Add Summon Ability Meteor.tscn" id="64_gju4k"]
+[ext_resource type="PackedScene" uid="uid://dj5o4tcge1nma" path="res://Abilities/Summon Spells/Meteor/Meteor.tscn" id="65_m0npk"]
+[ext_resource type="PackedScene" uid="uid://cpcq8y0h4rdxm" path="res://Abilities/Enchants/Add Summon Ability Taunt.tscn" id="66_hjhg2"]
+[ext_resource type="PackedScene" uid="uid://dvoklfatkbgig" path="res://Abilities/Enchants/Add Pierce.tscn" id="67_wmm0c"]
+[ext_resource type="PackedScene" uid="uid://bxv7gwvqewvl3" path="res://Abilities/Enchants/Add Ricochet.tscn" id="68_feabo"]
+[ext_resource type="PackedScene" uid="uid://pidegdnelmf8" path="res://Abilities/Enchants/Add Root.tscn" id="68_jgyuj"]
+[ext_resource type="PackedScene" uid="uid://cr7gnow7smm7d" path="res://Abilities/Enchants/Add Split.tscn" id="69_84vef"]
+[ext_resource type="PackedScene" uid="uid://bsu6xn1fpmukm" path="res://Abilities/Enchants/Add Stun.tscn" id="69_vgpl0"]
+[ext_resource type="PackedScene" uid="uid://bnur8oiul28m3" path="res://Abilities/Enchants/Add Swap Position.tscn" id="72_wsf8o"]
+[ext_resource type="PackedScene" uid="uid://c362xkd5e140q" path="res://Abilities/Enchants/Add Weaken.tscn" id="73_cqpy6"]
+[ext_resource type="PackedScene" uid="uid://dyma16glc1bqn" path="res://Abilities/Enchants/Add Adrenaline Rush.tscn" id="74_88iy3"]
+[ext_resource type="PackedScene" uid="uid://b6t5y57rec3i7" path="res://Abilities/Enchants/Add Rush.tscn" id="75_o3q24"]
+[ext_resource type="PackedScene" uid="uid://tgor6ktxqmir" path="res://Abilities/Enchants/Add Phase Out.tscn" id="76_1fuqv"]
+[ext_resource type="PackedScene" uid="uid://b17d340gv04og" path="res://Abilities/Enchants/Add Passive Activate.tscn" id="77_tltvs"]
+[ext_resource type="PackedScene" uid="uid://dr1b6t0vxe4rq" path="res://Abilities/Enchants/Add Low Health Invincible Effect.tscn" id="78_tg58v"]
 
 [node name="EnchantList" type="Node2D"]
 
 [node name="Add Armor Reduction" parent="." instance=ExtResource("1_chb2h")]
 tooltip = "Add Value0% armor reduction, lasts 3 seconds."
+values = Array[float]([10.0])
 
 [node name="Add Attack Damage Passive" parent="." instance=ExtResource("1_e3fqh")]
 tooltip = "Add Value0 flat attack damage."
@@ -71,6 +96,8 @@ extra = {
 [node name="Increase Damage" parent="." instance=ExtResource("1_kkwiw")]
 tooltip = "Increase damage by Value0%."
 icon = ExtResource("4_m0cda")
+values = Array[float]([10.0])
+types = Array[int]([0, 1, 3, 7])
 
 [node name="Increase Projectile Amount" parent="." instance=ExtResource("2_u337b")]
 tooltip = "Adds Value0 extra projectile(s)."
@@ -80,10 +107,12 @@ icon = ExtResource("6_v5f47")
 i_name = "Projectile: Haste"
 tooltip = "Adds Value0 flat amount of speed."
 icon = ExtResource("8_71jg3")
+values = Array[float]([75.0])
 
 [node name="Increase Burn Damage" parent="." instance=ExtResource("4_a0dim")]
 tooltip = "Increase burn damage by Value0%."
 icon = ExtResource("10_5su8y")
+values = Array[float]([15.0])
 
 [node name="Add Burn Explosion" parent="." instance=ExtResource("5_s0qjo")]
 tooltip = "Add an explosion to selected ability's burn, dealing burn damage to close enemies, but it has a Value0s global cooldown."
@@ -93,10 +122,13 @@ unique = true
 [node name="Add Burn Duration" parent="." instance=ExtResource("6_h7gpa")]
 tooltip = "Add Value0s flat duration."
 icon = ExtResource("14_jv5ew")
+values = Array[float]([0.3])
 
 [node name="Reduce Cooldown" parent="." instance=ExtResource("7_sakpq")]
 tooltip = "Add Value0% cooldown reduction."
 icon = ExtResource("16_ogc3m")
+values = Array[float]([7.5])
+types = Array[int]([0, 1, 3, 6, 2])
 
 [node name="Increase Area Radius" parent="." instance=ExtResource("8_7qy8m")]
 tooltip = "Increase radius by Value0."
@@ -106,7 +138,7 @@ icon = ExtResource("18_frvf5")
 tooltip = "Increase frozen chance by Value0%."
 icon = ExtResource("20_oump2")
 tags = Array[String](["FrozenChance"])
-values = Array[float]([3.0])
+values = Array[float]([5.0])
 
 [node name="Add Freeze Slow" parent="." instance=ExtResource("10_x2lfs")]
 tooltip = "Add Value0% slow to freezed enemies."
@@ -115,10 +147,12 @@ icon = ExtResource("22_b81et")
 [node name="Increase Frozen Duration" parent="." instance=ExtResource("11_gbc4l")]
 tooltip = "Add Value0s flat duration."
 icon = ExtResource("24_gs41u")
+values = Array[float]([0.3])
 
 [node name="Increased Bleed Damage" parent="." instance=ExtResource("12_s4g27")]
 tooltip = "Add Value0% percentage bleed damage."
 icon = ExtResource("26_kvvdt")
+values = Array[float]([15.0])
 
 [node name="Increased Bleed Duration" parent="." instance=ExtResource("13_s5hfc")]
 tooltip = "Add Value0s flat bleed duration."
@@ -148,6 +182,7 @@ types = Array[int]([4, 8])
 
 [node name="Add Evade To Target" parent="." instance=ExtResource("40_tx1q6")]
 tooltip = "Add Value0 evade to target for 3 seconds."
+values = Array[float]([100.0])
 types = Array[int]([2, 5])
 extra = {
 "Duration": 3,
@@ -156,6 +191,7 @@ extra = {
 
 [node name="Add Resistances To Target" parent="." instance=ExtResource("41_mi1wk")]
 tooltip = "Add Value0 armor, and Value1% affliction resistance to target for 3 seconds."
+values = Array[float]([40.0, 5.0])
 types = Array[int]([2, 5])
 extra = {
 "Duration": 3,
@@ -174,6 +210,7 @@ unique = true
 
 [node name="Add Movement Speed Passive" parent="." instance=ExtResource("46_vpy0h")]
 tooltip = "Add Value0 flat movement speed."
+values = Array[float]([5.0])
 types = Array[int]([4, 8])
 
 [node name="Add Double Cast Passive" parent="." instance=ExtResource("47_4pcov")]
@@ -186,6 +223,7 @@ types = Array[int]([4, 8])
 
 [node name="Add Frozen Chance Passive" parent="." instance=ExtResource("49_hukbg")]
 tooltip = "Add Value0% frozen chance."
+values = Array[float]([5.0])
 types = Array[int]([4, 8])
 
 [node name="Add Life Steal Passive" parent="." instance=ExtResource("50_ym3ma")]
@@ -206,15 +244,78 @@ tooltip = "Add wind effect.(Value0 pixels knockback)."
 icon = ExtResource("57_8ofmt")
 tags = Array[String](["Wind"])
 values = Array[float]([100.0])
+types = Array[int]([0, 1, 3, 6])
 extra = {
 "Hit": true
 }
 
 [node name="Add Attack Speed to target" parent="." instance=ExtResource("60_ii03j")]
+values = Array[float]([20.0])
 types = Array[int]([2, 5])
 extra = {
 "Duration": 2,
 "Hit": true
 }
 
-[node name="Add Attack Speed to target2" parent="." instance=ExtResource("61_xulfy")]
+[node name="Add Critical Strike Chance to target2" parent="." instance=ExtResource("61_xulfy")]
+values = Array[float]([10.0])
+
+[node name="Add Summon Percentage Armor" parent="." instance=ExtResource("55_xh848")]
+
+[node name="Add Summon Flat Armor" parent="." instance=ExtResource("56_npar6")]
+
+[node name="Add Summon Percentage Health" parent="." instance=ExtResource("57_7khfx")]
+
+[node name="Add Summon Flat Health" parent="." instance=ExtResource("58_oag8g")]
+
+[node name="Add Summon Percentage Attack Damage" parent="." instance=ExtResource("59_2wm3x")]
+
+[node name="Add Summon Flat Attack Damage" parent="." instance=ExtResource("60_fsuud")]
+rarity = 0
+
+[node name="Add Summon Attack Speed" parent="." instance=ExtResource("61_40iol")]
+
+[node name="Add Summon Percentage Evade" parent="." instance=ExtResource("62_p1sv7")]
+
+[node name="Add Summon Flat Evade" parent="." instance=ExtResource("63_h76u4")]
+
+[node name="Add Summon Ability Meteor" parent="." instance=ExtResource("64_gju4k")]
+tooltip = "Add meteor ability, dealing 5 * ability level damage, and applying 5 * ability level burn to nearby enemies."
+extra = {
+"SummonAbility": ExtResource("65_m0npk")
+}
+
+[node name="Add Summon Ability Taunt" parent="." instance=ExtResource("66_hjhg2")]
+i_name = "Summon: Taunt"
+tooltip = "Add taunt ability, forcing nearby enemies to attack you for Value0 * ability level second(s)."
+values = Array[float]([1.0])
+rarity = 0
+
+[node name="Add Pierce" parent="." instance=ExtResource("67_wmm0c")]
+
+[node name="Add Root" parent="." instance=ExtResource("68_jgyuj")]
+
+[node name="Add Stun" parent="." instance=ExtResource("69_vgpl0")]
+
+[node name="Add Ricochet" parent="." instance=ExtResource("68_feabo")]
+tooltip = "Your projectiles can now bounces Value0 times, prioritizing the closest target."
+
+[node name="Add Split" parent="." instance=ExtResource("69_84vef")]
+tooltip = "Splits your projectile Value0 times after hitting your target, each split projectile applies 20% of the original values."
+
+[node name="Add Swap Position" parent="." instance=ExtResource("72_wsf8o")]
+
+[node name="Add Weaken" parent="." instance=ExtResource("73_cqpy6")]
+
+[node name="Add Adrenaline Rush" parent="." instance=ExtResource("74_88iy3")]
+rarity = 1
+
+[node name="Add Rush" parent="." instance=ExtResource("75_o3q24")]
+
+[node name="Add Phase Out" parent="." instance=ExtResource("76_1fuqv")]
+rarity = 2
+
+[node name="Add Passive Activate" parent="." instance=ExtResource("77_tltvs")]
+rarity = 0
+
+[node name="Add Low Health Invincible Effect" parent="." instance=ExtResource("78_tg58v")]

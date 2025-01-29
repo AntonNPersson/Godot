@@ -1,0 +1,222 @@
+[gd_scene load_steps=32 format=3 uid="uid://cn3h6qmgqguvd"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_81kem"]
+[ext_resource type="Texture2D" uid="uid://caxn4vsq6wpv5" path="res://Abilities/INT/Mana Overload/Water Spell_56.png" id="2_sv2g4"]
+[ext_resource type="Texture2D" uid="uid://b4vxfeipny1eu" path="res://Abilities/INT/Mana Overload/Spell 10-Sheet_blue.png" id="3_kbcbb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4vou"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dl35p"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pp1qb"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ddwun"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wi5t0"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjjak"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yj331"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w60bo"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aeewr"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1536, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44kxl"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wj320"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(192, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8su58"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_seiuh"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ios6o"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(768, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2ekk"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(960, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5nbi"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1152, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8338h"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1344, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fq6hl"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1536, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wdwd"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tovqg"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yen8"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqvb8"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yusw2"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(768, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8yqxg"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(960, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_baos3"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1152, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uapm6"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1344, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgf3c"]
+atlas = ExtResource("3_kbcbb")
+region = Rect2(1536, 384, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qydvj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4vou")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dl35p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pp1qb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ddwun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wi5t0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjjak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yj331")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w60bo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aeewr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_44kxl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wj320")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8su58")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_seiuh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ios6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2ekk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c5nbi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8338h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fq6hl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wdwd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tovqg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3yen8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqvb8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yusw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8yqxg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_baos3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uapm6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgf3c")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Mana Overload" type="Node2D"]
+script = ExtResource("1_81kem")
+icon = ExtResource("2_sv2g4")
+a_name = "Mana Overload"
+tooltip_text = "Overload your mana channels, using Value0% of your mana to deal the same damage."
+mana_cost = 10.0
+mana_cost_percentage = 30.0
+mana_cost_percentage_increase = 10.0
+cooldown = 14.0
+projectile_type = 3
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_qydvj")
+sprite_offset = Vector2(0, 22)
+area_type = 3
+duration = 1.35
+radius = 250.0
+tags = Array[String](["ManaOverload"])
+values = Array[float]([30.0])
+increased_values = Array[float]([10.0])

@@ -1,5 +1,6 @@
 extends Task
 @export var summon = false
+var is_casting = false
 
 func _ready():
 	unit = get_parent()

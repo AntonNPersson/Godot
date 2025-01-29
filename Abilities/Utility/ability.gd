@@ -17,6 +17,7 @@ var current_experience = 0.0
 var max_experience = 100.0
 var is_docile = true
 signal level_enchant(tags, projectile_type)
+signal _on_cast(ability)
 			
 #-------------------#
 # Exported Variables
@@ -29,6 +30,9 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var a_name : String
 @export_multiline var tooltip_text : String
 @export var mana_cost : float = 0
+@export var mana_cost_percentage : float = 0
+@export var mana_cost_increase : float = 0
+@export var mana_cost_percentage_increase : float = 0
 @export var cooldown : float
 @export var _range : float
 @export var projectile_type : targeting_type
@@ -44,11 +48,28 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var speed : float
 @export var amount : float = 1
 @export var line_pierce : bool = false
+@export var projectile_split : bool = false
+@export var projectile_split_amount : int
+@export var projectile_ricochet : bool = false
+@export var projectile_ricochet_amount : int
+@export var projectile_spread : bool = false
 @export var explosion : bool = false
 @export var explosion_radius : float
+@export var projectile_channel : bool = false
+@export var projectile_channel_interval : float
+@export var projectile_channel_increasing_mana_cost : float = 0
+@export var projectile_channel_increasing_damage : float = 0
+@export var hit_allies : bool = false
+@export var ally_tags : Array[int]
+@export var multiple_hit : bool = false
+@export var multiple_hit_interval : float = 0
 @export_group('Area Settings')
 @export var area_type : area_types
 @export var duration : float
+@export var area_ally_hit : bool = false
+@export var ally_tags_area : Array[int]
+@export var area_multiple_hit : bool = false
+@export var area_multiple_hit_interval : float = 0
 @export var always_trigger : bool
 @export var radius : float
 @export var echo : float = 1
@@ -56,9 +77,19 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var area_pool : bool = false
 @export var area_pool_damage : float
 @export var area_pool_radius : float
+@export var area_channel : bool = false
+@export var area_channel_interval : float
+@export var area_channel_increasing_mana_cost : float = 0
+@export var area_channel_increasing_damage : float = 0
 @export_group('Target Settings')
 @export var additional_targets : int = 1
 @export var additional_self_target : bool = false
+@export var swap_position : bool = false
+@export_group("Aura Settings")
+@export var aura_interval : float
+@export var aura_toggle : bool
+@export var aura_toggle_icons : Array[Texture]
+var aura_toggled = false
 @export_group('Movement Settings')
 @export var type : String
 @export var movement_speed : float
@@ -74,12 +105,40 @@ enum area_types {Storm, Blast, Scream, Custom}
 @export var toggle_state_count : int
 @export var toggle_icons : Array[Texture]
 var toggle_state = 0
+@export var activatable : bool = false
+@export var activatable_duration : float = 0
+@export var activatable_cooldown : float = 0
+var activatable_duration_timer : float = 0
+var activatable_cooldown_timer : float = 0
 @export_group('Summon Settings')
 @export var summon_scene : PackedScene
 @export var summon_amount : int
 @export var summon_scaling : float
-@export var unique : bool
+@export var is_totem : bool
+@export var totem_duration : float
 var summon_instance
+var summon_extra_flat_health : float
+var summon_extra_percentage_health : float
+var summon_extra_flat_attack_damage : float
+var summon_extra_percentage_attack_damage : float
+var summon_extra_flat_armor : float
+var summon_extra_percentage_armor : float
+var summon_extra_flat_attack_speed : float
+var summon_extra_flat_evade : float
+var summon_extra_percentage_evade : float
+var summon_extra_abilities : Array[PackedScene]
+var summon_extra_percentage_burn_damage : float
+var summon_extra_percentage_bleed_damage : float
+var summon_extra_percentage_poison_damage : float
+@export_group("Buff Settings")
+@export var is_buff : bool = false
+@export var buff_duration : float
+@export var end_action : bool = false
+@export var begin_action : bool = false
+@export var end_action_tags : Array[int]
+@export var begin_action_tags : Array[int]
+@export var action_range : float
+@export var action_spritesheet : SpriteFrames
 @export_group('Tags & Values')
 @export var tags : Array[String]
 @export var values : Array[float]
@@ -88,9 +147,6 @@ var summon_instance
 @export var advanced_update : bool
 @export var light_color : Color
 @export var light_scale : float
-@export var is_buff : bool = false
-@export var buff_type : String
-@export var buff_duration : float
 @export var weight : float
 @export var weight_duration : float = 0.45
 var tooltip : String
@@ -111,6 +167,9 @@ var non_hit_tags : Array[String]
 var added_tags : Array[String]
 var enchant_objects : Array[Node]
 
+var added_percentage_damage : float
+var warrior_used_rage : bool = false
+
 var enchants = {
 	"Tags" : [],
 	"Values" : [],
@@ -121,6 +180,13 @@ var enchant_timers : Array[float]
 
 var power : float
 var extra : Dictionary
+var channeling : bool = false
+var is_channel_ability : bool = false
+var channel_timer : float = 9999
+var channel_current_mana_cost : float = 0
+var channel_current_damage : float = 0
+
+var aura_timer : float = 0
 #-------------------#
 # Helper Functions
 #-------------------#
@@ -128,6 +194,9 @@ var extra : Dictionary
 func _process(delta):
 	if is_docile:
 		return
+	
+	if area_channel or projectile_channel:
+		is_channel_ability = true
 
 	if projectile_type == targeting_type.Area and sprite_frames != null:
 		sprite_scale = radius/(sprite_frames.get_frame_texture("default", 0).get_width())
@@ -137,10 +206,27 @@ func _process(delta):
 
 	_update_tooltip()
 	if projectile_type == targeting_type.EnemyAura or projectile_type == targeting_type.AllyAura:
-		_apply_aura()
+		if aura_toggle:
+			if aura_toggled:
+				icon = aura_toggle_icons[0]
+			else:
+				icon = aura_toggle_icons[1]
+
+		aura_timer += delta
+		if aura_timer >= aura_interval and aura_toggled:
+			_apply_aura()
+			aura_timer = 0
 
 	if projectile_type == targeting_type.Passive:
 		_update_passive()
+		if activatable:
+			if activatable_duration_timer > 0:
+				activatable_duration_timer -= delta
+			if activatable_duration_timer <= 0:
+				extra["PassiveActive"] = false
+			if activatable_cooldown_timer > 0:
+				activatable_cooldown_timer -= delta
+			
 
 	if ad_update:
 		_advanced_update()
@@ -149,6 +235,67 @@ func _process(delta):
 		if item_timers[i] >= 0:
 			item_timers[i] -= delta
 
+	_update_channel(delta)
+
+func _start_channel():
+	channeling = true
+	unit.is_rooted = true
+
+func _stop_channel():
+	channeling = false
+	unit.is_rooted = false
+	channel_timer = 9999
+	channel_current_mana_cost = 0
+	channel_current_damage = 0
+
+func _update_channel(delta):
+	if unit.current_mana < mana_cost:
+		_stop_channel()
+		return
+	
+	channel_timer += delta
+	if projectile_type == targeting_type.Line:
+		if channel_timer < projectile_channel_interval:
+			return
+	elif projectile_type == targeting_type.Area:
+		if channel_timer < area_channel_interval:
+			return
+	channel_timer = 0
+
+	if channeling:
+		if projectile_type == targeting_type.Line:
+			channel_current_mana_cost += projectile_channel_increasing_mana_cost
+			var pos = unit.get_global_mouse_position()
+			if forced_closest:
+				pos = _get_closest_visible_enemy_to_mouse().global_position
+			for i in range(amount):
+				var instance = load("res://Abilities/Utility/line_projectile.tscn").instantiate()
+				instance.has_hit.connect(_on_hit)
+				unit.get_tree().get_root().add_child(instance)
+				instance.global_position = unit.global_position
+				instance._start(pos, _range, speed, unit.global_position, sprite_frames, collision_radius, light_scale, light_color, sprite_scale, line_pierce, explosion, explosion_radius, self, hit_allies, multiple_hit, multiple_hit_interval, projectile_ricochet, projectile_ricochet_amount, projectile_split, projectile_split_amount)
+				await unit.get_tree().create_timer(0.1).timeout
+			unit.current_mana -= mana_cost * (1 + channel_current_mana_cost/100.0)
+			unit.current_mana -= (unit.total_mana * (mana_cost_percentage/100.0)) * (1 + channel_current_mana_cost/100.0)
+			return
+
+		if projectile_type == targeting_type.Area:
+			channel_current_mana_cost += area_channel_increasing_mana_cost
+			var pos = unit.get_global_mouse_position()
+			for i in range(echo):
+				if i > 0:
+					await unit.get_tree().create_timer(echo_delay).timeout
+					if _check_weight(true):
+						unit.get_node('Control').on_action.emit(-(weight + unit.global_weight), unit, weight_duration, 'SpeedBuff')
+				var instance = load("res://Abilities/Utility/area_projectile.tscn").instantiate()
+				instance.has_hit.connect(_on_hit)
+				unit.get_tree().get_root().add_child(instance)
+				instance.global_position = unit.global_position
+				instance._start(pos, _range, speed, unit, radius, duration, area_type, light_color, always_trigger, sprite_frames, sprite_scale, area_pool, area_pool_radius, i, self, sprite_offset, area_ally_hit, area_multiple_hit, area_multiple_hit_interval)
+				_shake_camera()
+			unit.current_mana -= mana_cost * (1 + channel_current_mana_cost/100.0)
+			unit.current_mana -= (unit.total_mana * (mana_cost_percentage/100.0)) * (1 + channel_current_mana_cost/100.0)
+			return
 # Update scaling of damage
 func _apply_scaling(dmg, _type):
 	var attribute_map = {
@@ -156,19 +303,28 @@ func _apply_scaling(dmg, _type):
 		'STR': unit.total_strength,
 		'DEX': unit.total_dexterity
 	}
-	var extra_dmg = attribute_map[_type] * 0.15
-	return dmg + extra_dmg
+	var extra_dmg = (attribute_map[_type] * 0.15)
+	if channeling:
+		if projectile_channel:
+			channel_current_damage += projectile_channel_increasing_damage/100.0
+		if area_channel:
+			channel_current_damage += area_channel_increasing_damage/100.0
+	var total_percent_damage = (1 + (added_percentage_damage/100.0 + unit.global_damage/100.0 + channel_current_damage/100.0))
+	return (dmg + extra_dmg) * total_percent_damage
+
+func round_to_dec(num, digit):
+	return round(num * pow(10.0, digit)) / pow(10.0, digit)
+
+func highlight_word_with_color(input_text: String, word: String, color: String) -> String:
+	var bbcode_template = "[color=" + color + "]" + word + "[/color]"
+	var highlighted_text = input_text.replace(word, bbcode_template)
+	return highlighted_text
 
 func _calculate_power():
 	if "Damage" in tags:
 		power += values[tags.find("Damage")]
 	if "Heal" in tags:
 		power += values[tags.find("Heal")]
-	if "Buff" in tags:
-		if buff_type == "Percentage":
-			power += values[tags.find("Buff")] * 100
-		else:
-			power += values[tags.find("Buff")]
 	if "Lifesteal" in tags:
 		power *= values[tags.find("Lifesteal")]/100
 	if "QuickAttack" in tags:
@@ -193,19 +349,32 @@ func _apply_aura():
 	if projectile_type == targeting_type.EnemyAura:
 		for child in get_tree().get_nodes_in_group('enemies'):
 			if child.global_position.distance_to(unit.global_position) <= _range:
-				for v in values.size():
-					unit.get_node('Control').on_action.emit(values[v], child, unit, tags[v], extra)
-			else:
-				for v in values.size():
-					unit.get_node('Control').on_action.emit(0, child, unit, tags[v], extra)
+				if unit.current_mana < mana_cost:
+					return
+				_on_hit(child)
 	elif projectile_type == targeting_type.AllyAura:
 		for child in get_tree().get_nodes_in_group('players'):
 			if child.global_position.distance_to(unit.global_position) <= _range:
-				for v in values.size():
-					unit.get_node('Control').on_action.emit(values[v], child, unit, tags[v], extra)
-			else:
-				for v in values.size():
-					unit.get_node('Control').on_action.emit(0, child, unit, tags[v], extra)
+				if unit.current_mana < mana_cost:
+					return
+				_on_hit(child)
+	
+	if sprite_frames != null:
+		if target.has_node(a_name):
+			target.get_node(a_name).queue_free()
+		var animated_sprite = AnimatedSprite2D.new()
+		target.add_child(animated_sprite)
+		animated_sprite.z_index = 1
+		animated_sprite.name = a_name
+		animated_sprite.sprite_frames = sprite_frames
+		animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
+		animated_sprite.global_position -= Vector2(0, 32)
+		animated_sprite.play()
+		animated_sprite.animation_finished.connect(_remove_sprite_sheet.bind(target))
+	unit.current_mana -= mana_cost
+	if aura_toggle:
+		if unit.current_mana < mana_cost:
+			aura_toggled = false
 
 # Update tooltip based on type of ability
 func _update_tooltip():
@@ -217,18 +386,101 @@ func _update_tooltip():
 		tooltip += "Current State: " + str(tags[toggle_state]) + "\n\n"
 
 	if projectile_type == targeting_type.Summon:
-		tooltip += "\nLevel: " + str(level)
-		tooltip += " Cost: " + str(mana_cost)
-		tooltip += " Cooldown: " + str(unit._apply_cooldown_reduction(cooldown)) + "s"
-		tooltip += " Amount: " + str(summon_amount)
-		tooltip += "\nType: " + str(ability_type)
-		return
+		secondary_tooltip += "Level: " + str(level)
+		secondary_tooltip += " Cost: " + str(mana_cost + (unit.total_mana * (mana_cost_percentage/100.0)))
+		secondary_tooltip += " Cooldown: " + str(unit._apply_cooldown_reduction(cooldown)) + "s"
+		secondary_tooltip += " Amount: " + str(summon_amount)
+		secondary_tooltip += "\nType: " + str(ability_type)
 
+	tooltip = highlight_word_with_color(tooltip, "attack speed", "orange")
+	tooltip = highlight_word_with_color(tooltip, "attack speed.", "orange")
+	tooltip = highlight_word_with_color(tooltip, "attack damage", "mistyrose")
+	tooltip = highlight_word_with_color(tooltip, "attack damage.", "mistyrose")
+	tooltip = highlight_word_with_color(tooltip, "Damage ", "mistyrose")
+	tooltip = highlight_word_with_color(tooltip, "Burn ", "tomato")
+	tooltip = highlight_word_with_color(tooltip, "Freeze ", "deepskyblue")
+	tooltip = highlight_word_with_color(tooltip, "Freezing ", "deepskyblue")
+	tooltip = highlight_word_with_color(tooltip, "Frozen ", "slateblue")
+	tooltip = highlight_word_with_color(tooltip, "Heal ", "greenyellow")
+	tooltip = highlight_word_with_color(tooltip, "Healing ", "greenyellow")
+	tooltip = highlight_word_with_color(tooltip, "Bleed ", "crimson")
+	tooltip = highlight_word_with_color(tooltip, "Lifesteal ", "firebrick")
+	tooltip = highlight_word_with_color(tooltip, "Stun ", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "Root ", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "Stunned ", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "Stunning ", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "Rooted ", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "Rooting ", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "burn", "tomato")
+	tooltip = highlight_word_with_color(tooltip, "damage", "mistyrose")
+	tooltip = highlight_word_with_color(tooltip, "freeze ", "deepskyblue")
+	tooltip = highlight_word_with_color(tooltip, "freeze.", "deepskyblue")
+	tooltip = highlight_word_with_color(tooltip, "freezing ", "deepskyblue")
+	tooltip = highlight_word_with_color(tooltip, "freezing.", "deepskyblue")
+	tooltip = highlight_word_with_color(tooltip, "frozen", "slateblue")
+	tooltip = highlight_word_with_color(tooltip, "heal ", "greenyellow")
+	tooltip = highlight_word_with_color(tooltip, "heal.", "greenyellow")
+	tooltip = highlight_word_with_color(tooltip, "healing ", "greenyellow")
+	tooltip = highlight_word_with_color(tooltip, "healing.", "greenyellow")
+	tooltip = highlight_word_with_color(tooltip, "bleed", "crimson")
+	tooltip = highlight_word_with_color(tooltip, "lifesteal ", "firebrick")
+	tooltip = highlight_word_with_color(tooltip, "lifesteal.", "firebrick")
+	tooltip = highlight_word_with_color(tooltip, "lifestealing ", "firebrick")
+	tooltip = highlight_word_with_color(tooltip, "lifestealing.", "firebrick")
+	tooltip = highlight_word_with_color(tooltip, "stun ", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "stun.", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "stunned ", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "stunned.", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "stunning ", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "stunning.", "goldenrod")
+	tooltip = highlight_word_with_color(tooltip, "root ", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "root.", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "rooted ", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "rooted.", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "rooting ", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "rooting.", "olivedrab")
+	tooltip = highlight_word_with_color(tooltip, "poisoning.", "yellowgreen")
+	tooltip = highlight_word_with_color(tooltip, "poisoning", "yellowgreen")
+	tooltip = highlight_word_with_color(tooltip, "poisoned.", "yellowgreen")
+	tooltip = highlight_word_with_color(tooltip, "poisoned", "yellowgreen")
+	tooltip = highlight_word_with_color(tooltip, "poison.", "yellowgreen")
+	tooltip = highlight_word_with_color(tooltip, "poison", "yellowgreen")
+	tooltip = highlight_word_with_color(tooltip, "evading.", "lawngreen")
+	tooltip = highlight_word_with_color(tooltip, "evading", "lawngreen")
+	tooltip = highlight_word_with_color(tooltip, "evade.", "lawngreen")
+	tooltip = highlight_word_with_color(tooltip, "evade", "lawngreen")
+	tooltip = highlight_word_with_color(tooltip, "movement speed.", "skyblue")
+	tooltip = highlight_word_with_color(tooltip, "movement speed", "skyblue")
+	tooltip = highlight_word_with_color(tooltip, "quick attacks", "darkseagreen")
+	tooltip = highlight_word_with_color(tooltip, "quick attacks.", "darkseagreen")
+	tooltip = highlight_word_with_color(tooltip, "quick attack", "darkseagreen")
+	tooltip = highlight_word_with_color(tooltip, "quick attack.", "darkseagreen")
+	tooltip = highlight_word_with_color(tooltip, "basic attacks", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "basic attacks.", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "basic attack", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "basic attack.", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "attack targets", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "attack targets.", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "attack target.", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "attack target", "burlywood")
+	tooltip = highlight_word_with_color(tooltip, "critical", "yellow")
+	tooltip = highlight_word_with_color(tooltip, "critical.", "yellow")
+	tooltip = highlight_word_with_color(tooltip, "critical strike", "yellow")
+	tooltip = highlight_word_with_color(tooltip, "critical strike.", "yellow")
+	tooltip = highlight_word_with_color(tooltip, "strength", "orangered")
+	tooltip = highlight_word_with_color(tooltip, "strength.", "orangered")
+	tooltip = highlight_word_with_color(tooltip, "dexterity", "lightgreen")
+	tooltip = highlight_word_with_color(tooltip, "dexterity.", "lightgreen")
+	tooltip = highlight_word_with_color(tooltip, "intelligence", "royalblue")
+	tooltip = highlight_word_with_color(tooltip, "intelligence.", "royalblue")
+	
 	unit._update_stats()
 
 	var previous_objects = {}
 
+
 	if enchant_objects.size() != 0:
+
 		# Aggregate the values for each enchant object by a unique identifier
 		for object in enchant_objects:
 			var key = object.name if object.has_method("name") else str(object)
@@ -259,24 +511,25 @@ func _update_tooltip():
 	if values.size() != 0:
 		for i in range(0, values.size()):
 			if tags[i] == "Damage":
-				tooltip = tooltip.replace("Value" + str(i), str(ceil(_apply_scaling(values[i], ability_type))))
+				tooltip = tooltip.replace("Value" + str(i), str(round_to_dec(_apply_scaling(values[i], ability_type), 1)))
 			if tags[i].find("Freeze"):
 				if enchants["Tags"].find("FreezeDuration") != -1:
 					tooltip = tooltip.replace("Value" + str(i), str(values[i] + enchants["Values"][enchants["Tags"].find("FreezeDuration")]))
 			tooltip = tooltip.replace("Value" + str(i), str(values[i]))
 
-	secondary_tooltip += "Level: " + str(level)
-	secondary_tooltip += " Cost: " + str(mana_cost)
-	if projectile_type != targeting_type.Passive or projectile_type != targeting_type.AllyAura or projectile_type != targeting_type.EnemyAura:
-		if unit != null:
-			secondary_tooltip += "\nCooldown: " + str(unit._apply_cooldown_reduction(cooldown)) + "s"
-		else:
-			secondary_tooltip += "\nCooldown: " + str(cooldown) + "s"
-		secondary_tooltip += " Range: " + str(_range)
-	if projectile_type == targeting_type.Area:
-		secondary_tooltip += " Radius: " + str(radius)
-	secondary_tooltip += "\nType: " + str(ability_type)
-	secondary_tooltip += " Weight: " + str(weight)
+	if projectile_type != targeting_type.Summon:
+		secondary_tooltip += "Level: " + str(level)
+		secondary_tooltip += " Cost: " + str(mana_cost + (unit.total_mana * (mana_cost_percentage/100.0)))
+		if projectile_type != targeting_type.Passive or projectile_type != targeting_type.AllyAura or projectile_type != targeting_type.EnemyAura:
+			if unit != null:
+				secondary_tooltip += "\nCooldown: " + str(unit._apply_cooldown_reduction(cooldown)) + "s"
+			else:
+				secondary_tooltip += "\nCooldown: " + str(cooldown) + "s"
+			secondary_tooltip += " Range: " + str(_range)
+		if projectile_type == targeting_type.Area:
+			secondary_tooltip += " Radius: " + str(radius)
+		secondary_tooltip += "\nType: " + str(ability_type)
+		secondary_tooltip += " Weight: " + str(weight)
 
 # Add experience and level up
 func _add_experience(value):
@@ -346,18 +599,20 @@ func _remove_tag(tag, value, _type):
 	values.remove_at(index)
 	increased_values.remove_at(index)
 
-func _add_enchant(tag, value, _type, extra = null, object = null):
+func _add_enchant(tag, value, _type, _extra = null, object = null):
 	# When adding enchant don't forget that it's specific per ability when adding to combat manager. So check for tag + ability name.
 	enchants["Tags"].append(tag)
 	enchants["Values"].append(value)
 	enchants["Types"].append(_type)
-	enchants["Extra"].append(extra)
+	enchants["Extra"].append(_extra)
 	enchant_objects.append(object)
 
 	_add_tag(tag, value, 0)
+	
+	if "Effect" in _extra:
+		extra["Effect"] = _extra["Effect"]
 
-	print("Enchanting" + tag)
-	if "Hit" not in extra:
+	if "Hit" not in _extra:
 		non_hit_tags.append(tag)
 		extra["ability"] = a_name
 		extra["ability_instance"] = self
@@ -392,13 +647,12 @@ func _remove_item_tag(tag):
 
 # Update values based on level
 func _level_grants():
-	if projectile_type == targeting_type.Summon:
-		for summon in unit.get_node('Summons').get_children():
-			summon._level_grants()
-		return
 
 	for inc in range(values.size()):
 		values[inc] += increased_values[inc]
+
+	mana_cost += mana_cost_increase
+	mana_cost_percentage += mana_cost_percentage_increase
 
 	if level % 3 == 0:
 		level_enchant.emit(tags, projectile_type, self)
@@ -408,9 +662,17 @@ func _update_passive():
 	extra["ability_instance"] = self
 	if auto_attack_based:
 		extra["interval"] = auto_attack_interval
+
 	if !toggle:
 		for t in tags.size():
-			unit.get_node('Control').on_action.emit(values[t], unit, unit, tags[t], extra)
+			if tags[t] == "PassiveActivate":
+				continue
+			var changed_value = values[t]
+			if activatable:
+				if extra.has("PassiveActive"):
+					if extra["PassiveActive"]:
+						changed_value = values[t] * 2
+			unit.get_node('Control').on_action.emit(changed_value, unit, unit, tags[t], extra)
 	else:
 		icon = toggle_icons[toggle_state]
 		unit.get_node('Control').on_action.emit(values[toggle_state], unit, true, tags[toggle_state], extra)
@@ -425,6 +687,18 @@ func _get_closest_visible_enemy_to_mouse():
 	if unit.get_tree().get_nodes_in_group('enemies'):
 		for child in unit.get_tree().get_nodes_in_group('enemies'):
 			var distance = mouse_pos.distance_to(child.global_position)
+		
+			if distance < closest_distance:
+				closest_distance = distance
+				closest_node = child
+	return closest_node
+
+func _get_closest_enemy():
+	var closest_node = null
+	var closest_distance = 99999999
+	if unit.get_tree().get_nodes_in_group('enemies'):
+		for child in unit.get_tree().get_nodes_in_group('enemies'):
+			var distance = unit.global_position.distance_to(child.global_position)
 		
 			if distance < closest_distance:
 				closest_distance = distance
@@ -490,8 +764,9 @@ func _initialize():
 	for e in enchants["Extra"]:
 		extra.merge(e)
 	for tag in tags.size():
-		if "Duplicate" in tags[tag] or "Pierce" in tags[tag] or tags.find("Explosion") != -1 or "Echo" in tags[tag] or "AreaPool" in tags[tag] or "SelfTarget" in tags[tag] or "Multistrike" in tags[tag] or "MovementCharges" in tags[tag]:
+		if "Duplicate" in tags[tag] or "Pierce" in tags[tag] or "Explosion" in tags[tag] or "Echo" in tags[tag] or "AreaPool" in tags[tag] or "SelfTarget" in tags[tag] or "Multistrike" in tags[tag] or "MovementCharges" in tags[tag] or "Summon" in tags[tag] or "Ricochet" in tags[tag] or "Split" in tags[tag] or "Swap" in tags[tag]:
 			unit.get_node('Control').on_action.emit(values[tag], unit, self, tags[tag], extra)
+			non_hit_tags.append(tags[tag])
 	if advanced_update:
 		ad_update = true
 
@@ -518,6 +793,7 @@ func _get_allies_close_to_mouse():
 # Main function to use ability, it will check all the relevant exported variables and use the ability accordingly
 func _use():
 	_advanced_update()
+	print("Using ability: " + a_name)
 	if _check_weight(true):
 		unit.get_node('Control').on_action.emit(-(weight + unit.global_weight), unit, weight_duration, 'SpeedBuff')
 	_on_item_use()
@@ -531,31 +807,37 @@ func _use():
 			instance.has_hit.connect(_on_hit)
 			unit.get_tree().get_root().add_child(instance)
 			instance.global_position = unit.global_position
-			instance._start(pos, _range, speed, unit.global_position, sprite_frames, collision_radius, light_scale, light_color, sprite_scale, line_pierce, explosion, explosion_radius, self)
+			instance._start(pos, _range, speed, unit.global_position, sprite_frames, collision_radius, light_scale, light_color, sprite_scale, line_pierce, explosion, explosion_radius, self, hit_allies, multiple_hit, multiple_hit_interval, projectile_ricochet, projectile_ricochet_amount, projectile_split, projectile_split_amount)
 			await unit.get_tree().create_timer(0.1).timeout
 	elif projectile_type == targeting_type.AllyTarget:
 			target = _get_closest_visible_ally_to_mouse()
+			var current_player_position = unit.global_position
+			if swap_position and target:
+				unit.global_position = target.global_position
+				target.global_position = current_player_position
+
 			if additional_targets <= 0:
 				additional_targets = 1
-			print(additional_targets)
 			if !target or target.global_position.distance_to(unit.global_position) > _range:
 				Utility.get_node("ErrorMessage")._create_error_message("No target in range.", unit)
 				return false
 			for i in range(additional_targets):
-				print("Targeting")
 				if i > 0:
 					var new_target = _get_closest_visible_ally_to_target(target)
 					target = new_target
+					if swap_position and target:
+						target.global_position = current_player_position
 
 				if sprite_frames != null:
 					if target.has_node(a_name):
 						target.get_node(a_name).queue_free()
 					var animated_sprite = AnimatedSprite2D.new()
 					target.add_child(animated_sprite)
+					animated_sprite.z_index = 1
 					animated_sprite.name = a_name
 					animated_sprite.sprite_frames = sprite_frames
 					animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-					animated_sprite.global_position -= Vector2(0, 32)
+					animated_sprite.global_position -= Vector2(0, 32) + sprite_offset
 					animated_sprite.play()
 					animated_sprite.animation_finished.connect(_remove_sprite_sheet.bind(target))
 
@@ -567,10 +849,11 @@ func _use():
 							unit.get_node(a_name).queue_free()
 						var animated_sprite = AnimatedSprite2D.new()
 						unit.add_child(animated_sprite)
+						animated_sprite.z_index = 1
 						animated_sprite.name = a_name
 						animated_sprite.sprite_frames = sprite_frames
 						animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-						animated_sprite.global_position -= Vector2(0, 32)
+						animated_sprite.global_position -= Vector2(0, 32) + sprite_offset
 						animated_sprite.play()
 						animated_sprite.animation_finished.connect(_remove_sprite_sheet.bind(unit))
 
@@ -584,10 +867,11 @@ func _use():
 								enemy.get_node(a_name).queue_free()
 							var animated_sprite = AnimatedSprite2D.new()
 							enemy.add_child(animated_sprite)
+							animated_sprite.z_index = 1
 							animated_sprite.name = a_name
 							animated_sprite.sprite_frames = sprite_frames
 							animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-							animated_sprite.global_position -= Vector2(0, 32)
+							animated_sprite.global_position -= Vector2(0, 32) + sprite_offset
 							animated_sprite.play()
 							animated_sprite.animation_finished.connect(_remove_sprite_sheet.bind(enemy))
 				else:
@@ -595,28 +879,34 @@ func _use():
 					_create_light(target)
 	elif projectile_type == targeting_type.EnemyTarget:
 			target = _get_closest_visible_enemy_to_mouse()
-			print("additional targets: " + str(additional_targets))
+			var current_player_position = unit.global_position
+			if swap_position and target:
+				unit.global_position = target.global_position
+				target.global_position = current_player_position
+
 			if additional_targets <= 0:
 				additional_targets = 1
 			if !target or target.global_position.distance_to(unit.global_position) > _range:
 				Utility.get_node("ErrorMessage")._create_error_message("No target in range.", unit)
 				return false
-			if _check_weight(false):
-				unit.get_node('Control').on_action.emit(weight, unit, weight_duration, 'SpeedBuff')
+			if _check_weight(true):
+				unit.get_node('Control').on_action.emit(-(weight + unit.global_weight), unit, weight_duration, 'SpeedBuff')
 			for i in range(additional_targets):
 				if i > 0:
 					var new_target = _get_closest_visible_enemy_to_target(target)
 					target = new_target
-				print("Targeting")
+					if swap_position and target:
+						target.global_position = current_player_position
 				if sprite_frames != null:
 					if target.has_node(a_name):
 						target.get_node(a_name).queue_free()
 					var animated_sprite = AnimatedSprite2D.new()
 					target.add_child(animated_sprite)
+					animated_sprite.z_index = 1
 					animated_sprite.name = a_name
 					animated_sprite.sprite_frames = sprite_frames
 					animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-					animated_sprite.global_position -= Vector2(0, 32)
+					animated_sprite.global_position -= Vector2(0, 32) + sprite_offset
 					animated_sprite.play()
 					animated_sprite.animation_finished.connect(_remove_sprite_sheet.bind(target))
 				if explosion:
@@ -629,10 +919,11 @@ func _use():
 								enemy.get_node(a_name).queue_free()
 							var animated_sprite = AnimatedSprite2D.new()
 							enemy.add_child(animated_sprite)
+							animated_sprite.z_index = 1
 							animated_sprite.name = a_name
 							animated_sprite.sprite_frames = sprite_frames
 							animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-							animated_sprite.global_position -= Vector2(0, 32)
+							animated_sprite.global_position -= Vector2(0, 32) + sprite_offset
 							animated_sprite.play()
 							animated_sprite.animation_finished.connect(_remove_sprite_sheet.bind(enemy))
 				else:
@@ -646,10 +937,11 @@ func _use():
 				unit.get_node(a_name).queue_free()
 			var animated_sprite = AnimatedSprite2D.new()
 			unit.add_child(animated_sprite)
+			animated_sprite.z_index = 1
 			animated_sprite.name = a_name
 			animated_sprite.sprite_frames = sprite_frames
 			animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-			animated_sprite.global_position -= Vector2(0, 32)
+			animated_sprite.global_position -= Vector2(0, 32) + sprite_offset
 			animated_sprite.play()
 			animated_sprite.animation_finished.connect(_remove_sprite_sheet.bind(unit))
 	elif projectile_type == targeting_type.Area:
@@ -658,17 +950,19 @@ func _use():
 		for i in range(echo):
 			if i > 0:
 				await unit.get_tree().create_timer(echo_delay).timeout
-				if _check_weight(false):
-					unit.get_node('Control').on_action.emit(weight, unit, weight_duration, 'SpeedBuff')
+				if _check_weight(true):
+					unit.get_node('Control').on_action.emit(-(weight + unit.global_weight), unit, weight_duration, 'SpeedBuff')
 			var instance = load("res://Abilities/Utility/area_projectile.tscn").instantiate()
 			instance.has_hit.connect(_on_hit)
 			unit.get_tree().get_root().add_child(instance)
 			instance.global_position = unit.global_position
-			instance._start(pos, _range, speed, unit, radius, duration, area_type, light_color, always_trigger, sprite_frames, sprite_scale, area_pool, area_pool_radius, i, self, sprite_offset)
+			instance._start(pos, _range, speed, unit, radius, duration, area_type, light_color, always_trigger, sprite_frames, sprite_scale, area_pool, area_pool_radius, i, self, sprite_offset, area_ally_hit, area_multiple_hit, area_multiple_hit_interval)
 			_shake_camera()
 	elif projectile_type == targeting_type.Movement:
-		if type == "Sprint" or type == "Teleport":
+		if type == "Teleport":
 			target = unit.get_global_mouse_position()
+		elif type == "Sprint":
+			target = unit.get_node("Control").movement_target
 		else:
 			target = _get_closest_visible_enemy_to_mouse()
 		var instance = load("res://Abilities/Utility/movement_ability.tscn").instantiate()
@@ -676,36 +970,80 @@ func _use():
 		unit.get_tree().get_root().add_child(instance)
 		instance._start(unit, target, _range, movement_speed, type, light_color, explosion, explosion_radius, self, pool, sprite_frames, sprite_scale, custom_movement, custom_end, custom_start)
 	elif projectile_type == targeting_type.Summon:
+		for summon in unit.get_node('Summons').get_children():
+			if summon_instance.u_name == summon.u_name:
+				summon.queue_free()
 		for s in range(0, summon_amount):
 			summon_instance = summon_scene.instantiate()
 			summon_instance.obstacles_info = unit.obstacles_info
-			summon_instance.do_action.connect(unit.get_node('Control')._on_action)	
-			var number = 0
-			for summon in unit.get_node('Summons').get_children():
-				if summon_instance.u_name == summon.u_name:
-					number += 1
-					if number >= summon_amount:
-						Utility.get_node("ErrorMessage")._create_error_message("Maximum summons on " + a_name + "reached.", unit)
-						summon_instance.queue_free()
-						return
+			summon_instance.do_action.connect(unit.get_node('Control')._on_action)
+			for l in range(level - 1):
+				summon_instance._level_grants(summon_scaling)
+
+			if is_totem:
+				for l in range(level - 1):
+					summon_instance._totem_level_grants()
+			summon_instance.bonus_health += summon_extra_flat_health
+			summon_instance.bonus_health += (1 + summon_extra_percentage_health/100.0) * summon_instance.total_health
+			summon_instance.bonus_attack_damage += summon_extra_flat_attack_damage
+			summon_instance.bonus_attack_damage += (1 + summon_extra_percentage_attack_damage/100.0) * summon_instance.total_attack_damage
+			summon_instance.bonus_attack_speed += summon_extra_flat_attack_speed
+			summon_instance.bonus_armor += summon_extra_flat_armor
+			summon_instance.bonus_armor += (1 + summon_extra_percentage_armor/100.0) * summon_instance.total_armor
+			summon_instance.bonus_evade += summon_extra_flat_evade
+			summon_instance.bonus_evade += (1 + summon_extra_percentage_evade/100.0) * summon_instance.total_evade
+			summon_instance.abilities.append_array(summon_extra_abilities)
+			summon_instance.globals["Burn"] += summon_extra_percentage_burn_damage
+			summon_instance.globals["Bleed"] += summon_extra_percentage_bleed_damage
+			summon_instance.globals["Poison"] += summon_extra_percentage_poison_damage
 			unit.get_node('Summons').add_child(summon_instance)
 			summon_instance.global_position = unit.global_position
+			summon_instance.is_totem = is_totem
+			summon_instance.totem_duration = totem_duration
+			summon_instance._initialize_player_summon()
+			summon_instance._update_totals()
 	elif projectile_type == targeting_type.Passive:
+		if activatable:
+			if activatable_cooldown_timer <= 0:
+				extra["PassiveActive"] = true
+				activatable_duration_timer = activatable_duration
+				activatable_cooldown_timer = activatable_cooldown
+			else:
+				Utility.get_node("ErrorMessage")._create_error_message("Ability on cooldown.", unit)
+
 		if toggle:
 			unit.get_node('Control').on_action.emit(values[toggle_state], unit, false, tags[toggle_state], extra)
 			toggle_state += 1
 			if toggle_state >= toggle_state_count:
 				toggle_state = 0
-
+		return
+	elif projectile_type == targeting_type.AllyAura:
+		if aura_toggle:
+			if aura_toggled:
+				aura_toggled = false
+				return
+			aura_toggled = true
+		return
+	elif projectile_type == targeting_type.EnemyAura:
+		if aura_toggle:
+			if aura_toggled:
+				aura_toggled = false
+				return
+			aura_toggled = true
+		return
 	elif projectile_type == targeting_type.None:
 		pass
-	unit.current_mana -= mana_cost
+	_on_cast.emit(self)
+	unit.current_mana -= mana_cost + (unit.total_mana * (mana_cost_percentage/100.0))
 	return true
 
-func _remove_sprite_sheet(targett):
+func _remove_sprite_sheet(targett, name = ""):
 	if targett.has_node(a_name):
 		targett.get_node(a_name).queue_free()
-		print("Removing sprite sheet")
+
+	if name != "":
+		if targett.has_node(name):
+			targett.get_node(name).queue_free()
 
 func _check_weight(global):
 	if !global:
@@ -752,6 +1090,32 @@ func _update_targeting(_delta, _targeting_array, _targeting):
 				Utility.get_node('AbilityTargetSystem')._draw_target_targeting()
 
 # Hit function, this will be called when the ability hits something, no matter the type
+
+func _action_(targett, name):
+	if targett.has_node(name):
+		targett.get_node(name).queue_free()
+	if end_action:
+		print("End action")
+		for enemy in get_tree().get_nodes_in_group('enemies'):
+			if enemy.global_position.distance_to(unit.global_position) < action_range:
+				for e in end_action_tags: 
+					unit.get_node('Control').on_action.emit(values[e], enemy, unit, tags[e], extra)
+	if begin_action:
+		for enemy in get_tree().get_nodes_in_group('enemies'):
+			if enemy.global_position.distance_to(unit.global_position) < action_range:
+				for e in begin_action_tags:
+					unit.get_node('Control').on_action.emit(values[e], enemy, unit, tags[e], extra)
+
+func _end_or_begin_action():
+	var animated_sprite = AnimatedSprite2D.new()
+	animated_sprite.name = "Action"
+	unit.add_child(animated_sprite)
+	animated_sprite.z_index = 1
+	animated_sprite.sprite_frames = action_spritesheet
+	animated_sprite.scale = Vector2(1, 1)
+	animated_sprite.play()
+	animated_sprite.animation_finished.connect(_action_.bind(unit, "Action"))
+
 func _on_hit(area, extra = null):
 	if extra == null:
 		extra = {"ability": a_name,
@@ -759,56 +1123,103 @@ func _on_hit(area, extra = null):
 	else:
 		extra["ability"] = a_name
 		extra["ability_instance"] = self
+
 	
 	var changed_values = []
+	var changed_tags = []
 	for val in values.size():
 		changed_values.append(values[val])
+		changed_tags.append(tags[val])
+		
+	if is_buff:
+		extra["Duration"] = buff_duration
+		if end_action:
+			print("End action")
+			var timer = Utility.get_node('TimerCreator')._create_timer(buff_duration, true, unit)
+			timer.timeout.connect(_end_or_begin_action)
+			timer.start()
+			for e in end_action_tags:
+				changed_tags.remove_at(e)
+				changed_values.remove_at(e)
+		if begin_action:
+			_end_or_begin_action()
+			for e in begin_action_tags:
+				changed_tags.remove_at(e)
+				changed_values.remove_at(e)
 
-	if GameManager.selected_character_name == "Warrior" and unit.current_rage - mana_cost > 0:
-		changed_values[tags.find("Damage")] *= 1 + mana_cost/100.0
+	if "Ally Hit" in extra and extra["Ally Hit"]:
+		if area_ally_hit:
+			for t in tags.size():
+				if ally_tags_area.find(t) == -1:
+					changed_values.remove_at(t)
+					changed_tags.remove_at(t)
+		if hit_allies:
+			for t in tags.size():
+				if ally_tags_area.find(t) == -1:
+					changed_values.remove_at(t)
+					changed_tags.remove_at(t)
+	else:
+		if area_ally_hit:
+			for t in tags.size():
+				for a in ally_tags_area:
+					if t == a:
+						changed_values.remove_at(t)
+						changed_tags.remove_at(t)
+		if hit_allies:
+			for t in tags.size():
+				for a in ally_tags:
+					if t == a:
+						changed_values.remove_at(t)
+						changed_tags.remove_at(t)
+
+	if GameManager.selected_character_name == "Warrior" and unit.current_rage - mana_cost > 0 and projectile_type != targeting_type.Self and projectile_type != targeting_type.AllyTarget:
+		added_percentage_damage += mana_cost
 		unit.current_rage -= mana_cost
+		warrior_used_rage = true
 
 	if "Pool" in extra:
 		for v in changed_values.size():
 			changed_values[v] = values[v] * extra['Pool']
-			print(changed_values[v])
-			print("Pool")
-	elif "Echo" in extra:
+	if "Echo" in extra:
 		for v in changed_values.size():
 			changed_values[v] = values[v] * extra['Echo']
-			print(changed_values[v])
-			print("Echo")
+	if "Split" in extra:
+		for v in changed_values.size():
+			changed_values[v] = values[v] * extra['Split']
 
-	for val in tags.size():
-		if tags[val] in non_hit_tags or tags[val] == "Duplicate" or tags[val] == "Pierce" or tags[val] == "Explosion" or tags[val] == "Echo" or tags[val] == "AreaPool" or tags[val] == "SelfTarget":
+	for val in changed_tags.size():
+		if changed_tags[val] in non_hit_tags or changed_tags[val] == "Duplicate" or changed_tags[val] == "Pierce" or changed_tags[val] == "Explosion" or changed_tags[val] == "Echo" or changed_tags[val] == "AreaPool" or changed_tags[val] == "SelfTarget":
 			continue
 
 		for e in range(enchants["Tags"].size()):
-			if tags[val] in enchants["Tags"]:
+			if changed_tags[val] in enchants["Tags"]:
 				extra.merge(enchants["Extra"][e], true)
 
-		if "Buff" in tags[val]:
-			unit.get_node('Control').on_action.emit(changed_values[val], area, buff_duration, tags[val], extra)
-		elif "Lifesteal" in tags[val]:
-			unit.get_node('Control').on_action.emit(changed_values[tags.find("Damage")] * (values[val]/100), area, unit, tags[val])
-		elif "Shock" in tags[val] or "Wind" in tags[val]:
-			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, tags[val])
-		elif "QuickAttack" in tags[val]:
+		if "Lifesteal" in changed_tags[val]:
+			unit.get_node('Control').on_action.emit(changed_values[changed_tags.find("Damage")] * (values[val]/100.0), area, unit, changed_tags[val], extra)
+		elif "Shock" in changed_tags[val] or "Wind" in changed_tags[val]:
+			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, changed_tags[val], extra)
+		elif "QuickAttack" in changed_tags[val]:
 			var new_values = []
 			var new_tags = []
 			for i in range(values.size() - 2):
 				new_values.append(values[i])
-				new_tags.append(tags[i])
-			unit.get_node('Control').on_action.emit(changed_values[val], new_values, unit, tags[val], new_tags)
-		elif "Passive" in tags[val]:
-			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, tags[val], extra)
-		elif "Damage" in tags[val]:
-			unit.get_node('Control').on_action.emit(_apply_scaling(changed_values[val], ability_type), area, unit, tags[val])
+				new_tags.append(changed_tags[i])
+			unit.get_node('Control').on_action.emit(changed_values[val], new_values, unit, changed_tags[val], new_tags)
+		elif "Passive" in changed_tags[val]:
+			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, changed_tags[val], extra)
+		elif "Damage" in changed_tags[val]:
+			var new_damage = _apply_scaling(changed_values[val], ability_type)
+			unit.get_node('Control').on_action.emit(new_damage, area, unit, changed_tags[val], extra)
 			if unit.total_spell_vamp > 0:
-				unit.get_node('Control').on_action.emit(_apply_scaling(changed_values[val], ability_type) * (unit.total_spell_vamp/100), unit, unit, "Heal")
+				unit.get_node('Control').on_action.emit(new_damage * (unit.total_spell_vamp/100.0), unit, unit, "Heal", extra)
+ 
 			_shake_camera()
 		else:
-			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, tags[val], extra)
+			unit.get_node('Control').on_action.emit(changed_values[val], area, unit, changed_tags[val], extra)
+	if GameManager.selected_character_name == "Warrior" and warrior_used_rage:
+		added_percentage_damage -= mana_cost
+		warrior_used_rage = false
 
 func _on_item_use():
 	if item_tags.size() == 0:

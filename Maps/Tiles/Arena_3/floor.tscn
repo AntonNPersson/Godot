@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp6rtb8ec10f3"]
+
+[ext_resource type="Texture2D" uid="uid://c0cysfcix52i1" path="res://Sprites/Sewers/floor.png" id="1_71fi8"]
+
+[node name="Floor" type="Area2D"]
+position = Vector2(342, 126)
+metadata/Walkable = true
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_71fi8")

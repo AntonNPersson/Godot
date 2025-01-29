@@ -109,4 +109,4 @@ script = ExtResource("1_d6y7c")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_2wsfm")
-frame_progress = 0.689304
+frame_progress = 0.561083

@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://biy6h4xtj237j"]
+[gd_scene load_steps=61 format=3 uid="uid://biy6h4xtj237j"]
 
 [ext_resource type="PackedScene" uid="uid://vbb0pmq2aasg" path="res://Abilities/STR/Vampiric Strike/Vampiric_strike.tscn" id="1_kspom"]
 [ext_resource type="Texture2D" uid="uid://c3c0s7pokrwty" path="res://Abilities/icons/dark spell_71.png" id="2_5iubh"]
@@ -30,6 +30,9 @@
 [ext_resource type="PackedScene" uid="uid://dgn56rj0erh0s" path="res://Abilities/DEX, INT, STR/Triumvirate Shift/Triumvirate Shift.tscn" id="28_6h8jp"]
 [ext_resource type="PackedScene" uid="uid://c55yksr4s56gu" path="res://Abilities/STR/Whirlwind/Whirlwind.tscn" id="29_botpu"]
 [ext_resource type="PackedScene" uid="uid://bkmhwaojd3dci" path="res://Abilities/STR/Unrelenting Charge/Unrelenting Charge.tscn" id="30_mhln1"]
+[ext_resource type="PackedScene" uid="uid://dxtl5uxsrtvk4" path="res://Abilities/STR/Colossal Smash/Colossal Smash.tscn" id="31_ubim8"]
+[ext_resource type="PackedScene" uid="uid://d3cxpqg0lrswq" path="res://Abilities/STR/Avatar/Avatar.tscn" id="32_8vh4h"]
+[ext_resource type="PackedScene" uid="uid://b05ecqgvljmqp" path="res://Abilities/STR/Intimidating Shout/Intimidating Shout.tscn" id="33_pvjxr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5532n"]
 atlas = ExtResource("3_kvoqp")
@@ -230,19 +233,35 @@ _range = 75.0
 sprite_frames = SubResource("SpriteFrames_wedif")
 sprite_scale = 0.6
 sprite_offset = Vector2(0, 22)
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
+buff_duration = 0.8
 values = Array[float]([15.0, 40.0])
 increased_values = Array[float]([15.0, 5.0])
-buff_duration = 0.8
 weight = 45.0
 
 [node name="Blood Scream" parent="." instance=ExtResource("2_q5nx3")]
 icon = ExtResource("4_u1guf")
+tooltip_text = "A scream of bloodlust in battle, dealing Value0 damage and inflicting Value1 bleed to nearby enemies."
 sprite_frames = SubResource("SpriteFrames_otuoq")
 sprite_scale = 1.2
 sprite_offset = Vector2(0, 22)
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
 area_type = 3
 duration = 0.45
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 values = Array[float]([5.0, 10.0])
 increased_values = Array[float]([5.0, 5.0])
 weight = 100.0
@@ -250,8 +269,15 @@ weight = 100.0
 [node name="Frost Slash" parent="." instance=ExtResource("4_i5pe1")]
 position = Vector2(821.122, 317.894)
 icon = ExtResource("6_byvbs")
-tooltip_text = "Enchant your weapon to deal Value0 increased damage and freeze. slowing Value1%, then quick attack the closest target; freezing has a chance to apply frozen to target."
-echo_delay = 1.8
+tooltip_text = "Enchant your weapon to deal Value0 increased damage and freeze. slowing Value1%, then quick-attack the closest target; freezing has a chance to apply frozen to target."
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 values = Array[float]([15.0, 40.0, 1.0])
 increased_values = Array[float]([15.0, 5.0, 0.0])
 weight = 45.0
@@ -259,7 +285,14 @@ weight = 45.0
 [node name="Frenzy" parent="." instance=ExtResource("5_bbpsj")]
 icon = ExtResource("8_6q5rv")
 tooltip_text = "Increase attack speed of target by Value0%, but lose 5% health each second for 5 seconds."
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 
 [node name="Cry of Desperation" parent="." instance=ExtResource("6_b1rky")]
 icon = ExtResource("10_6xw6d")
@@ -268,6 +301,7 @@ weight = 100.0
 
 [node name="Thirst For Blood" parent="." instance=ExtResource("6_rl4ye")]
 icon = ExtResource("12_nux6a")
+tooltip_text = "Your thirst for blood is so strong you charge towards targeted enemy dealing Value0 damage, reduce cd by 50% if target is bleeding, else afflict Value1 bleed to the target."
 values = Array[float]([10.0, 5.0])
 increased_values = Array[float]([5.0, 2.5])
 weight = 30.0
@@ -275,38 +309,79 @@ weight_duration = 0.45
 
 [node name="Frozen Blitz" parent="." instance=ExtResource("7_sp3dw")]
 icon = ExtResource("14_wv45b")
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 increased_values = Array[float]([5.0])
 
 [node name="Bloody Blitz" parent="." instance=ExtResource("9_jwbqb")]
 icon = ExtResource("18_j1fgx")
-echo_delay = 1.8
+tooltip_text = "Charge towards targeted direction, causing pools of blood appear, dealing Value0 damage and inflicting Value1 bleed to enemies who walk into them."
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 values = Array[float]([10.0, 3.0])
 increased_values = Array[float]([5.0, 1.0])
 
 [node name="Crimson Combination" parent="." instance=ExtResource("19_lvop3")]
 icon = ExtResource("20_hsap4")
-echo_delay = 1.8
-custom_end = false
-custom_start = true
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 toggle_state_count = 2
 values = Array[float]([5.0, 15.0])
 increased_values = Array[float]([5.0, 10.0])
 
 [node name="Bulwark Transference" parent="." instance=ExtResource("19_fcvyj")]
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 custom_end = false
 custom_start = true
 increased_values = Array[float]([5.0])
 
 [node name="Cleave" parent="." instance=ExtResource("20_l7oab")]
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 custom_end = false
 custom_start = true
 
 [node name="Ferver" parent="." instance=ExtResource("21_x2oym")]
 tooltip_text = "Through endless repetition gain Value0% attack speed, doubling everytime you attack the same target, capping at 10 stacks."
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 custom_end = false
 custom_start = true
 values = Array[float]([5.0])
@@ -314,7 +389,14 @@ increased_values = Array[float]([2.5])
 
 [node name="Umbral Snare" parent="." instance=ExtResource("22_6esoo")]
 sprite_offset = Vector2(0, 22)
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 custom_end = false
 custom_start = true
 tags = Array[String](["UmbralSnare", "Damage"])
@@ -325,28 +407,113 @@ weight = 100.0
 
 [node name="Shatterstrike" parent="." instance=ExtResource("23_ngjmi")]
 sprite_scale = 0.8
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 custom_end = false
 values = Array[float]([15.0, 15.0, 0.0])
 increased_values = Array[float]([15.0, 20.0, 0.0])
 
 [node name="Vengeful Wound" parent="." instance=ExtResource("26_kujfj")]
-echo_delay = 1.8
+tooltip_text = "You wound enemies who basic attack you, causing Value0 bleed to be reflected back at them."
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 custom_end = false
 custom_start = true
 
 [node name="Crimson Surge" parent="." instance=ExtResource("27_7lgku")]
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 custom_start = true
 light_color = Color(1, 0, 0, 1)
 light_scale = 0.4
 
 [node name="Triumvirate Shift" parent="." instance=ExtResource("28_6h8jp")]
-echo_delay = 1.8
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 
 [node name="Whirlwind" parent="." instance=ExtResource("29_botpu")]
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
 values = Array[float]([10.0])
 increased_values = Array[float]([10.0])
 weight = 100.0
 
 [node name="Unrelenting Charge" parent="." instance=ExtResource("30_mhln1")]
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
+
+[node name="Colossal Smash" parent="." instance=ExtResource("31_ubim8")]
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
+
+[node name="Avatar" parent="." instance=ExtResource("32_8vh4h")]
+tooltip_text = "Enter avatar state, increasing all damage by Value0%, health by Value1%, armor by Value2, and size by Value3% for 10 seconds."
+cooldown = 40.0
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
+buff_duration = 10.0
+tags = Array[String](["PercentDamageBuff", "PercentHealthBuff", "FlatArmorBuff", "PercentSizeBuff"])
+values = Array[float]([5.0, 10.0, 50.0, 25.0])
+increased_values = Array[float]([5.0, 5.0, 40.0, 0.0])
+
+[node name="Intimidating Shout" parent="." instance=ExtResource("33_pvjxr")]
+tooltip_text = "Shout with pure rage, stunning targets around you for Value0 second(s), and reducing their armor by Value1 for 3 seconds."
+sprite_offset = Vector2(0, 22)
+hit_allies = null
+ally_tags = null
+multiple_hit = null
+multiple_hit_interval = null
+area_ally_hit = null
+ally_tags_area = null
+area_multiple_hit = null
+area_multiple_hit_interval = null
+is_buff = true
+buff_duration = 3.0

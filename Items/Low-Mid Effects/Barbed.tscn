@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://jac86netpqvp"]
+
+[ext_resource type="Script" path="res://Items/Low-Mid Effects/Barbed.gd" id="1_11mij"]
+
+[node name="Barbed" type="Node2D"]
+script = ExtResource("1_11mij")

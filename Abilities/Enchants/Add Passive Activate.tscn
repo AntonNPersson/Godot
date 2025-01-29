@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b17d340gv04og"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_3kfxd"]
+[ext_resource type="Texture2D" uid="uid://4wdpm7v08tdb" path="res://Abilities/Enchants/icons/Yellow Ability_16.png" id="2_78vvn"]
+
+[node name="Add Passive Activate" type="Node2D"]
+script = ExtResource("1_3kfxd")
+i_name = "Passive: Activate"
+tooltip = "Add the ability to activate your passive increasing its values by 100% for Value0 second(s)."
+icon = ExtResource("2_78vvn")
+tags = Array[String](["PassiveActivate"])
+values = Array[float]([10.0])
+types = Array[int]([4])
+unique = true
+rarity = 3

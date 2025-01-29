@@ -1,0 +1,120 @@
+[gd_scene load_steps=17 format=3 uid="uid://bkiow65f3njkn"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_n5xoy"]
+[ext_resource type="Texture2D" uid="uid://cedsv5jtyj5yo" path="res://Abilities/INT/Arcane Cascade/Poison Spell31.png" id="2_pgvio"]
+[ext_resource type="Texture2D" uid="uid://cgiwdjjutfca1" path="res://Abilities/INT/Arcane Cascade/Spell 2-purpleSheet.png" id="3_nktpd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t56px"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xk05"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmghe"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7t3yn"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_obk1f"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fax5j"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0v0v"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhtrt"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uoi7j"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kf8dx"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qbipe"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eqqqo"]
+atlas = ExtResource("3_nktpd")
+region = Rect2(1760, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_32je0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t56px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xk05")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmghe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7t3yn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_obk1f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fax5j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0v0v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yhtrt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uoi7j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kf8dx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qbipe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eqqqo")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Arcane Cascade" type="Node2D"]
+script = ExtResource("1_n5xoy")
+icon = ExtResource("2_pgvio")
+a_name = "Arcane Cascade"
+tooltip_text = "Channel arcane energy that explodes around you, dealing Value0 damage, increasing damage and mana cost by 20% each explosion."
+mana_cost = 20.0
+projectile_type = 3
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_32je0")
+sprite_offset = Vector2(0, 22)
+area_type = 3
+duration = 0.6
+radius = 190.0
+area_channel = true
+area_channel_interval = 0.5
+area_channel_increasing_mana_cost = 20.0
+area_channel_increasing_damage = 20.0
+tags = Array[String](["Damage"])
+values = Array[float]([10.0])
+increased_values = Array[float]([10.0])
+light_color = Color(0.447059, 0, 0.843137, 1)
+light_scale = 0.6

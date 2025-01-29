@@ -184,6 +184,8 @@ script = ExtResource("2_irwds")
 [node name="Circle" type="Area2D" parent="HitBox"]
 visible = false
 modulate = Color(1, 1, 1, 0.188235)
+collision_layer = 3
+collision_mask = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/Circle"]
 modulate = Color(1, 0, 0, 1)
@@ -208,6 +210,8 @@ texture = ExtResource("4_ajjaw")
 [node name="Rectangle" type="Area2D" parent="HitBox"]
 visible = false
 modulate = Color(1, 1, 1, 0.188235)
+collision_layer = 3
+collision_mask = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/Rectangle"]
 position = Vector2(0.5, 0.5)
@@ -230,6 +234,8 @@ texture = ExtResource("6_8rv30")
 [node name="Cone" type="Area2D" parent="HitBox"]
 visible = false
 modulate = Color(1, 0, 0, 0.188235)
+collision_layer = 3
+collision_mask = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="HitBox/Cone"]
 material = SubResource("CanvasItemMaterial_vfekf")

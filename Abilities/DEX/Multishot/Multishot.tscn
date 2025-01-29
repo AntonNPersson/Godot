@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvg66k1rotmtq"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_fw4du"]
+[ext_resource type="Texture2D" uid="uid://caubmjojpp4ym" path="res://Abilities/DEX/Multishot/wind spell67.png" id="2_oy74s"]
+
+[node name="Multishot" type="Node2D"]
+script = ExtResource("1_fw4du")
+icon = ExtResource("2_oy74s")
+a_name = "Multishot"
+tooltip_text = "Attack with applied precision, increasing attack targets by Value0."
+projectile_type = 4
+ability_type = "DEX"
+tags = Array[String](["AttackTargetPassive"])
+values = Array[float]([1.0])
+increased_values = Array[float]([0.34])

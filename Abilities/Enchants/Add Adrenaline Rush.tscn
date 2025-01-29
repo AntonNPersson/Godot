@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyma16glc1bqn"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_8y74w"]
+[ext_resource type="Texture2D" uid="uid://bwim8nq6b7osd" path="res://Abilities/Enchants/icons/Purple Ability_16.png" id="2_gvcpt"]
+
+[node name="Add Adrenaline Rush" type="Node2D"]
+script = ExtResource("1_8y74w")
+i_name = "Self: Adrenaline Rush"
+tooltip = "Increase all damage by Value0%, but weaken yourself, taking 20% more damage."
+icon = ExtResource("2_gvcpt")
+tags = Array[String](["AdrenalineRush"])
+values = Array[float]([40.0])
+types = Array[int]([5])
+extra = {
+"Hit": true
+}
+unique = true
+rarity = 2

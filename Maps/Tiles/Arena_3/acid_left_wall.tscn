@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgfaed4awyddf"]
+
+[ext_resource type="Texture2D" uid="uid://cnqvvjlqv3qlj" path="res://Sprites/Sewers/acid_left_wall.png" id="1_vqym3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_co0cj"]
+size = Vector2(127, 127)
+
+[node name="Acid Left Wall" type="Area2D" groups=["obstacles"]]
+position = Vector2(856, 417)
+metadata/Walkable = true
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_vqym3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_co0cj")

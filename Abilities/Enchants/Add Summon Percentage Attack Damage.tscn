@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bckhvl1efwrcq"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_u71gx"]
+[ext_resource type="Texture2D" uid="uid://bd1vgmne0ngle" path="res://Abilities/Enchants/icons/2AbilityPack_19.png" id="2_kje76"]
+
+[node name="Add Summon Percentage Attack Damage" type="Node2D"]
+script = ExtResource("1_u71gx")
+i_name = "Summon: Percentage Attack Damage"
+tooltip = "Add Value0% attack damage."
+icon = ExtResource("2_kje76")
+tags = Array[String](["SummonPercentageAttackDamage"])
+values = Array[float]([5.0])
+types = Array[int]([9])
+rarity = 1

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c028x6ryl6nmb"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_0qsyy"]
+[ext_resource type="Texture2D" uid="uid://21teceag08km" path="res://Abilities/Enchants/icons/2BrownAbility_4.png" id="2_nootc"]
+
+[node name="Add Summon Percentage Armor" type="Node2D"]
+script = ExtResource("1_0qsyy")
+i_name = "Summon: Percentage Armor"
+tooltip = "Add Value0% total armor."
+icon = ExtResource("2_nootc")
+tags = Array[String](["SummonPercentageArmor"])
+values = Array[float]([5.0])
+types = Array[int]([9])
+rarity = 1

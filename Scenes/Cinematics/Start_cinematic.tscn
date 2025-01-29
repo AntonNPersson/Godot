@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bf2pw63lo38iu"]
+[gd_scene load_steps=14 format=3 uid="uid://bf2pw63lo38iu"]
 
 [ext_resource type="Script" path="res://Scenes/Cinematics/cinematic_0.gd" id="1_psd2c"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="2_oh3qy"]
@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://qb01drn6pjqs" path="res://Units/Instance/Characters/Ranger/ranger_pic.png" id="5_qnkqh"]
 [ext_resource type="Texture2D" uid="uid://duml0ej3x3c5x" path="res://Units/Instance/Characters/Mage/Mage_pic.png" id="6_ygm4i"]
 [ext_resource type="Texture2D" uid="uid://dem2h88u3ebjl" path="res://Units/Instance/Characters/Warrior/warrior_pic.png" id="7_mu4gx"]
+[ext_resource type="Texture2D" uid="uid://dwks2vsk780gp" path="res://Units/Instance/Characters/Duelist/duelist_pic.png" id="8_ayo6b"]
+[ext_resource type="Texture2D" uid="uid://chr6dci0msl0d" path="res://Units/Instance/Characters/Sentinel/sentinel_pic.png" id="9_a15j2"]
+[ext_resource type="Texture2D" uid="uid://c2hr0cm4gh6i8" path="res://Units/Instance/Characters/Chronomancer/chrono_pic.png" id="10_424eo"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l0sle"]
 
@@ -193,9 +196,9 @@ grow_vertical = 0
 text = "Select"
 
 [node name="Explorer" type="Panel" parent="UI"]
-offset_left = 469.0
+offset_left = 148.0
 offset_top = 482.0
-offset_right = 597.0
+offset_right = 276.0
 offset_bottom = 610.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -207,9 +210,9 @@ scale = Vector2(2, 2)
 texture = ExtResource("4_wntu0")
 
 [node name="Berserker" type="Panel" parent="UI"]
-offset_left = 720.0
+offset_left = 399.0
 offset_top = 508.0
-offset_right = 848.0
+offset_right = 527.0
 offset_bottom = 636.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -221,9 +224,9 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_3iw44")
 
 [node name="Ranger" type="Panel" parent="UI"]
-offset_left = 944.0
+offset_left = 623.0
 offset_top = 508.0
-offset_right = 1072.0
+offset_right = 751.0
 offset_bottom = 636.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -235,9 +238,9 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_qnkqh")
 
 [node name="Mage" type="Panel" parent="UI"]
-offset_left = 1182.0
+offset_left = 861.0
 offset_top = 508.0
-offset_right = 1310.0
+offset_right = 989.0
 offset_bottom = 636.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -249,9 +252,9 @@ scale = Vector2(2, 2)
 texture = ExtResource("6_ygm4i")
 
 [node name="Warrior" type="Panel" parent="UI"]
-offset_left = 1398.0
+offset_left = 1077.0
 offset_top = 514.0
-offset_right = 1526.0
+offset_right = 1205.0
 offset_bottom = 642.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(62, 62)
@@ -261,6 +264,48 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 position = Vector2(63, 62)
 scale = Vector2(2, 2)
 texture = ExtResource("7_mu4gx")
+
+[node name="Duelist" type="Panel" parent="UI"]
+offset_left = 1283.0
+offset_top = 514.0
+offset_right = 1411.0
+offset_bottom = 642.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(62, 62)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
+
+[node name="Duelist" type="Sprite2D" parent="UI/Duelist"]
+position = Vector2(63, 62)
+scale = Vector2(2, 2)
+texture = ExtResource("8_ayo6b")
+
+[node name="Sentinel" type="Panel" parent="UI"]
+offset_left = 1483.0
+offset_top = 516.0
+offset_right = 1611.0
+offset_bottom = 644.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(62, 62)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
+
+[node name="Sentinel" type="Sprite2D" parent="UI/Sentinel"]
+position = Vector2(64, 62)
+scale = Vector2(2, 2)
+texture = ExtResource("9_a15j2")
+
+[node name="Chronomancer" type="Panel" parent="UI"]
+offset_left = 1677.0
+offset_top = 516.0
+offset_right = 1805.0
+offset_bottom = 644.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(62, 62)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
+
+[node name="Chronomancer" type="Sprite2D" parent="UI/Chronomancer"]
+position = Vector2(64, 62)
+scale = Vector2(2, 2)
+texture = ExtResource("10_424eo")
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("3_j513h")
@@ -272,3 +317,6 @@ script = ExtResource("3_j513h")
 [connection signal="gui_input" from="UI/Ranger" to="." method="_on_character_pressed" binds= ["Ranger"]]
 [connection signal="gui_input" from="UI/Mage" to="." method="_on_character_pressed" binds= ["Mage"]]
 [connection signal="gui_input" from="UI/Warrior" to="." method="_on_character_pressed" binds= ["Warrior"]]
+[connection signal="gui_input" from="UI/Duelist" to="." method="_on_character_pressed" binds= ["Duelist"]]
+[connection signal="gui_input" from="UI/Sentinel" to="." method="_on_character_pressed" binds= ["Sentinel"]]
+[connection signal="gui_input" from="UI/Chronomancer" to="." method="_on_character_pressed" binds= ["Chronomancer"]]

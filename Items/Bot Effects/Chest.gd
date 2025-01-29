@@ -6,7 +6,7 @@ var stamina : int = 12
 func _initialize():
 	tags = ["evade", "stamina"]
 	evade = randi() % 50 + 20
-	stamina = randi() % 20 + 12
+	stamina = randi() % 8 + 2
 	values = [evade, stamina]
 	icon = preload('res://Sprites/Icons/Chest.png')
 	type = ["Defense"]

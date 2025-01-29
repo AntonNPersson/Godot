@@ -137,4 +137,4 @@ script = ExtResource("1_mbp4c")
 sprite_frames = SubResource("SpriteFrames_s1o3n")
 frame = 16
 frame_progress = 1.0
-offset = Vector2(0, -32)
+offset = Vector2(0, -50)

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dh1pinlr1cd20"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_lvrch"]
+[ext_resource type="PackedScene" uid="uid://c5cj0hwe4je5n" path="res://Abilities/INT/Summon Werewolf/Werewolves.tscn" id="2_wlw3t"]
+
+[node name="SummonGoblins" type="Node2D"]
+script = ExtResource("1_lvrch")
+a_name = "Summon Goblins"
+tooltip_text = "Summon three goblins that bleed enemies on hit."
+mana_cost = 50.0
+cooldown = 15.0
+projectile_type = 9
+ability_type = "INT"
+sprite_scale = 0.0
+summon_scene = ExtResource("2_wlw3t")
+summon_amount = 2
+summon_scaling = 0.3

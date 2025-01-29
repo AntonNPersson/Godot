@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxv7gwvqewvl3"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_urmgh"]
+[ext_resource type="Texture2D" uid="uid://riq32jmh4fad" path="res://Abilities/Enchants/icons/2BrownAbility_21.png" id="2_0q2bb"]
+
+[node name="Add Ricochet" type="Node2D"]
+script = ExtResource("1_urmgh")
+i_name = "Projectile: Ricochet"
+tooltip = "Your projectiles can now bounces one more time, prioritizing the closest target."
+icon = ExtResource("2_0q2bb")
+tags = Array[String](["Ricochet"])
+values = Array[float]([1.0])
+types = Array[int]([0])
+rarity = 3

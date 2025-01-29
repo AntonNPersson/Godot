@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://2j7iwi20lk4n"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_v1k21"]
+[ext_resource type="Texture2D" uid="uid://blfqmwi348n7i" path="res://Abilities/Enchants/icons/2AbilityPack_22.png" id="2_e1ue6"]
+
+[node name="Add Summon Ability Meteor" type="Node2D"]
+script = ExtResource("1_v1k21")
+i_name = "Summon: Meteor"
+tooltip = "Add meteor ability, dealing damage and applying burn - has 10 seconds cooldown."
+icon = ExtResource("2_e1ue6")
+tags = Array[String](["SummonAbility"])
+values = Array[float]([0.0])
+types = Array[int]([9])
+unique = true
+rarity = 2

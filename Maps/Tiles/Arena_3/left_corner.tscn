@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b45wds4ubbpvd"]
+
+[ext_resource type="Texture2D" uid="uid://da5xvfuldgkar" path="res://Sprites/Sewers/left_corner.png" id="1_1gjco"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u6fxb"]
+size = Vector2(128, 128)
+
+[node name="Left Corner" type="Area2D" groups=["obstacles"]]
+position = Vector2(215, -2)
+metadata/Walkable = false
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_1gjco")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_u6fxb")

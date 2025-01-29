@@ -1,0 +1,115 @@
+[gd_scene load_steps=17 format=3 uid="uid://dro6o68pd6hrm"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_s0icf"]
+[ext_resource type="Texture2D" uid="uid://d0kwerwhexy8h" path="res://Abilities/INT/Ice Block/Water Spell_4.png" id="2_pabwk"]
+[ext_resource type="Texture2D" uid="uid://bco0jyqbaggk5" path="res://Abilities/INT/Ice Block/Water_Spell_3-Sheet.png" id="3_fiyli"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmv0t"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(0, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rnona"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(112, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n1jmo"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(224, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grduj"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(336, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oncdh"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(448, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_01hfs"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(560, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwf52"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(672, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ubv6"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(784, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ry1qs"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(896, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gn2vx"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(1008, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jdjpw"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(1120, 0, 112, 112)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djocd"]
+atlas = ExtResource("3_fiyli")
+region = Rect2(1232, 0, 112, 112)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k35ev"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmv0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rnona")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n1jmo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_grduj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oncdh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_01hfs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwf52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ubv6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ry1qs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gn2vx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jdjpw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djocd")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Ice Block" type="Node2D"]
+script = ExtResource("1_s0icf")
+icon = ExtResource("2_pabwk")
+a_name = "Ice Block"
+tooltip_text = "Encase yourself in ice, becomming immune to damage, regenerating Value1% health, and Value2% mana for Value0 seconds."
+mana_cost = 40.0
+cooldown = 12.0
+projectile_type = 5
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_k35ev")
+is_buff = true
+buff_duration = 3.0
+tags = Array[String](["SelfInvincible", "PercentHealOverTime", "PercentHealManaOverTime", "Root"])
+values = Array[float]([3.0, 20.0, 20.0, 3.0])
+increased_values = Array[float]([0.0, 10.0, 10.0, 0.0])
+light_color = Color(0.14902, 0.384314, 1, 1)
+light_scale = 0.6

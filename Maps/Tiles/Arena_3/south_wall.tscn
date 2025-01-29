@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bv5vwjwi24uvq"]
+
+[ext_resource type="Texture2D" uid="uid://bethdsmlu4jc0" path="res://Sprites/Sewers/bot_wall.png" id="1_13rru"]
+[ext_resource type="Texture2D" uid="uid://c0cysfcix52i1" path="res://Sprites/Sewers/floor.png" id="2_1gabf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v1v2w"]
+size = Vector2(128, 102)
+
+[node name="South Wall" type="Area2D" groups=["obstacles"]]
+position = Vector2(342, 254)
+metadata/Walkable = false
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_13rru")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+z_index = -1
+texture = ExtResource("2_1gabf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 13)
+shape = SubResource("RectangleShape2D_v1v2w")

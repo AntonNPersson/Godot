@@ -534,7 +534,7 @@ base_speed = 105
 base_health = 25
 base_range = 70
 base_attack_speed = 0.2
-base_attack_damage = 7
+base_attack_damage = 4
 base_windup_time = 0.3
 basic_attack_scene = ExtResource("3_m36s2")
 aggro_range = 10000.0
@@ -560,7 +560,6 @@ scale = Vector2(0.2, 0.2)
 material = SubResource("ShaderMaterial_2l1cy")
 position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_yljm5")
-animation = &"Attack East"
-frame_progress = 0.928356
+animation = &"Attack West"
 
 [node name="Update_timer" type="Node" parent="."]

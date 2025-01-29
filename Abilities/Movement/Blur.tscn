@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cn2gh7w567mpk"]
+
+[ext_resource type="Script" path="res://Abilities/Movement/Blur.gd" id="1_cx26o"]
+
+[node name="Blur" type="Node2D"]
+script = ExtResource("1_cx26o")

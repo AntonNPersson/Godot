@@ -23,6 +23,7 @@ var sprite_frames = null
 var sprite_scale = 1
 
 var max_distance
+var after_images = []
 
 var hit_enemies = []
 # Called when the node enters the scene tree for the first time.
@@ -44,7 +45,7 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 		self.direction = (target.global_position - origin.global_position).normalized()
 		self.max_distance = origin.global_position.distance_to(target.global_position)
 	if type == "Sprint":
-		self.direction = (target - origin.global_position).normalized()
+		self.direction = target
 	self.global_position = origin.global_position
 	self.explosion = explosion
 	self.explosion_radius = explosion_radius
@@ -70,6 +71,7 @@ func _start(origin, target, rnge, speed, type, light_color, explosion, explosion
 		if sprite_frames != null:
 			var animated_sprite = AnimatedSprite2D.new()
 			add_child(animated_sprite)
+			animated_sprite.z_index = 1
 			animated_sprite.name = _ability.name
 			animated_sprite.global_position = global_position
 			animated_sprite.sprite_frames = sprite_frames
@@ -89,6 +91,9 @@ func _process(delta):
 		if move and is_instance_valid(target):
 			direction = (target.global_position - origin.global_position).normalized()
 			origin.global_position += direction * speed * delta
+
+			Utility.get_node("AfterImages")._create_after_image(origin)
+
 			if origin.global_position.distance_to(target.global_position) <= 30:
 				origin.get_node('Control').movement_target = Vector2.ZERO
 				origin.get_node('Control').attack_target = target
@@ -111,15 +116,17 @@ func _process(delta):
 					get_tree().get_root().get_node('Main').add_child(_explosion)
 				if !custom_move:
 					queue_free()
+				elif custom_move and !custom_end:
+					queue_free()
 				elif custom_move and custom_end:
 					if sprite_frames != null:
 						var animated_sprite = AnimatedSprite2D.new()
 						add_child(animated_sprite)
+						animated_sprite.z_index = 1
 						animated_sprite.name = _ability.name
-						animated_sprite.global_position = global_position
+						animated_sprite.global_position = target.global_position
 						animated_sprite.sprite_frames = sprite_frames
 						animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-						animated_sprite.modulate = light_color
 						animated_sprite.animation_finished.connect(_remove_sprite)
 						animated_sprite.play()
 	if type == "Blink":
@@ -150,22 +157,26 @@ func _process(delta):
 			if !custom_move:
 				await get_tree().create_timer(0.5).timeout
 				queue_free()
+			elif custom_move and !custom_end:
+				queue_free()
 			elif custom_move and custom_end:
 				if sprite_frames != null:
 					var animated_sprite = AnimatedSprite2D.new()
 					add_child(animated_sprite)
+					animated_sprite.z_index = 1
 					animated_sprite.name = _ability.name
-					animated_sprite.global_position = global_position
+					animated_sprite.global_position = target.global_position
 					animated_sprite.sprite_frames = sprite_frames
 					animated_sprite.scale = Vector2(sprite_scale, sprite_scale)
-					animated_sprite.modulate = light_color
 					animated_sprite.animation_finished.connect(_remove_sprite)
 					animated_sprite.play()
 	if type == "Sprint":
 		if move:
 			origin.global_position += direction * speed * delta
 			sprint_timer += delta
-			print(sprint_timer)
+
+			Utility.get_node("AfterImages")._create_after_image(origin)
+
 			if sprint_timer > 0.2 and !pool and explosion:
 				var __explosion = explosion_effect.instantiate()
 				__explosion.global_position = origin.global_position
@@ -188,18 +199,14 @@ func _process(delta):
 				origin.get_node('Control').update_sprite_direction((target - origin.global_position).normalized(), "Walk")
 				if pool:
 					return
+				var _damage_range = 40
+				if _ability.tags.find("QuickAttack") != -1:
+					_damage_range = origin.total_range
 				for enemy in origin.get_tree().get_nodes_in_group('enemies'):
-					if origin.global_position.distance_to(enemy.global_position) < 40:
+					if origin.global_position.distance_to(enemy.global_position) < _damage_range:
 						if !hit_enemies.has(enemy):
 							hit_enemies.append(enemy)
 							has_hit.emit(enemy)
-							var new_explosion = get_child(0).duplicate()
-							new_explosion.global_position = enemy.global_position
-							new_explosion.get_child(0).color = light_color
-							new_explosion.get_child(0).initial_velocity_min = 10
-							new_explosion.get_child(0).emitting = true
-							new_explosion.visible = true
-							get_tree().get_root().get_node('Main').add_child(new_explosion)
 
 							if explosion:
 								var _explosion = explosion_effect.instantiate()
@@ -216,10 +223,13 @@ func _process(delta):
 				move = false
 				if !custom_move:
 					queue_free()
+				elif custom_move and !custom_end:
+					queue_free()
 				elif custom_move and custom_end:
 					if sprite_frames != null:
 						var animated_sprite = AnimatedSprite2D.new()
 						add_child(animated_sprite)
+						animated_sprite.z_index = 1
 						animated_sprite.name = _ability.name
 						animated_sprite.global_position = global_position
 						animated_sprite.sprite_frames = sprite_frames
@@ -254,9 +264,12 @@ func _process(delta):
 				get_tree().get_root().get_node('Main').add_child(_explosion)
 			if !custom_move:
 				queue_free()
+			elif custom_move and !custom_end:
+				queue_free()
 			elif custom_move and custom_end:
 				if sprite_frames != null:
 					var animated_sprite = AnimatedSprite2D.new()
+					animated_sprite.z_index = 1
 					add_child(animated_sprite)
 					animated_sprite.name = _ability.name
 					animated_sprite.global_position = global_position
@@ -265,4 +278,3 @@ func _process(delta):
 					animated_sprite.modulate = light_color
 					animated_sprite.animation_finished.connect(_remove_sprite)
 					animated_sprite.play()
-

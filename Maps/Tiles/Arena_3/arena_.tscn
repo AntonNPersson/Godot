@@ -1,0 +1,509 @@
+[gd_scene load_steps=66 format=3 uid="uid://d33sr2bqligko"]
+
+[ext_resource type="PackedScene" uid="uid://bp6rtb8ec10f3" path="res://Maps/Tiles/Arena_3/floor.tscn" id="1_uqpmr"]
+[ext_resource type="PackedScene" uid="uid://c2oqkejfinyu2" path="res://Maps/Tiles/Arena_3/player_spawn.tscn" id="2_c3vwl"]
+[ext_resource type="PackedScene" uid="uid://bejoqn0tfpk20" path="res://Maps/Tiles/Arena_3/boss_spawn.tscn" id="3_3ru5d"]
+[ext_resource type="PackedScene" uid="uid://72aqhur7t3mb" path="res://Maps/Tiles/Arena_3/north_wall.tscn" id="4_fxtry"]
+[ext_resource type="PackedScene" uid="uid://dts510igsta0o" path="res://Maps/Tiles/Arena_3/right_corner.tscn" id="5_s6nbi"]
+[ext_resource type="PackedScene" uid="uid://b45wds4ubbpvd" path="res://Maps/Tiles/Arena_3/left_corner.tscn" id="6_8raxy"]
+[ext_resource type="PackedScene" uid="uid://b0acyvs6j41tw" path="res://Maps/Tiles/Arena_3/left_wall.tscn" id="7_rt2wo"]
+[ext_resource type="PackedScene" uid="uid://crhfow5wkbjls" path="res://Maps/Tiles/Arena_3/right_wall.tscn" id="8_77o0a"]
+[ext_resource type="PackedScene" uid="uid://cekvimnb27hm5" path="res://Maps/Tiles/Arena_3/south_left_corner.tscn" id="9_kgr12"]
+[ext_resource type="PackedScene" uid="uid://bv5vwjwi24uvq" path="res://Maps/Tiles/Arena_3/south_wall.tscn" id="10_bl667"]
+[ext_resource type="Texture2D" uid="uid://d4i471m2p14ry" path="res://Sprites/Sewers/Animated sewage water tiles (full tile).png" id="10_o8bun"]
+[ext_resource type="PackedScene" uid="uid://dwwjxh37wse2j" path="res://Maps/Tiles/Arena_3/south_right_corner.tscn" id="11_5emni"]
+[ext_resource type="PackedScene" uid="uid://c46sd3fm87fhi" path="res://Maps/Tiles/Arena_3/acid.tscn" id="12_cuiig"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="13_lnvn0"]
+[ext_resource type="PackedScene" uid="uid://db2cw6fjloqya" path="res://Maps/Tiles/Arena_3/acid_north_wall.tscn" id="13_ls048"]
+[ext_resource type="PackedScene" uid="uid://d3ba6t62n32e6" path="res://Maps/Tiles/Arena_3/acid_right_corner.tscn" id="14_0tn3h"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="14_pi8p1"]
+[ext_resource type="PackedScene" uid="uid://bkx00psc7h1k7" path="res://Maps/Tiles/Arena_3/acid_left_corner.tscn" id="15_8rn1x"]
+[ext_resource type="PackedScene" uid="uid://bgfaed4awyddf" path="res://Maps/Tiles/Arena_3/acid_left_wall.tscn" id="16_5nsta"]
+[ext_resource type="PackedScene" uid="uid://bistbrsfxbxr3" path="res://Maps/Tiles/Arena_3/acid_right_wall.tscn" id="17_kck77"]
+[ext_resource type="PackedScene" uid="uid://dctsaiv3un8vc" path="res://Maps/Tiles/Arena_3/acid_south_right_corner.tscn" id="18_x16ag"]
+[ext_resource type="PackedScene" uid="uid://sdyc1u3ma3vm" path="res://Maps/Tiles/Arena_3/acid_south_left_corner.tscn" id="19_brvgi"]
+[ext_resource type="PackedScene" uid="uid://cgp58fhdbmdwo" path="res://Maps/Tiles/Arena_3/acid_south_wall.tscn" id="20_fgi1l"]
+[ext_resource type="Texture2D" uid="uid://bp7k6rywp5hty" path="res://Sprites/Sewers/broken_wall.png" id="22_qy874"]
+[ext_resource type="Texture2D" uid="uid://cyur4f8vmogd0" path="res://Maps/Tiles/Arena_3/Light gradient-radial.png" id="24_iidx4"]
+[ext_resource type="Texture2D" uid="uid://cbm85ih2vikdp" path="res://Sprites/Sewers/Pillar.png" id="24_rjjrh"]
+[ext_resource type="Texture2D" uid="uid://y804uqq7wyre" path="res://Sprites/Sewers/torch2-lit.png" id="27_rexx3"]
+[ext_resource type="Texture2D" uid="uid://ceku8lqa773ol" path="res://Sprites/Sewers/Path_bot.png" id="28_bjwtl"]
+[ext_resource type="Texture2D" uid="uid://cf2ka2jnah6rn" path="res://Sprites/Sewers/web - color scheme 1_2.png" id="28_ymvjo"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_3/random_invis.gd" id="29_dvjl8"]
+[ext_resource type="Texture2D" uid="uid://dyukl7qeb1h8u" path="res://Sprites/Sewers/Path_middle.png" id="29_medt5"]
+[ext_resource type="Texture2D" uid="uid://b10pck0v8dgtf" path="res://Sprites/Sewers/Path_top.png" id="30_pxpg3"]
+[ext_resource type="Texture2D" uid="uid://bye4ng8l7ps7m" path="res://Sprites/Sewers/background.png" id="31_cjbto"]
+[ext_resource type="Texture2D" uid="uid://cw80ipflqp0sr" path="res://Sprites/Sewers/bones - color scheme 2_9.png" id="34_v30op"]
+[ext_resource type="Texture2D" uid="uid://dcaoxgvvyormx" path="res://Sprites/Sewers/bones - color scheme 2_22.png" id="35_637wp"]
+[ext_resource type="Texture2D" uid="uid://4gpqancsts85" path="res://Sprites/Sewers/bones - color scheme 2_25.png" id="36_jsews"]
+[ext_resource type="Texture2D" uid="uid://cqmxasmqueivg" path="res://Sprites/Sewers/little rocks_16.png" id="37_hoo2a"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/flip_h.gd" id="38_ttup6"]
+[ext_resource type="Texture2D" uid="uid://1g27dgt46emv" path="res://Sprites/Sewers/little rocks_17.png" id="39_docq7"]
+[ext_resource type="Texture2D" uid="uid://bbkmvwuldqkon" path="res://Sprites/Sewers/wooden chests - isometric_10 frame_2.png" id="40_c0ky4"]
+[ext_resource type="Texture2D" uid="uid://bvp5f6a21wdyl" path="res://Sprites/Sewers/laboratory - table.png" id="41_wxnke"]
+[ext_resource type="Texture2D" uid="uid://dynw3fiuwb87t" path="res://Sprites/Sewers/laboratory - potions_5.png" id="42_hpmn1"]
+[ext_resource type="Texture2D" uid="uid://cfpivu2efiupc" path="res://Sprites/Sewers/laboratory - potions_4.png" id="43_qqw8k"]
+[ext_resource type="Texture2D" uid="uid://14esb2iploau" path="res://Sprites/Sewers/giant pipe-sheet2.png" id="44_itynv"]
+[ext_resource type="Texture2D" uid="uid://c57o2ow2eb1o8" path="res://Sprites/Sewers/laboratory - engine.png" id="45_lscdg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfbl8"]
+atlas = ExtResource("10_o8bun")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfu8h"]
+atlas = ExtResource("10_o8bun")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_figcj"]
+atlas = ExtResource("10_o8bun")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_un3j0"]
+atlas = ExtResource("10_o8bun")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fepwb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yfbl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dfu8h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_figcj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_un3j0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_arbrj"]
+radius = 29.1548
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_crvfn"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_da4ok"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psmdw"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ciodq"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2g6w7"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2age"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5cdn"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g70t4"]
+atlas = ExtResource("27_rexx3")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kwa5b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_crvfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_da4ok")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_psmdw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ciodq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2g6w7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2age")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5cdn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g70t4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rt6gy"]
+size = Vector2(31, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lp5ag"]
+size = Vector2(104, 56)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gh0xx"]
+radius = 67.3573
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rxasw"]
+radius = 31.0644
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7bu21"]
+size = Vector2(91, 118)
+
+[node name="Arena" type="Node2D"]
+
+[node name="Floor" parent="." instance=ExtResource("1_uqpmr")]
+
+[node name="Player Spawn" parent="." instance=ExtResource("2_c3vwl")]
+
+[node name="Boss Spawn" parent="." instance=ExtResource("3_3ru5d")]
+
+[node name="North Wall" parent="." instance=ExtResource("4_fxtry")]
+
+[node name="Right Corner" parent="." instance=ExtResource("5_s6nbi")]
+
+[node name="Left Corner" parent="." instance=ExtResource("6_8raxy")]
+
+[node name="Left Wall" parent="." instance=ExtResource("7_rt2wo")]
+
+[node name="Right Wall" parent="." instance=ExtResource("8_77o0a")]
+
+[node name="South Left Corner" parent="." instance=ExtResource("9_kgr12")]
+z_index = 1
+
+[node name="South Wall" parent="." instance=ExtResource("10_bl667")]
+z_index = 1
+
+[node name="South Right Corner" parent="." instance=ExtResource("11_5emni")]
+z_index = 1
+
+[node name="Acid" parent="." instance=ExtResource("12_cuiig")]
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid North Wall" parent="." instance=ExtResource("13_ls048")]
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid North Wall"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid Right Corner" parent="." instance=ExtResource("14_0tn3h")]
+metadata/Walkable = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Acid Right Corner"]
+z_index = -1
+sprite_frames = SubResource("SpriteFrames_fepwb")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid Right Corner"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid Left Corner" parent="." instance=ExtResource("15_8rn1x")]
+metadata/Walkable = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Acid Left Corner"]
+z_index = -1
+sprite_frames = SubResource("SpriteFrames_fepwb")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid Left Corner"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid Left Wall" parent="." instance=ExtResource("16_5nsta")]
+metadata/Walkable = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Acid Left Wall"]
+z_index = -1
+sprite_frames = SubResource("SpriteFrames_fepwb")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid Left Wall"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid Right Wall" parent="." instance=ExtResource("17_kck77")]
+metadata/Walkable = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Acid Right Wall"]
+z_index = -1
+sprite_frames = SubResource("SpriteFrames_fepwb")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid Right Wall"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid South Right Corner" parent="." instance=ExtResource("18_x16ag")]
+metadata/Walkable = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Acid South Right Corner"]
+z_index = -1
+sprite_frames = SubResource("SpriteFrames_fepwb")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid South Right Corner"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid South Left Corner" parent="." instance=ExtResource("19_brvgi")]
+metadata/Walkable = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Acid South Left Corner"]
+z_index = -1
+sprite_frames = SubResource("SpriteFrames_fepwb")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid South Left Corner"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Acid South Wall" parent="." instance=ExtResource("20_fgi1l")]
+
+[node name="PointLight2D" type="PointLight2D" parent="Acid South Wall"]
+position = Vector2(2.0504e-05, -1.00001)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0, 0.419608, 0, 0.603922)
+energy = 0.5
+texture = ExtResource("13_lnvn0")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="North Broken Wall" parent="." instance=ExtResource("4_fxtry")]
+position = Vector2(43, 4)
+
+[node name="Sprite2D2" type="Sprite2D" parent="North Broken Wall"]
+position = Vector2(0, 19)
+texture = ExtResource("22_qy874")
+
+[node name="Sewer" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(-137, 249)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Sewer"]
+
+[node name="Pillar" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
+position = Vector2(-137, 249)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Pillar"]
+modulate = Color(1, 1, 1, 0.843137)
+z_index = 1
+position = Vector2(2, -38)
+scale = Vector2(1.29688, 1.59375)
+texture = ExtResource("24_rjjrh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pillar"]
+position = Vector2(-2, 28)
+shape = SubResource("CircleShape2D_arbrj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Pillar"]
+modulate = Color(1, 1, 1, 0.843137)
+z_index = 1
+position = Vector2(-2, -18)
+sprite_frames = SubResource("SpriteFrames_kwa5b")
+
+[node name="PointLight2D" type="PointLight2D" parent="Pillar"]
+position = Vector2(-2.99998, -15)
+scale = Vector2(1.26953, 1.23047)
+color = Color(0.835294, 0.572549, 0, 1)
+texture = ExtResource("24_iidx4")
+texture_scale = 0.4
+script = ExtResource("14_pi8p1")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Pillar"]
+modulate = Color(1, 1, 1, 0.843137)
+z_index = 1
+position = Vector2(0.5, 0)
+scale = Vector2(0.445313, 1)
+texture = ExtResource("28_ymvjo")
+script = ExtResource("29_dvjl8")
+
+[node name="Path South" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(-373, 301)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Path South"]
+texture = ExtResource("28_bjwtl")
+
+[node name="Path Middle" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(-373, 301)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Path Middle"]
+texture = ExtResource("29_medt5")
+
+[node name="Path North" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(-373, 301)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Path North"]
+texture = ExtResource("30_pxpg3")
+
+[node name="Background" parent="." instance=ExtResource("1_uqpmr")]
+metadata/Walkable = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background"]
+texture = ExtResource("31_cjbto")
+
+[node name="Skeletons" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(57, 163)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Skeletons"]
+z_index = 1
+position = Vector2(-16, -81)
+texture = ExtResource("34_v30op")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Skeletons"]
+z_index = 1
+position = Vector2(-4, -59)
+texture = ExtResource("35_637wp")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Skeletons"]
+z_index = 1
+position = Vector2(-18, -54)
+texture = ExtResource("36_jsews")
+
+[node name="Props" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
+position = Vector2(59, 309)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Props"]
+position = Vector2(-17, 29)
+texture = ExtResource("37_hoo2a")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Props"]
+position = Vector2(21, -17)
+texture = ExtResource("39_docq7")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Props"]
+z_index = 1
+position = Vector2(-28, -32)
+texture = ExtResource("40_c0ky4")
+script = ExtResource("38_ttup6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props"]
+position = Vector2(-26.5, -34)
+shape = SubResource("RectangleShape2D_rt6gy")
+
+[node name="Props 2" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
+position = Vector2(-162, 439)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(-5, -36)
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("41_wxnke")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(25, -64)
+texture = ExtResource("42_hpmn1")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(14, -58)
+texture = ExtResource("43_qqw8k")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(-42, -62)
+texture = ExtResource("42_hpmn1")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(-35, -55)
+texture = ExtResource("42_hpmn1")
+script = ExtResource("38_ttup6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Props 2"]
+position = Vector2(-5, -42)
+shape = SubResource("RectangleShape2D_lp5ag")
+
+[node name="Prop 3" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
+position = Vector2(-366, 463)
+metadata/Walkable = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Prop 3"]
+z_index = 1
+position = Vector2(-3, -5)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("44_itynv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Prop 3"]
+shape = SubResource("CircleShape2D_gh0xx")
+
+[node name="Prop 4" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
+position = Vector2(-268, 648)
+metadata/Walkable = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Prop 4"]
+z_index = 1
+position = Vector2(38, -5)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("45_lscdg")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Prop 4"]
+position = Vector2(79, 0)
+shape = SubResource("CircleShape2D_rxasw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Prop 4"]
+position = Vector2(-8.5, -1)
+shape = SubResource("RectangleShape2D_7bu21")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj5o4tcge1nma"]
+
+[ext_resource type="Script" path="res://Abilities/Summon Spells/Meteor/Meteor.gd" id="1_tmiip"]
+[ext_resource type="PackedScene" uid="uid://bulf2u7vfr8vx" path="res://Abilities/Summon Spells/Meteor/Meteor_after_effect.tscn" id="2_ms6ax"]
+
+[node name="Meteor" type="Node2D"]
+position = Vector2(1, 0)
+script = ExtResource("1_tmiip")
+cast_duration = 1.0
+cooldown = 10.0
+size = 1.0
+tags = ["Damage", "Burn"]
+values = [5.0, 5.0]
+after_effect = ExtResource("2_ms6ax")

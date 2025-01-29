@@ -1,0 +1,105 @@
+[gd_scene load_steps=16 format=3 uid="uid://0x6mbwu00d4p"]
+
+[ext_resource type="Texture2D" uid="uid://bfsbfn7ua1oa7" path="res://Abilities/Summon Spells/Taunt/spell_2_red_sheet.png" id="1_4x3hb"]
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Melee_aoe/Heavy_attack/self_delete.gd" id="2_bcgo2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkjjq"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_on8su"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wh65"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80qpq"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4hl3"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0p1m"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q07sd"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ou38"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tv7gi"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnnda"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dv4i"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mdoop"]
+atlas = ExtResource("1_4x3hb")
+region = Rect2(1760, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ctlto"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkjjq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_on8su")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1wh65")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80qpq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g4hl3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0p1m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q07sd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ou38")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tv7gi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnnda")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1dv4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mdoop")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="MeteorAfterEffect" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_ctlto")
+autoplay = "default"
+frame = 11
+frame_progress = 1.0
+script = ExtResource("2_bcgo2")
+
+[connection signal="animation_finished" from="." to="." method="_on_finished"]

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr7gnow7smm7d"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_l2lbk"]
+[ext_resource type="Texture2D" uid="uid://cken3rikooath" path="res://Abilities/Enchants/icons/Brown Spell_9.png" id="2_me7s0"]
+
+[node name="Add Split" type="Node2D"]
+script = ExtResource("1_l2lbk")
+i_name = "Projectile: Split"
+tooltip = "Splits your projectile after hitting your target, each split projectile applies 20% of the original values."
+icon = ExtResource("2_me7s0")
+tags = Array[String](["Split"])
+values = Array[float]([2.0])
+types = Array[int]([0])
+rarity = 2

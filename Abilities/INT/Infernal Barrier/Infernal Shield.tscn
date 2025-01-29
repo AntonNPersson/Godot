@@ -1,0 +1,130 @@
+[gd_scene load_steps=19 format=3 uid="uid://bwow1tpbh1c0a"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_t8fnb"]
+[ext_resource type="Texture2D" uid="uid://bnruuwr7nnllb" path="res://Abilities/INT/Infernal Barrier/Fire Spell Pack48.png" id="2_x8ft5"]
+[ext_resource type="Texture2D" uid="uid://yjn6vq5ms71m" path="res://Abilities/INT/Infernal Barrier/Spell 7-Sheet-red.png" id="3_cps3n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_otx3j"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(0, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7w65v"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(160, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8f87b"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(320, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2x2v0"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(480, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_px2no"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(640, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_npsg4"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(800, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g34u6"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(960, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g82d0"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(1120, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wmhc"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(1280, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vaqs8"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(1440, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0vae"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(1600, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ci0dr"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(1760, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hwq6n"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(1920, 0, 160, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rclhx"]
+atlas = ExtResource("3_cps3n")
+region = Rect2(2080, 0, 160, 160)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wyv84"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_otx3j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7w65v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8f87b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2x2v0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_px2no")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_npsg4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g34u6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g82d0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wmhc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vaqs8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0vae")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ci0dr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hwq6n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rclhx")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Infernal Barrier" type="Node2D"]
+script = ExtResource("1_t8fnb")
+icon = ExtResource("2_x8ft5")
+a_name = "Infernal Barrier"
+tooltip_text = "Apply a barrier of pure flames on an ally, increasing armor by Value0, and burn attackers by Value1 for 8 seconds."
+mana_cost = 30.0
+cooldown = 14.0
+projectile_type = 2
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_wyv84")
+is_buff = true
+buff_duration = 8.0
+tags = Array[String](["FlatArmorBuff", "BurnReflectBuff"])
+values = Array[float]([50.0, 5.0])
+increased_values = Array[float]([30.0, 2.0])
+light_color = Color(0.760784, 0.411765, 0, 1)
+light_scale = 0.6
+weight = 45.0

@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://slvbxmwh715i"]
+[gd_scene load_steps=16 format=3 uid="uid://slvbxmwh715i"]
 
 [ext_resource type="Script" path="res://Managers/CombatManager.gd" id="1_2mio6"]
 [ext_resource type="PackedScene" uid="uid://bo7pvdl0hpuri" path="res://Abilities/Utility/burn_effect.tscn" id="2_b7ees"]
 [ext_resource type="PackedScene" uid="uid://dg2iyxhbtp8jk" path="res://Abilities/Utility/freeze_effect.tscn" id="3_pd307"]
 [ext_resource type="PackedScene" uid="uid://cb37rpkwu46x2" path="res://Abilities/Utility/hit_effect.tscn" id="4_tvwgo"]
-[ext_resource type="PackedScene" uid="uid://dpm1vfpq3uypm" path="res://Abilities/Utility/frozen_effect.tscn" id="4_vccxh"]
+[ext_resource type="PackedScene" uid="uid://cjtg60equ5cr3" path="res://Abilities/Utility/frozen_effect.tscn" id="4_vccxh"]
 [ext_resource type="PackedScene" uid="uid://dld07ncmxpsyx" path="res://Abilities/Utility/infected_effect.tscn" id="5_xywp1"]
 [ext_resource type="PackedScene" uid="uid://e4iw4b160x30" path="res://GUI/combat_text.tscn" id="6_nfvwq"]
 [ext_resource type="PackedScene" uid="uid://1tn876srpmrd" path="res://Abilities/Utility/healing effect.tscn" id="8_6e60c"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" path="res://Units/Utility/UI Scripts/health_bar.gd" id="9_6qfh8"]
 [ext_resource type="Texture2D" uid="uid://bldcod4q50o0a" path="res://Managers/boss_bar_Filler x1.png" id="9_pulgd"]
 [ext_resource type="PackedScene" uid="uid://o685vveu3an6" path="res://Abilities/Utility/stun_effect.tscn" id="10_mjk2m"]
+[ext_resource type="PackedScene" uid="uid://dw3k3u550763s" path="res://Abilities/Utility/taunt_effec.tscn" id="11_yipw5"]
+[ext_resource type="PackedScene" uid="uid://bw2h3d8rqvf84" path="res://Abilities/Utility/weaken_effect.tscn" id="12_hflya"]
 
 [node name="CombatManager" type="Node" groups=["Persist"]]
 script = ExtResource("1_2mio6")
@@ -25,6 +27,8 @@ combat_text = ExtResource("6_nfvwq")
 heal_effect = ExtResource("8_6e60c")
 root_effect = ExtResource("9_1qcvo")
 stun_effect = ExtResource("10_mjk2m")
+taunt_effect = ExtResource("11_yipw5")
+weaken_effect = ExtResource("12_hflya")
 
 [node name="UI" type="CanvasLayer" parent="." groups=["UI"]]
 
@@ -33,12 +37,11 @@ visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -262.0
-offset_top = 2.0
-offset_right = -39.0
-offset_bottom = 18.0
+offset_left = -445.5
+offset_right = -222.5
+offset_bottom = 16.0
 grow_horizontal = 2
-scale = Vector2(2, 2)
+scale = Vector2(4, 4)
 value = 40.0
 texture_over = ExtResource("8_mumn2")
 texture_progress = ExtResource("9_pulgd")

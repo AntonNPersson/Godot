@@ -43,9 +43,9 @@ func _update_special(delta):
 			timer = 0
 			_use()
 
-func _do_action():
+func _do_action(enemy):
 	for i in range(0, values.size()):
-		player.get_node('Control').on_action.emit(values[i], player, player, tags[i])
+		player.get_node('Control').on_action.emit(values[i], enemy, player, tags[i])
 
 func _use():
 	var callable = Callable(self, '_do_action')

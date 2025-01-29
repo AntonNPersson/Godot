@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://di4ikxswlvkvi"]
+
+[ext_resource type="Script" path="res://Abilities/Summon Spells/Taunt/Taunt.gd" id="1_8detv"]
+
+[node name="Taunt" type="Node2D"]
+script = ExtResource("1_8detv")
+cast_duration = 0.5
+cooldown = 6.0
+size = 2.0
+tags = ["Taunt"]
+values = [1.0]

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bc20geqg6yw2q"]
+[gd_scene load_steps=7 format=3 uid="uid://bc20geqg6yw2q"]
 
 [ext_resource type="PackedScene" uid="uid://bo5p4mk3x60ix" path="res://Waves/wave_1.tscn" id="1_22j5e"]
 [ext_resource type="Script" path="res://Waves/Extra/wave_specials.gd" id="2_6hl22"]
 [ext_resource type="Texture2D" uid="uid://id4wqherqhhy" path="res://Sprites/Goblin_camp_icon.jpg" id="3_askl1"]
 [ext_resource type="PackedScene" uid="uid://dga2d1af05bay" path="res://Waves/wave_2.tscn" id="4_8tfq5"]
 [ext_resource type="Texture2D" uid="uid://j7q0g4aq72tl" path="res://Sprites/cemetery_icon.jpg" id="5_brerr"]
+[ext_resource type="PackedScene" uid="uid://ceiwu83ujuuri" path="res://Waves/wave_3.tscn" id="6_jar4b"]
 
 [node name="WaveList" type="Node2D"]
 
@@ -22,3 +23,9 @@ tooltip = "An infected cemetery, plagued with eternal darkness. This dungeon is 
 grade = "F"
 icon = ExtResource("5_brerr")
 wave_name = "Infected Cemetery"
+
+[node name="Sewers" parent="." instance=ExtResource("6_jar4b")]
+script = ExtResource("2_6hl22")
+tooltip = "A dungeon deep in the sewers of an abandoned city, watch out for the creatures acidic nature."
+grade = "F"
+wave_name = "Sewers"

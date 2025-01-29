@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cpcq8y0h4rdxm"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_o6kkl"]
+[ext_resource type="Texture2D" uid="uid://bk75nmwyvime5" path="res://Abilities/Enchants/icons/2AbilityPack_15.png" id="2_bcy7i"]
+[ext_resource type="PackedScene" uid="uid://di4ikxswlvkvi" path="res://Abilities/Summon Spells/Taunt/Taunt.tscn" id="3_xstak"]
+
+[node name="Add Summon Ability Taunt" type="Node2D"]
+script = ExtResource("1_o6kkl")
+i_name = "Summon: Meteor"
+tooltip = "Add meteor ability, dealing damage and applying burn - has 10 seconds cooldown."
+icon = ExtResource("2_bcy7i")
+tags = Array[String](["SummonAbility"])
+values = Array[float]([0.0])
+types = Array[int]([9])
+extra = {
+"SummonAbility": ExtResource("3_xstak")
+}
+unique = true
+rarity = 2

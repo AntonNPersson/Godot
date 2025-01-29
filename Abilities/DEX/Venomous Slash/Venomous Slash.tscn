@@ -1,0 +1,105 @@
+[gd_scene load_steps=15 format=3 uid="uid://d27rdv0iqcoqj"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_sstxo"]
+[ext_resource type="Texture2D" uid="uid://b0y5j8nqk7llw" path="res://Abilities/DEX/Venomous Slash/Poison Spell64.png" id="2_0buhd"]
+[ext_resource type="Texture2D" uid="uid://bhp2ft1yfv7ky" path="res://Abilities/DEX/Venomous Slash/sprite-sheet-green.png" id="2_7s0b3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q3a3c"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c67cn"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mot07"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vv2vg"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hhe71"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fllnp"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(128, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfcpc"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(0, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fadk6"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(128, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_483xw"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(0, 512, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ksrwe"]
+atlas = ExtResource("2_7s0b3")
+region = Rect2(128, 512, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0au6v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q3a3c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c67cn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mot07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vv2vg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hhe71")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fllnp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfcpc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fadk6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_483xw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ksrwe")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Venomous Slash" type="Node2D"]
+script = ExtResource("1_sstxo")
+icon = ExtResource("2_0buhd")
+a_name = "Venomous Slash"
+tooltip_text = "Attack all enemies in close range, dealing Value0 damage, and applying Value1 stack(s) of poison. If target is already posioned apply Value2 stacks instead.
+"
+mana_cost = 30.0
+cooldown = 6.0
+projectile_type = 3
+ability_type = "DEX"
+sprite_frames = SubResource("SpriteFrames_0au6v")
+sprite_offset = Vector2(0, 22)
+area_type = 3
+duration = 0.5
+radius = 200.0
+tags = Array[String](["Damage", "Poison", "PoisonExtraStack"])
+values = Array[float]([5.0, 1.0, 1.0])
+increased_values = Array[float]([5.0, 1.0, 1.0])
+light_color = Color(0, 0.988235, 0, 1)
+light_scale = 0.6
+weight = 45.0

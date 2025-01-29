@@ -1,0 +1,127 @@
+[gd_scene load_steps=19 format=3 uid="uid://d3cxpqg0lrswq"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_7r5sq"]
+[ext_resource type="Texture2D" uid="uid://qkqxe0vbdl3a" path="res://Abilities/STR/Avatar/Stone Spells26.png" id="2_js1et"]
+[ext_resource type="Texture2D" uid="uid://diucduhhjmc3h" path="res://Abilities/STR/Avatar/Buff n Debuff P3  02.png" id="3_ay0hl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lof0h"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(0, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5y0ii"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(48, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_okqgt"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(96, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lbnrd"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(144, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hde05"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(192, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hpsar"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(240, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8g2ky"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(288, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31yr2"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(336, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l7p6l"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(384, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ifukq"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(432, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ied8"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(480, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbkcx"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(528, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wblb6"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(576, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnith"]
+atlas = ExtResource("3_ay0hl")
+region = Rect2(624, 0, 48, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sdba3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lof0h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5y0ii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_okqgt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lbnrd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hde05")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hpsar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8g2ky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31yr2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l7p6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ifukq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ied8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xbkcx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wblb6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnith")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Avatar" type="Node2D"]
+script = ExtResource("1_7r5sq")
+icon = ExtResource("2_js1et")
+a_name = "Avatar"
+tooltip_text = "Enter avatar state, increasing all damage by Value0%, health by Value1%, armor by Value2, and size by Value3 for 5 seconds."
+mana_cost = 40.0
+cooldown = 20.0
+projectile_type = 5
+ability_type = "STR"
+sprite_frames = SubResource("SpriteFrames_sdba3")
+sprite_offset = Vector2(0, -32)
+is_buff = true
+buff_duration = 5.0
+light_color = Color(0.298039, 0.509804, 1, 1)
+light_scale = 0.4

@@ -3,11 +3,12 @@ var target
 var timer
 var origin
 @export var cast_duration = 0.1
-@export var duration = 6.0
+@export var duration = 99999
 @export var stacks = 1
 @export var tag = 'Infected'
-@export var cooldown = 5.0
+@export var cooldown = 99999
 @export var _range = 10000000
+var always_active = true
 
 func _use():
 	if is_queued_for_deletion():

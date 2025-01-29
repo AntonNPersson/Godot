@@ -10,4 +10,4 @@ var tag = null
 
 # Called when the node enters the scene tree for the first time.
 func _use():
-	origin.do_action.emit(5, target, origin, "Damage")
+	origin.do_action.emit(4, target, origin, "Damage")

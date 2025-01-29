@@ -11,7 +11,7 @@ var attack_sprite = null
 
 func _initialize():
 	range = 25
-	attack_damage = randi_range(12, 22)
+	attack_damage = randi_range(8, 14)
 	attack_speed = 10
 	icon = preload('res://Sprites/Icons/Sword.png')
 	type = ["Offense"]

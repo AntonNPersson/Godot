@@ -23,4 +23,4 @@ func _process(delta):
 
 func _character_passive():
 	var extra = {'ability': passive_name}
-	get_node('Control').on_action.emit(((total_health - current_health)/total_health)* 100.0, self, self, "DyingBreath", extra)
+	get_node('Control').on_action.emit(((total_health - current_health)/total_health)* 50.0, self, self, "DyingBreath", extra)

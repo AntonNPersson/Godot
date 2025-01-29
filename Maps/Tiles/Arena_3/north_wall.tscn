@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://72aqhur7t3mb"]
+
+[ext_resource type="Texture2D" uid="uid://brjfhde2tlows" path="res://Sprites/Sewers/north_wall.png" id="1_nr4k3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4pa7q"]
+size = Vector2(128, 102)
+
+[node name="North Wall" type="Area2D" groups=["obstacles"]]
+position = Vector2(343, -2)
+metadata/Walkable = false
+metadata/Interactable = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_nr4k3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_4pa7q")

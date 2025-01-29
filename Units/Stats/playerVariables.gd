@@ -7,6 +7,7 @@ var obstacles_info
 
 # Signal emitted when the unit is dead
 signal is_dead(unit)
+signal level_up()
 @onready var health_bar = get_node("UI/ProgressBar")
 @onready var barrier_bar = get_node("UI/ProgressBar2")
 @onready var level_up_effect = get_node("Extra/LevelUpEffect")
@@ -59,7 +60,9 @@ var global_freeze_effectiveness : float = int(0)
 var global_heal_effectiveness : float = int(0)
 var global_damage : float = int(0)
 var global_block : float = int(0)
+var global_thorns : float = int(0)
 var global_attack_damage : float = int(0)
+var global_size : float = int(100)
 
 var global_dict = {
 	"Bleed" : global_bleed_damage,
@@ -105,6 +108,7 @@ var total_affliction_resistance : float
 var total_crowd_control_resistance : float
 var total_slow_resistance : float
 var total_block : float
+var total_thorns : float
 var total_life_steal : float
 var total_spell_vamp : float
 
@@ -142,6 +146,7 @@ var total_spell_vamp : float
 @export var base_crowd_control_resistance = 0
 @export var base_slow_resistance = 0
 @export var base_block = 0
+@export var base_thorns = 0
 @export var base_life_steal = 0
 @export var base_spell_vamp = 0
 
@@ -175,6 +180,7 @@ var bonus_affliction_resistance = 0.0
 var bonus_crowd_control_resistance = 0.0
 var bonus_slow_resistance = 0.0
 var bonus_block = 0.0
+var bonus_thorns = 0.0
 var bonus_life_steal = 0.0
 var bonus_spell_vamp = 0.0
 var item_drop_chance_multiplier = 1.0
@@ -297,28 +303,28 @@ func _remove_current_attack_modifier(tag):
 
 # Update the total values of stats
 func _update_totals():
-	total_strength = (base_strength + bonus_strength) * (1 + global_strength/100)
-	total_dexterity = (base_dexterity + bonus_dexterity) * (1 + global_dexterity/100)
-	total_intelligence = (base_intelligence + bonus_intelligence) * (1 + global_intelligence/100)
-	total_vitality = (base_vitality + bonus_vitality) * (1 + global_vitality/100)
-	total_speed = (base_speed + bonus_speed + (total_dexterity/100)) * (1 + global_movement_speed/100)
-	total_health = (base_health + bonus_health + (total_vitality * 0.5)) * (1 + global_health/100)
-	total_mana = (base_mana + bonus_mana + (total_intelligence * 2)) * (1 + global_mana/100)
-	total_stamina = (base_stamina + bonus_stamina + (total_strength / 10)) * (1 + global_stamina/100)
-	total_armor = (base_armor + bonus_armor) * (1 + global_armor/100)
-	total_evade = (base_evade + bonus_evade) * (1 + global_evade/100)
+	total_strength = (base_strength + bonus_strength) * (1 + global_strength/100.0)
+	total_dexterity = (base_dexterity + bonus_dexterity) * (1 + global_dexterity/100.0)
+	total_intelligence = (base_intelligence + bonus_intelligence) * (1 + global_intelligence/100.0)
+	total_vitality = (base_vitality + bonus_vitality) * (1 + global_vitality/100.0)
+	total_speed = (base_speed + bonus_speed + (total_dexterity/100)) * (1 + global_movement_speed/100.0)
+	total_health = (base_health + bonus_health + (total_vitality * 0.5)) * (1 + global_health/100.0)
+	total_mana = (base_mana + bonus_mana + (total_intelligence * 2)) * (1 + global_mana/100.0)
+	total_stamina = (base_stamina + bonus_stamina + (total_strength / 10)) * (1 + global_stamina/100.0)
+	total_armor = (base_armor + bonus_armor) * (1 + global_armor/100.0)
+	total_evade = (base_evade + bonus_evade) * (1 + global_evade/100.0)
 	total_range = base_range + bonus_range 
-	total_attack_speed = base_attack_speed * (1 + bonus_attack_speed/100)
-	total_attack_damage = (base_attack_damage + bonus_attack_damage) * (1 + (global_attack_damage/100 + global_damage/100))
+	total_attack_speed = base_attack_speed * (1 + bonus_attack_speed/100.0)
+	total_attack_damage = (base_attack_damage + bonus_attack_damage) * (1 + (global_attack_damage/100.0 + global_damage/100.0))
 	total_windup_time = base_windup_time/(total_attack_speed)
-	total_health_regen = (base_health_regen + bonus_health_regen + (total_vitality * 0.05)) * (1 + global_health_regen/100)
-	total_mana_regen = (base_mana_regen + bonus_mana_regen) * (1 + global_mana_regen/100)
-	total_stamina_regen = (base_stamina_regen + bonus_stamina_regen) * (1 + global_stamina_regen/100)
+	total_health_regen = (base_health_regen + bonus_health_regen + (total_vitality * 0.05)) * (1 + global_health_regen/100.0)
+	total_mana_regen = (base_mana_regen + bonus_mana_regen) * (1 + global_mana_regen/100.0)
+	total_stamina_regen = (base_stamina_regen + bonus_stamina_regen) * (1 + global_stamina_regen/100.0)
 	total_cooldown_reduction = base_cooldown_reduction + bonus_cooldown_reduction
 	total_quick_attack_chance = base_quick_attack_chance + bonus_quick_attack_chance
 	total_double_cast_chance = base_double_cast_chance + bonus_double_cast_chance
-	total_barrier = (base_barrier + bonus_barrier) * (1 + global_barrier/100)
-	total_barrier_regen = (base_barrier_regen + bonus_barrier_regen) * (1 + global_barrier_regen/100)
+	total_barrier = (base_barrier + bonus_barrier) * (1 + global_barrier/100.0)
+	total_barrier_regen = (base_barrier_regen + bonus_barrier_regen) * (1 + global_barrier_regen/100.0)
 	total_critical_chance = base_critical_chance + bonus_critical_chance
 	total_critical_damage = base_critical_damage + bonus_critical_damage
 	total_attack_targets = base_attack_targets + bonus_attack_targets
@@ -326,7 +332,8 @@ func _update_totals():
 	total_affliction_resistance = (base_affliction_resistance + bonus_affliction_resistance)
 	total_crowd_control_resistance = (base_crowd_control_resistance + bonus_crowd_control_resistance)
 	total_slow_resistance = base_slow_resistance + bonus_slow_resistance
-	total_block = (base_block + bonus_block) * (1 + global_block/100)
+	total_block = (base_block + bonus_block) * (1 + global_block/100.0)
+	total_thorns = (base_thorns + bonus_thorns) * (1 + global_thorns/100.0)
 	total_life_steal = base_life_steal + bonus_life_steal
 	total_spell_vamp = base_spell_vamp + bonus_spell_vamp
 
@@ -345,6 +352,7 @@ func _process(delta):
 	if paused:
 		return
 
+	self.scale = Vector2(global_size/100, global_size/100)
 	# Why the fuck is this nessecary suddenly?
 	if movement_skill == null:
 		print_debug('Movement_skill added at runtime for some reason?')
@@ -407,7 +415,7 @@ func _get_total_waves():
 	return total_waves
 
 func _apply_cooldown_reduction(value):
-	value = value * (1 - total_cooldown_reduction/100)
+	value -= value * (total_cooldown_reduction/100)
 	return value
 
 func _apply_bleed_damage(value):
@@ -439,19 +447,23 @@ func _apply_double_cast_chance():
 	else:
 		return false
 
-func _apply_critical_chance():
+func _apply_critical_chance(force_critical = false):
+	if force_critical:
+		return true
 	var rnd = randf_range(0, 100)
 	if rnd < total_critical_chance:
 		return true
 	else:
 		return false
 
-func _apply_critical_damage(value):
-	if _apply_critical_chance():
+func _apply_critical_damage(value, force_critical = false):
+	var crit = false
+	if _apply_critical_chance(force_critical):
 		value = value * (1 + total_critical_damage/100)
+		crit = true
 	return {
 		"value" : value,
-		"critical" : _apply_critical_chance()
+		"critical" : crit
 	}
 
 func _check_player_level_up():
@@ -463,6 +475,7 @@ func _on_player_level_up():
 	current_player_experience = 0
 	level_up_effect.get_child(0).emitting = true
 	player_level += 1
+	level_up.emit()
 	_on_add_stats({
 		"health" : HEALTH_LEVEL_UP_AMOUNT,
 		"mana" : MANA_LEVEL_UP_AMOUNT,
@@ -515,6 +528,8 @@ func _on_add_stats(value):
 		bonus_evade += value.evade
 	if "block" in value:
 		bonus_block += value.block
+	if "thorns" in value:
+		bonus_thorns += value.thorns
 	if "cooldown_reduction" in value:
 		bonus_cooldown_reduction += value.cooldown_reduction
 	if "quick_attack_chance" in value:
@@ -594,6 +609,10 @@ func _on_add_stats(value):
 		global_attack_damage += value.increased_attack_damage
 	if "increased_life_steal" in value:
 		bonus_life_steal += value.increased_life_steal
+	if "increased_spell_vamp" in value:
+		bonus_spell_vamp += value.increased_spell_vamp
+	if "increased_thorns" in value:
+		global_thorns += value.increased_thorns
 	_update_stats()
 
 # Called when stats are removed
@@ -632,6 +651,8 @@ func _on_remove_stats(value):
 		bonus_evade -= value.evade
 	if "block" in value:
 		bonus_block -= value.block
+	if "thorns" in value:
+		bonus_thorns -= value.thorns
 	if "cooldown_reduction" in value:
 		bonus_cooldown_reduction -= value.cooldown_reduction
 	if "quick_attack_chance" in value:
@@ -711,6 +732,10 @@ func _on_remove_stats(value):
 		global_attack_damage -= value.increased_attack_damage
 	if "increased_life_steal" in value:
 		bonus_life_steal -= value.increased_life_steal
+	if "increased_spell_vamp" in value:
+		bonus_spell_vamp -= value.increased_spell_vamp
+	if "increased_thorns" in value:
+		bonus_thorns -= value.increased_thorns
 	_update_stats()
 
 func save():
@@ -760,6 +785,7 @@ func save():
 			"global_heal_effectiveness" : global_heal_effectiveness,
 			"global_damage" : global_damage,
 			"global_block" : global_block,
+			"global_thorns" : global_thorns,
 			"global_poison_damage" : global_poison_damage,
 			"total_charge_drop_chance" : total_charge_drop_chance,
 			"total_armor" : total_armor,
@@ -794,6 +820,9 @@ func save():
 			"total_crowd_control_resistance" : total_crowd_control_resistance,
 			"total_slow_resistance" : total_slow_resistance,
 			"total_block" : total_block,
+			"total_life_steal" : total_life_steal,
+			"total_spell_vamp" : total_spell_vamp,
+			"total_thorns" : total_thorns,
 			"base_armor" : base_armor,
 			"base_evade" : base_evade,
 			"base_speed" : base_speed,
@@ -824,6 +853,9 @@ func save():
 			"base_crowd_control_resistance" : base_crowd_control_resistance,
 			"base_slow_resistance" : base_slow_resistance,
 			"base_block" : base_block,
+			"base_life_steal" : base_life_steal,
+			"base_spell_vamp" : base_spell_vamp,
+			"base_thorns" : base_thorns,
 			"bonus_armor" : bonus_armor,
 			"bonus_evade" : bonus_evade,
 			"bonus_speed" : bonus_speed,
@@ -854,6 +886,8 @@ func save():
 			"bonus_slow_resistance" : bonus_slow_resistance,
 			"bonus_block" : bonus_block,
 			"bonus_life_steal" : bonus_life_steal,
+			"bonus_spell_vamp" : bonus_spell_vamp,
+			"bonus_thorns" : bonus_thorns,
 			"current_barrier" : current_barrier,
 			"current_health" : current_health,
 			"current_mana" : current_mana,

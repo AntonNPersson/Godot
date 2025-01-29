@@ -32,27 +32,37 @@ var textures : Dictionary = {
 }
 var animation
 var current_sprite_direction
+var current_frame = 0
+var current_progress = 0
 
-func update_sprite_direction(target_position, type, _idle):
+func update_sprite_direction(target_position, type, idle, extra = null):
 	var direction_vector = target_position - unit.global_position
-	if _idle:
-		animation.stop()
+	var current_anim = animation.get_animation()
+
+	if "Attack" in current_anim and type != "Attack" and animation.is_playing():
 		return
-	# Determine the cardinal direction based on the direction vector'
+		
+	animation.set_speed_scale(1.0)
+	
+	var new_sprite_direction = ""
+	# Determine the cardinal direction based on the direction vector.
 	if abs(direction_vector.x) > abs(direction_vector.y):
 		if direction_vector.x > 0:
-			current_sprite_direction = type + " East"
-			animation.play(current_sprite_direction)
+			new_sprite_direction = type + " East"
 		else:
-			current_sprite_direction = type + " West"
-			animation.play(current_sprite_direction)
+			new_sprite_direction = type + " West"
 	else:
 		if direction_vector.y > 0:
-			current_sprite_direction = type + " South"
-			animation.play(current_sprite_direction)
+			new_sprite_direction = type + " South"
 		else:
-			current_sprite_direction = type + " North"
-			animation.play(current_sprite_direction)	
+			new_sprite_direction = type + " North"
+
+	if current_anim != new_sprite_direction:
+		current_sprite_direction = new_sprite_direction
+		animation.play(current_sprite_direction)
+
+	if idle:
+		animation.set_frame_and_progress(0, 0)
 
 func set_texture_direction(texture):
 	self.texture = texture
@@ -67,7 +77,7 @@ func _check_collision():
 			collision_direction = (collision_point - unit.global_position).normalized()
 			colliding = true
 
-func _move_random_target(_target_position, _delta, summon = false):
+func _move_random_target(_target_position, _delta):
 	if unit.global_position.distance_to(_target_position) > 10 or path == null:
 		_update_path(_target_position)
 	_check_collision()
@@ -164,12 +174,13 @@ func _get_closest_target():
 
 func _get_closest_enemy():
 	var distance_to_target = 99999999
+	var closest = null
 	if get_tree().get_nodes_in_group('enemies'):
 		for child in get_tree().get_nodes_in_group('enemies'):
 			var distance = unit.global_position.distance_to(child.global_position)
 			
 			if distance < distance_to_target:
 				distance_to_target = distance
-				return child
-	return null
+				closest = child
+	return closest
 

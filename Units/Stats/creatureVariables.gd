@@ -101,10 +101,21 @@ var is_stunned = false
 var is_rooted = false
 var is_summon = false
 var is_taunted = false
+var taunted_target = null
 var is_silenced = false
 var is_frozen = false
 var is_hovered = false
 var is_colliding = false
+var is_totem = false
+
+var totem_duration = 0.0
+var totem_timer = 0.0
+
+var globals = {"Burn" : 0,
+				"Damage": 0,
+				"Freeze": 0,
+				"Poison": 0,
+				"Bleed" : 0}
 
 
 var _target = null
@@ -112,6 +123,11 @@ var _target = null
 var increased_amount = 1.0
 
 var death_animation
+
+var ability_cooldowns = []
+var cooldown_timers = []
+var current_ability_index = 0
+var summon_level = 1
 
 func _ready():
 	# Update the totals and set the current health.
@@ -126,13 +142,36 @@ func _ready():
 	# If the unit is not in the 'boss' group, get the progress bar node.
 	if !self.is_in_group('boss'):
 		bar = get_node('UI/ProgressBar')
-	
+
 	# Connect the _is_dead function to the is_dead signal.
 	is_dead.connect(_is_dead)
+
+func _initialize_player_summon():
+	if self.is_in_group("player_summon"):
+		for a in abilities:
+			var instance = a.instantiate()
+			ability_cooldowns.append(instance.cooldown)
+			cooldown_timers.append(instance.cooldown)
+			instance.queue_free()
+
+func _check_if_on_cooldown_player_summon(ability_index):
+	if cooldown_timers[ability_index] > 0:
+		return true
+	return false
+
+func _set_on_cooldown_player_summon(ability_index):
+	cooldown_timers[ability_index] = ability_cooldowns[ability_index]
+
+func _set_current_ability(ability_index):
+	current_ability_index = ability_index
 
 func _is_dead(unit):
 	# Set the 'dead' variable to true if the unit is dead.
 	if unit == self:
+		if unit.is_in_group("player_summon"):
+			unit.queue_free()
+			return
+
 		dead = true
 		for child in get_children():
 			child.queue_free()
@@ -205,7 +244,16 @@ func _process(_delta):
 	_update_totals()
 	if bar != null:
 		bar._update_health(_calculate_health_percentage())
-		bar._update_name(u_name)
+		#bar._update_name(u_name)
+	
+	if self.is_in_group("player_summon"):
+		for c in range(cooldown_timers.size()):
+			cooldown_timers[c] -= _delta
+		
+		if is_totem:
+			totem_timer += _delta
+			if totem_timer >= totem_duration:
+				queue_free()
 
 	if current_health > total_health:
 		current_health = total_health
@@ -218,6 +266,9 @@ func _process(_delta):
 	else:
 		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_color", Color.RED)
 		get_node('AnimatedSprite2D').material.set_shader_parameter("hit_effect_intensity", 0.0)
+
+	if total_speed < 0:
+		total_speed = 0
 		
 func _on_do_action(value, target, duration, tag, extra = null):
 	# Emit the do_action signal with the provided parameters.
@@ -225,10 +276,20 @@ func _on_do_action(value, target, duration, tag, extra = null):
 		return
 
 	_target = target
+	if extra == null:
+		extra = {"ability": "none"}
 	if get_tree().get_nodes_in_group("players").size() > 0:
 		do_action.emit(value * get_tree().get_nodes_in_group("players")[0].power, target, self, tag, extra)
 
-func _level_grants():
-	total_attack_damage += 5
-	total_health += 10
-	total_attack_speed += 0.1
+func _level_grants(value):
+	summon_level += 1
+	base_armor += base_armor * value
+	base_evade += base_evade * value
+	base_attack_damage += base_attack_damage * value
+	base_health += base_health * value
+
+func _totem_level_grants():
+	if abilities.size() > 0:
+		if "reduced_cooldown" in abilities[0]:
+			abilities[0].cooldown -= abilities[0].reduced_cooldown
+	

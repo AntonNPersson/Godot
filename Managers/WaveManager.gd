@@ -116,7 +116,7 @@ func _start_wave(value, last = false):
 		Utility.get_node('Brightness')._set_color(current_wave.get_meta('Color'))
 
 	if !last:
-		wave_counter = 2
+		wave_counter = 3
 		start_wave.emit(current_wave, value)
 		canvas.get_child(2).visible = true
 		time_left = START_COUNTDOWN_TIME
@@ -124,7 +124,7 @@ func _start_wave(value, last = false):
 		canvas.get_child(2).visible = false
 		players[0].in_combat = true
 	else:
-		wave_counter = 2
+		wave_counter = 3
 		next_sub_wave.emit(chosen_sub_wave, value)
 		time_left = START_COUNTDOWN_TIME
 		await get_tree().create_timer(START_COUNTDOWN_TIME).timeout
@@ -240,7 +240,7 @@ func _on_round_manager_start_encounter(value, _completed_waves, player):
 			sub_waves += 1
 			current_sub_wave.append(sub_waves)
 	current_round = value
-	wave_counter = randi_range(2, 3)
+	wave_counter = 3
 	current_sub_wave.erase(0)
 	completed_waves.clear()
 	completed_waves.append_array(_completed_waves)

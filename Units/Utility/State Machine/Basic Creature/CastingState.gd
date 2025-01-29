@@ -8,7 +8,8 @@ func _action(_delta):
 		return
 	if _unit.abilities.size() - 1 >= 0:
 		var ability_ = _unit.abilities[current_index].instantiate()
-		_start_cast_bar(ability_.cast_duration)
+		if !_start_cast_bar(ability_.cast_duration):
+			return
 		if ability_.tag != null:
 			match ability_.tag:
 				'SpeedBuff':
@@ -19,6 +20,8 @@ func _action(_delta):
 					ability_.global_position = _unit.global_position
 					ability_.do_damage.connect(_unit._on_do_action)
 				'Infected':
+					ability_.origin = _unit
+				"Poison":
 					ability_.origin = _unit
 		else:
 			ability_.target = _get_closest_target()

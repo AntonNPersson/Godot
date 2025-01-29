@@ -174,10 +174,10 @@ collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_fqxua")
 cast_duration = 1.0
-cooldown = 5.0
+cooldown = 10.0
 _range = 1000.0
 speed = 200.0
-damage = 30.0
+damage = 45.0
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 z_index = 2
@@ -224,8 +224,6 @@ shape = SubResource("CircleShape2D_l2ssh")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_b2avv")
-animation = &"end"
-frame = 9
-frame_progress = 1.0
+animation = &"ongoing"
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

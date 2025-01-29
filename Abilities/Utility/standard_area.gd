@@ -18,10 +18,15 @@ var pool_effect
 var area_pool
 var area_pool_radius
 var extra = {}
+var hit_allies = false
+var hit_allies_area = []
+var multiple_hit = false
+var multiple_hit_interval = 0
+var multiple_hit_timer = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-func _start(vector, distance, velocity, unit, radius, duration, type, color = Color(1, 1, 1, 1), always = false, sprite_frames = null, sprite_scale = 1, pool = false, pool_radius = 0, echo = 0, ability = null, offset = Vector2(0, 0)):
+func _start(vector, distance, velocity, unit, radius, duration, type, color = Color(1, 1, 1, 1), always = false, sprite_frames = null, sprite_scale = 1, pool = false, pool_radius = 0, echo = 0, ability = null, offset = Vector2(0, 0), ally_hit = false, multiple_hit = false, multiple_hit_interval = 0):
 	speed = velocity
 	target = vector
 	_range = distance
@@ -31,6 +36,9 @@ func _start(vector, distance, velocity, unit, radius, duration, type, color = Co
 	area_pool = pool
 	origin = ability
 	area_pool_radius = pool_radius
+	hit_allies = ally_hit
+	self.multiple_hit = multiple_hit
+	self.multiple_hit_interval = multiple_hit_interval
 	pool_effect = load("res://Abilities/Utility/pool.tscn")
 	_type = type
 	trigger_always = always
@@ -66,6 +74,7 @@ func _start(vector, distance, velocity, unit, radius, duration, type, color = Co
 		current_type = get_child(4)
 	if type == 3:
 		if sprite_frames != null:
+			get_child(5).z_index = 1
 			get_child(5).global_position = global_position + offset
 			get_child(5).sprite_frames = sprite_frames
 			get_child(5).scale = Vector2(sprite_scale, sprite_scale)
@@ -77,6 +86,13 @@ func _start(vector, distance, velocity, unit, radius, duration, type, color = Co
 func _process(_delta):
 	if trigger_always:
 		_check_collision()
+
+		if multiple_hit:
+			multiple_hit_timer += _delta
+			if multiple_hit_timer >= multiple_hit_interval:
+				multiple_hit_timer = 0
+				hit_allies_area = []
+				hit_enemies = []
 
 func _cast_area():
 	current_type.visible = true
@@ -101,7 +117,7 @@ func _remove_area():
 		__explosion.get_node('particle').color = get_child(2).color
 		__explosion.get_node('particle').emitting = true
 		__explosion.get_node('Sprite2D').modulate = get_child(2).color
-		__explosion.has_hit.connect(origin._on_hit)
+		__explosion.has_hit.connect(_on_hit_pool)
 		get_tree().get_root().get_node('Main').add_child(__explosion)
 	if !trigger_always:
 		_check_collision()
@@ -112,5 +128,20 @@ func _check_collision():
 	
 	for area in overlapping:
 		if area.is_in_group('enemies') and area not in hit_enemies:
+			if hit_allies:
+				extra["Ally Hit"] = false
 			hit_enemies.append(area)
 			has_hit.emit(area, extra)
+		
+		if area.is_in_group("players") or area.is_in_group("player_summon"):
+			if hit_allies and area not in hit_allies_area:
+				extra["Ally Hit"] = true
+				hit_allies_area.append(area)
+				has_hit.emit(area, extra)
+
+func _on_has_hit(unit):
+	has_hit.emit(unit, extra)
+
+func _on_hit_pool(unit, _extra):
+	extra.merge(_extra)
+	has_hit.emit(unit, extra)

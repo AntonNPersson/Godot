@@ -23,20 +23,16 @@ var cast_timer = 0.0
 var is_casting = false
 var start_position
 
-func _setup(change_state, unit):
+func _setup(change_state, unit, ability_cooldowns, ability_cast_duration, ranges, timers):
 	self._change_state = change_state
 	self._unit = unit
 	self.tilemap_data = _unit.obstacles_info
+	self.ability_cooldowns = ability_cooldowns
+	self.ability_cast_duration = ability_cast_duration
+	self.ranges = ranges
+	self.timers = timers
 	animation = _unit.get_node('AnimatedSprite2D')
 	cast_bar = _unit.get_node('UI/cast_bar')
-	for ability_ in range(_unit.abilities.size()):
-		var pre = _unit.abilities[ability_].instantiate()
-		ability_cooldowns.append(pre.cooldown)
-		ability_cast_duration.append(pre.cast_duration)
-		var timer = pre.cooldown
-		timers.append(timer)
-		ranges.append(pre._range)
-		pre.queue_free()
 
 func _update(delta):
 	for i in range(timers.size()):
@@ -93,6 +89,8 @@ func _update_cast_timer(delta):
 		is_casting = false
 
 func _interrupt_cast_timer():
+	cast_bar.visible = false
+	is_casting = false
 	cast_timer = 0
 	cast_bar.value = 0
 	
@@ -100,9 +98,13 @@ func _set_ability_on_cooldown(index):
 	timers[index] = ability_cooldowns[index]
 
 func _start_cast_bar(duration):
+	if is_casting:
+		return false
+	is_casting = true
 	cast_bar.visible = true
 	cast_bar.value = 0
 	cast_timer = duration
+	return true
 	
 func _calculate_cast_percentage(duration):
 	var perc = (cast_timer/duration) * 100
@@ -116,6 +118,9 @@ func _is_ability_on_cooldown(index):
 		return true
 
 func _get_closest_target():
+	if _unit.is_taunted:
+		return _unit.taunted_target
+
 	var distance_to_target = 99999999
 	if get_tree().get_nodes_in_group('players'):
 		for child in get_tree().get_nodes_in_group('players'):

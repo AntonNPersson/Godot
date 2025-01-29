@@ -2,11 +2,10 @@ extends Task
 class_name in_attack_range
 
 func _run(_delta):
-	target = _get_closest_enemy()
-	if target == null:
-		_fail()
+	if !is_instance_valid(unit._target) or unit._target == null:
+		_success()
 		return
-	if unit.global_position.distance_to(target.global_position) <= unit.total_range:
+	if unit.global_position.distance_to(unit._target.global_position) <= unit.total_range:
 		get_child(0)._run(_delta)
 		_running()
 	else:

@@ -1,0 +1,139 @@
+[gd_scene load_steps=20 format=3 uid="uid://bp1ly0v28b8dh"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_gqe0s"]
+[ext_resource type="Texture2D" uid="uid://dbrsx3q08g7uv" path="res://Abilities/INT/Detonate/Fire Spell Pack80.png" id="2_36e8e"]
+[ext_resource type="Texture2D" uid="uid://dbo27rdrilp8i" path="res://Abilities/INT/Detonate/Fire Spell 1-Sheet.png" id="3_ndri4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uiycw"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(0, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aka1p"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(176, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_huig5"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(352, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cv0wk"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(528, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cydfc"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(704, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lric"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(880, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2y2xp"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(1056, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ulb4a"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(1232, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6o7ve"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(1408, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oj26d"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(1584, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0r4rt"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(1760, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hj87g"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(1936, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ywq6"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(2112, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7lf0"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(2288, 0, 176, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ujc1"]
+atlas = ExtResource("3_ndri4")
+region = Rect2(2464, 0, 176, 176)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_blnp4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uiycw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aka1p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_huig5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cv0wk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cydfc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lric")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2y2xp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ulb4a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6o7ve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oj26d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0r4rt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hj87g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ywq6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v7lf0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ujc1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Detonate" type="Node2D"]
+script = ExtResource("1_gqe0s")
+icon = ExtResource("2_36e8e")
+a_name = "Detonate"
+tooltip_text = "Detonate all burn effects on surrounding enemies, dealing Value0 damage per burn effect."
+mana_cost = 40.0
+cooldown = 20.0
+projectile_type = 3
+ability_type = "INT"
+sprite_frames = SubResource("SpriteFrames_blnp4")
+sprite_offset = Vector2(0, 22)
+area_type = 3
+duration = 0.7
+radius = 200.0
+tags = Array[String](["DetonateBurn"])
+values = Array[float]([20.0])
+increased_values = Array[float]([20.0])
+light_color = Color(0.901961, 0.305882, 0.0784314, 1)
+light_scale = 0.8
+weight = 100.0

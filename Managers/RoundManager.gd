@@ -43,6 +43,9 @@ func _next_area(area, value):
 		Utility.get_node('Brightness')._set_color(Color8(136, 158, 151))
 		start_singleplayer.emit()
 		GameManager.save_game()
+		units[0].current_health = units[0].total_health
+		units[0].current_mana = units[0].total_mana
+		units[0].current_stamina = units[0].total_stamina
 	if area == 'Combat':
 		Utility.get_node('Transition')._start(2)
 		await get_tree().create_timer(0.5).timeout
@@ -56,8 +59,13 @@ func _create_timer(time):
 	timer.set_wait_time(time)
 	add_child(timer)
 	timer.start()
-	
+
+func _on_level_up():
+	if GameManager.is_singleplayer:
+		_next_area("Ability", true)
+
 func _update_player_characters():
+	units[0].level_up.connect(_on_level_up)
 	for unit in units:
 		if unit.c_name == 'Explorer':
 			update_characters.connect(unit._level_up)
@@ -103,8 +111,6 @@ func _on_stop_wave(completed, wave):
 func _on_stop_sub_wave():
 	#_create_timer(wave_end_time)
 	if GameManager.is_singleplayer:
-		print('subwave')
-		_next_area('Ability', true)
 		update_characters.emit()
 
 func _on_ability_manager_curse_picked(curse:Variant):
