@@ -11,7 +11,11 @@ func _ready():
 	for ability_ in unit.abilities:
 		var preloaded = ability_.instantiate()
 		ability_cooldowns.append(preloaded.cooldown)
-		var timer = preloaded.cooldown
+		var timer
+		if "always_active" in preloaded:
+			timer = 0
+		else:
+			timer = preloaded.cooldown
 		timers.append(timer)
 		preloaded.queue_free()
 	_start()

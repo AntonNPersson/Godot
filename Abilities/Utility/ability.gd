@@ -212,10 +212,15 @@ func _process(delta):
 			else:
 				icon = aura_toggle_icons[1]
 
-		aura_timer += delta
-		if aura_timer >= aura_interval and aura_toggled:
-			_apply_aura()
-			aura_timer = 0
+			aura_timer += delta
+			if aura_timer >= aura_interval and aura_toggled:
+				_apply_aura()
+				aura_timer = 0
+		else:
+			aura_timer += delta
+			if aura_timer >= aura_interval:
+				_apply_aura()
+				aura_timer = 0
 
 	if projectile_type == targeting_type.Passive:
 		_update_passive()
@@ -358,6 +363,11 @@ func _apply_aura():
 				if unit.current_mana < mana_cost:
 					return
 				_on_hit(child)
+		for summon in get_tree().get_nodes_in_group("player_summon"):
+			if summon.global_position.distance_to(unit.global_position) <= _range:
+				if unit.current_mana < mana_cost:
+					return
+				_on_hit(summon)
 	
 	if sprite_frames != null:
 		if target.has_node(a_name):
@@ -612,11 +622,17 @@ func _add_enchant(tag, value, _type, _extra = null, object = null):
 	if "Effect" in _extra:
 		extra["Effect"] = _extra["Effect"]
 
+	if "Never" in _extra:
+		non_hit_tags.append(tag)
+		extra["ability"] = a_name
+		extra["ability_instance"] = self
+		return
+
 	if "Hit" not in _extra:
 		non_hit_tags.append(tag)
 		extra["ability"] = a_name
 		extra["ability_instance"] = self
-		unit.get_node('Control').on_action.emit(value, unit, self, tag, extra)
+		unit.get_node('Control').on_action.emit(value, unit, self, tag, _extra)
 
 func _get_enchant_extras(tag):
 	var index = enchants["Tags"].find(tag)
@@ -761,6 +777,8 @@ func _initialize():
 		return
 	extra["ability"] = a_name
 	extra["ability_instance"] = self
+	if is_buff:
+		extra["Duration"] = buff_duration
 	for e in enchants["Extra"]:
 		extra.merge(e)
 	for tag in tags.size():
@@ -1186,6 +1204,9 @@ func _on_hit(area, extra = null):
 	if "Split" in extra:
 		for v in changed_values.size():
 			changed_values[v] = values[v] * extra['Split']
+	if "Multiply" in extra:
+		for v in changed_values.size():
+			changed_values[v] = values[v] * (1 + extra['Multiply']/100.0)
 
 	for val in changed_tags.size():
 		if changed_tags[val] in non_hit_tags or changed_tags[val] == "Duplicate" or changed_tags[val] == "Pierce" or changed_tags[val] == "Explosion" or changed_tags[val] == "Echo" or changed_tags[val] == "AreaPool" or changed_tags[val] == "SelfTarget":

@@ -406,7 +406,7 @@ position = Vector2(-168, 102)
 [node name="Spawn" parent="." instance=ExtResource("5_p17vr")]
 position = Vector2(18, 188)
 
-[node name="lantern" parent="." instance=ExtResource("7_y5rb0")]
+[node name="lantern" parent="." groups=["props"] instance=ExtResource("7_y5rb0")]
 position = Vector2(275, -99)
 
 [node name="_Area2D_104" parent="." instance=ExtResource("9_64x0h")]
@@ -523,7 +523,7 @@ position = Vector2(643, 268)
 [node name="Obstacle_Sprite" type="Sprite2D" parent="@Area2D@173"]
 texture = ExtResource("18_s37pp")
 
-[node name="_Area2D_173" parent="." groups=["obstacles"] instance=ExtResource("1_ehgyv")]
+[node name="_Area2D_173" parent="." groups=["obstacles", "props"] instance=ExtResource("1_ehgyv")]
 position = Vector2(926, 355)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_173"]
@@ -564,7 +564,7 @@ autoplay = "default"
 frame_progress = 0.501853
 flip_h = true
 
-[node name="_Area2D_174" parent="." groups=["obstacles"] instance=ExtResource("1_ehgyv")]
+[node name="_Area2D_174" parent="." groups=["obstacles", "props"] instance=ExtResource("1_ehgyv")]
 position = Vector2(1291, 473)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_174"]
@@ -594,7 +594,7 @@ shape = SubResource("RectangleShape2D_crawr")
 position = Vector2(40, 13)
 shape = SubResource("RectangleShape2D_crawr")
 
-[node name="_Area2D_175" parent="." groups=["obstacles"] instance=ExtResource("1_ehgyv")]
+[node name="_Area2D_175" parent="." groups=["obstacles", "props"] instance=ExtResource("1_ehgyv")]
 position = Vector2(961, 532)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_175"]
@@ -626,7 +626,7 @@ shape = SubResource("RectangleShape2D_crawr")
 position = Vector2(-37, -27)
 shape = SubResource("RectangleShape2D_crawr")
 
-[node name="_Area2D_176" parent="." groups=["obstacles"] instance=ExtResource("1_ehgyv")]
+[node name="_Area2D_176" parent="." groups=["obstacles", "props"] instance=ExtResource("1_ehgyv")]
 position = Vector2(760, 419)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_176"]
@@ -641,7 +641,7 @@ texture = ExtResource("20_wiofi")
 position = Vector2(2, -2)
 shape = SubResource("RectangleShape2D_crawr")
 
-[node name="_Area2D_177" parent="." groups=["obstacles"] instance=ExtResource("1_ehgyv")]
+[node name="_Area2D_177" parent="." groups=["obstacles", "props"] instance=ExtResource("1_ehgyv")]
 position = Vector2(1128, 371)
 
 [node name="Obstacle_Sprite" type="Sprite2D" parent="_Area2D_177"]

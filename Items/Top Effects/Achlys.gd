@@ -15,4 +15,4 @@ func _initialize():
 	values.append(randi() % 10 + 1)
 	colors.append(color)
 
-	tooltip = "On Hit: Has "+ str(values[0]) + "% chance to poison the target for "+ str(values[0]) + " * (main stat) poison damage over 5 seconds. (Unique)"
+	tooltip = "On Hit: Has "+ str(values[0]) + "% chance to poison the target for "+ str(values[0]) + " * (main stat) poison damage over 5 seconds."

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkj2uhfc61w5t"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Acid Splash/Acid Splash.gd" id="1_h7kdk"]
+[ext_resource type="PackedScene" uid="uid://iwxnlqa3b5dc" path="res://Abilities/Creature Spells/Acid Splash/after_effect.tscn" id="2_8rj1v"]
+
+[node name="Acid Splash" type="Node2D"]
+script = ExtResource("1_h7kdk")
+cast_duration = 2.0
+cooldown = 15.0
+range = 1000.0
+size = 3.5
+tags = ["Poison", "PercentSpeedBuff"]
+values = [50.0, -40.0]
+after_effect = ExtResource("2_8rj1v")

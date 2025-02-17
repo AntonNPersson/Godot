@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://sy0rkfmx5vii"]
 
-[ext_resource type="Script" path="res://Items/Potions/weak health poition.gd" id="1_88d5y"]
+[ext_resource type="Script" path="res://Items/Potions/Weak Potions/weak health poition.gd" id="1_88d5y"]
 
 [node name="Weak Health Potion" type="Node2D"]
 script = ExtResource("1_88d5y")

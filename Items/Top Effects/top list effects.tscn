@@ -19,45 +19,33 @@
 [node name="TopListEffects" type="Node2D"]
 
 [node name="Ignis" parent="." instance=ExtResource("1_n4g5q")]
-visible = false
 
 [node name="Artemis" parent="." instance=ExtResource("1_7icnd")]
-visible = false
 
 [node name="Ares" parent="." instance=ExtResource("2_63xf3")]
-visible = false
 position = Vector2(294.717, -159.038)
 
 [node name="Aeolus" parent="." instance=ExtResource("3_uyo0f")]
-visible = false
 position = Vector2(294.717, -159.038)
 
 [node name="Hermes" parent="." instance=ExtResource("4_jpr0x")]
-visible = false
 
 [node name="Skadi" parent="." instance=ExtResource("6_qk5kj")]
-visible = false
 
 [node name="Achlys" parent="." instance=ExtResource("7_kkvu0")]
-visible = false
 
 [node name="Mefitis" parent="." instance=ExtResource("8_1mdpp")]
-visible = false
 
 [node name="Heka" parent="." instance=ExtResource("9_cxhr0")]
-visible = false
 position = Vector2(911.402, 510.092)
 
 [node name="Morozko" parent="." instance=ExtResource("10_0mr3h")]
-visible = false
 position = Vector2(462.343, 457.689)
 
 [node name="Thoth" parent="." instance=ExtResource("12_hmhrk")]
-visible = false
 position = Vector2(462.343, 457.689)
 
 [node name="Lilith" parent="." instance=ExtResource("12_15mdd")]
-visible = false
 position = Vector2(462.343, 457.689)
 
 [node name="Hemalith" parent="." instance=ExtResource("13_vyk71")]

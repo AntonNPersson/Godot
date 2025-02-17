@@ -15,4 +15,4 @@ func _initialize():
 	values.append(randi() % 15 + 5)
 	colors.append(color)
 
-	tooltip = "On Bleed: Increase critical chance by "+ str(values[0]) + "% on the bleeding enemy. (Unique)"
+	tooltip = "On Bleed: Increase critical chance by "+ str(values[0]) + "% on the bleeding enemy."

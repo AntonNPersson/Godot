@@ -124,10 +124,12 @@ _data = {
 }
 
 [node name="Item" type="Area2D"]
+z_index = 2
 position = Vector2(-1, -4)
 scale = Vector2(1.2, 1.2)
 collision_priority = 0.0
 script = ExtResource("1_iaam4")
+i_name = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -135,6 +137,7 @@ script = ExtResource("1_iaam4")
 visible = false
 z_index = -1
 z_as_relative = false
+mouse_filter = 1
 
 [node name="Area2D" type="Area2D" parent="CanvasLayer" groups=["tooltip"]]
 position = Vector2(-14, 0)
@@ -147,6 +150,7 @@ offset_right = 39.0
 offset_bottom = -12.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_nrdtt")
 
 [node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Area2D/Panel2"]

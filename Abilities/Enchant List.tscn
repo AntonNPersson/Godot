@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://jg40w51mf1ji"]
+[gd_scene load_steps=85 format=3 uid="uid://jg40w51mf1ji"]
 
 [ext_resource type="PackedScene" uid="uid://dsp8rlsmfo1r6" path="res://Abilities/Enchants/Add Armor Reduction.tscn" id="1_chb2h"]
 [ext_resource type="PackedScene" uid="uid://bsm37gbrbg5ql" path="res://Abilities/Enchants/Add Attack Damage Passive.tscn" id="1_e3fqh"]
@@ -78,6 +78,12 @@
 [ext_resource type="PackedScene" uid="uid://tgor6ktxqmir" path="res://Abilities/Enchants/Add Phase Out.tscn" id="76_1fuqv"]
 [ext_resource type="PackedScene" uid="uid://b17d340gv04og" path="res://Abilities/Enchants/Add Passive Activate.tscn" id="77_tltvs"]
 [ext_resource type="PackedScene" uid="uid://dr1b6t0vxe4rq" path="res://Abilities/Enchants/Add Low Health Invincible Effect.tscn" id="78_tg58v"]
+[ext_resource type="PackedScene" uid="uid://60a0haua02h0" path="res://Abilities/Enchants/Add Glacial Impact.tscn" id="79_tia86"]
+[ext_resource type="PackedScene" uid="uid://bp774nnriadry" path="res://Abilities/Enchants/Add Infernal Impact.tscn" id="80_507ny"]
+[ext_resource type="PackedScene" uid="uid://dkstpwhstkisi" path="res://Abilities/Enchants/Add Evocation.tscn" id="81_k2e5p"]
+[ext_resource type="PackedScene" uid="uid://bo0u4agwhk6ye" path="res://Abilities/Enchants/Add Arcanic Overload.tscn" id="82_iopel"]
+[ext_resource type="PackedScene" uid="uid://cuycph1f1kw7c" path="res://Abilities/Enchants/Add Poison Duration.tscn" id="83_jrni3"]
+[ext_resource type="PackedScene" uid="uid://xxbbcmad6f8p" path="res://Abilities/Enchants/Add Poison Damage.tscn" id="84_lmvq8"]
 
 [node name="EnchantList" type="Node2D"]
 
@@ -113,6 +119,9 @@ values = Array[float]([75.0])
 tooltip = "Increase burn damage by Value0%."
 icon = ExtResource("10_5su8y")
 values = Array[float]([15.0])
+extra = {
+"Never": true
+}
 
 [node name="Add Burn Explosion" parent="." instance=ExtResource("5_s0qjo")]
 tooltip = "Add an explosion to selected ability's burn, dealing burn damage to close enemies, but it has a Value0s global cooldown."
@@ -123,6 +132,9 @@ unique = true
 tooltip = "Add Value0s flat duration."
 icon = ExtResource("14_jv5ew")
 values = Array[float]([0.3])
+extra = {
+"Never": true
+}
 
 [node name="Reduce Cooldown" parent="." instance=ExtResource("7_sakpq")]
 tooltip = "Add Value0% cooldown reduction."
@@ -139,24 +151,40 @@ tooltip = "Increase frozen chance by Value0%."
 icon = ExtResource("20_oump2")
 tags = Array[String](["FrozenChance"])
 values = Array[float]([5.0])
+types = Array[int]([-1])
+extra = {
+"Never": true
+}
 
 [node name="Add Freeze Slow" parent="." instance=ExtResource("10_x2lfs")]
 tooltip = "Add Value0% slow to freezed enemies."
 icon = ExtResource("22_b81et")
+extra = {
+"Never": true
+}
 
 [node name="Increase Frozen Duration" parent="." instance=ExtResource("11_gbc4l")]
 tooltip = "Add Value0s flat duration."
 icon = ExtResource("24_gs41u")
 values = Array[float]([0.3])
+extra = {
+"Never": true
+}
 
 [node name="Increased Bleed Damage" parent="." instance=ExtResource("12_s4g27")]
 tooltip = "Add Value0% percentage bleed damage."
 icon = ExtResource("26_kvvdt")
 values = Array[float]([15.0])
+extra = {
+"Never": true
+}
 
 [node name="Increased Bleed Duration" parent="." instance=ExtResource("13_s5hfc")]
 tooltip = "Add Value0s flat bleed duration."
 icon = ExtResource("14_jv5ew")
+extra = {
+"Never": true
+}
 
 [node name="Add Area Echo" parent="." instance=ExtResource("14_b1436")]
 icon = ExtResource("29_6lpbr")
@@ -181,20 +209,20 @@ icon = ExtResource("37_8tkd7")
 types = Array[int]([4, 8])
 
 [node name="Add Evade To Target" parent="." instance=ExtResource("40_tx1q6")]
-tooltip = "Add Value0 evade to target for 3 seconds."
+tooltip = "Add Value0 evade to target for 4 seconds."
 values = Array[float]([100.0])
 types = Array[int]([2, 5])
 extra = {
-"Duration": 3,
+"Duration": 4,
 "Hit": true
 }
 
 [node name="Add Resistances To Target" parent="." instance=ExtResource("41_mi1wk")]
-tooltip = "Add Value0 armor, and Value1% affliction resistance to target for 3 seconds."
+tooltip = "Add Value0 armor, and Value1% affliction resistance to target for 4 seconds."
 values = Array[float]([40.0, 5.0])
 types = Array[int]([2, 5])
 extra = {
-"Duration": 3,
+"Duration": 4,
 "Hit": true
 }
 
@@ -250,15 +278,21 @@ extra = {
 }
 
 [node name="Add Attack Speed to target" parent="." instance=ExtResource("60_ii03j")]
+tooltip = "Add Value0% attack speed buff to target for 4 seconds."
 values = Array[float]([20.0])
 types = Array[int]([2, 5])
 extra = {
-"Duration": 2,
+"Duration": 4,
 "Hit": true
 }
 
 [node name="Add Critical Strike Chance to target2" parent="." instance=ExtResource("61_xulfy")]
+tooltip = "Add Value0% critical chance buff to target for 4 seconds."
 values = Array[float]([10.0])
+extra = {
+"Duration": 4,
+"Hit": true
+}
 
 [node name="Add Summon Percentage Armor" parent="." instance=ExtResource("55_xh848")]
 
@@ -319,3 +353,19 @@ rarity = 2
 rarity = 0
 
 [node name="Add Low Health Invincible Effect" parent="." instance=ExtResource("78_tg58v")]
+
+[node name="Add Glacial Impact" parent="." instance=ExtResource("79_tia86")]
+tooltip = "Enemies that are affected by freeze, now take Value0% increased damage from player basic attacks for 5 seconds, after using ability."
+types = Array[int]([5, 2])
+
+[node name="Add Infernal Impact" parent="." instance=ExtResource("80_507ny")]
+tooltip = "Enemies that are affected by burn, now take Value0% increased damage from player basic attacks for 5 seconds, after using ability."
+types = Array[int]([5, 2])
+
+[node name="Add Evocation" parent="." instance=ExtResource("81_k2e5p")]
+
+[node name="Add Arcanic Overload" parent="." instance=ExtResource("82_iopel")]
+
+[node name="Add Poison Duration" parent="." instance=ExtResource("83_jrni3")]
+
+[node name="Add Poison Damage" parent="." instance=ExtResource("84_lmvq8")]

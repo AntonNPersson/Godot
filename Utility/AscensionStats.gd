@@ -44,13 +44,22 @@ func _get_bonus_drop_rate_price():
 	return bonus_drop_rate_price
 
 func _set_bonus_ascension_price():
-	bonus_ascension_price = 150 * (bonus_ascension_gain/0.2) 
+	if bonus_ascension_gain == 0.0:
+		bonus_ascension_price = 150
+	else:
+		bonus_ascension_price = 150 * (bonus_ascension_gain/0.2)
 
 func _set_bonus_xp_price():
-	bonus_xp_price = 50 * (bonus_xp_gain/0.2)
+	if bonus_xp_gain == 0.0:
+		bonus_xp_price = 50
+	else:
+		bonus_xp_price = 50 * (bonus_xp_gain/0.2)
 
 func _set_bonus_drop_rate_price():
-	bonus_drop_rate_price = 100 * (bonus_drop_rate/0.2)
+	if bonus_drop_rate == 0.0:
+		bonus_drop_rate_price = 100
+	else:
+		bonus_drop_rate_price = 100 * (bonus_drop_rate/0.2)
 
 func _set_bonus_ascension_gain(value):
 	bonus_ascension_gain = value

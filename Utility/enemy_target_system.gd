@@ -1,13 +1,14 @@
 extends Node2D
 @export var hitboxx : Node
 var player = null
+var caster = null
 
 var ab = []
 
 func _process(delta):
 	if player == null:
 		return
-
+	
 func _shake_camera(unit):
 	if GameManager.settings['screen_shake']:
 		unit.get_node('Camera').shake_intensity = 5
@@ -15,13 +16,21 @@ func _shake_camera(unit):
 		unit.get_node('Camera').is_shaking = true
 
 func _check_collision(hitbox, _call : Callable, child = 0, enemy = false):
-	if is_instance_valid(hitbox) == false:
+	if !is_instance_valid(hitbox):
 		return
+
+	if !is_instance_valid(caster):
+		hitbox.queue_free()
+		return
+
 	var box = hitbox.get_child(child)
 	var overlapping_areas = box.get_overlapping_areas()
 	if !enemy:
 		for area in overlapping_areas:
 			if area.is_in_group('players') or area.is_in_group('player_summon'):
+				if !is_instance_valid(caster):
+					hitbox.queue_free()
+					return
 				_call.call(area)
 	else:
 		for area in overlapping_areas:
@@ -33,6 +42,7 @@ func _check_collision(hitbox, _call : Callable, child = 0, enemy = false):
 func _create_circle_ability(size : float, duration : float, direction: Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null, multipy : float = 1.0, enemy = false):
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
+	caster = origini
 	origini.is_rooted = true
 	for i in range(0, multipy):
 		ab.append(i)
@@ -49,6 +59,7 @@ func _create_circle_ability(size : float, duration : float, direction: Vector2, 
 		if i == 0:
 			await get_tree().create_timer(duration).timeout
 		if !is_instance_valid(origini) or origini.is_queued_for_deletion():
+			hitbox.queue_free()
 			return
 		origini.is_rooted = false
 		if after_effect:
@@ -76,6 +87,7 @@ func _create_rectangle_ability(size : Vector2, duration : float, direction: Vect
 	hitbox.get_node('Rectangle').get_node('AnimationPlayer').play('Fade_in')
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini):
+		hitbox.queue_free()
 		return
 	origini.is_rooted = false
 	if after_effect:
@@ -91,6 +103,7 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 		player = child
 	if origini != get_tree().get_nodes_in_group('players')[0]:
 		origini.is_rooted = true
+	caster = origini
 	var hitbox = hitboxx.duplicate()
 	hitbox._initialize()
 	hitbox.get_node('Circle').visible = true
@@ -103,6 +116,7 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 	hitbox.get_node('Circle').get_node('AnimationPlayer').play('Fade_in_circle')
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini) or !is_instance_valid(hitbox):
+		hitbox.queue_free()
 		return
 	origini.is_rooted = false
 	if after_effect:
@@ -113,16 +127,17 @@ func _create_targeted_circle_ability(size : float, duration : float, target : Ve
 		effect.scale = Vector2(size, size)
 	_check_collision(hitbox, _call, 0, enemy)
 
-func _create_targeted_rectangle_ability(size : Vector2, duration : float, target : Node, origini : Node, _call : Callable, after_effect : PackedScene = null, enemy = false):
+func _create_targeted_rectangle_ability(size : Vector2, duration : float, target : Vector2, origini : Node, _call : Callable, after_effect : PackedScene = null, enemy = false):
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
 	origini.is_rooted = true
+	caster = origini
 	var hitbox = hitboxx.duplicate()
 	hitbox._initialize()
 	hitbox.get_node('Rectangle').visible = true
 	hitbox.scale = size
-	hitbox.global_position = target.global_position
-	hitbox.rotation = (target.global_position - origini.global_position).angle()
+	hitbox.global_position = target
+	hitbox.rotation = (target - origini.global_position).angle()
 	if enemy:
 		hitbox.modulate = Color(0, 1, 0, 1)
 	origini.add_child(hitbox)
@@ -130,6 +145,7 @@ func _create_targeted_rectangle_ability(size : Vector2, duration : float, target
 	hitbox.get_node('Rectangle').get_node('AnimationPlayer').play('Fade_in')
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini):
+		hitbox.queue_free()
 		return
 	origini.is_rooted = false
 	if after_effect:
@@ -144,6 +160,7 @@ func _create_flexible_rectangle_ability(size_y : float, size_x : float, duration
 	for child in get_tree().get_nodes_in_group('players'):
 		player = child
 	origini.is_rooted = true
+	caster = origini
 	var hitbox = hitboxx.duplicate()
 	hitbox._initialize()
 	hitbox.get_node('Rectangle').visible = true
@@ -159,6 +176,7 @@ func _create_flexible_rectangle_ability(size_y : float, size_x : float, duration
 	hitbox.get_node('Rectangle').get_node('AnimationPlayer').play('Fade_in')
 	await get_tree().create_timer(duration).timeout
 	if !is_instance_valid(origini):
+		hitbox.queue_free()
 		return
 	origini.is_rooted = false
 	if after_effect:
@@ -174,6 +192,7 @@ func _create_cone_ability(size : Vector2, duration : float, direction: Vector2, 
 		for child in get_tree().get_nodes_in_group('players'):
 			player = child
 		origini.is_rooted = true
+		caster = origini
 		var hitbox = hitboxx.duplicate()
 		hitbox._initialize()
 		hitbox.get_node('Cone').visible = true
@@ -187,6 +206,7 @@ func _create_cone_ability(size : Vector2, duration : float, direction: Vector2, 
 		hitbox.get_node('Cone').get_node('AnimationPlayer').play('Fade_in')
 		await get_tree().create_timer(duration).timeout
 		if !is_instance_valid(origini):
+			hitbox.queue_free()
 			return
 		origini.is_rooted = false
 		if after_effect:

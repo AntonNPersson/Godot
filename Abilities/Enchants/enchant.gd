@@ -33,7 +33,7 @@ func _get_tooltip():
 	for i in range(0, values.size()):
 		updated_tooltip = tooltip.replace("Value" + str(i), str(values[i]))
 		if unique and "Unique" not in tooltip:
-			updated_tooltip += "\n\nUnique"
+			updated_tooltip += " [color=yellow](Unique)[/color]\n"
 	return updated_tooltip
 
 func _get_tooltip_2():
@@ -41,5 +41,5 @@ func _get_tooltip_2():
 	for i in range(0, values.size()):
 		updated_tooltip = tooltip
 		if unique and "Unique" not in tooltip:
-			updated_tooltip += "\n\nUnique"
+			updated_tooltip += " [color=yellow](Unique)[/color]\n"
 	return updated_tooltip

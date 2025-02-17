@@ -1,12 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://btqt7w4xr4x5f"]
+[gd_scene load_steps=9 format=3 uid="uid://btqt7w4xr4x5f"]
 
-[ext_resource type="PackedScene" uid="uid://sy0rkfmx5vii" path="res://Items/Potions/weak health poition.tscn" id="1_dt2mm"]
-[ext_resource type="PackedScene" uid="uid://llnhk2mmu2qq" path="res://Items/Potions/Weak mana potion.tscn" id="2_2dknc"]
+[ext_resource type="PackedScene" uid="uid://sy0rkfmx5vii" path="res://Items/Potions/Weak Potions/weak health poition.tscn" id="1_q6mt4"]
+[ext_resource type="PackedScene" uid="uid://llnhk2mmu2qq" path="res://Items/Potions/Weak Potions/Weak mana potion.tscn" id="2_23v7m"]
+[ext_resource type="PackedScene" uid="uid://dp5vbf41lun5j" path="res://Items/Potions/Weak Potions/Weak sbarrier potion.tscn" id="3_timqi"]
+[ext_resource type="PackedScene" uid="uid://b512gtdcodhuc" path="res://Items/Potions/Weak Potions/Weak stamina potion.tscn" id="4_yj1cb"]
+[ext_resource type="PackedScene" uid="uid://b8vvk5qkpycm" path="res://Items/Potions/Potions/Healing Potion.tscn" id="5_0ovye"]
+[ext_resource type="PackedScene" uid="uid://iyyt4068bsbw" path="res://Items/Potions/Potions/Mana Potion.tscn" id="6_312v7"]
+[ext_resource type="PackedScene" uid="uid://52q4q1jfki40" path="res://Items/Potions/Potions/Barrier Potion.tscn" id="7_ody40"]
+[ext_resource type="PackedScene" uid="uid://g0trvlernl6u" path="res://Items/Potions/Potions/Stamina Potion.tscn" id="8_rfc5p"]
 
 [node name="PotionList" type="Node2D"]
 visible = false
 
-[node name="Weak Health Potion" parent="." instance=ExtResource("1_dt2mm")]
+[node name="Weak Health Potion" parent="." instance=ExtResource("1_q6mt4")]
 
-[node name="Weak Mana Potion" parent="." instance=ExtResource("2_2dknc")]
+[node name="Weak Mana Potion" parent="." instance=ExtResource("2_23v7m")]
 position = Vector2(294.717, -159.038)
+
+[node name="Weak Barrier Potion" parent="." instance=ExtResource("3_timqi")]
+
+[node name="Weak Stamina Potion" parent="." instance=ExtResource("4_yj1cb")]
+
+[node name="Health Potion" parent="." instance=ExtResource("5_0ovye")]
+
+[node name="Mana Potion" parent="." instance=ExtResource("6_312v7")]
+
+[node name="Barrier Potion" parent="." instance=ExtResource("7_ody40")]
+
+[node name="Stamina Potion" parent="." instance=ExtResource("8_rfc5p")]

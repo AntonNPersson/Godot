@@ -4,6 +4,7 @@ extends Node
 @export var mid : PackedScene
 @export var top : PackedScene
 @export var item : PackedScene
+@export var potion_scene : PackedScene
 
 var player = null
 
@@ -119,11 +120,6 @@ func _initialize():
 	top_instance.global_position = Vector2(-10000, -10000)
 	second_top.global_position = Vector2(-10000, -10000)
 
-	_add_potion_to_inventory("Mana")
-	_add_potion_to_inventory("Health")
-	player.get_node('InventoryManager').current_potion_charges[0] = player.get_node('InventoryManager').potion_charges[0]
-	player.get_node('InventoryManager').current_potion_charges[1] = player.get_node('InventoryManager').potion_charges[1]
-
 	if !GameManager.is_save_file:
 		for i in range(0, 3):
 			_add_to_inventory()
@@ -143,6 +139,11 @@ func _initialize():
 			_add_specific_to_inventory(17)
 		elif GameManager.selected_character_name == "Chronomancer":
 			_add_specific_to_inventory(18)
+		
+		_add_potion_to_inventory("Mana")
+		_add_potion_to_inventory("Health")
+		player.get_node('InventoryManager').current_potion_charges[0] = player.get_node('InventoryManager').potion_charges[0]
+		player.get_node('InventoryManager').current_potion_charges[1] = player.get_node('InventoryManager').potion_charges[1]
 
 func _calculate_item_rarity():
 	randomize()
@@ -157,7 +158,7 @@ func _calculate_item_rarity():
 		ITEM_RARITY.COMMON: 60.0,
 		ITEM_RARITY.UNCOMMON: 29.25,
 		ITEM_RARITY.RARE: 10,
-		ITEM_RARITY.EPIC: 1.0,
+		ITEM_RARITY.EPIC: 100.0,
 		ITEM_RARITY.UNIQUE: 0.5,
 		ITEM_RARITY.LEGENDARY: 0.25
 	}
@@ -240,13 +241,13 @@ func _calculate_item_rarity():
 
 func _get_previous_rarity(current_rarity):
 	var rarity_order = [
-        ITEM_RARITY.COMMON,
-        ITEM_RARITY.UNCOMMON,
-        ITEM_RARITY.RARE,
-        ITEM_RARITY.EPIC,
-        ITEM_RARITY.UNIQUE,
-        ITEM_RARITY.LEGENDARY
-    ]
+		ITEM_RARITY.COMMON,
+		ITEM_RARITY.UNCOMMON,
+		ITEM_RARITY.RARE,
+		ITEM_RARITY.EPIC,
+		ITEM_RARITY.UNIQUE,
+		ITEM_RARITY.LEGENDARY
+	]
 	var index = rarity_order.find(current_rarity)
 	if index > 0:
 		return rarity_order[index - 1]
@@ -542,6 +543,12 @@ func _load_item(bot_piece_data, second_mid_piece_data, mid_piece_data, top_piece
 	if second_mid_piece_data != null:
 		var second_mid_piece_index = _find_item_in_list(second_mid_piece_data["name"], second_mid_list)
 		second_mid_piece = second_mid_list[second_mid_piece_index].duplicate()
+		if rarity == ITEM_RARITY.LEGENDARY:
+			second_mid_piece_index = _find_item_in_list(second_mid_piece_data["name"], legendary_list)
+			second_mid_piece = legendary_list[second_mid_piece_index].duplicate()
+		elif rarity == ITEM_RARITY.UNIQUE:
+			second_mid_piece_index = _find_item_in_list(second_mid_piece_data["name"], unique_list)
+			second_mid_piece = unique_list[second_mid_piece_index].duplicate()
 		second_mid_piece._initialize()
 		for i in range(second_mid_piece_data["values"].size()):
 			second_mid_piece.set(second_mid_piece_data["tags"][i], second_mid_piece_data["values"][i])
@@ -550,6 +557,9 @@ func _load_item(bot_piece_data, second_mid_piece_data, mid_piece_data, top_piece
 	if mid_piece_data != null:
 		var mid_piece_index = _find_item_in_list(mid_piece_data["name"], mid_list)
 		mid_piece = mid_list[mid_piece_index].duplicate()
+		if rarity == ITEM_RARITY.UNIQUE:
+			mid_piece_index = _find_item_in_list(mid_piece_data["name"], second_top_list)
+			mid_piece = second_top_list[mid_piece_index].duplicate()
 		mid_piece._initialize()
 		for i in range(mid_piece_data["values"].size()):
 			mid_piece.set(mid_piece_data["tags"][i], mid_piece_data["values"][i])
@@ -577,21 +587,210 @@ func _load_item(bot_piece_data, second_mid_piece_data, mid_piece_data, top_piece
 	item_.get_child(1).visible = false
 	return item_
 
+func _load_potion(potion_name, potion_rarity):
+	var potion = potion_list[_find_item_in_list_item_name(potion_name, potion_list)].duplicate()
+	potion.player = player
+	potion._initialize()
+	potion._ascend(player.item_power)
+	var _item = potion_scene.instantiate()
+	_item.i_name = potion.i_name
+	_item.player = player
+	_item.rarity = potion_rarity
+	_item.im = self
+	_item.charges = potion.charges
+	_item.type = potion.type
+	_item.add_child(potion)
+	potion.set_owner(_item)
+	_item._initialize()
+	_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+	_item._picked_up = true
+	player.get_node('InventoryManager').get_node('Items').add_child(_item)
+	_item.get_child(0).get_child(0).visible = false
+	_item.get_child(0).get_child(1).visible = false
+	_item.get_child(1).visible = false
+	return _item
+
+
 func _find_item_in_list(item_name, list):
 	for i in range(list.size()):
 		if list[i].name == item_name:
 			return i
 	return -1
 
-func _create_health_potion():
-	var potion = potion_list[0].duplicate()
-	potion._initialize()
-	return potion
+func _find_item_in_list_item_name(item_name, list):
+	for i in range(list.size()):
+		list[i]._initialize()
+		if list[i].i_name == item_name:
+			return i
+	return -1
 
-func _create_mana_potion():
-	var potion = potion_list[1].duplicate()
-	potion._initialize()
-	return potion
+func _create_health_potion(_rarity = null):
+	var rarity = _calculate_item_rarity()
+	if _rarity != null:
+		rarity = _rarity
+
+	rarity = ITEM_RARITY.UNCOMMON
+	if rarity == ITEM_RARITY.COMMON:
+		var potion = potion_list[0].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.COMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Health"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	elif rarity == ITEM_RARITY.UNCOMMON:
+		var potion = potion_list[4].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.UNCOMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Health"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	return null
+
+func _create_mana_potion(_rarity = null):
+	var rarity = _calculate_item_rarity()
+	if _rarity != null:
+		rarity = _rarity
+
+	rarity = ITEM_RARITY.UNCOMMON
+	if rarity == ITEM_RARITY.COMMON:
+		var potion = potion_list[1].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.COMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Mana"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	elif rarity == ITEM_RARITY.UNCOMMON:
+		var potion = potion_list[5].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.UNCOMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Mana"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	return null
+
+func _create_barrier_potion(_rarity = null):
+	var rarity = _calculate_item_rarity()
+	if _rarity != null:
+		rarity = _rarity
+
+	rarity = ITEM_RARITY.UNCOMMON
+	if rarity == ITEM_RARITY.COMMON:
+		var potion = potion_list[2].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.COMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Barrier"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	elif rarity == ITEM_RARITY.UNCOMMON:
+		var potion = potion_list[6].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.UNCOMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Barrier"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	return null
+
+func _create_stamina_potion(_rarity = null):
+	var rarity = _calculate_item_rarity()
+	if _rarity != null:
+		rarity = _rarity
+
+	rarity = ITEM_RARITY.UNCOMMON
+	if rarity == ITEM_RARITY.COMMON:
+		var potion = potion_list[3].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.COMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Stamina"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	elif rarity == ITEM_RARITY.UNCOMMON:
+		var potion = potion_list[7].duplicate()
+		potion.player = player
+		potion._initialize()
+		potion._ascend(player.item_power)
+		var _item = potion_scene.instantiate()
+		_item.i_name = potion.i_name
+		_item.player = player
+		_item.rarity = ITEM_RARITY.UNCOMMON
+		_item.im = self
+		_item.charges = potion.charges
+		_item.type = "Stamina"
+		_item.add_child(potion)
+		potion.set_owner(_item)
+		_item._initialize()
+		_item.picked_up.connect(player.get_node('InventoryManager')._on_potion_picked_up)
+		return _item
+	return null
 
 func _drop_item(position):
 	var _item = _create_item()
@@ -600,7 +799,6 @@ func _drop_item(position):
 	_item.global_position = position
 	if self.get_children().find(_item) != -1:
 		return
-	_item._play_random_animation()
 
 func _drop_bot_item(position):
 	var _item = _create_item(ITEM_RARITY.COMMON)
@@ -614,16 +812,23 @@ func _drop_potion(position, type):
 	var _potion
 	if type == "Mana":
 		_potion = _create_mana_potion()
-	else:
+	elif type == "Health":
 		_potion = _create_health_potion()
+	elif type == "Barrier":
+		_potion = _create_barrier_potion()
+	elif type == "Stamina":
+		_potion = _create_stamina_potion()
+	add_child(_potion)
 	_potion.global_position = position
+	if self.get_children().find(_potion) != -1:
+		return
 
 func _add_potion_to_inventory(type):
 	var _potion
 	if type == "Mana":
-		_potion = _create_mana_potion()
+		_potion = _create_mana_potion(ITEM_RARITY.COMMON)
 	else:
-		_potion = _create_health_potion()
+		_potion = _create_health_potion(ITEM_RARITY.COMMON)
 	player.get_node('InventoryManager').add_child(_potion)
 	player.get_node('InventoryManager')._on_potion_picked_up(_potion)
 

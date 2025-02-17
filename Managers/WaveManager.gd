@@ -60,7 +60,7 @@ func _process(_delta):
 
 	if Input.is_action_just_pressed('Test_1'):
 		_kill_all()
-		GameManager.save_game()
+		print_stack()
 
 	if time_left > 0:
 		time_left -= get_process_delta_time()

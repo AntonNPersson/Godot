@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bp774nnriadry"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_im21x"]
+[ext_resource type="Texture2D" uid="uid://csf0m0tdiwoao" path="res://Abilities/Enchants/icons/2AbilityPack_23.png" id="2_fmsc3"]
+
+[node name="Add Infernal Impact" type="Node2D"]
+script = ExtResource("1_im21x")
+i_name = "Self: Infernal Impact"
+tooltip = "Enemies that are affected by burn, now take Value0% increased damage from basic attacks for 5 seconds, after using ability."
+icon = ExtResource("2_fmsc3")
+tags = Array[String](["BurnPercentAttackDamageBuff"])
+values = Array[float]([15.0])
+types = Array[int]([5])
+extra = {
+"Duration": 5.0,
+"Hit": true
+}
+unique = true
+rarity = 1

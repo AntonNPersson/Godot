@@ -23,7 +23,6 @@ func _process(delta):
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _on_next_typing():
-		get_node("UI/Sprite2D").texture = first_texture
 		characters = preload("res://Units/Instance/characters.tscn")
 		var character_instance = characters.instantiate()
 		character_list = character_instance.get_children()

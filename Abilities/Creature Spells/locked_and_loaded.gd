@@ -20,20 +20,22 @@ var is_hit = []
 
 func _use():
 	timer = Timer.new()
-	timer.timeout.connect(_on_timeout)
 	timer.set_wait_time(channel_duration)
 	original_speed = origin.bonus_speed
 	original_position = origin.global_position
 	origin.bonus_speed = -origin.base_speed
 	add_child(timer)
+	timer.timeout.connect(_on_timeout)
 	timer.start()
 	direction = (target_position - self.global_position).normalized()
 	self.rotation = direction.angle()
 	get_node('Sprite2D').visible = true
 	get_node('Sprite2D').play('channel')
 	get_node('Sprite2D').animation_finished.connect(_on_channel_finished)
+	print('channeling')
 
 func _on_channel_finished():
+	print('channel finished')
 	get_node('Sprite2D').animation_finished.disconnect(_on_channel_finished)
 	get_node('Sprite2D').play('air')
 
@@ -41,6 +43,7 @@ func _on_hit_finished():
 	queue_free()
 	
 func _on_timeout():
+	print(timer.get_time_left())
 	if target_position == Vector2(0, 0):  # Check if target_position has not been set
 		target_position = target.global_position
 		if target.is_in_group("players") and target.get_node("Control").movement_target != null:
@@ -60,6 +63,8 @@ func _physics_process(delta):
 	_check_collision()
 	if in_air:
 		self.global_position += direction * bonus_speed * delta
+		print('in air')
+		print(direction)
 
 func _check_if_caster_died(_origin):
 	if !is_instance_valid(_origin):

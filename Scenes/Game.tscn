@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dtr2poygeam3r"]
+[gd_scene load_steps=21 format=3 uid="uid://dtr2poygeam3r"]
 
 [ext_resource type="PackedScene" uid="uid://dbn7ie0btp67a" path="res://Managers/wave_manager.tscn" id="1_6yxuh"]
 [ext_resource type="Script" path="res://Scenes/Game_init.gd" id="1_osw0d"]
@@ -9,7 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://slvbxmwh715i" path="res://Managers/combat_manager.tscn" id="6_cvaja"]
 [ext_resource type="PackedScene" uid="uid://dp5x3sacbjiw3" path="res://Managers/interaction_manager.tscn" id="7_nglgl"]
 [ext_resource type="PackedScene" uid="uid://d1kqyjpf6ntbw" path="res://Abilities/Utility/explosion.tscn" id="8_x8nt6"]
+[ext_resource type="PackedScene" uid="uid://dp1ypprydi52l" path="res://Abilities/Utility/Darkness_effect.tscn" id="9_tfhf2"]
 [ext_resource type="PackedScene" uid="uid://ccxvywf5fenkh" path="res://Managers/item_manager.tscn" id="11_r5jx1"]
+[ext_resource type="Script" path="res://Managers/PauseManager.gd" id="14_1pd8p"]
+[ext_resource type="PackedScene" uid="uid://dqsw216yiufsl" path="res://Items/Potions/potion.tscn" id="14_2jqcq"]
 [ext_resource type="Shader" path="res://Shaders/fog_shader.gdshader" id="22_0mhy5"]
 [ext_resource type="Script" path="res://Managers/CinematicManager.gd" id="22_beavb"]
 [ext_resource type="PackedScene" uid="uid://c8ikvo6rnmtyw" path="res://Utility/boss_title.tscn" id="23_vhcc8"]
@@ -62,6 +65,7 @@ im = NodePath("../ItemManager")
 
 [node name="CombatManager" parent="CanvasModulate" node_paths=PackedStringArray("map_manager", "ability_manager") instance=ExtResource("6_cvaja")]
 explosion_effect = ExtResource("8_x8nt6")
+darkness_effect = ExtResource("9_tfhf2")
 map_manager = NodePath("../MapManager")
 ability_manager = NodePath("../AbilityManager")
 
@@ -74,10 +78,16 @@ spawn_path = NodePath("../Units")
 spawn_limit = 2
 
 [node name="CinematicManager" type="Node" parent="CanvasModulate"]
+process_mode = 3
 script = ExtResource("22_beavb")
 boss_encounter_text = ExtResource("23_vhcc8")
 
 [node name="ItemManager" parent="CanvasModulate" instance=ExtResource("11_r5jx1")]
+potion_scene = ExtResource("14_2jqcq")
+
+[node name="PauseManager" type="Node" parent="CanvasModulate"]
+process_mode = 3
+script = ExtResource("14_1pd8p")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 layer = -2

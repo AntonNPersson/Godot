@@ -17,4 +17,4 @@ func _initialize():
 	values.append(knockback_distance)
 	colors.append(color)
 
-	tooltip = "On Cast: An explosion of wind knocks back surrounding enemies for " + str(knockback_distance) + "pixels, has a " + str(cooldown) + "seconds cooldown. (Unique)"
+	tooltip = "On Cast: An explosion of wind knocks back surrounding enemies for " + str(knockback_distance) + "pixels, has a " + str(cooldown) + "seconds cooldown."

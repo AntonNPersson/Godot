@@ -15,4 +15,4 @@ func _initialize():
 	values.append(randi() % 16 + 3)
 	colors.append(color)
 
-	tooltip = "On Hit: Has "+ str(values[0]) + "% chance to bleed the target for "+ str(values[0]/3) + " * (main stat) bleed damage over 3 seconds. (Unique)"
+	tooltip = "On Hit: Has "+ str(values[0]) + "% chance to bleed the target for "+ str(values[0]/3) + " * (main stat) bleed damage over 3 seconds."

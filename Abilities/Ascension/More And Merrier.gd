@@ -5,7 +5,7 @@ extends Node2D
 
 @export var increased_amount : int
 
-var ascension_currency_multiplier = 0.6
+@export var ascension_currency_multiplier = 0.6
 
 var second_tooltip
 

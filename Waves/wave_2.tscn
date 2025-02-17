@@ -11,9 +11,9 @@ script = ExtResource("1_ob68i")
 metadata/Special = true
 metadata/Color = Color(0.309804, 0.294118, 0.462745, 1)
 
+[node name="Zombified Priest" parent="." instance=ExtResource("4_mo6to")]
+
 [node name="basicMeleeCreature" parent="." instance=ExtResource("2_ip3k1")]
 position = Vector2(48.119, -49.2413)
 
 [node name="Cursed Totem" parent="." instance=ExtResource("3_vm28x")]
-
-[node name="Zombified Priest" parent="." instance=ExtResource("4_mo6to")]

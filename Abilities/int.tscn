@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://b8a6w1f865pfx"]
+[gd_scene load_steps=41 format=3 uid="uid://b8a6w1f865pfx"]
 
 [ext_resource type="PackedScene" uid="uid://da871oh6rfrvj" path="res://Abilities/INT/Fireball/fireball.tscn" id="1_vlnpx"]
 [ext_resource type="PackedScene" uid="uid://c6nvjhyersa53" path="res://Abilities/INT/Healing Grace/Healing Grace.tscn" id="3_7ms2t"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://bwow1tpbh1c0a" path="res://Abilities/INT/Infernal Barrier/Infernal Shield.tscn" id="24_ex545"]
 [ext_resource type="PackedScene" uid="uid://8yp1v3hnu4vs" path="res://Abilities/INT/Glacial Barrier/Glacial Barrier.tscn" id="25_eler8"]
 [ext_resource type="Texture2D" uid="uid://dc3ppufrdy35v" path="res://Abilities/INT/Glacial Barrier/Spell 2-Sheet-blue.png" id="26_pa5at"]
+[ext_resource type="PackedScene" uid="uid://coe6gvjj6vst1" path="res://Abilities/INT/Aura of Protection/Aura Of Protection.tscn" id="27_ddtei"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hdmql"]
 atlas = ExtResource("26_pa5at")
@@ -128,13 +129,11 @@ values = Array[float]([15.0, 10.0, 10.0])
 
 [node name="Frostbolt" parent="." instance=ExtResource("3_q2o0l")]
 icon = ExtResource("6_7db48")
-activatable_cooldown = 0.0
 values = Array[float]([10.0, 30.0, 1.0])
 
 [node name="Fireball" parent="." instance=ExtResource("1_vlnpx")]
 icon = ExtResource("8_ku6w6")
 tooltip_text = "Shoot a ball of fire in a straight line, dealing Value0 damage and Value1 burn to anything it touches."
-activatable_cooldown = 0.0
 tags = Array[String](["Damage", "Burn", "Explosion"])
 values = Array[float]([10.0, 7.5, 75.0])
 increased_values = Array[float]([10.0, 5.0, 0.0])
@@ -174,7 +173,6 @@ sprite_offset = Vector2(0, 22)
 [node name="Detonate" parent="." instance=ExtResource("19_0f1a4")]
 
 [node name="Immobilizing Echo" parent="." instance=ExtResource("20_sssa5")]
-activatable_cooldown = 0.0
 
 [node name="Shattering Light" parent="." instance=ExtResource("21_mf4b5")]
 tooltip_text = "Shoot out a projectile of pure light, that deals Value0 damage to enemies every 0.5 seconds, and heal allies by Value1."
@@ -194,22 +192,20 @@ icon = ExtResource("22_6gsmi")
 a_name = "Summon Werewolf"
 tooltip_text = "Summon a werewolf that applies bleed on hit."
 cooldown = 30.0
-activatable_cooldown = 0.0
 summon_amount = 1
 
 [node name="Elemental Symbiosis" parent="." instance=ExtResource("23_16bo7")]
 tooltip_text = "Abilities of different effects cast in sequence increases damage of the next one by Value0%, resets on casting same effect, and caps at 4 stacks."
-activatable_cooldown = 0.0
 
 [node name="Infernal Barrier" parent="." instance=ExtResource("24_ex545")]
 _range = 200.0
 sprite_scale = 0.4
 sprite_offset = Vector2(0, -32)
-activatable_cooldown = 0.0
 
 [node name="Glacial Barrier" parent="." instance=ExtResource("25_eler8")]
 _range = 200.0
 sprite_scale = 0.4
-activatable_cooldown = 0.0
 action_range = 100.0
 action_spritesheet = SubResource("SpriteFrames_y4bep")
+
+[node name="Aura of Protection" parent="." instance=ExtResource("27_ddtei")]

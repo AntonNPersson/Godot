@@ -9,6 +9,8 @@ func _ready():
 	attack_timer = _unit.total_windup_time
 	
 func _action(_delta):
+	_check_collision(_delta)
+
 	if _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		_interrupt_cast_timer()
 		return
@@ -59,7 +61,10 @@ func _action(_delta):
 					
 					attack_timer = _unit.total_windup_time
 					_is_winding = false
-					_change_state.call('chasing')
+					if _unit.global_position.distance_to(_get_closest_target().global_position) < 20 and start_position != null:
+						_unit.global_position += (_unit.global_position - start_position).normalized() * 10
+					else:
+						_change_state.call('chasing')
 				else:
 					_change_state.call('chasing')
 		else:
@@ -88,3 +93,10 @@ func _action(_delta):
 			return
 		
 	
+func _check_collision(_delta):
+	var overlapping = _unit.get_overlapping_areas()
+	for area in overlapping:
+		if area.is_in_group("obstacles"):
+			var collision_direction = (area.global_position - _unit.global_position).normalized()
+			_unit.global_position -= collision_direction * _unit.total_speed * _delta
+			return

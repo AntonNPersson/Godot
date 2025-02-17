@@ -123,6 +123,7 @@ var _target = null
 var increased_amount = 1.0
 
 var death_animation
+var forced_animation_position = Vector2.ZERO
 
 var ability_cooldowns = []
 var cooldown_timers = []
@@ -175,10 +176,20 @@ func _is_dead(unit):
 		dead = true
 		for child in get_children():
 			child.queue_free()
-		do_action.emit(current_base_experience, unit, unit, 'Experience')
-		do_action.emit(int(ascension_currency * get_tree().get_nodes_in_group("players")[0].ascension_currency_multiplier), unit, unit, 'Ascension')
 		if !unit.is_in_group('summon'):
-			drop_info._drop_item(unit.global_position)
+			drop_info._drop_item(unit.global_position + Vector2(randi_range(-10, 10), randi_range(-10, 10)))
+			do_action.emit(current_base_experience, unit, unit, 'Experience')
+			do_action.emit(int(ascension_currency * get_tree().get_nodes_in_group("players")[0].ascension_currency_multiplier), unit, unit, 'Ascension')
+			var drop_potion_chance = randi_range(0, 120)
+			randomize()
+			if drop_potion_chance < 10:
+				drop_info._drop_potion(unit.global_position + Vector2(randi_range(-10, 10), randi_range(-10, 10)), "Health")
+			elif drop_potion_chance >= 10 and drop_potion_chance < 20:
+				drop_info._drop_potion(unit.global_position + Vector2(randi_range(-10, 10), randi_range(-10, 10)), "Mana")
+			elif drop_potion_chance >= 20 and drop_potion_chance < 30:
+				drop_info._drop_potion(unit.global_position + Vector2(randi_range(-10, 10), randi_range(-10, 10)), "Barrier")
+			elif drop_potion_chance >= 30 and drop_potion_chance < 40:
+				drop_info._drop_potion(unit.global_position + Vector2(randi_range(-10, 10), randi_range(-10, 10)), "Stamina")
 
 		var drop_charge = randi_range(0, 100)
 		randomize()

@@ -373,6 +373,8 @@ func _process(delta):
 		current_mana = 0
 	if current_health < 0:
 		is_dead.emit(self)
+		if has_node("Darkness_effect"):
+			get_node("Darkness_effect").queue_free()
 		for ab in get_node('InventoryManager').abilities:
 			ab._remove_all_enchants()
 			ab._reset_ability()
@@ -748,6 +750,7 @@ func save():
 		var inventory_data = []
 		var inventory_manager = get_node("InventoryManager").inventory
 		for i in range(inventory_manager.size()):
+			print(inventory_manager[i]._get_item_data())
 			inventory_data.append(inventory_manager[i]._get_item_data())
 		im_inventory = inventory_data
 
@@ -756,6 +759,12 @@ func save():
 		for i in range(storage_manager.size()):
 			storage_data.append(storage_manager[i]._get_item_data())
 		im_storage = storage_data
+
+		var potion_data = []
+		var potion_manager = get_node("InventoryManager").potions
+		for i in range(potion_manager.size()):
+			potion_data.append(potion_manager[i]._get_item_data())
+		im_potions = potion_data
 
 		get_node("InventoryManager")._remove_item_stats_from_inventory()
 

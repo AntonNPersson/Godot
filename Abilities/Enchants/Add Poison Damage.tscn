@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://xxbbcmad6f8p"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_vtb78"]
+[ext_resource type="Texture2D" uid="uid://u6rrk3lrlpnh" path="res://Abilities/Enchants/icons/2GreenAbility_5.png" id="2_6jdr5"]
+
+[node name="Add Poison Damage" type="Node2D"]
+script = ExtResource("1_vtb78")
+i_name = "Poison: Onslaught"
+tooltip = "Add Value0% percentage poison damage increase to selected ability."
+icon = ExtResource("2_6jdr5")
+tags = Array[String](["PoisonPercentDamage"])
+values = Array[float]([15.0])
+types = Array[int]([-1])
+extra = {
+"Never": true
+}

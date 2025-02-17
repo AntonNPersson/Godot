@@ -15,7 +15,7 @@ var player = null
 var map = null
 var timer = 0
 
-var ascension_currency_multiplier = 0.4
+@export var ascension_currency_multiplier = 0.4
 
 var second_tooltip
 

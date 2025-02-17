@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dp1ypprydi52l"]
+
+[ext_resource type="Shader" path="res://Shaders/distortion_effect.gdshader" id="1_qsg0v"]
+[ext_resource type="Texture2D" uid="uid://b1ugw0y3fkjqr" path="res://Sprites/Sewers/darkness.png" id="2_8wdaw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xf1l3"]
+shader = ExtResource("1_qsg0v")
+shader_parameter/intensity = 1.0
+shader_parameter/radius = 0.0
+shader_parameter/softness = 0.171
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="DarknessEffect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_xf1l3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8wdaw")
+expand_mode = 1

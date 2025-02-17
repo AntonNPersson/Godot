@@ -101,6 +101,8 @@ var players = []
 # A flag indicating if the map is loaded.
 var map_loaded
 
+
+var map_extras = {"Witch Doctor Right Spawn" : [], "Witch Doctor Left Spawn" : [], "Witch Doctor Middle Left Spawn" : [], "Witch Doctor Middle Right Spawn" : []}
 # Signal emitted when the map is changing.
 signal changing_map
 
@@ -292,6 +294,19 @@ func _loadTileMap(file, tiles):
 						elif tiles[tile].has_meta('Boss_Spawn'):
 							boss_spawn_position = _create_tile(tiles[tile])
 							row.append(boss_spawn_position)
+						elif tiles[tile].has_meta("Extra"):
+							if tiles[tile].get_meta("Extra") == "Right":
+								map_extras["Witch Doctor Right Spawn"].append(_create_tile(tiles[tile]))
+								row.append(cumulative_position)
+							elif tiles[tile].get_meta("Extra") == "Left":
+								map_extras["Witch Doctor Left Spawn"].append(_create_tile(tiles[tile]))
+								row.append(cumulative_position)
+							elif tiles[tile].get_meta("Extra") == "Middle Left":
+								map_extras["Witch Doctor Middle Left Spawn"].append(_create_tile(tiles[tile]))
+								row.append(cumulative_position)
+							elif tiles[tile].get_meta("Extra") == "Middle Right":
+								map_extras["Witch Doctor Middle Right Spawn"].append(_create_tile(tiles[tile]))
+								row.append(cumulative_position)
 						else:
 							_create_tile(tiles[tile], debug_walkable, pathfinding_debug)
 							row.append(cumulative_position)
@@ -357,6 +372,23 @@ func _get_random_walkable_tile():
 			tiles.append(tile.position)
 	return tiles.pick_random()
 
+# Witch doctor specific
+func _get_random_left_witch_doctor_spawn():
+	return map_extras["Witch Doctor Left Spawn"][randi() % map_extras["Witch Doctor Left Spawn"].size()]
+
+func _get_random_right_witch_doctor_spawn():
+	return map_extras["Witch Doctor Right Spawn"][randi() % map_extras["Witch Doctor Right Spawn"].size()]
+
+func _get_sorted_witch_doctor_middle_left_spawn(position):
+	return sort_positions_by_distance(map_extras["Witch Doctor Middle Left Spawn"], position)
+
+func _get_sorted_witch_doctor_middle_right_spawn(position):
+	return sort_positions_by_distance(map_extras["Witch Doctor Middle Right Spawn"], position)
+
+func sort_positions_by_distance(positions: Array, reference: Vector2) -> Array:
+	positions.sort_custom(func(a, b): return a.distance_to(reference) < b.distance_to(reference))
+	return positions
+
 func _get_random_spawn_position():
 	return spawn_position[randi() % spawn_position.size()]
 
@@ -407,6 +439,29 @@ func _find_closest_walkable_neighbor(goal, unit):
 			distance = neighbor.distance_to(unit.global_position)
 			goal = neighbor
 	return goal
+
+func _find_last_column_tile_positions():
+	var last_column = tile_positions[0].size() - 1
+	var column = []
+	for y in range(tile_positions.size()):
+		column.append(tile_positions[y][last_column])
+	return column
+
+func _find_last_walkable_column_tile_positions():
+	var column = []
+	for row in walkable_tiles:
+		column.append(row[row.size() - 1])
+	return column
+
+func _find_first_walkable_column_tile_positions():
+	var column = []
+	for row in walkable_tiles:
+		column.append(row[0])
+	return column
+
+func _pick_random_tile_from_column(column):
+	return column[randi() % column.size()]
+
 
 func _find_last_player_tile_position():
 	var control_node = players[0].get_node("Control")
@@ -816,12 +871,20 @@ func _calculate_creature(size):
 	var s = sub_wave
 	if s > creatures.size():
 		s = creatures.size()
-	for i in range(0, s):
-		var percentage_of_total = int(size / (i + 1))
-		var num_to_spawn = percentage_of_total
 
-		if i == s - 1 and i != 0:
-			num_to_spawn = min(num_to_spawn, 2)
+	var first_mob_spawn = int(size * 0.65)
+	var second_mob_spawn = int(size * 0.30)
+	var third_mob_spawn = int(size * 0.05)
+	var num_to_spawn = 0
+
+	
+	for i in range(0, s):
+		if i == 0:
+			num_to_spawn = first_mob_spawn
+		elif i == 1:
+			num_to_spawn = second_mob_spawn
+		else:
+			num_to_spawn = min(third_mob_spawn, 2)
 		for j in range(0, num_to_spawn):
 			arr.append(creatures[i])
 	return arr

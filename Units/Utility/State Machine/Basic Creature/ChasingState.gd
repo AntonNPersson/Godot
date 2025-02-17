@@ -40,11 +40,12 @@ func _action(_delta):
 		break
 	if _unit.is_rooted or _unit.is_stunned or _unit.is_frozen or get_tree().get_first_node_in_group("players").in_stealth:
 		return
-	if _closest_distance > _unit.total_range - 5:
-		_move_towards_target(_delta)
-	else:
+	if _closest_distance - 15 < _unit.total_range and !_check_if_obstacles_in_ray(_unit.global_position, _get_closest_target().global_position):
 		start_position = _unit.global_position
 		_change_state.call('attacking')
+	else:
+		print(_closest_distance)
+		_move_towards_target(_delta)
 
 func _flockBehaviour(_delta, target):
 	var separation_vector = Vector2()
@@ -86,11 +87,14 @@ func _flockBehaviour(_delta, target):
 
 func _move_towards_target(_delta):
 	if current_path_index == -1 or current_path_index >= 1:
-		if _update_path() == -1:
+		if _update_path() == -1 or _closest_distance < _unit.total_range:
 			return
 	
 	if _unit.total_speed <= 0:
-		update_sprite_direction(path[current_path_index], "Walk", true)
+		if _unit.forced_animation_position != Vector2.ZERO:
+			update_sprite_direction(_unit.forced_animation_position, "Walk", false)
+		else:
+			update_sprite_direction(_get_closest_target().global_position, "Walk", true)
 	else:
 		update_sprite_direction(path[current_path_index], "Walk", false)
 
@@ -98,6 +102,7 @@ func _move_towards_target(_delta):
 		if closest_avoidance_direction == null:
 			colliding = false
 			return
+		print("Colliding")
 		update_sprite_direction(_get_closest_target().global_position, "Walk", false)
 		_unit.global_position += closest_avoidance_direction * _unit.total_speed * _delta
 		if avoidance_direction_type == "Horizontal":
@@ -117,6 +122,7 @@ func _move_towards_target(_delta):
 		_unit.is_colliding = false
 	else:
 		_walk_from_to(path, _unit, _delta, PATH_TILE_UPDATE_INTERVAL, _get_closest_target())
+		
 	if _closest_distance > _unit.total_range:
 		var separation_vector = Vector2()
 		for enemy in get_tree().get_nodes_in_group("enemies"):
@@ -129,19 +135,18 @@ func _move_towards_target(_delta):
 
 
 
-func _walk_from_to(path, unit, delta, tile_update_interval, target):
-	var target_tile = unit.obstacles_info._world_to_tilemap_position(target.global_position)
-	var current_tile = unit.obstacles_info._world_to_tilemap_position(unit.global_position)
-	var next_tile = path[current_path_index]
+func _walk_from_to(_path, unit, delta, tile_update_interval, target):
+	var next_tile = _path[current_path_index]
 	var smooth_factor = 0.8
 	var distance = unit.global_position.distance_to(next_tile)
 	var direction = (next_tile - unit.global_position).normalized()
 	var _velocity = direction * unit.total_speed * smooth_factor
+	var target_direction = (target.global_position - unit.global_position).normalized()
 	
 	if distance >= 5:
 		unit.global_position += _velocity * delta
 	
-	if distance < 5:
+	if distance <= 5:
 		current_path_index += 1
 		if current_path_index > tile_update_interval:
 			current_path_index = -1
@@ -179,7 +184,7 @@ func _check_collision():
 	var overlapping = _unit.get_overlapping_areas()
 	
 	for area in overlapping:
-		if area.is_in_group('obstacles') and !colliding and area.get_meta('Walkable'):
+		if area.is_in_group('props') and !colliding and area.get_meta('Walkable'):
 			if !area.visible:
 				continue
 			var collision_point_1 = area.get_node("CollisionShape2D").global_position

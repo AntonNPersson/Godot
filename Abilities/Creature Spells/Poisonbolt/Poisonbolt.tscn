@@ -1,0 +1,147 @@
+[gd_scene load_steps=19 format=3 uid="uid://bjic3yagbmf7n"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Poisonbolt/Poisonbolt.gd" id="1_djn34"]
+[ext_resource type="Texture2D" uid="uid://dfi5fkqa54fwx" path="res://Abilities/Creature Spells/Poisonbolt/Acid VFX 01.png" id="2_butfb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t81g7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fn6ec"]
+atlas = ExtResource("2_butfb")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ymxjf"]
+atlas = ExtResource("2_butfb")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qji0d"]
+atlas = ExtResource("2_butfb")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqcjh"]
+atlas = ExtResource("2_butfb")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bvu1s"]
+atlas = ExtResource("2_butfb")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_odisi"]
+atlas = ExtResource("2_butfb")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8u11e"]
+atlas = ExtResource("2_butfb")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hynr7"]
+atlas = ExtResource("2_butfb")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxxm0"]
+atlas = ExtResource("2_butfb")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bluqm"]
+atlas = ExtResource("2_butfb")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msgld"]
+atlas = ExtResource("2_butfb")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8soc"]
+atlas = ExtResource("2_butfb")
+region = Rect2(1536, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6fep"]
+atlas = ExtResource("2_butfb")
+region = Rect2(1664, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wcb3"]
+atlas = ExtResource("2_butfb")
+region = Rect2(1792, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_po1eb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fn6ec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ymxjf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qji0d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqcjh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bvu1s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_odisi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8u11e")
+}],
+"loop": true,
+"name": &"air",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hynr7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxxm0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bluqm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msgld")
+}],
+"loop": false,
+"name": &"channel",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8soc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b6fep")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wcb3")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 20.0
+}]
+
+[node name="Poisonbolt" type="Area2D" groups=["projectile"]]
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_djn34")
+cast_duration = 0.1
+channel_duration = 0.1
+bonus_speed = 350
+tag = "Poison"
+cooldown = 0.0
+damage = 20
+_range = 10000
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(3.505, 3.505)
+shape = SubResource("CircleShape2D_t81g7")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 2
+position = Vector2(-2, 6)
+scale = Vector2(1.919, 1.832)
+sprite_frames = SubResource("SpriteFrames_po1eb")
+animation = &"hit"
+autoplay = "channel"
+frame = 2
+frame_progress = 1.0

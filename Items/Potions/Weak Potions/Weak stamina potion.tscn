@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b512gtdcodhuc"]
+
+[ext_resource type="Script" path="res://Items/Potions/Weak Potions/Weak stamina potion.gd" id="1_h6dpm"]
+
+[node name="Weak Stamina Potion" type="Node2D"]
+script = ExtResource("1_h6dpm")

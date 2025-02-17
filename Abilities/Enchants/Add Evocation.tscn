@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkstpwhstkisi"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_wg0am"]
+[ext_resource type="Texture2D" uid="uid://txvuxcmsu6o5" path="res://Abilities/Enchants/icons/Blue Ability_22.png" id="2_pdtrp"]
+
+[node name="Add Evocation" type="Node2D"]
+script = ExtResource("1_wg0am")
+i_name = "Target: Evocation"
+tooltip = "Now regenerate Value0% mana over 3 seconds, after using ability."
+icon = ExtResource("2_pdtrp")
+tags = Array[String](["PercentHealManaOverTime"])
+values = Array[float]([5.0])
+types = Array[int]([5, 2])
+extra = {
+"Duration": 3.0,
+"Hit": true
+}
+unique = true
+rarity = 1

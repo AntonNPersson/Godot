@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://d33sr2bqligko"]
+[gd_scene load_steps=70 format=3 uid="uid://d33sr2bqligko"]
 
 [ext_resource type="PackedScene" uid="uid://bp6rtb8ec10f3" path="res://Maps/Tiles/Arena_3/floor.tscn" id="1_uqpmr"]
 [ext_resource type="PackedScene" uid="uid://c2oqkejfinyu2" path="res://Maps/Tiles/Arena_3/player_spawn.tscn" id="2_c3vwl"]
@@ -43,8 +43,12 @@
 [ext_resource type="Texture2D" uid="uid://bvp5f6a21wdyl" path="res://Sprites/Sewers/laboratory - table.png" id="41_wxnke"]
 [ext_resource type="Texture2D" uid="uid://dynw3fiuwb87t" path="res://Sprites/Sewers/laboratory - potions_5.png" id="42_hpmn1"]
 [ext_resource type="Texture2D" uid="uid://cfpivu2efiupc" path="res://Sprites/Sewers/laboratory - potions_4.png" id="43_qqw8k"]
+[ext_resource type="Texture2D" uid="uid://dejwxt776rg01" path="res://Sprites/Sewers/laboratory - shelves1.png" id="44_7u65k"]
 [ext_resource type="Texture2D" uid="uid://14esb2iploau" path="res://Sprites/Sewers/giant pipe-sheet2.png" id="44_itynv"]
 [ext_resource type="Texture2D" uid="uid://c57o2ow2eb1o8" path="res://Sprites/Sewers/laboratory - engine.png" id="45_lscdg"]
+[ext_resource type="Texture2D" uid="uid://etnaveq0vf34" path="res://Sprites/Sewers/laboratory - potions_7.png" id="45_usjvt"]
+[ext_resource type="Texture2D" uid="uid://b37762pbmjxx" path="res://Sprites/Sewers/web - color scheme 1_43.png" id="46_4d075"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_3/poisonbolt_position.gd" id="49_ebnlv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yfbl8"]
 atlas = ExtResource("10_o8bun")
@@ -153,7 +157,7 @@ animations = [{
 size = Vector2(31, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lp5ag"]
-size = Vector2(104, 56)
+size = Vector2(123, 107)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gh0xx"]
 radius = 67.3573
@@ -167,6 +171,7 @@ size = Vector2(91, 118)
 [node name="Arena" type="Node2D"]
 
 [node name="Floor" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(639, 175)
 
 [node name="Player Spawn" parent="." instance=ExtResource("2_c3vwl")]
 
@@ -334,11 +339,11 @@ position = Vector2(0, 19)
 texture = ExtResource("22_qy874")
 
 [node name="Sewer" parent="." instance=ExtResource("1_uqpmr")]
-position = Vector2(-137, 249)
+position = Vector2(201, 471)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Sewer"]
 
-[node name="Pillar" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
+[node name="Pillar" parent="." groups=["obstacles", "props"] instance=ExtResource("1_uqpmr")]
 position = Vector2(-137, 249)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Pillar"]
@@ -375,13 +380,13 @@ texture = ExtResource("28_ymvjo")
 script = ExtResource("29_dvjl8")
 
 [node name="Path South" parent="." instance=ExtResource("1_uqpmr")]
-position = Vector2(-373, 301)
+position = Vector2(-231, 313)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Path South"]
 texture = ExtResource("28_bjwtl")
 
 [node name="Path Middle" parent="." instance=ExtResource("1_uqpmr")]
-position = Vector2(-373, 301)
+position = Vector2(-83, 316)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Path Middle"]
 texture = ExtResource("29_medt5")
@@ -416,7 +421,7 @@ z_index = 1
 position = Vector2(-18, -54)
 texture = ExtResource("36_jsews")
 
-[node name="Props" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
+[node name="Props" parent="." groups=["obstacles", "props"] instance=ExtResource("1_uqpmr")]
 position = Vector2(59, 309)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Props"]
@@ -441,41 +446,57 @@ shape = SubResource("RectangleShape2D_rt6gy")
 
 [node name="Props 2" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
 position = Vector2(-162, 439)
+metadata/Walkable = false
 
 [node name="Sprite2D2" type="Sprite2D" parent="Props 2"]
-z_index = 1
-position = Vector2(-5, -36)
-scale = Vector2(1.3, 1.3)
+position = Vector2(0.299999, 36)
+scale = Vector2(1.41042, 1.3)
 texture = ExtResource("41_wxnke")
 script = ExtResource("38_ttup6")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Props 2"]
-z_index = 1
-position = Vector2(25, -64)
+position = Vector2(25, 8)
 texture = ExtResource("42_hpmn1")
 script = ExtResource("38_ttup6")
 
 [node name="Sprite2D4" type="Sprite2D" parent="Props 2"]
-z_index = 1
-position = Vector2(14, -58)
+position = Vector2(14, 14)
 texture = ExtResource("43_qqw8k")
 script = ExtResource("38_ttup6")
 
 [node name="Sprite2D5" type="Sprite2D" parent="Props 2"]
-z_index = 1
-position = Vector2(-42, -62)
+position = Vector2(-42, 10)
 texture = ExtResource("42_hpmn1")
 script = ExtResource("38_ttup6")
 
 [node name="Sprite2D6" type="Sprite2D" parent="Props 2"]
-z_index = 1
-position = Vector2(-35, -55)
+position = Vector2(-35, 17)
 texture = ExtResource("42_hpmn1")
 script = ExtResource("38_ttup6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Props 2"]
-position = Vector2(-5, -42)
+position = Vector2(0.5, -16.5)
 shape = SubResource("RectangleShape2D_lp5ag")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(5.5, -53)
+scale = Vector2(1.61458, 1.5)
+texture = ExtResource("44_7u65k")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(-38, -30)
+texture = ExtResource("45_usjvt")
+script = ExtResource("38_ttup6")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Props 2"]
+z_index = 1
+position = Vector2(26, -45.5)
+scale = Vector2(1, 0.739583)
+texture = ExtResource("46_4d075")
+script = ExtResource("38_ttup6")
 
 [node name="Prop 3" parent="." groups=["obstacles"] instance=ExtResource("1_uqpmr")]
 position = Vector2(-366, 463)
@@ -507,3 +528,18 @@ shape = SubResource("CircleShape2D_rxasw")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Prop 4"]
 position = Vector2(-8.5, -1)
 shape = SubResource("RectangleShape2D_7bu21")
+
+[node name="boss_poisonbolt_right" parent="." instance=ExtResource("8_77o0a")]
+script = ExtResource("49_ebnlv")
+metadata/Extra = "Right"
+
+[node name="boss_poisonbolt_left" parent="." instance=ExtResource("7_rt2wo")]
+metadata/Extra = "Left"
+
+[node name="boss_acid_splash_left" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(639, 175)
+metadata/Extra = "Middle Left"
+
+[node name="boss_acid_splash_right" parent="." instance=ExtResource("1_uqpmr")]
+position = Vector2(639, 175)
+metadata/Extra = "Middle Right"

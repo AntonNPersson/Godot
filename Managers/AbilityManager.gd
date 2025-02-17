@@ -86,7 +86,9 @@ func _process(delta):
 
 func _input(event):
 	if event.is_action_pressed("test"):
-		_on_next_enchant()
+		GameManager.save_game()
+		GameManager.load_menu()
+		print_stack()
 
 func _choose_ability_choices(list):
 	var choices = []

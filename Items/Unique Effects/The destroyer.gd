@@ -8,10 +8,10 @@ var unique = true
 var unique_type = "Weapon"
 
 func _initialize():
-	attack_damage = randi_range(4, 8)
-	increased_attack_damage = randi_range(2, 5)
-	attack_speed = randi_range(4, 8)
-	armor = randi_range(2, 5)
+	attack_damage = randi_range(4, 12)
+	increased_attack_damage = randi_range(6, 16)
+	attack_speed = randi_range(14, 20)
+	armor = randi_range(30, 45)
 
 func _get_values():
 	return [attack_damage, increased_attack_damage, attack_speed, armor]	

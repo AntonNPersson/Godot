@@ -14,6 +14,8 @@ func _create_after_image(origin, speed = 2):
 	after_images.append(after_image)
 
 func _process(delta):
+	if !is_instance_valid(original_sprite):
+		return
 	for image in after_images:
 		image.play(original_sprite.animation)
 		image.frame = original_sprite.frame

@@ -41,7 +41,7 @@ func _initialize():
 			'tooltip': child.tooltip,
 			'icon': child.icon
 		}
-		if wave_number == 1 or wave_number == 3 or player._get_completed_waves().find(wave_number-1) != -1:
+		if wave_number == 1 or wave_number == 2 or player._get_completed_waves().find(wave_number-1) != -1:
 			tp_list.get_child(0).get_child(0).add_item(child.name, null, true)
 		else:
 			tp_list.get_child(0).get_child(0).add_item(child.name, null, false)

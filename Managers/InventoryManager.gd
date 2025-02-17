@@ -102,8 +102,10 @@ func _process(delta):
 		current_weapon._use_weapon(unit, delta)
 	_update_inventory_test()
 	_update_stats()
-	potion_bar_1._update_potion(potion_charges[0], current_potion_charges[0], potions[0].type)
-	potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], potions[1].type)
+	if potions.size() > 0:
+		potion_bar_1._update_potion(potion_charges[0], current_potion_charges[0], potions[0].type)
+	if potions.size() > 1:
+		potion_bar_2._update_potion(potion_charges[1], current_potion_charges[1], potions[1].type)
 	level_bar.get_node('level').text = '[center]' + str(unit.player_level)
 	for i in abilities.size():
 		cooldown_timers[i] -= cooldown_timer_multiple * delta
@@ -160,33 +162,37 @@ func _input(event):
 		toggle_hud('Abilities')
 
 	if GameManager.settings['roguelike_controls']:
-		if event.is_action_pressed("Ability_1") and !event.is_echo():
-			activate_ability(0)
-		elif event.is_action_pressed('Ability_2') and !event.is_echo():
-			activate_ability(1)
-		elif event.is_action_pressed('Ability_3') and !event.is_echo():
-			activate_ability(2)
+		if !event.is_echo():
+			if event.is_action_pressed("Ability_1") and not event.is_action_pressed("Level_up_1"):
+				activate_ability(0)
+			elif event.is_action_pressed('Ability_2') and not event.is_action_pressed("Level_up_2"):
+				activate_ability(1)
+			elif event.is_action_pressed('Ability_3') and not event.is_action_pressed("Level_up_3"):
+				activate_ability(2)
 
-		if event.is_action_pressed('Level_up_1') and !event.is_echo():
-			_on_level_pressed(0)
-		elif event.is_action_pressed('Level_up_2') and !event.is_echo():
-			_on_level_pressed(1)
-		elif event.is_action_pressed('Level_up_3') and !event.is_echo():
-			_on_level_pressed(2)
+			if event.is_action_pressed('Level_up_1'):
+				_on_level_pressed(0)
+			elif event.is_action_pressed('Level_up_2'):
+				_on_level_pressed(1)
+			elif event.is_action_pressed('Level_up_3'):
+				_on_level_pressed(2)
 
-		if event.is_action_released("Ability_1") and !event.is_echo() and abilities[0].is_channel_ability:
-			abilities[0]._stop_channel()
-		elif event.is_action_released('Ability_2') and !event.is_echo() and abilities[1].is_channel_ability:
-			abilities[1]._stop_channel()
-		elif event.is_action_released('Ability_3') and !event.is_echo() and abilities[2].is_channel_ability:
-			abilities[2]._stop_channel()
+		if event.is_action_released("Ability_1") and !event.is_echo():
+			if abilities.size() > 0 and abilities[0].is_channel_ability:
+				abilities[0]._stop_channel()
+		elif event.is_action_released('Ability_2') and !event.is_echo():
+			if abilities.size() > 1 and abilities[1].is_channel_ability:
+				abilities[1]._stop_channel()
+		elif event.is_action_released('Ability_3') and !event.is_echo():
+			if abilities.size() > 2 and abilities[2].is_channel_ability:
+				abilities[2]._stop_channel()
 
 		if event.is_action_pressed('Ability_Q') and !event.is_echo():
 			if potions.size() > 0:
 				if current_potion_charges[0] <= 0:
 					Utility.get_node('ErrorMessage')._create_error_message('Potion has no charges left.', self)
 					return
-				potions[0]._use()
+				potions[0].get_child(2)._use()
 				current_potion_charges[0] -= 1
 				_update_inventory_test()
 		elif event.is_action_pressed('Ability_E') and !event.is_echo():
@@ -194,7 +200,7 @@ func _input(event):
 					if current_potion_charges[1] <= 0:
 						Utility.get_node('ErrorMessage')._create_error_message('Potion has no charges left.', self)
 						return
-					potions[1]._use()
+					potions[1].get_child(2)._use()
 					current_potion_charges[1] -= 1
 					_update_inventory_test()
 
@@ -288,7 +294,7 @@ func activate_ability(index):
 					child.global_position = unit.global_position
 				return
 
-		if unit.current_mana < abilities[index].mana_cost and abilities[index].projectile_type != PROJECTILE_TYPE.Passive:
+		if unit.current_mana < abilities[index].mana_cost or unit.current_mana < unit.total_mana*(abilities[index].mana_cost_percentage/100) and abilities[index].projectile_type != PROJECTILE_TYPE.Passive:
 			Utility.get_node('ErrorMessage')._create_error_message('Not enough mana', self)
 			return
 
@@ -351,6 +357,7 @@ func _update_inventory_test():
 	for i in potion_slots.get_child_count():
 		potion_slots.get_child(i).get_node('Icon').texture = null
 		potion_slots.get_child(i).get_node('Icon').visible = false
+		potion_slots.get_child(i).get_node('Icon_border').visible = false
 
 	for i in storage_slots.get_child_count():
 		storage_slots.get_child(i).get_node('Icon').texture = null
@@ -364,8 +371,10 @@ func _update_inventory_test():
 		equipment_slots.get_child(i).get_node('Icon_border').visible = true
 
 	for i in potions.size():
-		potion_slots.get_child(i).get_node('Icon').texture = load(potions[i].icon.resource_path)
+		potion_slots.get_child(i).get_node('Icon').texture = load(potions[i].get_child(2).icon.resource_path)
 		potion_slots.get_child(i).get_node('Icon').visible = true
+		potion_slots.get_child(i).get_node("Icon_border").modulate = potions[i].rarity_color
+		potion_slots.get_child(i).get_node('Icon_border').visible = true
 
 	for i in storage.size():
 		storage_slots.get_child(i).get_node('Icon').texture = load(storage[i].get_child(2).icon.resource_path)
@@ -724,6 +733,17 @@ func _add_from_inventory_to_storage(it):
 		else:
 			Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
 
+func _add_from_potions_to_storage(it):
+	selected_potion = it
+	if potions.size() > 0:
+		if storage.size() < max_storage_slots:
+			_on_potion_dropped(true)
+			storage.append(it)
+			_update_inventory_test()
+			selected_potion.get_child(0).get_child(0).visible = false
+		else:
+			Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
+
 func _add_from_storage_to_inventory(it):
 	selected_storage_item = it
 	# Check if item is unique, and if it's already equipped
@@ -771,7 +791,6 @@ func _remove_item_stats_from_inventory():
 			for j in range(2, children.size()):
 				if "epic" in children[j]:
 					_remove_item_effect(children[j].epic, children[j].tags[0], children[j].values[0])
-					continue
 
 				if "range" in children[j]:
 					weapon_equipped = false
@@ -789,7 +808,6 @@ func _add_item_stats_from_inventory():
 			for j in range(2, children.size()):
 				if "epic" in children[j]:
 					_add_item_effect(children[j].epic, children[j].tags[0], children[j].values[0], children[j].duration, children[j].colors[0])
-					continue
 
 				if "range" in children[j]:
 					weapon_equipped = true
@@ -804,16 +822,24 @@ func _on_potion_picked_up(potion):
 		potion.player = get_parent()
 		potions.append(potion)
 		potion_charges.append(potion.charges)
+		print(potion)
 		_update_inventory_test()
 	else:
-		Utility.get_node("ErrorMessage")._create_error_message("Potion slots full", self)
+		if storage.size() < max_storage_slots:
+			storage.append(potion)
+			_update_inventory_test()
+			potion.remove_from_group("Items")
+		else:
+			Utility.get_node("ErrorMessage")._create_error_message("Storage full", self)
+		return
 
-func _on_potion_dropped():
+func _on_potion_dropped(to_inventory = false):
 	if potions.size() >= 0:
 		if selected_potion:
 			potions.erase(selected_potion)
-			potion_charges.erase(potion_charges.find(selected_potion.charges))
-			selected_potion.queue_free()
+			potion_charges.erase(potions.find(selected_potion)) 
+			if !to_inventory:
+				selected_potion._drop_item()
 			_update_inventory_test()
 		else:
 			print("No potion selected")
@@ -872,6 +898,17 @@ func _equipment_gui_input(event, index):
 			selected_item = inventory[index]
 			_add_from_inventory_to_storage(selected_item)
 
+func _potions_gui_input(event, index):
+	if potions.size() <= index:
+		return
+	if event is InputEventMouseButton:
+		if event.double_click and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			selected_potion = potions[index]
+			_on_potion_dropped()
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			selected_potion = potions[index]
+			_add_from_potions_to_storage(selected_potion)
+
 func _storage_mouse_entered(index):
 	if storage.size() <= index:
 		return
@@ -894,26 +931,29 @@ func _storage_gui_input(event, index):
 			_on_storage_item_dropped()
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			selected_storage_item = storage[index]
-			_add_from_storage_to_inventory(selected_storage_item)
+			if "type" in storage[index]:
+				if potions.size() < max_potion_slots:
+					_on_storage_item_dropped(true)
+					_on_potion_picked_up(selected_storage_item)
+					_update_inventory_test()
+					selected_storage_item.get_child(0).get_child(0).visible = false
+				else:
+					Utility.get_node("ErrorMessage")._create_error_message("Potion sack full", self)
+			else:
+				_add_from_storage_to_inventory(selected_storage_item)
 
 func _potions_mouse_entered(index):
 	if potions.size() <= index:
 		return
-	
-	tooltip.get_node('Panel/Name').text = "[center]" + potions[index].i_name
-	tooltip.get_node('Panel/PanelContainer/ScrollContainer/Description').text = "[center]" + potions[index].tooltip
-	tooltip.get_node('Panel/PanelContainer2/ScrollContainer/Description').text = ""
-
-	tooltip.get_child(0).global_position = get_viewport().get_mouse_position() + Vector2(-tooltip.get_child(0).size.x/2, -tooltip.get_child(0).size.y - 10)
-	tooltip.visible = true
 	unit.lose_camera_focus = true
+	potions[index].get_child(0).get_child(0).visible = true
+	potions[index]._show_tooltip_at_mouse()
 
 func _potions_mouse_exited(index):
 	if potions.size() <= index:
 		return
-	
-	tooltip.visible = false
 	unit.lose_camera_focus = false
+	potions[index].get_child(0).get_child(0).visible = false
 
 func _on_equipment_button_pressed():
 	equipment_slots.visible = true
@@ -962,8 +1002,18 @@ func load_items():
 
 	for i in range(unit.im_storage.size()):
 		var the_item_data = unit.im_storage[i]
-		var the_item = unit.item_manager._load_item(the_item_data['bot_piece'], the_item_data['second_mid_piece'], the_item_data['mid_piece'], the_item_data['top_piece'], the_item_data['second_top_piece'], the_item_data['item_name'], the_item_data['rarity'])
+		var the_item
+		if the_item_data.has("bot_piece"):
+			the_item = unit.item_manager._load_item(the_item_data['bot_piece'], the_item_data['second_mid_piece'], the_item_data['mid_piece'], the_item_data['top_piece'], the_item_data['second_top_piece'], the_item_data['item_name'], the_item_data['rarity'])
+		else:
+			the_item = unit.item_manager._load_potion(the_item_data["item_name"], the_item_data["rarity"])
 		storage.append(the_item)
+
+	for i in range(unit.im_potions.size()):
+		var the_potion_data = unit.im_potions[i]
+		print("loaded: " + str(the_potion_data))
+		var the_potion = unit.item_manager._load_potion(the_potion_data["item_name"], the_potion_data["rarity"])
+		_on_potion_picked_up(the_potion)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:

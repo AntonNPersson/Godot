@@ -62,12 +62,11 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = 1495.0
-offset_top = 187.0
+offset_top = 189.0
 offset_right = 1880.0
-offset_bottom = 637.0
+offset_bottom = 639.0
 grow_horizontal = 0
 grow_vertical = 2
-scale = Vector2(0.997504, 0.997488)
 theme = ExtResource("2_y27wo")
 
 [node name="Label3" type="Label" parent="CanvasLayer/Inventory/PanelContainer2"]
@@ -1068,7 +1067,7 @@ layout_mode = 2
 offset_left = 1318.0
 offset_top = 209.0
 offset_right = 1534.0
-offset_bottom = 655.0
+offset_bottom = 659.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Inventory/Panel"]
 layout_mode = 2
@@ -1559,6 +1558,7 @@ offset_right = 209.0
 offset_bottom = 19.0
 bbcode_enabled = true
 text = "[center] 150/150"
+scroll_active = false
 
 [node name="ProgressBar2" type="TextureProgressBar" parent="CanvasLayer/Bar_bag"]
 modulate = Color(1, 1, 1, 0.407843)
@@ -1578,7 +1578,6 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.5, 1)
 theme = ExtResource("2_y27wo")
-value = 30.0
 texture_over = ExtResource("10_2a5c7")
 texture_progress = ExtResource("13_dfr8m")
 script = ExtResource("7_0f38t")
@@ -1611,6 +1610,7 @@ offset_right = 209.0
 offset_bottom = 19.0
 bbcode_enabled = true
 text = "[center] 150/150"
+scroll_active = false
 
 [node name="ProgressBar3" type="TextureProgressBar" parent="CanvasLayer/Bar_bag"]
 layout_mode = 1
@@ -1638,6 +1638,7 @@ offset_right = 209.0
 offset_bottom = 19.0
 bbcode_enabled = true
 text = "[center] 150/150"
+scroll_active = false
 
 [node name="Potion_1" type="TextureRect" parent="CanvasLayer/Bar_bag"]
 layout_mode = 0
@@ -1719,8 +1720,10 @@ portal_sprite = ExtResource("22_2wcnl")
 [connection signal="gui_input" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6" to="." method="_equipment_gui_input" binds= [5]]
 [connection signal="mouse_entered" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6" to="." method="_equipment_mouse_entered" binds= [5]]
 [connection signal="mouse_exited" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Equipped/Item_6" to="." method="_equipment_mouse_exited" binds= [5]]
+[connection signal="gui_input" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1" to="." method="_potions_gui_input" binds= [0]]
 [connection signal="mouse_entered" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1" to="." method="_potions_mouse_entered" binds= [0]]
 [connection signal="mouse_exited" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_1" to="." method="_potions_mouse_exited" binds= [0]]
+[connection signal="gui_input" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_gui_input" binds= [1]]
 [connection signal="mouse_entered" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_entered" binds= [1]]
 [connection signal="mouse_exited" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Potion/Item_2" to="." method="_potions_mouse_exited" binds= [1]]
 [connection signal="mouse_entered" from="CanvasLayer/Inventory/PanelContainer2/Items/Panel/VBoxContainer/Storaged" to="." method="_on_inventory_mouse_entered"]

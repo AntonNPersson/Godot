@@ -117,17 +117,34 @@ func _is_ability_on_cooldown(index):
 	else:
 		return true
 
+func _cast_ray(from: Vector2, to: Vector2):
+	var space_state = _unit.get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(from, to)
+	query.collide_with_areas = true
+	return space_state.intersect_ray(query)
+
+func _check_if_obstacles_in_ray(from: Vector2, to: Vector2):
+	var result = _cast_ray(from, to)
+	if result:
+		if result.collider.is_in_group('obstacles'):
+			print("Obstacle in the way")
+			return true
+	return false
+
 func _get_closest_target():
 	if _unit.is_taunted:
 		return _unit.taunted_target
 
 	var distance_to_target = 99999999
+	var closest_dist = 99999999
+	var targe = null
 	if get_tree().get_nodes_in_group('players'):
 		for child in get_tree().get_nodes_in_group('players'):
 			var distance = _unit.global_position.distance_to(child.global_position)
 			
 			if distance < distance_to_target:
 				distance_to_target = distance
-				_closest_distance = distance_to_target
-				return child
-	return _unit
+				closest_dist = distance_to_target
+				targe = child
+	_closest_distance = closest_dist
+	return targe

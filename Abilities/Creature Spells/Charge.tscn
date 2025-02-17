@@ -1,0 +1,125 @@
+[gd_scene load_steps=18 format=3 uid="uid://b811l7mxv21b6"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Charge.gd" id="1_c7712"]
+[ext_resource type="Texture2D" uid="uid://dqacyx8p3y5pi" path="res://Units/Instance/Enemies/Elite/Smoke VFX 2.png" id="2_4jtbm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t81g7"]
+radius = 21.7283
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3vi1"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a86f2"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ay8mi"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wh6fi"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yflb"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3wij"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81eiv"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3v6sf"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_miqbq"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qpxse"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3iky3"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yeflk"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(1408, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k2w4b"]
+atlas = ExtResource("2_4jtbm")
+region = Rect2(1536, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3sc4o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3vi1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a86f2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ay8mi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wh6fi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3yflb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3wij")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_81eiv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3v6sf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_miqbq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qpxse")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3iky3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yeflk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k2w4b")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Charge" type="Area2D" groups=["projectile"]]
+scale = Vector2(0.3, 0.3)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_c7712")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(3.505, 3.505)
+shape = SubResource("CircleShape2D_t81g7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+scale = Vector2(0.6, 0.6)
+sprite_frames = SubResource("SpriteFrames_3sc4o")
+frame = 12
+frame_progress = 1.0
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_end"]

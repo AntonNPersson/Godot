@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://celfpy0b00dbu"]
+[gd_scene load_steps=9 format=3 uid="uid://celfpy0b00dbu"]
 
 [ext_resource type="Script" path="res://Managers/Game Manager.gd" id="1_m182s"]
 [ext_resource type="Script" path="res://Managers/Menu Manager.gd" id="2_dltqq"]
@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://cryabcm673r2a" path="res://GUI/Minecraft.ttf" id="3_kempm"]
 [ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="4_pew4u"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="5_ojsxl"]
+[ext_resource type="Texture2D" uid="uid://b0hkhsbqsus6q" path="res://Sprites/credit.png" id="6_dbu3n"]
 [ext_resource type="PackedScene" uid="uid://unnab30yeuuc" path="res://Utility/ac.tscn" id="6_uq4ba"]
 
 [node name="Menu Manager" type="Node"]
@@ -75,7 +76,7 @@ shortcut_context = NodePath("../..")
 theme_override_fonts/font = ExtResource("3_kempm")
 text = "Store"
 
-[node name="ExitButton" type="Button" parent="CanvasLayer" node_paths=PackedStringArray("shortcut_context")]
+[node name="CreditsButton" type="Button" parent="CanvasLayer" node_paths=PackedStringArray("shortcut_context")]
 modulate = Color(1, 1, 1, 0.784314)
 z_as_relative = false
 anchors_preset = 8
@@ -91,7 +92,7 @@ grow_horizontal = 2
 grow_vertical = 2
 shortcut_context = NodePath("../..")
 theme_override_fonts/font = ExtResource("3_kempm")
-text = "Exit"
+text = "Credits"
 
 [node name="StorePanel" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -276,6 +277,71 @@ position = Vector2(963.714, 403.333)
 scale = Vector2(2.42857, 67.6667)
 texture = ExtResource("5_ojsxl")
 
+[node name="ExitButton" type="Button" parent="CanvasLayer" node_paths=PackedStringArray("shortcut_context")]
+modulate = Color(1, 1, 1, 0.784314)
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = 330.0
+offset_right = 107.0
+offset_bottom = 394.0
+grow_horizontal = 2
+grow_vertical = 2
+shortcut_context = NodePath("../..")
+theme_override_fonts/font = ExtResource("3_kempm")
+text = "Exit"
+
+[node name="Credits" type="Container" parent="CanvasLayer"]
+visible = false
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 12.0
+offset_top = -98.0
+offset_right = 1912.0
+offset_bottom = 302.0
+grow_vertical = 2
+
+[node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer/Credits"]
+z_index = 1
+position = Vector2(1003.5, 173)
+scale = Vector2(1.9541, 1.77539)
+texture = ExtResource("6_dbu3n")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Credits"]
+z_index = 1
+custom_minimum_size = Vector2(1900, 2000)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[center]Map Sprites by: Rafaelmatos
+
+Ability Sprites by: Creativekind, Pimen
+
+Character Sprites by: Johannes Sjölund (wulax), Michael Whitlock (bigbeargames), Matthew Krohn (makrohn), Nila122, David Conway Jr. (JaidynReiman), Carlo Enrico Victoria (Nemisys), Thane Brimhall (pennomi), bluecarrot16, Luke Mehl, Benjamin K. Smith (BenCreating), ElizaWy, MuffinElZangano, Durrani, kheftel, Stephen Challener (Redshrike), TheraHedwig, Evert, Pierre Vigier (pvigier), Eliza Wyatt (ElizaWy), Johannes Sj?lund (wulax), Sander Frenken (castelonia), dalonedrau, Lanea Zimmerman (Sharm),
+
+Sprites contributed as part of the Liberated Pixel Cup project from OpenGameArt.org: http://opengameart.org/content/lpc-collection
+
+License: Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA 3.0) http://creativecommons.org/licenses/by-sa/3.0/
+
+Detailed credits: https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/blob/master/CREDITS.csv"
+
+[node name="CreditsButton" type="Button" parent="CanvasLayer/Credits" node_paths=PackedStringArray("shortcut_context")]
+modulate = Color(1, 1, 1, 0.784314)
+z_index = 1
+z_as_relative = false
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+shortcut_context = NodePath("../../..")
+theme_override_fonts/font = ExtResource("3_kempm")
+text = "Back"
+
 [node name="Game Manager" type="Node2D" parent="."]
 script = ExtResource("1_m182s")
 
@@ -291,7 +357,9 @@ spawn_limit = 1
 [connection signal="pressed" from="CanvasLayer/LoadButton" to="." method="_load_game"]
 [connection signal="pressed" from="CanvasLayer/StartButton" to="." method="_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/StoreButton" to="." method="_open_store"]
-[connection signal="pressed" from="CanvasLayer/ExitButton" to="." method="_exit_game"]
+[connection signal="pressed" from="CanvasLayer/CreditsButton" to="." method="_open_credits"]
 [connection signal="pressed" from="CanvasLayer/StorePanel/AC_Buy" to="." method="_buy_ascension_currency"]
 [connection signal="pressed" from="CanvasLayer/StorePanel/XP_Buy" to="." method="_buy_xp_gain"]
 [connection signal="pressed" from="CanvasLayer/StorePanel/Drop_Buy" to="." method="_buy_drop_rate"]
+[connection signal="pressed" from="CanvasLayer/ExitButton" to="." method="_exit_game"]
+[connection signal="pressed" from="CanvasLayer/Credits/CreditsButton" to="." method="_close_credits"]

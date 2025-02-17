@@ -76,6 +76,8 @@ func remove_part(original: String, to_remove: String) -> String:
 	return original.substr(0, start_index) + original.substr(end_index, original.length() - end_index)
 
 func _get_tooltip():
+	if "unique" in self:
+		tooltip += " [color=yellow](Unique)[/color]\n"
 	return tooltip
 
 func _get_item_data():

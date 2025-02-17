@@ -15,4 +15,4 @@ func _initialize():
 	values.append(randi() % 50 + 20)
 	colors.append(color)
 
-	tooltip = "On Frozen: Deal "+ str(values[0]) + "% increased damage to the target. (Unique)"
+	tooltip = "On Frozen: Deal "+ str(values[0]) + "% increased damage to the target."

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0puiggfnojnu"]
+
+[ext_resource type="Script" path="res://Abilities/Utility/ability.gd" id="1_5rrlm"]
+[ext_resource type="Texture2D" uid="uid://cf7q631h6qwub" path="res://Abilities/DEX/Lightning Reflex/wind spell10.png" id="2_vmn6a"]
+
+[node name="Lightning Reflex" type="Node2D"]
+script = ExtResource("1_5rrlm")
+icon = ExtResource("2_vmn6a")
+a_name = "Lightning Reflex"
+tooltip_text = "With lightning reflexes increase attack speed by Value0%, and movement speed by Value1% for 3 seconds, whenever you evade an attack - also increase evade by Value3."
+projectile_type = 4
+ability_type = "DEX"
+is_buff = true
+buff_duration = 3.0
+tags = Array[String](["EvadeAttackSpeedBuff", "EvadeMovementSpeedBuff", "FlatEvadePassive"])
+values = Array[float]([20.0, 20.0, 15.0])
+increased_values = Array[float]([20.0, 20.0, 10.0])

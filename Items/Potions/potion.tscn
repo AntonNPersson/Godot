@@ -1,0 +1,215 @@
+[gd_scene load_steps=19 format=3 uid="uid://dqsw216yiufsl"]
+
+[ext_resource type="Script" path="res://Items/Potions/potion.gd" id="1_xwtbv"]
+[ext_resource type="PackedScene" uid="uid://dqxq0qaeoucyb" path="res://Utility/Item_tooltip.tscn" id="2_8k2hw"]
+[ext_resource type="Shader" path="res://Items/particle_light.gdshader" id="3_leuu8"]
+[ext_resource type="Texture2D" uid="uid://d3cfidi3lbq76" path="res://Sprites/testtt.png" id="4_gei4i"]
+[ext_resource type="Texture2D" uid="uid://d0px67v6lydxv" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="5_6qp35"]
+[ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="6_c40kn"]
+[ext_resource type="Texture2D" uid="uid://c3w5fvw3fok50" path="res://Sprites/manaball.png" id="7_ebjn0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrdtt"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+shadow_size = 1
+anti_aliasing_size = 10.0
+
+[sub_resource type="FontVariation" id="FontVariation_8vgcy"]
+spacing_top = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tggxw"]
+size = Vector2(56, 10)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8mxl0"]
+shader = ExtResource("3_leuu8")
+shader_parameter/radius = 100.0
+shader_parameter/intensity = 100.0
+shader_parameter/accuracy = 32
+
+[sub_resource type="Curve" id="Curve_ncwpa"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.66129, 100), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Animation" id="Animation_g4uy6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPUParticles2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tgqty"]
+resource_name = "loot_enter"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPUParticles2D:position")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, 0), Vector2(-3, -5), Vector2(-11, -7), Vector2(-19, -6), Vector2(-28, -3)]
+}
+
+[sub_resource type="Animation" id="Animation_uvxx8"]
+resource_name = "loot_enter1"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPUParticles2D:position")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, 0), Vector2(3, -5), Vector2(11, -7), Vector2(19, -6), Vector2(28, -3)]
+}
+
+[sub_resource type="Animation" id="Animation_hxj80"]
+resource_name = "loot_enter_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPUParticles2D:position")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, 0), Vector2(0, 10), Vector2(0, 10), Vector2(0, 18)]
+}
+
+[sub_resource type="Animation" id="Animation_dvnyl"]
+resource_name = "loot_enter_up"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CPUParticles2D:position")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, 0), Vector2(0, -10), Vector2(0, -18), Vector2(0, -7), Vector2(0, -4)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q4yc8"]
+_data = {
+"RESET": SubResource("Animation_g4uy6"),
+"loot_enter": SubResource("Animation_tgqty"),
+"loot_enter1": SubResource("Animation_uvxx8"),
+"loot_enter_down": SubResource("Animation_hxj80"),
+"loot_enter_up": SubResource("Animation_dvnyl")
+}
+
+[node name="Potion" type="Area2D"]
+z_index = 2
+position = Vector2(-1, -4)
+scale = Vector2(1.2, 1.2)
+collision_priority = 0.0
+script = ExtResource("1_xwtbv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" parent="CanvasLayer" instance=ExtResource("2_8k2hw")]
+visible = false
+z_index = -1
+z_as_relative = false
+mouse_filter = 1
+
+[node name="Area2D" type="Area2D" parent="CanvasLayer" groups=["tooltip"]]
+position = Vector2(-14, 0)
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/Area2D"]
+modulate = Color(1, 1, 1, 0.501961)
+offset_left = -16.0
+offset_top = -22.0
+offset_right = 39.0
+offset_bottom = -12.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nrdtt")
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Area2D/Panel2"]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 48.0
+offset_bottom = 10.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Area2D/Panel2/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_8vgcy")
+theme_override_font_sizes/normal_font_size = 9
+bbcode_enabled = true
+text = "Chest"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/Area2D"]
+position = Vector2(12, -17)
+shape = SubResource("RectangleShape2D_tggxw")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_8mxl0")
+lifetime = 3.0
+randomness = 0.69
+lifetime_randomness = 1.0
+texture = ExtResource("4_gei4i")
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, -20)
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+damping_min = 1.0
+damping_max = 1.0
+damping_curve = SubResource("Curve_ncwpa")
+scale_amount_min = 0.01
+scale_amount_max = 0.03
+color = Color(1, 1, 0.513726, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="CPUParticles2D"]
+position = Vector2(1, 0)
+scale = Vector2(1, 0.753906)
+shadow_enabled = true
+texture = ExtResource("5_6qp35")
+texture_scale = 0.05
+script = ExtResource("6_c40kn")
+
+[node name="Sprite2D" type="Sprite2D" parent="CPUParticles2D"]
+z_index = -1
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("7_ebjn0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CPUParticles2D"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_q4yc8")
+}
+speed_scale = 3.0
+
+[connection signal="mouse_entered" from="CanvasLayer/Area2D/Panel2" to="." method="_on_panel_2_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Area2D/Panel2" to="." method="_on_panel_2_mouse_exited"]

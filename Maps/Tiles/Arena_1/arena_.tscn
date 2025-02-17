@@ -126,7 +126,7 @@ position = Vector2(880, 271)
 z_index = -1
 position = Vector2(45, 545)
 
-[node name="torch" parent="." instance=ExtResource("8_3sbft")]
+[node name="torch" parent="." groups=["props"] instance=ExtResource("8_3sbft")]
 z_index = -1
 position = Vector2(404, -64)
 
@@ -249,7 +249,7 @@ texture = ExtResource("15_nr817")
 position = Vector2(0, 56)
 shape = SubResource("RectangleShape2D_ua1te")
 
-[node name="_Area2D_150" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+[node name="_Area2D_150" parent="." groups=["obstacles", "props"] instance=ExtResource("3_41kjs")]
 z_index = -1
 position = Vector2(431, 137)
 
@@ -266,7 +266,7 @@ position = Vector2(-1, 10)
 scale = Vector2(1.13064, 0.624678)
 shape = SubResource("CircleShape2D_f1lnr")
 
-[node name="_Area2D_151" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+[node name="_Area2D_151" parent="." groups=["obstacles", "props"] instance=ExtResource("3_41kjs")]
 z_index = -1
 position = Vector2(-114, -172)
 
@@ -292,7 +292,6 @@ shape = SubResource("RectangleShape2D_4lakr")
 [node name="@Area2D@150" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 z_index = -1
 position = Vector2(-552, 184)
-metadata/Walkable = false
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="@Area2D@150"]
 texture = ExtResource("18_wrxbl")
@@ -303,7 +302,6 @@ shape = SubResource("RectangleShape2D_dfrhw")
 
 [node name="@Area2D@151" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 position = Vector2(-484, -8)
-metadata/Walkable = false
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="@Area2D@151"]
 texture = ExtResource("19_3gh3c")
@@ -313,7 +311,7 @@ position = Vector2(0, -49)
 shape = SubResource("RectangleShape2D_ogq66")
 
 [node name="WallCorner" parent="." instance=ExtResource("20_2acxd")]
-position = Vector2(610, 181)
+position = Vector2(639, 176)
 metadata/Walkable = true
 
 [node name="@Area2D@153" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
@@ -428,7 +426,7 @@ position = Vector2(244, 358)
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="stairs_center"]
 texture = ExtResource("25_nrrdr")
 
-[node name="obstacle" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+[node name="obstacle" parent="." groups=["obstacles", "props"] instance=ExtResource("3_41kjs")]
 z_index = -1
 position = Vector2(-643, 388)
 
@@ -525,7 +523,7 @@ texture = ExtResource("28_i1rpe")
 
 [node name="_Area2D_160" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
 z_index = -1
-position = Vector2(-777, 542)
+position = Vector2(-751, 540)
 metadata/Walkable = false
 
 [node name="Obstacle_Sprite2" type="Sprite2D" parent="_Area2D_160"]
@@ -675,7 +673,7 @@ z_index = -1
 position = Vector2(-754, -43)
 metadata/Walkable = false
 
-[node name="_Area2D_167" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+[node name="_Area2D_167" parent="." groups=["obstacles", "props"] instance=ExtResource("3_41kjs")]
 z_index = -1
 position = Vector2(1042, 142)
 metadata/Walkable = false
@@ -693,7 +691,7 @@ position = Vector2(-1, 10)
 scale = Vector2(1.13064, 0.624678)
 shape = SubResource("CircleShape2D_f1lnr")
 
-[node name="Animated grass" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+[node name="Animated grass" parent="." groups=["obstacles", "props"] instance=ExtResource("3_41kjs")]
 z_index = -1
 position = Vector2(-1127, -106)
 
@@ -722,3 +720,30 @@ shape = SubResource("RectangleShape2D_757w1")
 position = Vector2(-1, 12)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("41_vlcp4")
+
+[node name="left" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+position = Vector2(-668, 4)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="left"]
+texture = ExtResource("19_3gh3c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left"]
+position = Vector2(0, -49)
+shape = SubResource("RectangleShape2D_ogq66")
+
+[node name="Middle" parent="." groups=["obstacles"] instance=ExtResource("3_41kjs")]
+z_index = -1
+position = Vector2(-552, 184)
+metadata/Walkable = false
+
+[node name="Obstacle_Sprite2" type="Sprite2D" parent="Middle"]
+texture = ExtResource("18_wrxbl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Middle"]
+position = Vector2(-0.5, -49)
+shape = SubResource("RectangleShape2D_dfrhw")
+
+[node name="WallCorner2" parent="." instance=ExtResource("20_2acxd")]
+position = Vector2(639, 176)
+metadata/Walkable = true

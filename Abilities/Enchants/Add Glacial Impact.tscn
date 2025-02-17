@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://60a0haua02h0"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_bva2k"]
+[ext_resource type="Texture2D" uid="uid://bl4cnc5o847wk" path="res://Abilities/Enchants/icons/2BlueAbility_23.png" id="2_edfnc"]
+
+[node name="Add Glacial Impact" type="Node2D"]
+script = ExtResource("1_bva2k")
+i_name = "Self: Glacial Impact"
+tooltip = "Enemies that are affected by freeze, now take Value0% increased damage from basic attacks for 5 seconds, after using ability."
+icon = ExtResource("2_edfnc")
+tags = Array[String](["FreezePercentAttackDamageBuff"])
+values = Array[float]([15.0])
+types = Array[int]([5])
+extra = {
+"Duration": 5.0,
+"Hit": true
+}
+unique = true
+rarity = 1

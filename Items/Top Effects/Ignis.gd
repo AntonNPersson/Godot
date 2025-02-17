@@ -15,4 +15,4 @@ func _initialize():
 	values.append(randi() % 30 + 20)
 	colors.append(color)
 
-	tooltip = "On Burn: Heal "+ str(values[0]) + "% of damaged dealt. (Unique)"
+	tooltip = "On Burn: Heal "+ str(values[0]) + "% of damaged dealt."

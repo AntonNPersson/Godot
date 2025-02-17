@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bo0u4agwhk6ye"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_phuhv"]
+[ext_resource type="Texture2D" uid="uid://cwkulj2pyyhgb" path="res://Abilities/Enchants/icons/2PurpleAbility_5.png" id="2_rpkho"]
+
+[node name="Add Arcanic Overload" type="Node2D"]
+script = ExtResource("1_phuhv")
+i_name = "General: Arcanic Overload"
+tooltip = "Add Value0% increase to all values, but also add Value1% increase to all base costs."
+icon = ExtResource("2_rpkho")
+tags = Array[String](["MultiplyValues", "MultiplyCosts"])
+values = Array[float]([10.0, 20.0])
+types = Array[int]([0, 1, 2, 3, 5, 6])
+rarity = 2

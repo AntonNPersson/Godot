@@ -4,10 +4,10 @@ var target
 var tag = null
 
 @export var cast_duration : float = 2.0
-@export var cooldown : float = 5.0
+@export var cooldown : float = 25.0
 @export var _range : float = 100
 @export var tags : Array = ["Wind", "Damage"]
-@export var values : Array = [75.0, 40.0]
+@export var values : Array = [175.0, 40.0]
 @export var cursed_branch_instance : PackedScene
 
 @export var speed : float = 300
@@ -29,4 +29,4 @@ func _do_action(enemy):
 
 func _use():
 	origin.is_rooted = true
-	Utility.get_node('EnemyTargetSystem')._create_cone_ability(Vector2(1.5,1.5), cast_duration, (target.global_position - origin.global_position).normalized(), origin, Callable(self, '_do_action'), cursed_branch_instance)
+	Utility.get_node('EnemyTargetSystem')._create_targeted_circle_ability(2.5, cast_duration, origin.global_position, origin, Callable(self, '_do_action'), cursed_branch_instance)

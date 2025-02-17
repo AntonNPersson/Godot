@@ -1,0 +1,458 @@
+[gd_scene load_steps=68 format=3 uid="uid://dxmblau5ak3m7"]
+
+[ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_6b3ry"]
+[ext_resource type="PackedScene" uid="uid://dpqd8ei004dci" path="res://Abilities/Creature Spells/Poisonbolt Barrage/Poison Barrage.tscn" id="2_dwg04"]
+[ext_resource type="PackedScene" uid="uid://neo578bhoxqh" path="res://Abilities/Creature Spells/Summon Scientist/Summon Scientist.tscn" id="3_ng0ge"]
+[ext_resource type="PackedScene" uid="uid://bkj2uhfc61w5t" path="res://Abilities/Creature Spells/Acid Splash/Acid Splash.tscn" id="4_5x311"]
+[ext_resource type="PackedScene" uid="uid://x46dmyocphn6" path="res://Abilities/Creature Spells/Darkness Blast/darkness blast.tscn" id="5_6e6nq"]
+[ext_resource type="PackedScene" uid="uid://dbnxhpc7q87jv" path="res://Abilities/Basic Attacks/playerBasicAttack.tscn" id="7_kgwr2"]
+[ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="8_tnxuy"]
+[ext_resource type="Texture2D" uid="uid://bg52y0g2ot3ll" path="res://Sprites/Goblin King/goblin king1.png" id="9_sgwuq"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/GoblinChiefRoot.gd" id="10_sr2sr"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Is_Enountered.gd" id="11_1ly10"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Witch Doctor/Cast Poison Barrage.gd" id="11_wh7pr"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/selector.gd" id="12_hfpqv"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/abovehalfhp.gd" id="13_e8kjr"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Witch Doctor/Cast Summon Scientists.gd" id="13_sd2wv"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/is_on_cd.gd" id="14_qqe1u"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Bosses/Cast Acid Splash.gd" id="17_radjm"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/belowhalfhp.gd" id="19_ccrpc"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Witch Doctor/Cast Darkness Blast.gd" id="20_4adwa"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/has_printed_dialogue.gd" id="22_qxryd"]
+[ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/print_dialogue.gd" id="23_thvsc"]
+[ext_resource type="Texture2D" uid="uid://b7h1tcs20sfeq" path="res://Units/Instance/Enemies/Sprite Sheets/witch doctor.png" id="26_nskmk"]
+[ext_resource type="Theme" uid="uid://bkrtaty4xnk1j" path="res://GUI/Theme.tres" id="29_3fclp"]
+[ext_resource type="Texture2D" uid="uid://cu07htbigrmxj" path="res://Sprites/1.png" id="30_0mp6s"]
+[ext_resource type="Texture2D" uid="uid://d10q775uvkk2o" path="res://Sprites/wall1.png" id="31_pf8a2"]
+[ext_resource type="Script" path="res://Units/Instance/Enemies/Common/cast_bar.gd" id="32_d443s"]
+[ext_resource type="Texture2D" uid="uid://cnty04i31asxy" path="res://Units/Instance/Enemies/Sprite Sheets/Download85704.png" id="33_ggdcx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujh6a"]
+radius = 12.0037
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4lhb8"]
+shader = ExtResource("8_tnxuy")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv25l"]
+shader = ExtResource("8_tnxuy")
+shader_parameter/hit_effect_color = Color(1, 0, 0, 1)
+shader_parameter/hit_effect_intensity = 0.0
+shader_parameter/outline_intensity = 0.0
+shader_parameter/outline_size = 0.05
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuiqf"]
+atlas = ExtResource("33_ggdcx")
+region = Rect2(64, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2748"]
+atlas = ExtResource("33_ggdcx")
+region = Rect2(128, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0f536"]
+atlas = ExtResource("33_ggdcx")
+region = Rect2(192, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5l8ix"]
+atlas = ExtResource("33_ggdcx")
+region = Rect2(256, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx5yl"]
+atlas = ExtResource("33_ggdcx")
+region = Rect2(320, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ho1cw"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(64, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkkba"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(128, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a0686"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(192, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k58mu"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(256, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rm7cu"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(320, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iy3tw"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(384, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5kpuu"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(448, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_peqqd"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(512, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubj7g"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(64, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yutd5"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(128, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wn7cn"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(192, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwudo"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(256, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p7q3t"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(320, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8nhr0"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(384, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uafqi"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(448, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0qxs"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(512, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvpxe"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(64, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0mvb0"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(128, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6sxy3"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(192, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cd7o3"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(256, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3d73g"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(320, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dkq8f"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(384, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chcco"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(448, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4247k"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(512, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8drvh"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(64, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0y88"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(128, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8fww"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(192, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f6shm"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(256, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1tdq6"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(320, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_voky7"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(384, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0dtww"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(448, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_unbkk"]
+atlas = ExtResource("26_nskmk")
+region = Rect2(512, 576, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3csfa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kuiqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s2748")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0f536")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5l8ix")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sx5yl")
+}],
+"loop": true,
+"name": &"Death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ho1cw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkkba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a0686")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k58mu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rm7cu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iy3tw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5kpuu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_peqqd")
+}],
+"loop": true,
+"name": &"Walk East",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ubj7g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yutd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wn7cn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwudo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p7q3t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8nhr0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uafqi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0qxs")
+}],
+"loop": true,
+"name": &"Walk North",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvpxe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0mvb0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6sxy3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cd7o3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3d73g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dkq8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_chcco")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4247k")
+}],
+"loop": true,
+"name": &"Walk South",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8drvh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0y88")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h8fww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f6shm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1tdq6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_voky7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0dtww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_unbkk")
+}],
+"loop": true,
+"name": &"Walk West",
+"speed": 12.0
+}]
+
+[node name="Witch Doctor" type="Area2D" groups=["boss", "enemies"]]
+top_level = true
+scale = Vector2(1.5, 1.5)
+collision_layer = 2
+script = ExtResource("1_6b3ry")
+u_name = "Witch Doctor"
+experience = 500
+base_armor = 50
+base_speed = 0
+base_health = 5000
+base_range = 0
+base_attack_damage = 0
+abilities = Array[PackedScene]([ExtResource("2_dwg04"), ExtResource("3_ng0ge"), ExtResource("4_5x311"), ExtResource("5_6e6nq")])
+basic_attack_scene = ExtResource("7_kgwr2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 2.88)
+shape = SubResource("CircleShape2D_ujh6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_4lhb8")
+scale = Vector2(2.88, 2.88)
+texture = ExtResource("9_sgwuq")
+
+[node name="Goblin Chief Tree" type="Node" parent="."]
+script = ExtResource("10_sr2sr")
+
+[node name="Is Enountered?" type="Node" parent="Goblin Chief Tree"]
+script = ExtResource("11_1ly10")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Is Enountered?"]
+script = ExtResource("12_hfpqv")
+
+[node name="Phase 1?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector"]
+script = ExtResource("13_e8kjr")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?"]
+script = ExtResource("12_hfpqv")
+
+[node name="isOnCd?2" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("14_qqe1u")
+ability_index = 0
+
+[node name="Cast Poison Barrage" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isOnCd?2"]
+script = ExtResource("11_wh7pr")
+
+[node name="isOnCd?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("14_qqe1u")
+
+[node name="Cast Summon Scientists" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isOnCd?"]
+script = ExtResource("13_sd2wv")
+
+[node name="isOnCd?3" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector"]
+script = ExtResource("14_qqe1u")
+ability_index = 2
+
+[node name="Cast Acid Splash" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 1?/Selector/isOnCd?3"]
+script = ExtResource("17_radjm")
+
+[node name="Phase 2?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector"]
+script = ExtResource("19_ccrpc")
+
+[node name="Selector" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?"]
+script = ExtResource("12_hfpqv")
+
+[node name="has_printed_dialogue?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("22_qxryd")
+
+[node name="print_dialogue" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/has_printed_dialogue?"]
+script = ExtResource("23_thvsc")
+test = ["HAHAHAHAHAHA, finally someone to try my new inventions on!"]
+
+[node name="isOnCd?2" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("14_qqe1u")
+ability_index = 0
+
+[node name="Cast Poison Barrage" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?2"]
+script = ExtResource("11_wh7pr")
+
+[node name="isOnCd?" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("14_qqe1u")
+
+[node name="Cast Summon Scientists" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?"]
+script = ExtResource("13_sd2wv")
+
+[node name="isOnCd?3" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("14_qqe1u")
+ability_index = 2
+
+[node name="Cast Acid Splash" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?3"]
+script = ExtResource("17_radjm")
+
+[node name="isOnCd?4" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector"]
+script = ExtResource("14_qqe1u")
+ability_index = 3
+
+[node name="Cast Darkness Blast" type="Node" parent="Goblin Chief Tree/Is Enountered?/Selector/Phase 2?/Selector/isOnCd?4"]
+script = ExtResource("20_4adwa")
+
+[node name="Summons" type="Node2D" parent="."]
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="cast_bar" type="TextureProgressBar" parent="UI"]
+z_index = 10
+offset_left = -15.0
+offset_top = 35.0
+offset_right = 19.0
+offset_bottom = 43.0
+theme = ExtResource("29_3fclp")
+value = 100.0
+texture_under = ExtResource("30_0mp6s")
+texture_progress = ExtResource("31_pf8a2")
+texture_progress_offset = Vector2(2, 2)
+script = ExtResource("32_d443s")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_xv25l")
+sprite_frames = SubResource("SpriteFrames_3csfa")
+animation = &"Walk West"
+
+[connection signal="is_dead" from="." to="Goblin Chief Tree" method="_on_goblin_chief_is_dead"]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpqd8ei004dci"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Poisonbolt Barrage/Poison Barrage.gd" id="1_owhwb"]
+[ext_resource type="PackedScene" uid="uid://bjic3yagbmf7n" path="res://Abilities/Creature Spells/Poisonbolt/Poisonbolt.tscn" id="2_rnul6"]
+
+[node name="Poison Barrage" type="Node2D"]
+script = ExtResource("1_owhwb")
+cooldown = 18.0
+_range = 1000.0
+poison_bolt_instance = ExtResource("2_rnul6")

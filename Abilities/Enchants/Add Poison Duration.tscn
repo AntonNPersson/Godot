@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuycph1f1kw7c"]
+
+[ext_resource type="Script" path="res://Abilities/Enchants/enchant.gd" id="1_grtcg"]
+[ext_resource type="Texture2D" uid="uid://b26oay3jeculm" path="res://Abilities/Enchants/icons/Green Ability_11.png" id="2_yksju"]
+
+[node name="Add Poison Duration" type="Node2D"]
+script = ExtResource("1_grtcg")
+i_name = "Poison: Lasting"
+tooltip = "Add Value0s flat poison duration increase to selected ability."
+icon = ExtResource("2_yksju")
+tags = Array[String](["PoisonDuration"])
+values = Array[float]([0.3])
+types = Array[int]([-1])
+extra = {
+"Never": true
+}

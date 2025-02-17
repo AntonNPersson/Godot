@@ -1,0 +1,13 @@
+[gd_scene load_steps=5 format=3 uid="uid://neo578bhoxqh"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Summon Zombies/Summon Zombies.gd" id="1_evpuf"]
+[ext_resource type="PackedScene" uid="uid://dypd1guweab3b" path="res://Units/Instance/Enemies/Common/Mutant Boar.tscn" id="2_5w3bd"]
+[ext_resource type="PackedScene" uid="uid://babgdhhfthpqt" path="res://Utility/Spawn_effects.tscn" id="3_nxld0"]
+[ext_resource type="PackedScene" uid="uid://cknhni7nwp7v2" path="res://Units/Instance/Enemies/Common/Mutant Rat.tscn" id="3_p4c7a"]
+
+[node name="Summon Scientist" type="Node2D"]
+script = ExtResource("1_evpuf")
+cast_duration = 1.0
+cooldown = 40.0
+summons = Array[PackedScene]([ExtResource("2_5w3bd"), ExtResource("3_p4c7a"), ExtResource("3_p4c7a"), ExtResource("2_5w3bd")])
+summon_effect = ExtResource("3_nxld0")

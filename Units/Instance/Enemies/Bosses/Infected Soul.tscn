@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://bj6xebem8yoad"]
+[gd_scene load_steps=61 format=3 uid="uid://bj6xebem8yoad"]
 
 [ext_resource type="Script" path="res://Units/Stats/creatureVariables.gd" id="1_hri6t"]
 [ext_resource type="PackedScene" uid="uid://c3q7cheu3xa3a" path="res://Abilities/Creature Spells/Cursed Light Beam/Cursed Light Beam.tscn" id="2_j8ppe"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/belowhalfhp.gd" id="21_g3q6d"]
 [ext_resource type="Script" path="res://Maps/Tiles/Arena_1/torch.gd" id="22_7g8er"]
 [ext_resource type="Shader" path="res://Shaders/hit_effect.gdshader" id="23_2j3ko"]
+[ext_resource type="Texture2D" uid="uid://b7lel12i1e8xt" path="res://Units/Instance/Enemies/Bosses/infected soul.png" id="23_n6nog"]
 [ext_resource type="Texture2D" uid="uid://5badparh4uxa" path="res://Sprites/Infected Cemetery/tiles/cypt3 entrance glow animation 160x280.png" id="23_om7fw"]
 [ext_resource type="Script" path="res://Units/Utility/Behaviour Tree/Goblin Chief Tree/has_printed_dialogue.gd" id="24_hpmau"]
 [ext_resource type="Texture2D" uid="uid://cnc48eh8erilw" path="res://Sprites/Infected Cemetery/tiles/candle-fire-only.png" id="24_p56h0"]
@@ -28,6 +29,21 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eaewv"]
 size = Vector2(141, 65.3333)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nkivn"]
+atlas = ExtResource("23_n6nog")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l0ui8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nkivn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tkwpf"]
 shader = ExtResource("23_2j3ko")
@@ -359,6 +375,9 @@ texture = ExtResource("21_fbqpk")
 script = ExtResource("22_7g8er")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_l0ui8")
+
+[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="."]
 z_as_relative = false
 material = SubResource("ShaderMaterial_tkwpf")
 position = Vector2(2, -52)

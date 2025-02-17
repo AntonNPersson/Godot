@@ -24,6 +24,7 @@ script = ExtResource("1_033sp")
 [node name="Augments" type="Node" parent="."]
 
 [node name="UI" type="Node" parent="."]
+process_mode = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI"]
 

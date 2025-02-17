@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://b1jel7idmqb86"]
+[gd_scene load_steps=43 format=3 uid="uid://b1jel7idmqb86"]
 
 [ext_resource type="PackedScene" uid="uid://bg0m4lqesjegg" path="res://Abilities/DEX/Throwing Daggers/throwing_daggers.tscn" id="1_g5psk"]
 [ext_resource type="Texture2D" uid="uid://c2jviaf1o7ryu" path="res://Abilities/icons/dark spell_67.png" id="2_h7jwv"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://d27rdv0iqcoqj" path="res://Abilities/DEX/Venomous Slash/Venomous Slash.tscn" id="25_xki7k"]
 [ext_resource type="PackedScene" uid="uid://dx1fcmtebktj5" path="res://Abilities/DEX/Toxic Infusion/Toxic Infusion.tscn" id="26_6cver"]
 [ext_resource type="PackedScene" uid="uid://ba4tbdsn5luoi" path="res://Abilities/DEX/Serpent Blink/Serpent Blink.tscn" id="27_olnyu"]
+[ext_resource type="PackedScene" uid="uid://d0puiggfnojnu" path="res://Abilities/DEX/Lightning Reflex/Lightning Reflex.tscn" id="27_pq8j5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2batn"]
 atlas = ExtResource("23_7u3kr")
@@ -152,14 +153,12 @@ increased_values = Array[float]([5.0, 15.0])
 
 [node name="Flurry Of Arrows" parent="." instance=ExtResource("4_awjux")]
 icon = ExtResource("8_2lo47")
-activatable_cooldown = 0.0
 
 [node name="Shuriken Throw" parent="." instance=ExtResource("9_mxhi2")]
 icon = ExtResource("14_cufio")
 tooltip_text = "Throw a shuriken that deals Value0 damage, and procs attack modifiers."
 _range = 200.0
 sprite_scale = 0.5
-activatable_cooldown = 0.0
 values = Array[float]([5.0, 0.0])
 increased_values = Array[float]([5.0, 0.0])
 light_scale = 1.0
@@ -180,13 +179,10 @@ icon = ExtResource("24_igmq6")
 [node name="Triumvirate Shift" parent="." instance=ExtResource("17_1tkxk")]
 
 [node name="Shadow Clone Caster" parent="." instance=ExtResource("18_p5uw3")]
-activatable_cooldown = 0.0
 
 [node name="Shadow Clone Attacker" parent="." instance=ExtResource("19_fou7t")]
-activatable_cooldown = 0.0
 
 [node name="Multishot" parent="." instance=ExtResource("20_ngi4f")]
-activatable_cooldown = 0.0
 
 [node name="Quick Roll" parent="." instance=ExtResource("21_xx1r6")]
 icon = ExtResource("22_f3vgi")
@@ -199,20 +195,18 @@ increased_values = Array[float]([0.3])
 [node name="Relentless Precision" parent="." instance=ExtResource("24_5a5sa")]
 tooltip_text = "Every fifth auto attack is a garantueed critical, also passively increase critical damage by Value1%."
 auto_attack_interval = 5.0
-activatable_cooldown = 0.0
 
 [node name="Venomous Slash" parent="." instance=ExtResource("25_xki7k")]
 tooltip_text = "Attack all enemies in close range, dealing Value0 damage, and applying Value1 stack(s) of poison. If target is already poisoned apply Value2 stack(s) more.
 "
-activatable_cooldown = 0.0
 
 [node name="Toxic Infusion" parent="." instance=ExtResource("26_6cver")]
-activatable_cooldown = 0.0
 light_color = Color(0, 0.992157, 0, 1)
 light_scale = 0.6
 weight = 50.0
 
+[node name="Lightning Reflex" parent="." instance=ExtResource("27_pq8j5")]
+
 [node name="Serpent Blink" parent="." instance=ExtResource("27_olnyu")]
 cooldown = 8.0
 sprite_scale = 0.4
-activatable_cooldown = 0.0

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://x46dmyocphn6"]
+
+[ext_resource type="Script" path="res://Abilities/Creature Spells/Darkness Blast/darkness blast.gd" id="1_spbp2"]
+[ext_resource type="PackedScene" uid="uid://cx0aerry28ewd" path="res://Abilities/Creature Spells/Darkness Echo/Darkness_after_effect.tscn" id="2_g1b5y"]
+
+[node name="Darkness Blast" type="Node2D"]
+script = ExtResource("1_spbp2")
+cast_duration = 2.0
+cooldown = 1.0
+_range = 10000.0
+tags = ["Darkness"]
+values = [3.0]
+after_effect = ExtResource("2_g1b5y")

@@ -15,4 +15,4 @@ func _initialize():
 	values.append(10)
 	colors.append(color)
 
-	tooltip = "On Hit: Cast a random spell on the closest enemy (level scaling with lowest owned ability), has " + str(cooldown) +" seconds cooldown. (Unique)"
+	tooltip = "On Hit: Cast a random spell on the closest enemy (level scaling with lowest owned ability), has " + str(cooldown) +" seconds cooldown."

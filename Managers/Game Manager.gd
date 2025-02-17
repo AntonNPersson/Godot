@@ -9,6 +9,7 @@ var settings = {
 	"roguelike_controls" : true,
 	"smart_cast" : true,}
 
+
 func _change_scene(parameter: String, mode : bool):
 	get_tree().change_scene_to_file(parameter)	
 	is_singleplayer = mode
@@ -22,6 +23,8 @@ func _pause_game():
 	var enemies = get_tree().get_nodes_in_group('enemies')
 	for enemy in enemies:
 		enemy.paused = true
+	
+	get_tree().paused = true
 
 func _continue_game():
 	get_tree().get_nodes_in_group("players")[0].paused = false
@@ -32,6 +35,8 @@ func _continue_game():
 	var enemies = get_tree().get_nodes_in_group('enemies')
 	for enemy in enemies:
 		enemy.paused = false
+	
+	get_tree().paused = false
 
 func save():
 	var save_dict = {

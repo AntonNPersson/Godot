@@ -106,6 +106,7 @@ cooldown = 12.0
 projectile_type = 5
 ability_type = "INT"
 sprite_frames = SubResource("SpriteFrames_k35ev")
+sprite_offset = Vector2(0, -32)
 is_buff = true
 buff_duration = 3.0
 tags = Array[String](["SelfInvincible", "PercentHealOverTime", "PercentHealManaOverTime", "Root"])

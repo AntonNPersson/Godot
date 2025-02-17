@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c8chwfwce6kgm"]
+[gd_scene load_steps=11 format=3 uid="uid://c8chwfwce6kgm"]
 
 [ext_resource type="PackedScene" uid="uid://debopt64df75q" path="res://Abilities/Ascension/Increased Armor.tscn" id="1_k3hag"]
 [ext_resource type="Texture2D" uid="uid://dghu6bxt5oimk" path="res://Abilities/icons/2YellowAbility_1.png" id="2_clj1l"]
@@ -8,27 +8,35 @@
 [ext_resource type="Texture2D" uid="uid://3ubr7wy5n3xe" path="res://Abilities/icons/Yellow Ability_1.png" id="4_4dc2l"]
 [ext_resource type="Texture2D" uid="uid://df3un3otg43g3" path="res://Abilities/icons/Yellow Ability_13.png" id="6_w0led"]
 [ext_resource type="Texture2D" uid="uid://dtrhdhe0c3mrq" path="res://Abilities/icons/2AbilityPack_24.png" id="8_iukre"]
-[ext_resource type="PackedScene" uid="uid://b2733pdw4edo1" path="res://Abilities/Ascension/Stormy Winds.tscn" id="9_ql4gh"]
-[ext_resource type="Texture2D" uid="uid://cv54f7h3e6bwc" path="res://Abilities/icons/Green Ability_20.png" id="10_lsy8f"]
 [ext_resource type="PackedScene" uid="uid://1mem2o5pr21y" path="res://Abilities/Ascension/More And Merrier.tscn" id="11_2ef3h"]
 [ext_resource type="Texture2D" uid="uid://dj078hioodf03" path="res://Abilities/icons/Purple Ability_4.png" id="12_rgl63"]
 
 [node name="AscensionDebuffs" type="Node2D"]
 
 [node name="Increased Armor" parent="." instance=ExtResource("1_k3hag")]
+tooltip = "Increases the base armor of all enemies by 100%."
 icon = ExtResource("2_clj1l")
+increased_armor = 100
+ascension_currency_multiplier = 0.4
 
 [node name="Increased Health" parent="." instance=ExtResource("2_jcfxr")]
+tooltip = "Increases the base health of all enemies by 80%."
 icon = ExtResource("4_4dc2l")
+increased_health = 80
+ascension_currency_multiplier = 0.4
 
 [node name="Increased Movement Speed" parent="." instance=ExtResource("3_ptk2l")]
+tooltip = "Increases the base movement speed of all enemies by 50%."
 icon = ExtResource("6_w0led")
+increased_speed = 50
+ascension_currency_multiplier = 0.4
 
 [node name="MeteorShower" parent="." instance=ExtResource("4_2oed8")]
 icon = ExtResource("8_iukre")
-
-[node name="StormyWinds" parent="." instance=ExtResource("9_ql4gh")]
-icon = ExtResource("10_lsy8f")
+ascension_currency_multiplier = 0.6
 
 [node name="MoreAndMerrier" parent="." instance=ExtResource("11_2ef3h")]
+tooltip = "Enemy amount is increased by 100%."
 icon = ExtResource("12_rgl63")
+increased_amount = 100
+ascension_currency_multiplier = 0.8

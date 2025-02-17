@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cwdht2de2hiql" path="res://Utility/Blurry_popup.png" id="1_hngi5"]
 
 [node name="BossTitle" type="CanvasLayer"]
+process_mode = 3
 
 [node name="Label" type="Label" parent="."]
 anchors_preset = 5

@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://bf2pw63lo38iu"]
+[gd_scene load_steps=15 format=3 uid="uid://bf2pw63lo38iu"]
 
 [ext_resource type="Script" path="res://Scenes/Cinematics/cinematic_0.gd" id="1_psd2c"]
+[ext_resource type="Texture2D" uid="uid://1lpdkcs6vjnd" path="res://Scenes/Cinematics/dark-black-abstract-background-with-wood-chips.jpg" id="2_hef8u"]
 [ext_resource type="Texture2D" uid="uid://hqr365ap2jws" path="res://GUI/Fade_effect_line.png" id="2_oh3qy"]
 [ext_resource type="Script" path="res://Managers/Game Manager.gd" id="3_j513h"]
 [ext_resource type="Texture2D" uid="uid://jt5xm2q0f8sp" path="res://GUI/Explorer.png" id="4_wntu0"]
@@ -24,8 +25,11 @@ follow_viewport_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="UI"]
 modulate = Color(1, 1, 1, 0.698039)
-position = Vector2(988, 560)
-scale = Vector2(1.96227, 1.09387)
+position = Vector2(966, 537.5)
+scale = Vector2(1.78148, 0.567188)
+texture = ExtResource("2_hef8u")
+region_enabled = true
+region_rect = Rect2(0, 0, 1080, 1920)
 
 [node name="characterList" type="ItemList" parent="UI"]
 visible = false
@@ -79,7 +83,7 @@ autowrap_mode = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="UI/Info"]
 position = Vector2(391.259, 30.3333)
-scale = Vector2(0.518519, 2.66667)
+scale = Vector2(1.39683, 2.66667)
 texture = ExtResource("2_oh3qy")
 
 [node name="Sprite2D2" type="Sprite2D" parent="UI/Info"]
@@ -196,25 +200,37 @@ grow_vertical = 0
 text = "Select"
 
 [node name="Explorer" type="Panel" parent="UI"]
-offset_left = 148.0
-offset_top = 482.0
-offset_right = 276.0
-offset_bottom = 610.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -454.0
+offset_top = -64.0
+offset_right = -326.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_l0sle")
 
 [node name="Explorer" type="Sprite2D" parent="UI/Explorer"]
-position = Vector2(62, 62)
+position = Vector2(62, 50)
 scale = Vector2(2, 2)
 texture = ExtResource("4_wntu0")
 
 [node name="Berserker" type="Panel" parent="UI"]
-offset_left = 399.0
-offset_top = 508.0
-offset_right = 527.0
-offset_bottom = 636.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -324.0
+offset_top = -64.0
+offset_right = -196.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 
@@ -224,11 +240,17 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_3iw44")
 
 [node name="Ranger" type="Panel" parent="UI"]
-offset_left = 623.0
-offset_top = 508.0
-offset_right = 751.0
-offset_bottom = 636.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -194.0
+offset_top = -64.0
+offset_right = -66.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 
@@ -238,25 +260,37 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_qnkqh")
 
 [node name="Mage" type="Panel" parent="UI"]
-offset_left = 861.0
-offset_top = 508.0
-offset_right = 989.0
-offset_bottom = 636.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 
 [node name="Mage" type="Sprite2D" parent="UI/Mage"]
-position = Vector2(63, 62)
+position = Vector2(64, 62)
 scale = Vector2(2, 2)
 texture = ExtResource("6_ygm4i")
 
 [node name="Warrior" type="Panel" parent="UI"]
-offset_left = 1077.0
-offset_top = 514.0
-offset_right = 1205.0
-offset_bottom = 642.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 66.0
+offset_top = -64.0
+offset_right = 194.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 
@@ -266,11 +300,17 @@ scale = Vector2(2, 2)
 texture = ExtResource("7_mu4gx")
 
 [node name="Duelist" type="Panel" parent="UI"]
-offset_left = 1283.0
-offset_top = 514.0
-offset_right = 1411.0
-offset_bottom = 642.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 196.0
+offset_top = -64.0
+offset_right = 324.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 
@@ -280,11 +320,17 @@ scale = Vector2(2, 2)
 texture = ExtResource("8_ayo6b")
 
 [node name="Sentinel" type="Panel" parent="UI"]
-offset_left = 1483.0
-offset_top = 516.0
-offset_right = 1611.0
-offset_bottom = 644.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 326.0
+offset_top = -64.0
+offset_right = 454.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 
@@ -294,11 +340,17 @@ scale = Vector2(2, 2)
 texture = ExtResource("9_a15j2")
 
 [node name="Chronomancer" type="Panel" parent="UI"]
-offset_left = 1677.0
-offset_top = 516.0
-offset_right = 1805.0
-offset_bottom = 644.0
-scale = Vector2(2, 2)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -454.0
+offset_top = 66.0
+offset_right = -326.0
+offset_bottom = 194.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(62, 62)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 
@@ -306,6 +358,19 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ra660")
 position = Vector2(64, 62)
 scale = Vector2(2, 2)
 texture = ExtResource("10_424eo")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -646.5
+offset_top = 256.0
+offset_right = -321.5
+offset_bottom = 296.0
+grow_horizontal = 2
+scale = Vector2(4, 4)
+bbcode_enabled = true
+text = "[center]Choose character:"
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("3_j513h")
